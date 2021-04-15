@@ -76,8 +76,6 @@ class DenonAVRTelnet extends AVRModule
         parent::ApplyChanges();
 
         if (IPS_GetKernelRunlevel() !== KR_READY) {
-            IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'Kernel is not ready (' . IPS_GetKernelRunlevel() . ')');
-
             return;
         }
 
