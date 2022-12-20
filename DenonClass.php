@@ -4579,9 +4579,9 @@ class DenonAVRCP_API_Data extends stdClass
             }
 
             //Antworten wie 'SSINF', 'AISFSV', 'AISSIG', 'SSSMV', 'SSSMG', 'SSALS' sind laut Denon Support zu ignorieren
-            //auch mit SDARC, OPT, MS MAXxxx und CVEND können wir nichts anfangen
+            //auch mit SDARC, OPT, MS MAXxxx, OPSTS und CVEND können wir nichts anfangen
             $commandToBeIgnored = false;
-            foreach (['SS', 'AIS', 'SY', 'OPT', 'MVMAX', 'SDARC', 'CVEND'] as $Command){
+            foreach (['SS', 'AIS', 'SY', 'OPT', 'OPSTS', 'MVMAX', 'SDARC', 'CVEND'] as $Command){
                 if (strpos($response, $Command) === 0) {
                     $commandToBeIgnored = true;
                     break;
