@@ -61,7 +61,11 @@ require_once __DIR__ . '/DenonAVR.php';  // diverse Klassen
                 202 => "AVR-X2700H",
                 203 => "AVR-X3700H",
                 204 => "AVR-X4700H",
-                205F => "AVR-X6700H",
+                205 => "AVR-X6700H",
+                206 => "AVR-S970H",
+                207 => "AVR-X2800H",
+                208 => "AVR-X3800H",
+                209 => "AVR-X4800H",
 
                 60 => "Marantz-NR1504", //
                 61 => "Marantz-NR1506", //
@@ -148,10 +152,12 @@ class AVRs extends stdClass
             Denon_AVR_X2500H::$Name    => Denon_AVR_X2500H::getCapabilities(),
             Denon_AVR_X2600H::$Name    => Denon_AVR_X2600H::getCapabilities(),
             Denon_AVR_X2700H::$Name    => Denon_AVR_X2700H::getCapabilities(),
+            Denon_AVR_X2800H::$Name    => Denon_AVR_X2800H::getCapabilities(),
             Denon_AVR_X3000::$Name     => Denon_AVR_X3000::getCapabilities(),
             Denon_AVR_X3400H::$Name    => Denon_AVR_X3400H::getCapabilities(),
             Denon_AVR_X3500H::$Name    => Denon_AVR_X3500H::getCapabilities(),
             Denon_AVR_X3700H::$Name    => Denon_AVR_X3700H::getCapabilities(),
+            Denon_AVR_X3800H::$Name    => Denon_AVR_X3800H::getCapabilities(),
             Denon_AVR_X4000::$Name     => Denon_AVR_X4000::getCapabilities(),
             Denon_AVR_X4100W::$Name    => Denon_AVR_X4100W::getCapabilities(),
             Denon_AVR_X4200W::$Name    => Denon_AVR_X4200W::getCapabilities(),
@@ -159,6 +165,7 @@ class AVRs extends stdClass
             Denon_AVR_X4400H::$Name    => Denon_AVR_X4400H::getCapabilities(),
             Denon_AVR_X4500H::$Name    => Denon_AVR_X4500H::getCapabilities(),
             Denon_AVR_X4700H::$Name    => Denon_AVR_X4700H::getCapabilities(),
+            Denon_AVR_X4800H::$Name    => Denon_AVR_X4800H::getCapabilities(),
             Denon_AVR_X5200W::$Name    => Denon_AVR_X5200W::getCapabilities(),
             Denon_AVR_X6200W::$Name    => Denon_AVR_X6200W::getCapabilities(),
             Denon_AVR_X6300H::$Name    => Denon_AVR_X6300H::getCapabilities(),
@@ -170,6 +177,7 @@ class AVRs extends stdClass
             Denon_AVC_X8500H::$Name    => Denon_AVC_X8500H::getCapabilities(),
             Denon_AVR_S750H::$Name     => Denon_AVR_S750H::getCapabilities(),
             Denon_AVR_S960H::$Name     => Denon_AVR_S960H::getCapabilities(),
+            Denon_AVR_S970H::$Name     => Denon_AVR_S970H::getCapabilities(),
             Denon_DRA_N5::$Name        => Denon_DRA_N5::getCapabilities(),
             Denon_RCD_N8::$Name        => Denon_RCD_N8::getCapabilities(),
 
@@ -307,7 +315,7 @@ class AVR extends stdClass
         DENON_API_Commands::MV,
         DENON_API_Commands::CVFL, DENON_API_Commands::CVFR, DENON_API_Commands::CVC,
         DENON_API_Commands::CVSW,
-        DENON_API_Commands::CVSW2,
+        DENON_API_Commands::CVSW2, DENON_API_Commands::CVSW3,DENON_API_Commands::CVSW4,
         DENON_API_Commands::CVSL, DENON_API_Commands::CVSR,
         DENON_API_Commands::CVSBL, DENON_API_Commands::CVSBR, DENON_API_Commands::CVSB,
         DENON_API_Commands::CVFHL, DENON_API_Commands::CVFHR,
@@ -322,6 +330,7 @@ class AVR extends stdClass
         DENON_API_Commands::CVSHL, DENON_API_Commands::CVSHR, DENON_API_Commands::CVTS,
         DENON_API_Commands::CVCH,
         DENON_API_Commands::CVZRL,
+        DENON_API_Commands::CVTTR,
     ];
     public static $VS_Commands = [
         DENON_API_Commands::VSMONI,
@@ -372,6 +381,8 @@ class AVR extends stdClass
         DENON_API_Commands::PSDEH,
         DENON_API_Commands::PSSWL,
         DENON_API_Commands::PSSWL2,
+        DENON_API_Commands::PSSWL3,
+        DENON_API_Commands::PSSWL4,
         DENON_API_Commands::PSDIL,
         DENON_API_Commands::PSCLV,
         DENON_API_Commands::PSLFE,
@@ -403,7 +414,7 @@ class AVR extends stdClass
         DENON_API_Commands::PSDCO,
         DENON_API_Commands::PSMDAX,
         DENON_API_Commands::PSDELAY,
-        DENON_API_Commands::PSAUROPR, DENON_API_Commands::PSAUROST,
+        DENON_API_Commands::PSAUROPR, DENON_API_Commands::PSAUROST, DENON_API_Commands::PSAUROMODE,
         //Denon only
         DENON_API_Commands::PSDOLVOL, DENON_API_Commands::PSVOLMOD, DENON_API_Commands::PSVOLLEV, // only Denon 4311
         DENON_API_Commands::PSSB,  //only some Denon models
@@ -476,7 +487,7 @@ class AVR extends stdClass
         ];
     }
 
-    public function getAVRCapabilities($AVRType)
+    public function getAVRCapabilities_tobedeleted($AVRType)
     {
         switch ($AVRType) {
             case Denon_AVR_X3000::$Name:
@@ -487,6 +498,8 @@ class AVR extends stdClass
                 return new Denon_AVR_X3500H();
             case Denon_AVR_X3700H::$Name:
                 return new Denon_AVR_X3700H();
+            case Denon_AVR_X3800H::$Name:
+                return new Denon_AVR_X3800H();
             case Denon_AVR_3310::$Name:
                 return new Denon_AVR_3310();
             case Denon_AVR_3311::$Name:
@@ -517,6 +530,8 @@ class AVR extends stdClass
                 return new Denon_AVR_X2600H();
             case Denon_AVR_X2700H::$Name:
                 return new Denon_AVR_X2700H();
+            case Denon_AVR_X2800H::$Name:
+                return new Denon_AVR_X2800H();
             case Denon_AVR_X4100W::$Name:
                 return new Denon_AVR_X4100W();
             case Denon_AVR_X4200W::$Name:
@@ -525,12 +540,18 @@ class AVR extends stdClass
                 return new Denon_AVR_X4300H();
             case Denon_AVR_X4400H::$Name:
                 return new Denon_AVR_X4400H();
+            case Denon_AVR_X4700H::$Name:
+                return new Denon_AVR_X4700H();
+            case Denon_AVR_X4800H::$Name:
+                return new Denon_AVR_X4800H();
             case Denon_AVR_X5200W::$Name:
                 return new Denon_AVR_X5200W();
             case Denon_AVR_X6200W::$Name:
                 return new Denon_AVR_X6200W();
             case Denon_AVR_X6400H::$Name:
                 return new Denon_AVR_X6400H();
+            case Denon_AVR_X6500H::$Name:
+                return new Denon_AVR_X6500H();
             case Denon_AVR_X7200W::$Name:
                 return new Denon_AVR_X7200W();
             case Denon_AVR_X7200WA::$Name:
@@ -541,6 +562,8 @@ class AVR extends stdClass
                 return new Denon_AVR_S750H();
             case Denon_AVR_S960H::$Name:
                 return new Denon_AVR_S960H();
+            case Denon_AVR_S970H::$Name:
+                return new Denon_AVR_S970H();
             case Marantz_NR1504::$Name:
                 return new Marantz_NR1504();
             case Marantz_NR1506::$Name:

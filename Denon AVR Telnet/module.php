@@ -591,6 +591,18 @@ class DenonAVRTelnet extends AVRModule
         $this->SendCommand(DENON_API_Commands::CVSW2 . $SubCommand);
     }
 
+    public function ChannelVolumeSW3(float $Value): void
+    { // Range -12 to 12, Step 0.5
+        $SubCommand = (new DENONIPSProfiles())->GetSubCommandOfValue(DENON_API_Commands::CVSW3, $Value);
+        $this->SendCommand(DENON_API_Commands::CVSW3 . $SubCommand);
+    }
+
+    public function ChannelVolumeSW4(float $Value): void
+    { // Range -12 to 12, Step 0.5
+        $SubCommand = (new DENONIPSProfiles())->GetSubCommandOfValue(DENON_API_Commands::CVSW4, $Value);
+        $this->SendCommand(DENON_API_Commands::CVSW4 . $SubCommand);
+    }
+
     public function ChannelVolumeSL(float $Value): void
     { // Range -12 to 12, Step 0.5
         $SubCommand = (new DENONIPSProfiles())->GetSubCommandOfValue(DENON_API_Commands::CVSL, $Value);

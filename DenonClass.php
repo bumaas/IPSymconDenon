@@ -592,12 +592,12 @@ class AVRModule extends IPSModule
         return [
             [
                 'type'    => 'Label',
-                'caption' => 'Please select an AVR zone and push the "Apply Changes" button'
+                'caption' => 'Please select an AVR type and push the "Apply Changes" button'
             ],
             [
                 'type'    => 'Select',
                 'name'    => 'AVRType' . $manufacturer,
-                'caption' => 'Type AVR' . $manufacturer,
+                'caption' => 'Type AVR ' . $manufacturer,
                 'options' => $this->FormSelectionAVROptions($manufacturer)
             ]
         ];
@@ -860,6 +860,8 @@ class DENONIPSProfiles extends stdClass
     public const ptChannelVolumeC = 'ChannelVolumeC';
     public const ptChannelVolumeSW = 'ChannelVolumeSW';
     public const ptChannelVolumeSW2 = 'ChannelVolumeSW2';
+    public const ptChannelVolumeSW3 = 'ChannelVolumeSW3';
+    public const ptChannelVolumeSW4 = 'ChannelVolumeSW4';
     public const ptChannelVolumeSL = 'ChannelVolumeSL';
     public const ptChannelVolumeSR = 'ChannelVolumeSR';
     public const ptChannelVolumeSBL = 'ChannelVolumeSBL';
@@ -998,9 +1000,12 @@ class DENONIPSProfiles extends stdClass
     public const ptBassSync = 'BassSync';
     public const ptSubwooferLevel = 'SubwooferLevel';
     public const ptSubwoofer2Level = 'Subwoofer2Level';
+    public const ptSubwoofer3Level = 'Subwoofer3Level';
+    public const ptSubwoofer4Level = 'Subwoofer4Level';
     public const ptDialogEnhancer = 'DialogEnhancer';
     public const ptAuroMatic3DPreset = 'AuroMatic3DPreset';
     public const ptAuroMatic3DStrength = 'AuroMatic3DStrength';
+    public const ptAuro3DMode = 'Auro3DMode';
     public const ptTopFrontLch = 'TopFrontLch';
     public const ptTopFrontRch = 'TopFrontRch';
     public const ptTopMiddleLch = 'TopMiddleLch';
@@ -1020,6 +1025,7 @@ class DENONIPSProfiles extends stdClass
     public const ptTopSurround = 'TopSurround';
     public const ptCenterHeight = 'CenterHeight';
     public const ptChannelVolumeReset = 'ChannelVolumeReset';
+    public const ptTactileTransducer = 'TactileTransducer';
     public const ptZone2HDMIAudio = 'Zone2HDMIAudio';
     public const ptZone2AutoStandbySetting = 'Zone2AutoStandbySetting';
     public const ptZone3AutoStandbySetting = 'Zone3AutoStandbySetting';
@@ -1063,6 +1069,8 @@ class DENONIPSProfiles extends stdClass
         self::ptChannelVolumeC,
         self::ptChannelVolumeSW,
         self::ptChannelVolumeSW2,
+        self::ptChannelVolumeSW3,
+        self::ptChannelVolumeSW4,
         self::ptChannelVolumeSL,
         self::ptChannelVolumeSR,
         self::ptChannelVolumeSBL,
@@ -1091,6 +1099,7 @@ class DENONIPSProfiles extends stdClass
         self::ptTopSurround,
         self::ptCenterHeight,
         self::ptChannelVolumeReset,
+        self::ptTactileTransducer,
 
         //Sound Processing (Audio Setting)
         self::ptFrontSpeaker,
@@ -1106,6 +1115,8 @@ class DENONIPSProfiles extends stdClass
         self::ptDialogEnhancer,
         self::ptSubwooferLevel,
         self::ptSubwoofer2Level,
+        self::ptSubwoofer3Level,
+        self::ptSubwoofer4Level,
         self::ptDialogLevelAdjust,
         self::ptDialogLevelAdjust,
         self::ptCenterLevelAdjust,
@@ -1141,6 +1152,7 @@ class DENONIPSProfiles extends stdClass
         self::ptAudioDelay,
         self::ptAuroMatic3DPreset,
         self::ptAuroMatic3DStrength,
+        self::ptAuro3DMode,
         self::ptEffectLevel, // only Denon
         self::ptAFDM, // only Denon
         self::ptRoomSize, // only Denon
@@ -1774,6 +1786,7 @@ class DENONIPSProfiles extends stdClass
                     [0, 'Auto', DENON_API_Commands::VPMAUTO],
                     [1, 'Game', DENON_API_Commands::VPGAME],
                     [2, 'Movie', DENON_API_Commands::VPMOVI],
+                    [3, 'Bypass', DENON_API_Commands::VPMBYP],
                 ],
             ],
             self::ptHDMIAudioOutput => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::VSAUDIO, 'Name' => 'HDMI Audio Output',
@@ -1869,6 +1882,15 @@ class DENONIPSProfiles extends stdClass
                     [3, 'SPE', DENON_API_Commands::PSAUROPRSPE],
                 ],
             ],
+            self::ptAuro3DMode => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::PSAUROMODE, 'Name' => 'Auro 3D Mode',
+                'PropertyName'                               => 'Auro3DMode',
+                'Profilesettings'                            => ['Intensity', '', '', 0, 0, 0, 0],
+                'Associations'                               => [
+                    [0, 'Direct', DENON_API_Commands::PSAUROMODEDRCT],
+                    [1, 'Ch.Expansion', DENON_API_Commands::PSAUROMODEEXP],
+                    [2, 'Large', DENON_API_Commands::PSAUROPRLAR],
+                ],
+            ],
             self::ptMAINZONEAutoStandbySetting => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::STBY, 'Name' => 'Mainzone Auto Standby',
                 'PropertyName'                                        => 'MAINZONEAutoStandbySetting',
                 'Profilesettings'                                     => ['Intensity', '', '', 0, 0, 0, 0],
@@ -1925,6 +1947,7 @@ class DENONIPSProfiles extends stdClass
                     [6, '4K(60/50)', DENON_API_Commands::SCH4KF],
                     [7, '8K', DENON_API_Commands::SCH8K],
                     [8, 'Auto', DENON_API_Commands::SCHAUTO],
+                    [9, 'Off', DENON_API_Commands::SCHOFF],
                 ],
             ],
             self::ptResolution => ['Type'                        => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::VSSC, 'Name' => 'Resolution',
@@ -2065,6 +2088,12 @@ class DENONIPSProfiles extends stdClass
             self::ptChannelVolumeSW2 => ['Type'                               => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::CVSW2, 'Name' => 'Channel Volume Subwoofer 2',
                 'PropertyName'                                                => 'SW2', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 0.5, 1], 'Associations' => $assRange38to62_add05step,
                 'IndividualStatusRequest'                                     => 'CV?', ],
+            self::ptChannelVolumeSW3 => ['Type'                               => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::CVSW3, 'Name' => 'Channel Volume Subwoofer 3',
+                'PropertyName'                                                => 'SW3', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 0.5, 1], 'Associations' => $assRange38to62_add05step,
+                'IndividualStatusRequest'                                     => 'CV?', ],
+            self::ptChannelVolumeSW4 => ['Type'                               => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::CVSW4, 'Name' => 'Channel Volume Subwoofer 4',
+                'PropertyName'                                                => 'SW4', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 0.5, 1], 'Associations' => $assRange38to62_add05step,
+                'IndividualStatusRequest'                                     => 'CV?', ],
             self::ptChannelVolumeSL => ['Type'                                => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::CVSL, 'Name' => 'Channel Volume Surround Left',
                 'PropertyName'                                                => 'SL', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 0.5, 1], 'Associations' => $assRange38to62_add05step,
                 'IndividualStatusRequest'                                     => 'CV?', ],
@@ -2103,6 +2132,9 @@ class DENONIPSProfiles extends stdClass
                 'IndividualStatusRequest'                                     => 'CV?', ],
             self::ptCenterHeight => ['Type'                                   => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::CVCH, 'Name' => 'Center Height',
                 'PropertyName'                                                => 'CenterHeight', 'Profilesettings' => ['Intensity',  '', ' dB', -12, 12, 0.5, 1], 'Associations' => $assRange38to62_add05step,
+                'IndividualStatusRequest'                                     => 'CV?', ],
+            self::ptTactileTransducer => ['Type'                              => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::CVTTR, 'Name' => 'Tactile Transducer',
+                'PropertyName'                                                => 'TactileTransducer', 'Profilesettings' => ['Intensity',  '', ' dB', -12, 12, 0.5, 1], 'Associations' => $assRange38to62_add05step,
                 'IndividualStatusRequest'                                     => 'CV?', ],
             self::ptTopFrontLch => ['Type'                                    => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::CVTFL, 'Name' => 'Channel Volume Top Front Left',
                 'PropertyName'                                                => 'TopFrontLch', 'Profilesettings' => ['Intensity',  '', ' dB', -12, 12, 0.5, 1], 'Associations' => $assRange38to62_add05step,
@@ -2195,6 +2227,10 @@ class DENONIPSProfiles extends stdClass
                 'PropertyName'                                            => 'SubwooferLevel', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 1, 0], 'Associations' => $assRange38to62, ],
             self::ptSubwoofer2Level => ['Type'                            => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::PSSWL2, 'Name' => 'Subwoofer 2 Level',
                 'PropertyName'                                            => 'Subwoofer2Level', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 1, 0], 'Associations' => $assRange38to62, ],
+            self::ptSubwoofer3Level => ['Type'                            => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::PSSWL3, 'Name' => 'Subwoofer 3 Level',
+                'PropertyName'                                            => 'Subwoofer3Level', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 1, 0], 'Associations' => $assRange38to62, ],
+            self::ptSubwoofer4Level => ['Type'                            => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::PSSWL4, 'Name' => 'Subwoofer 4 Level',
+                'PropertyName'                                            => 'Subwoofer4Level', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 1, 0], 'Associations' => $assRange38to62, ],
             self::ptDialogLevelAdjust => ['Type'                          => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::PSDIL, 'Name' => 'Dialog Level Adjust',
                 'PropertyName'                                            => 'DialogLevelAdjust', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 1, 0], 'Associations' => $assRange38to62, ],
             self::ptAuroMatic3DStrength => ['Type'                        => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::PSAUROST, 'Name' => 'Auromatic 3D Strength',
@@ -3321,6 +3357,8 @@ class DENON_API_Commands extends stdClass
     public const CVC = 'CVC'; // Channel Volume Center
     public const CVSW = 'CVSW'; // Channel Volume Subwoofer
     public const CVSW2 = 'CVSW2'; // Channel Volume Subwoofer2
+    public const CVSW3 = 'CVSW3'; // Channel Volume Subwoofer3
+    public const CVSW4 = 'CVSW4'; // Channel Volume Subwoofer4
     public const CVSL = 'CVSL'; // Channel Volume Surround Left
     public const CVSR = 'CVSR'; // Channel Volume Surround Right
     public const CVSBL = 'CVSBL'; // Channel Volume Surround Back Left
@@ -3580,7 +3618,8 @@ class DENON_API_Commands extends stdClass
     public const IS_VCR    = 'VCR'; // Select Input Source VCR
     public const IS_DVR    = 'DVR'; // Select Input Source DVR
     public const IS_GAME   = 'GAME'; // Select Input Source Game
-    public const IS_GAME2  = 'GAME2'; // Select Input Source Game
+    public const IS_GAME1   = 'GAME1'; // Select Input Source Game1
+    public const IS_GAME2  = 'GAME2'; // Select Input Source Game2
     public const IS_8K     = '8K'; // Select Input Source 8K
     public const IS_AUX    = 'AUX'; // Select Input Source AUX
     public const IS_AUX1   = 'AUX1'; // Select Input Source AUX1
@@ -3768,7 +3807,8 @@ class DENON_API_Commands extends stdClass
     public const SCH4K = '4K'; // Set Resolution to 4K
     public const SCH4KF = '4KF'; // Set Resolution to 4K (60/50)
     public const SCH8K = '8K'; // Set Resolution to 8K
-    public const SCHAUTO = 'AUTO'; // Set Resolution to Auto HDMI
+    public const SCHAUTO = 'AUTO'; // Set HDMI Upcaler to Auto
+    public const SCHOFF = 'OFF'; // Set HDMI Upcaler to Off
     public const SCH = ' ?'; // SCH ? Return VSSCH Status(HDMI)
 
     //VSAUDIO Set HDMI Audio Output
@@ -3780,6 +3820,7 @@ class DENON_API_Commands extends stdClass
     public const VPMAUTO = 'AUTO'; // Set Video Processing Mode to Auto
     public const VPGAME = 'GAME'; // Set Video Processing Mode to Game
     public const VPMOVI = 'MOVI'; // Set Video Processing Mode to Movie
+    public const VPMBYP = 'MBYP'; // Set Video Processing Mode to Bypass
     public const VPM = ' ?'; // VPM ? Return VSVPM Status
 
     //VSVST Set Vertical Stretch
@@ -4103,6 +4144,8 @@ class DENON_API_Commands extends stdClass
     public const DOLBYDIGITAL   = 'DOLBY DIGITAL'; // MSDOLBY DIGITAL
     public const DOLBYDDS       = 'DOLBY D+DS'; // MSDOLBY D+DS
     public const MPEG2AAC       = 'MPEG2 AAC'; // MSMPEG2 AAC
+    public const MPEG4AAC       = 'MPEG4 AAC'; // MSMPEG4 AAC
+    public const MPEGH          = 'MPEG-H'; // MSMPEG4 AAC
     public const AACDOLBYEX     = 'AAC+DOLBY EX'; // MSAAC+DOLBY EX
     public const AACPL2XC       = 'AAC+PL2X C'; // MSAAC+PL2X C
     public const AACPL2XM       = 'AAC+PL2X M'; // MSAAC+PL2X M
@@ -4185,10 +4228,10 @@ class DENON_API_Commands extends stdClass
 
     public const SURROUNDDISPLAY = 'SurroundDisplay'; // Nur DisplayIdent
 
-    public const BTTXON = 'ON';
-    public const BTTXOFF = 'OFF';
-    public const BTTXSP = 'SP';
-    public const BTTXBT = 'BT';
+    public const BTTXON = ' ON';
+    public const BTTXOFF = ' OFF';
+    public const BTTXSP = ' SP';
+    public const BTTXBT = ' BT';
 
     public const SPPR_1 = ' 1';
     public const SPPR_2 = ' 2';
@@ -4208,6 +4251,8 @@ class DENON_API_Commands extends stdClass
 
     public const PSSWL = 'PSSWL'; // Subwoofer Level
     public const PSSWL2 = 'PSSWL2'; // Subwoofer2 Level
+    public const PSSWL3 = 'PSSWL3'; // Subwoofer3 Level
+    public const PSSWL4 = 'PSSWL4'; // Subwoofer4 Level
     public const PSSWLON = ' ON'; // Subwoofer Level On
     public const PSSWLOFF = ' OFF'; // Subwoofer Level Off
 
@@ -4274,6 +4319,10 @@ class DENON_API_Commands extends stdClass
     public const PSAUROPRLAR = ' LAR'; // Auro Matic 3D Present Large
     public const PSAUROPRSPE = ' SPE'; // Auro Matic 3D Present SPE
 
+    public const PSAUROMODE = 'PSAUROMODE'; // Auro 3D Mode
+    public const PSAUROMODEDRCT = ' DRCTSMA'; // Auro 3D Mode Direct
+    public const PSAUROMODEEXP = ' EXP'; // Auro 3D Mode Channel Expansion
+
     public const CVSHL = 'CVSHL'; // Surround Height Left
     public const CVSHR = 'CVSHR'; // Surround Height Right
     public const CVTS = 'CVTS'; // Top Surround
@@ -4294,6 +4343,7 @@ class DENON_API_Commands extends stdClass
     public const CVSDR = 'CVSDR'; // Surround Dolby Right
     public const CVBDL = 'CVBDL'; // Back Dolby Left
     public const CVBDR = 'CVBDR'; // Back Dolby Right
+    public const CVTTR = 'CVTTR'; // Tactile Transducer
 }
 
 class DenonAVRCP_API_Data extends stdClass
@@ -4423,6 +4473,8 @@ class DenonAVRCP_API_Data extends stdClass
         DENON_API_Commands::DTSHDDS        => 'DTS HD + Dolby Surround',
         DENON_API_Commands::DTSEXPRESS     => 'DTS Express',
         DENON_API_Commands::MPEG2AAC       => 'MPEG2 AAC',
+        DENON_API_Commands::MPEG4AAC       => 'MPEG4 AAC',
+        DENON_API_Commands::MPEGH          => 'MPEG-H',
         DENON_API_Commands::AACDOLBYEX     => 'AAC + Dolby EX',
         DENON_API_Commands::AACPL2XC       => 'AAC + PL2X Cinema',
         DENON_API_Commands::AACPL2XM       => 'AAC + PL2X Music',
@@ -4581,7 +4633,7 @@ class DenonAVRCP_API_Data extends stdClass
             //Antworten wie 'SSINF', 'AISFSV', 'AISSIG', 'SSSMV', 'SSSMG', 'SSALS' sind laut Denon Support zu ignorieren
             //auch mit SDARC, OPT, MS MAXxxx, OPSTS und CVEND können wir nichts anfangen
             $commandToBeIgnored = false;
-            foreach (['SS', 'AIS', 'SY', 'OPT', 'OPSTS', 'MVMAX', 'SDARC', 'CVEND'] as $Command){
+            foreach (['SS', 'AIS', 'SY', 'OPT', 'OPSTS', 'MVMAX', 'SDARC', 'CVEND', 'OPALS', 'TFANNAME'] as $Command){
                 if (strpos($response, $Command) === 0) {
                     $commandToBeIgnored = true;
                     break;
