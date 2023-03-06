@@ -25,6 +25,8 @@ class AVRModule extends IPSModule
         $Zone = $this->ReadPropertyInteger('Zone');
         $manufacturer = $this->ReadPropertyInteger('manufacturer');
 
+        $Status = IS_INACTIVE;
+
         if ($manufacturer === 0) {
             // Error Manufacturer auswählen
             $Status = self::STATUS_INST_NO_MANUFACTURER_SELECTED;
@@ -43,7 +45,7 @@ class AVRModule extends IPSModule
         } elseif ($this->GetIPParent() === false) {
             // Status keine gültige IP
             $Status = self::STATUS_INST_IP_IS_INVALID;
-        } else {
+        } elseif ($this->HasActiveParent()) {
             $Status = IS_ACTIVE;
         }
 

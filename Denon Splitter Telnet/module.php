@@ -7,7 +7,6 @@ require_once __DIR__ . '/../DenonClass.php';  // diverse Klassen
 /** @noinspection AutoloadingIssuesInspection */
 class DenonSplitterTelnet extends IPSModule
 {
-    private const PROPERTY_PORT                               = 'Port';
     private const PROPERTY_WRITE_DEBUG_INFORMATION_TO_LOGFILE = 'WriteDebugInformationToLogfile';
 
     public function Create()
@@ -18,14 +17,10 @@ class DenonSplitterTelnet extends IPSModule
         //These lines are parsed on Symcon Startup or Instance creation
         //You cannot use variables here. Just static values.
 
-        $this->RegisterPropertyInteger(self::PROPERTY_PORT, 23);
         $this->RegisterPropertyBoolean(self::PROPERTY_WRITE_DEBUG_INFORMATION_TO_LOGFILE, false);
 
         // ClientSocket benötigt
         $this->RequireParent('{3CFF0FD9-E306-41DB-9B5A-9D06D38576C3}'); //Clientsocket
-
-        $this->RegisterPropertyString('uuid', '');
-        $this->RegisterPropertyString('Host', '');
 
         //we will set the instance status when the parent status changes
         if($this->GetParent() > 0)
@@ -60,13 +55,11 @@ class DenonSplitterTelnet extends IPSModule
         $this->RegisterVariableString('AVRType', 'AVRType', '', 2);
         IPS_SetHidden($this->GetIDForIdent('AVRType'), true);
 
-        $ParentOpen = $this->HasActiveParent();
-        if (!$ParentOpen) {
-            $this->SetStatus(IS_INACTIVE);
-        }
         if ($this->HasActiveParent()) {
             //Instanz aktiv
             $this->SetStatus(IS_ACTIVE);
+        } else {
+            $this->SetStatus(IS_INACTIVE);
         }
     }
 
@@ -85,12 +78,8 @@ class DenonSplitterTelnet extends IPSModule
         // return current form
         return json_encode(
             [
+                'status'   => [],
                 'elements' => [
-                    [
-                        'type'    => 'NumberSpinner',
-                        'name'    => self::PROPERTY_PORT,
-                        'caption' => 'Port',
-                        'digits'  => 0],
                     [
                         'type'    => 'ExpansionPanel',
                         'caption' => 'Expert Parameters',
@@ -98,7 +87,12 @@ class DenonSplitterTelnet extends IPSModule
                             [
                                 'type'    => 'CheckBox',
                                 'name'    => self::PROPERTY_WRITE_DEBUG_INFORMATION_TO_LOGFILE,
-                                'caption' => 'Debug information are written additionally to standard logfile']]]]]
+                                'caption' => 'Debug information are written additionally to standard logfile'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
         );
     }
 
@@ -109,23 +103,16 @@ class DenonSplitterTelnet extends IPSModule
      */
     public function SaveInputVarmapping(string $MappingInputs): bool
     {
-        if ($MappingInputs === 'null') {
-            $this->Logger_Err('MappingInputs is NULL');
-            trigger_error('MappingInputs is NULL');
-
-            return false;
-        }
-
         $idInputMapping = $this->GetIDForIdent('InputMapping');
         if ($idInputMapping) {
             $InputsMapping = GetValue($idInputMapping);
-            if (($InputsMapping !== '') && ($InputsMapping !== 'null')) { //Auslesen wenn Variable nicht leer
+            if (($InputsMapping !== '') && ($InputsMapping !== 'null')) { //Auslesen, wenn Variable nicht leer
                 $Writeprotected = json_decode($InputsMapping, false)->Writeprotected;
                 if (!$Writeprotected) { // Auf Schreibschutz prüfen
                     $this->SetValue('InputMapping', $MappingInputs);
                     $this->SetValue('AVRType', json_decode($MappingInputs, false)->AVRType);
                 }
-            } else { // Schreiben wenn Variable noch nicht gesetzt
+            } else { // Schreiben, wenn Variable noch nicht gesetzt
                 $this->SetValue('InputMapping', $MappingInputs);
                 $this->SetValue('AVRType', json_decode($MappingInputs, false)->AVRType);
             }
@@ -188,16 +175,17 @@ class DenonSplitterTelnet extends IPSModule
         }
         $AVRType = $InputsMapping->AVRType;
 
-        if (AVRs::getCapabilities($AVRType)['httpMainZone'] !== DENON_HTTP_Interface::NoHTTPInterface) { //Nur Ausführen wenn AVR HTTP unterstützt
-            // Empfangene Daten vom Denon AVR Receiver
+        if (AVRs::getCapabilities($AVRType)['httpMainZone'] !== DENON_HTTP_Interface::NoHTTPInterface) { //Nur Ausführen, wenn AVR HTTP unterstützt
+            // empfangene Daten vom Denon AVR Receiver
 
             //Semaphore setzen
-            if ($this->lock('HTTPGetState')) {
+            if ($this->lock()) {
                 // Daten senden
                 try {
                     //Daten abholen
                     $DenonStatusHTTP = new DENON_StatusHTML();
-                    $ipdenon         = $this->ReadPropertyString('Host');
+
+                    $ipdenon         = IPS_GetProperty($this->GetParent(), 'host');
                     $AVRType         = $this->GetValue('AVRType');
                     $InputMapping    = $this->GetInputVarMapping();
                     if ($InputMapping === false) {
@@ -213,12 +201,12 @@ class DenonSplitterTelnet extends IPSModule
                     ); //Denon Telnet Splitter Interface GUI
                 } catch (Exception $exc) {
                     // Senden fehlgeschlagen
-                    $this->unlock('HTTPGetState');
+                    $this->unlock();
 
                     $this->Logger_Err('HTTPGetState failed');
                     trigger_error('HTTPGetState failed');
                 }
-                $this->unlock('HTTPGetState');
+                $this->unlock();
             } else {
                 $this->Logger_Err('Can not set lock \'HTTPGetState\'');
                 trigger_error('Can not set lock \'HTTPGetState\'');
@@ -232,7 +220,7 @@ class DenonSplitterTelnet extends IPSModule
 
     protected function SetStatus($Status)
     {
-        $this->senddebug(__FUNCTION__, 'Status: ' . $Status, 0);
+        $this->SendDebug(__FUNCTION__, 'Status: ' . $Status, 0);
 
         if ($Status !== IPS_GetInstance($this->InstanceID)['InstanceStatus']) {
             parent::SetStatus($Status);
@@ -276,7 +264,7 @@ class DenonSplitterTelnet extends IPSModule
         $SetCommand   = $APIData->GetCommandResponse($InputMapping);
         $this->SendDebug('Buffer IN:', json_encode($SetCommand), 0);
 
-        // Weiterleitung zu allen Telnet Gerät-/Device-Instanzen wenn SetCommand gefüllt ist
+        // Weiterleitung zu allen Telnet Gerät-/Device-Instanzen, wenn SetCommand gefüllt ist
 
         if (($SetCommand['SurroundDisplay'] !== '') || (count($SetCommand['Data']) > 0) || (count($SetCommand['Display']) > 0)) {
             $this->SendDataToChildren(
@@ -292,7 +280,7 @@ class DenonSplitterTelnet extends IPSModule
     public function ForwardData($JSONString)
     {
 
-        // Empfangene Daten von der Device Instanz
+        // Empfangene Daten von der Deviceinstanz
         $data = json_decode($JSONString, false);
         $this->SendDebug('Command Out:', print_r($data->Buffer, true), 0);
 
@@ -318,24 +306,20 @@ class DenonSplitterTelnet extends IPSModule
 
     //################# SEMAPHOREN Helper  - private
 
-    private function lock($ident): bool
+    private function lock(): bool
     {
-        return IPS_SemaphoreEnter('DENONAVRT_' . $this->InstanceID . $ident, 2000);
+        return IPS_SemaphoreEnter('DENONAVRT_HTTPGetState_' . $this->InstanceID, 2000);
     }
 
-    private function unlock($ident): bool
+    private function unlock(): void
     {
-        return IPS_SemaphoreLeave('DENONAVRT_' . $this->InstanceID . $ident);
+        IPS_SemaphoreLeave('DENONAVRT_HTTPGetState_' . $this->InstanceID);
     }
 
     private function Logger_Err(string $message): void
     {
         $this->SendDebug('LOG_ERR', $message, 0);
-        /*
-        if (function_exists('IPSLogger_Err') && $this->ReadPropertyBoolean('WriteLogInformationToIPSLogger')) {
-            IPSLogger_Err(__CLASS__, $message);
-        }
-        */
+
         $this->LogMessage($message, KL_ERROR);
 
     }
@@ -343,11 +327,7 @@ class DenonSplitterTelnet extends IPSModule
     private function Logger_Dbg(string $message, string $data): void
     {
         $this->SendDebug($message, $data, 0);
-        /*
-        if (function_exists('IPSLogger_Dbg') && $this->ReadPropertyBoolean('WriteDebugInformationToIPSLogger')) {
-            IPSLogger_Dbg(__CLASS__ . '.' . IPS_GetObject($this->InstanceID)['ObjectName'] . '.' . $message, $data);
-        }
-        */
+
         if ($this->ReadPropertyBoolean(self::PROPERTY_WRITE_DEBUG_INFORMATION_TO_LOGFILE)) {
             $this->LogMessage(sprintf('%s: %s', $message, $data), KL_DEBUG);
         }
