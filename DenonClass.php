@@ -1530,22 +1530,24 @@ class DENONIPSProfiles extends stdClass
                 'PropertyName'                                    => 'QuickSelect',
                 'Profilesettings'                                 => ['Database', '', '', 0, 0, 0, 0],
                 'Associations'                                    => [
-                    [1, 'Quick Select 1', DENON_API_Commands::MSQUICK1],
-                    [2, 'Quick Select 2', DENON_API_Commands::MSQUICK2],
-                    [3, 'Quick Select 3', DENON_API_Commands::MSQUICK3],
-                    [4, 'Quick Select 4', DENON_API_Commands::MSQUICK4],
-                    [5, 'Quick Select 5', DENON_API_Commands::MSQUICK5],
+                    [0, '-', DENON_API_Commands::MSQUICK0],
+                    [1, 'Select 1', DENON_API_Commands::MSQUICK1],
+                    [2, 'Select 2', DENON_API_Commands::MSQUICK2],
+                    [3, 'Select 3', DENON_API_Commands::MSQUICK3],
+                    [4, 'Select 4', DENON_API_Commands::MSQUICK4],
+                    [5, 'Select 5', DENON_API_Commands::MSQUICK5],
                 ],
             ],
             self::ptSmartSelect => ['Type'                        => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::MSSMART, 'Name' => 'Smart Select',
                 'PropertyName'                                    => 'SmartSelect',
                 'Profilesettings'                                 => ['Database', '', '', 0, 0, 0, 0],
                 'Associations'                                    => [
-                    [1, 'Smart Select 1', DENON_API_Commands::MSSMART1],
-                    [2, 'Smart Select 2', DENON_API_Commands::MSSMART2],
-                    [3, 'Smart Select 3', DENON_API_Commands::MSSMART3],
-                    [4, 'Smart Select 4', DENON_API_Commands::MSSMART4],
-                    [5, 'Smart Select 5', DENON_API_Commands::MSSMART5],
+                    [0, '-', DENON_API_Commands::MSSMART0],
+                    [1, 'Select 1', DENON_API_Commands::MSSMART1],
+                    [2, 'Select 2', DENON_API_Commands::MSSMART2],
+                    [3, 'Select 3', DENON_API_Commands::MSSMART3],
+                    [4, 'Select 4', DENON_API_Commands::MSSMART4],
+                    [5, 'Select 5', DENON_API_Commands::MSSMART5],
                 ],
             ],
             self::ptDigitalInputMode => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::DC, 'Name' => 'Audio Decode Mode',
@@ -2020,22 +2022,24 @@ class DENONIPSProfiles extends stdClass
                 'PropertyName'                              => 'Z2Quick',
                 'Profilesettings'                           => ['Database', '', '', 0, 0, 0, 0],
                 'Associations'                              => [
-                    [1, 'QS 1', DENON_API_Commands::MSQUICK1],
-                    [2, 'QS 2', DENON_API_Commands::MSQUICK2],
-                    [3, 'QS 3', DENON_API_Commands::MSQUICK3],
-                    [4, 'QS 4', DENON_API_Commands::MSQUICK4],
-                    [5, 'QS 5', DENON_API_Commands::MSQUICK5],
+                    [0, '-', DENON_API_Commands::MSQUICK0],
+                    [1, 'Select 1', DENON_API_Commands::MSQUICK1],
+                    [2, 'Select 2', DENON_API_Commands::MSQUICK2],
+                    [3, 'Select 3', DENON_API_Commands::MSQUICK3],
+                    [4, 'Select 4', DENON_API_Commands::MSQUICK4],
+                    [5, 'Select 5', DENON_API_Commands::MSQUICK5],
                 ],
             ],
             self::ptZone3QuickSelect => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::Z3QUICK, 'Name' => 'Zone 3 Quick Select',
                 'PropertyName'                              => 'Z3Quick',
                 'Profilesettings'                           => ['DataMainbase', '', '', 0, 0, 0, 0],
                 'Associations'                              => [
-                    [1, 'QS 1', DENON_API_Commands::MSQUICK1],
-                    [2, 'QS 2', DENON_API_Commands::MSQUICK2],
-                    [3, 'QS 3', DENON_API_Commands::MSQUICK3],
-                    [4, 'QS 4', DENON_API_Commands::MSQUICK4],
-                    [5, 'QS 5', DENON_API_Commands::MSQUICK5],
+                    [0, '-', DENON_API_Commands::MSQUICK0],
+                    [1, 'Select 1', DENON_API_Commands::MSQUICK1],
+                    [2, 'Select 2', DENON_API_Commands::MSQUICK2],
+                    [3, 'Select 3', DENON_API_Commands::MSQUICK3],
+                    [4, 'Select 4', DENON_API_Commands::MSQUICK4],
+                    [5, 'Select 5', DENON_API_Commands::MSQUICK5],
                 ],
             ],
             self::ptZone2AutoStandbySetting => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::Z2STBY, 'Name' => 'Zone 2 Auto Standby',
@@ -3756,6 +3760,7 @@ class DENON_API_Commands extends stdClass
     public const MSLEFT = 'LEFT'; // Change to previous Surround Mode
     public const MSRIGHT = 'RIGHT'; // Change to next Surround Mode
     //Quick Select Mode
+    public const MSQUICK0 = '0'; // Quick Select 0 Mode Select
     public const MSQUICK1 = '1'; // Quick Select 1 Mode Select
     public const MSQUICK2 = '2'; // Quick Select 2 Mode Select
     public const MSQUICK3 = '3'; // Quick Select 3 Mode Select
@@ -3771,6 +3776,7 @@ class DENON_API_Commands extends stdClass
     public const MSQUICKSTATE = 'QUICK ?'; // QUICK ? Return MSQUICK Status
 
     //Smart Select Mode
+    public const MSSMART0 = '0'; // Smart Select 0 Mode Select
     public const MSSMART1 = '1'; // Smart Select 1 Mode Select
     public const MSSMART2 = '2'; // Smart Select 2 Mode Select
     public const MSSMART3 = '3'; // Smart Select 3 Mode Select
