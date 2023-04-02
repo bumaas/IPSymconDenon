@@ -148,6 +148,7 @@ class DenonAVRTelnet extends AVRModule
                 'VS_Commands',
                 'PV_Commands',
                 'SystemControl_Commands',
+                'Tuner_Control'
             ];
 
             foreach ($CommandAreas as $commandArea) {
@@ -1155,23 +1156,6 @@ class DenonAVRTelnet extends AVRModule
 
     //Noch ergänzen
 
-    //Preset Analog Tuner
-    public function SelectTunerPresetAnalog(string $Value) // A1 - G8 00-55,00=A1,01=A2,B1=08,G8=55 , Up, Down
-    : void
-    {
-        if ($Value === 'Up') {
-            $subcommand = DENON_API_Commands::TPANUP;
-        } elseif ($Value === 'Down') {
-            $subcommand = DENON_API_Commands::TPANDOWN;
-        } else {
-            $FunctionType = 'Range00to55';
-            $subcommand = $this->GetCommandValueSend($Value, $FunctionType);
-        }
-
-        $payload = DENON_API_Commands::TPAN . $subcommand;
-        $this->SendCommand($payload);
-    }
-
     //Preset Network Audio
     public function SelectPresetNetworkAudio(bool $Value): void
     {
@@ -1441,29 +1425,6 @@ class DenonAVRTelnet extends AVRModule
         $this->SendCommand(DENON_API_Commands::Z3QUICK . $command);
     }
 
-    // Get Value for Sending
-    private function GetCommandValueSend($Value, $FunctionType): string
-    {
-        //Range **:00-55,00=A1,01=A2,B1=08,G8=55
-        $ValueMapping = [];
-        $denoncommand = '';
-
-        if ($FunctionType === 'Range00to55') {
-            $ValueMapping = ['00' => 1, '01' => 1, '02' => 2, '03' => 3, '04' => 4, '05' => 5, '06' => 6, '07' => 7, '08' => 8, '09' => 9, '10' => 10,
-                '11'              => 11, '12' => 12, '13' => 13, '14' => 14, '15' => 15, '16' => 16, '17' => 17, '18' => 18, '19' => 19, '20' => 20, '21' => 21, '22' => 22,
-                '23'              => 23, '24' => 24, '25' => 25, '26' => 26, '27' => 27, '28' => 28, '29' => 29, '30' => 30, '31' => 31, '32' => 32, '33' => 33, '34' => 34,
-                '35'              => 35, '36' => 36, '37' => 37, '38' => 38, '39' => 39, '40' => 40, '41' => 41, '42' => 42, '43' => 43, '44' => 44, '45' => 45, '46' => 46,
-                '47'              => 47, '48' => 48, '49' => 49, '50' => 50, '51' => 51, '52' => 52, '53' => 53, '54' => 54, '55' => 55, ];
-        }
-
-        foreach ($ValueMapping as $command => $UserValue) {
-            if ($UserValue === $Value) {
-                $denoncommand = $command;
-            }
-        }
-
-        return $denoncommand;
-    }
 
     /***********************************************************
      * Configuration Form
@@ -1587,6 +1548,7 @@ class DenonAVRTelnet extends AVRModule
             'Sound Processing' => 'PS_Commands',    //Process Sound (PS)
             'Video Settings'   => 'VS_Commands',      //Video Settings (VS)
             'Video Processing' => 'PV_Commands',    //Processing Video (PV)
+            'Tuner Control' => 'Tuner_Control',    //Processing Video (PV)
             'System Control'   => 'SystemControl_Commands', //System Control (MN, ...)
         ];
 

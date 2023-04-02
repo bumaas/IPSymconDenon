@@ -459,6 +459,19 @@ class AVR extends stdClass
         'Model', 'Zone2Name', 'Zone3Name',
     ];
 
+    public static $Tuner_Control = [
+        DENON_API_Commands::TPAN,
+        DENON_API_Commands::TMAN_BAND,
+        DENON_API_Commands::TMAN_MODE,
+    ];
+
+    public static $Tuner_Control_max = [
+        DENON_API_Commands::TPAN,
+        DENON_API_Commands::TMAN_BAND,
+        DENON_API_Commands::TMAN_MODE,
+    ];
+
+
     public static $httpMainZone = DENON_HTTP_Interface::MainForm;
 
     public static function getCapabilities(): array
@@ -484,6 +497,7 @@ class AVR extends stdClass
             'Zone_Commands'          => static::$Zone_Commands,
             'SystemControl_Commands' => static::$SystemControl_Commands,
             'httpMainZone'           => static::$httpMainZone,
+            'Tuner_Control'          => static::$Tuner_Control,
         ];
     }
 

@@ -227,7 +227,8 @@ class AVRModule extends IPSModule
                     DENONIPSProfiles::ptZone2Volume,
                     DENONIPSProfiles::ptZone3Volume,
                     DENONIPSProfiles::ptZone2InputSource,
-                    DENONIPSProfiles::ptZone3InputSource, ],
+                    DENONIPSProfiles::ptZone3InputSource,
+                    ],
                 true
             );
             $this->Logger_Dbg(__FUNCTION__, 'Property registered: ' . $profile['PropertyName'] . '(' . (int) $DefaultValue . ')');
@@ -1032,6 +1033,11 @@ class DENONIPSProfiles extends stdClass
     public const ptZone2AutoStandbySetting = 'Zone2AutoStandbySetting';
     public const ptZone3AutoStandbySetting = 'Zone3AutoStandbySetting';
 
+    public const ptTunerAnalogPreset = 'TunerAnalogPresets';
+    public const ptTunerAnalogBand   = 'TunerAnalogBand';
+    public const ptTunerAnalogMode = 'TunerAnalogMode';
+
+
     public static $order = [
         //Info Display
         self::ptMainZoneName,
@@ -1163,7 +1169,8 @@ class DENONIPSProfiles extends stdClass
         self::ptSubwooferATT, //only Denon
         self::ptAudioRestorer, // only Denon
 
-        //DENONIPSProfiles::ptPreset,
+        self::ptBluetoothTransmitter,
+        self::ptSpeakerPreset,
 
         //Video
         self::ptPictureMode,
@@ -1221,6 +1228,11 @@ class DENONIPSProfiles extends stdClass
         self::ptZone3HPF,
         self::ptZone3Sleep,
         self::ptZone3AutoStandbySetting,
+
+        //Tuner
+        self::ptTunerAnalogPreset,
+        self::ptTunerAnalogBand,
+        self::ptTunerAnalogMode,
     ];
 
     public function __construct($AVRType = null, $InputMapping = null, callable $Logger_Dbg = null)
@@ -1249,6 +1261,8 @@ class DENONIPSProfiles extends stdClass
         $assRange00to16 = $this->GetAssociationOfAsciiTodB('00', '16', '00');
         $assRange000to120_ptSleep = $this->GetAssociationOfAsciiTodB('000', '120', '000', 10, false, false);
         $assRange000to120_ptSleep[0] = ['OFF', 0];
+        $assRangeA1toG8 = $this->GetAssociationFromA1toG8();
+        $assRange00to56 = $this->GetAssociationFrom00to56();
 
         //ID -> VariablenIdent, VariablenName
         // hier werden alle Variablen und ihre Profile vordefiniert
@@ -2032,7 +2046,7 @@ class DENONIPSProfiles extends stdClass
             ],
             self::ptZone3QuickSelect => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::Z3QUICK, 'Name' => 'Zone 3 Quick Select',
                 'PropertyName'                              => 'Z3Quick',
-                'Profilesettings'                           => ['DataMainbase', '', '', 0, 0, 0, 0],
+                'Profilesettings'                           => ['Database', '', '', 0, 0, 0, 0],
                 'Associations'                              => [
                     [0, '-', DENON_API_Commands::MSQUICK0],
                     [1, 'Select 1', DENON_API_Commands::MSQUICK1],
@@ -2069,6 +2083,36 @@ class DENONIPSProfiles extends stdClass
                     [0, 'Pass-Through', DENON_API_Commands::Z2HDATHR],
                     [1, 'PCM', DENON_API_Commands::Z2HDAPCM],
                 ],
+            ],
+
+            self::ptTunerAnalogPreset => ['Type'                    => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::TPAN, 'Name' => 'Tuner Preset',
+                                          'PropertyName'            => 'TunerPreset',
+                                          'Profilesettings'         => ['Database', '', '', 0, 0, 0, 0],
+                                          'Associations'            => $assRange00to56,
+                                          'IndividualStatusRequest' => 'TPAN?',
+            ],
+
+
+            //--- Attention: the order of the next two items may not be changed, becauseTM is a substring of TMAN
+            self::ptTunerAnalogBand => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::TMAN_BAND, 'Name' => 'Tuner Band',
+                'PropertyName'                                 => 'TunerBand',
+                'Profilesettings'                              => ['Database', '', '', 0, 0, 0, 0],
+                'Associations'                                 => [
+                    [0, 'AM', DENON_API_Commands::TMANAM],
+                    [1, 'FM', DENON_API_Commands::TMANFM],
+                    [2, 'DAB', DENON_API_Commands::TMANDAB],
+                ],
+                'IndividualStatusRequest' => 'TMAN?',
+            ],
+
+            self::ptTunerAnalogMode => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::TMAN_MODE, 'Name' => 'Tuner Mode',
+                                        'PropertyName'                                 => 'TunerMode',
+                                        'Profilesettings'                              => ['Database', '', '', 0, 0, 0, 0],
+                                        'Associations'                                 => [
+                                            [0, 'automatisch', DENON_API_Commands::TMANAUTO],
+                                            [1, 'manuell', DENON_API_Commands::TMANMANUAL],
+                                        ],
+                                        'IndividualStatusRequest' => 'TMAN?',
             ],
 
             //Type Float
@@ -2290,6 +2334,11 @@ class DENONIPSProfiles extends stdClass
             $this->updateProfileAccordingToCaps(self::ptSpeakerOutput, $caps);
             $this->updateProfileAccordingToCaps(self::ptDynamicVolume, $caps);
             $this->updateProfileAccordingToCaps(self::ptVideoSelect, $caps);
+
+            if (in_array($AVRType, ['AVR-X4000', 'AVR_3808A', 'AVR-X3000', 'AVR-4310', 'AVR-4311', 'AVR-3310', 'AVR-3311', 'AVR-3312', 'AVR-3313',
+                                    'Marantz-SR6005', 'Marantz-SR6006', 'Marantz-NR1602', 'Marantz-SR5006', 'Marantz-SR7005', 'Marantz-AV7005'])){
+                $this->profiles[self::ptTunerAnalogPreset]['Associations'] = $assRangeA1toG8;
+            }
 
             if (in_array($AVRType, ['DRA-N5', 'RCD-N8'])) {
                 $this->profiles[self::ptMasterVolume] = [
@@ -2730,7 +2779,8 @@ class DENONIPSProfiles extends stdClass
             AVR::$SurroundMode_max,
             AVR::$VS_Commands_max,
             AVR::$SystemControl_Commands_max,
-            AVR::$Zone_Commands_max
+            AVR::$Zone_Commands_max,
+            AVR::$Tuner_Control_max
         );
 
         //check if all profiles are at least used in Capabilities_max
@@ -2845,6 +2895,32 @@ class DENONIPSProfiles extends stdClass
         }
 
         return ($pos + 1) * 10; //starting with 10, step size 10
+    }
+
+    private function GetAssociationFromA1toG8(): array
+    {
+        $value_mapping = [];
+        $index = 1;
+        for ($i  = ord('A'); $i <= ord('G'); $i++){
+            for ($j = 1; $j <= 8; $j++){
+                $value_mapping[] = [$index, chr($i) . $j, chr($i) . $j];
+                $index++;
+            }
+        }
+
+        return $value_mapping;
+    }
+
+    private function GetAssociationFrom00to56(): array
+    {
+        $value_mapping = [];
+        $index = 1;
+        for ($i  = 1; $i <= 56; $i++){
+            $value_mapping[] = [$index, sprintf('%02d', $i), sprintf('%02d',$i)];
+            $index++;
+        }
+
+        return $value_mapping;
     }
 
     private function GetAssociationOfAsciiTodB($ascii_from, $ascii_to, $ascii_of_0, $db_stepsize = 1, $add_05step = false, $leading_blank = true, $invertValue = false, $scalefactor_to_db = 1): array
@@ -3533,19 +3609,26 @@ class DENON_API_Commands extends stdClass
     public const Z3QUICK = 'Z3QUICK'; // Zone 3 Quick
     public const Z3SMART = 'Z3SMART'; // Zone 3 Smart
 
-    public const TF = 'TF'; // Tuner Frequency
-    public const TP = 'TP'; // Tuner Preset
-    public const TM = 'TM'; // Tuner Mode
     public const NS = 'NS'; // Network Audio
     public const SY = 'SY'; // Remote Lock
     public const TR = 'TR'; // Trigger
     public const UG = 'UG'; // Upgrade ID Display
 
     //Analog Tuner
+    public const TF = 'TF'; // Tuner Frequency
+
+    public const TPAN = 'TPAN'; // Tuner Preset (analog)
     public const TPANUP = 'UP'; //TUNER PRESET CH UP
     public const TPANDOWN = 'DOWN'; //TUNER PRESET CH DOWN
-    public const TPAN = 'TPAN'; //TUNER PRESET
-    public const TPANMEM = 'TPANMEM'; //TUNER PRESET Memory
+
+    public const TMAN_BAND = 'TMAN'; // Tuner Mode (analog) Band
+    public const TMANAM = 'AM'; // Tuner Band AM (Band)
+    public const TMANFM = 'FM'; // Tuner Band FM (Band)
+    public const TMANDAB = 'DAB'; // Tuner Band DAB (Band)
+
+    public const TMAN_MODE = 'TM'; // Tuner Mode (analog) Mode
+    public const TMANAUTO = 'ANAUTO'; // Tuner Mode Auto
+    public const TMANMANUAL = 'ANMANUAL'; // Tuner Mode Manual
 
     //Network Audio
     public const NSB = 'NSB'; //Direct Preset CH Play 00-55,00=A1,01=A2,B1=08,G8=55
@@ -4563,7 +4646,7 @@ class DenonAVRCP_API_Data extends stdClass
 
     public function GetCommandResponse($InputMapping): ?array
     {
-        $debug = false;
+        $debug = true;
 
         //Debug Log
         if ($debug) {
@@ -4640,8 +4723,9 @@ class DenonAVRCP_API_Data extends stdClass
 
             //Antworten wie 'SSINF', 'AISFSV', 'AISSIG', 'SSSMV', 'SSSMG', 'SSALS' sind laut Denon Support zu ignorieren
             //auch mit SDARC, OPT, MS MAXxxx, OPSTS und CVEND können wir nichts anfangen
+            //auch TF irnorieren wir, um es nicht speziell für die Anzeige aufbereiten zu müssen.
             $commandToBeIgnored = false;
-            foreach (['SS', 'AIS', 'SY', 'OPT', 'OPSTS', 'MVMAX', 'SDARC', 'CVEND', 'OPALS', 'TFANNAME'] as $Command){
+            foreach (['SS', 'AIS', 'SY', 'OPT', 'OPSTS', 'MVMAX', 'SDARC', 'CVEND', 'OPALS', 'TFANNAME', 'TF'] as $Command){
                 if (strpos($response, $Command) === 0) {
                     $commandToBeIgnored = true;
                     break;
@@ -4649,6 +4733,17 @@ class DenonAVRCP_API_Data extends stdClass
             }
 
             if ($commandToBeIgnored) {
+                continue;
+            }
+
+            if (in_array($response, ['TMANAUTO', 'TMANMANUAL'])) {
+                $item = $VarMapping[DENON_API_Commands::TMAN_MODE];
+                $ResponseSubCommand = substr($response, strlen(DENON_API_Commands::TMAN_MODE));
+                $datavalues[DENON_API_Commands::TMAN_MODE] = [
+                    'VarType'    => $item['VarType'],
+                    'Value'      => $item['ValueMapping'][$ResponseSubCommand],
+                    'Subcommand' => $ResponseSubCommand,
+                ];
                 continue;
             }
 
