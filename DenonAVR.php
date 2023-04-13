@@ -1041,7 +1041,7 @@ class Denon_AVR_X2700H extends Denon_AVR_X2600H
 
 class Denon_AVR_X2800H extends Denon_AVR_X2700H
 {
-    // see Denon FY23-CY2022_AVR_PROTOCOL_V02.xlsx
+    // see 'Denon FY23-CY2022_AVR_PROTOCOL_V02.xlsx'
     public static $Name       = 'AVR-X2800H';
 
     public static $internalID = 207;

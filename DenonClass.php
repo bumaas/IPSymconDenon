@@ -4646,7 +4646,7 @@ class DenonAVRCP_API_Data extends stdClass
 
     public function GetCommandResponse($InputMapping): ?array
     {
-        $debug = true;
+        $debug = false;
 
         //Debug Log
         if ($debug) {
@@ -4724,8 +4724,9 @@ class DenonAVRCP_API_Data extends stdClass
             //Antworten wie 'SSINF', 'AISFSV', 'AISSIG', 'SSSMV', 'SSSMG', 'SSALS' sind laut Denon Support zu ignorieren
             //auch mit SDARC, OPT, MS MAXxxx, OPSTS und CVEND können wir nichts anfangen
             //auch TF irnorieren wir, um es nicht speziell für die Anzeige aufbereiten zu müssen.
+            //auch DAB Status Informationen ignorieren: DASTN, DAPTY, DAENL, DAFRQ, DAQUA, DAINF
             $commandToBeIgnored = false;
-            foreach (['SS', 'AIS', 'SY', 'OPT', 'OPSTS', 'MVMAX', 'SDARC', 'CVEND', 'OPALS', 'TFANNAME', 'TF'] as $Command){
+            foreach (['SS', 'AIS', 'SY', 'OPT', 'OPSTS', 'MVMAX', 'SDARC', 'CVEND', 'OPALS', 'TFANNAME', 'TF', 'DASTN', 'DAPTY', 'DAENL', 'DAFRQ', 'DAQUA', 'DAINF'] as $Command){
                 if (strpos($response, $Command) === 0) {
                     $commandToBeIgnored = true;
                     break;
