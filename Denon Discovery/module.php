@@ -136,9 +136,7 @@ class DenonDiscovery extends IPSModule
                     ],
                     [
                         'moduleID'      => self::MODID_SPLITTER_TELNET,
-                        'configuration' => [
-                            'WriteDebugInformationToLogfile' => false,
-                        ]
+                        'configuration' => new stdClass()
                     ],
                     [
                         'moduleID'      => self::MODID_CLIENT_SOCKET,

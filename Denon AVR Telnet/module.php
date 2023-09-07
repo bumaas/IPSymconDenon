@@ -140,6 +140,7 @@ class DenonAVRTelnet extends AVRModule
             // ReadProperty for all Variables of the following areas
 
             $CommandAreas = [
+                'AVRInfos',
                 'PowerFunctions',
                 'InputSettings',
                 'SurroundMode',
@@ -1541,6 +1542,7 @@ class DenonAVRTelnet extends AVRModule
         $CommandAreas = [
             //Label => Caps CommandArea
             'Info Display'     => 'InfoFunctions',      //Info
+            'AVR Infos'     => 'AVRInfos',      //AVR Infos
             'Power Settings'   => 'PowerFunctions',   //Power Funktionen (PW, ZM, SLP, ...)
             'Input Settings'   => 'InputSettings',    //Input Settings
             'Surround Mode'    => 'SurroundMode',      //Surround Mode

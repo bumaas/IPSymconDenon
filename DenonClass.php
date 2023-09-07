@@ -173,7 +173,7 @@ class AVRModule extends IPSModule
                         $this->Logger_Dbg(__FUNCTION__, 'Update ObjektID ' . $VarID . ' (' . IPS_GetName($VarID) . '): ' . $Subcommand . '(' . $Subcommandvalue . ')');
                         break;
                     case 2: //Float
-                        SetValueFloat($this->GetIDForIdent($Ident), $Subcommandvalue);
+                        SetValueFloat($this->GetIDForIdent($Ident), is_numeric($Subcommandvalue)?$Subcommandvalue:0);
                         $this->Logger_Dbg(__FUNCTION__, 'Update ObjektID ' . $VarID . ' (' . IPS_GetName($VarID) . '): ' . $Subcommand . '(' . $Subcommandvalue . ')');
                         break;
                     case 3: //String
@@ -268,7 +268,7 @@ class AVRModule extends IPSModule
 
     protected function RegisterVariables(DENONIPSProfiles $DenonAVRVar, $idents, $AVRType, $manufacturername): bool
     {
-        $this->Logger_Dbg(__FUNCTION__, 'variables: ' . json_encode($idents));
+        $this->Logger_Dbg(__FUNCTION__, 'idents: ' . json_encode($idents));
 
         if (!in_array($manufacturername, [DENONIPSProfiles::ManufacturerDenon, DENONIPSProfiles::ManufacturerMarantz], true)) {
             trigger_error('ManufacturerName not set');
@@ -304,7 +304,6 @@ class AVRModule extends IPSModule
 
                     case DENONIPSVarType::vtBoolean:
                         $this->RegisterVariableBoolean($statusvariable['Ident'], $statusvariable['Name'], '~Switch', $statusvariable['Position']);
-                        $this->EnableAction($statusvariable['Ident']);
                         break;
 
                     case DENONIPSVarType::vtInteger:
@@ -320,7 +319,6 @@ class AVRModule extends IPSModule
                         );
 
                         $this->RegisterVariableInteger($statusvariable['Ident'], $statusvariable['Name'], $profilname, $statusvariable['Position']);
-                        $this->EnableAction($statusvariable['Ident']);
                         break;
 
                     case DENONIPSVarType::vtFloat:
@@ -328,7 +326,6 @@ class AVRModule extends IPSModule
                         $this->CreateProfileFloat($profilname, $statusvariable['Icon'], $statusvariable['Prefix'], $statusvariable['Suffix'], $statusvariable['MinValue'], $statusvariable['MaxValue'], $statusvariable['Stepsize'], $statusvariable['Digits']);
                         $this->Logger_Dbg(__FUNCTION__, 'Variablenprofil angelegt: ' . $profilname);
                         $this->RegisterVariableFloat($statusvariable['Ident'], $statusvariable['Name'], $profilname, $statusvariable['Position']);
-                        $this->EnableAction($statusvariable['Ident']);
                         break;
 
                     default:
@@ -337,8 +334,13 @@ class AVRModule extends IPSModule
                         return false;
 
                 }
+
+                if (!isset($statusvariable['displayOnly']) || !$statusvariable['displayOnly']){
+                    $this->EnableAction($statusvariable['Ident']);
+                }
+
             }
-            // wenn nicht selektiert löschen
+            // wenn nicht, selektiert löschen
             else {
                 $this->removeVariableAction($statusvariable['Ident'], $ident);
             }
@@ -1037,11 +1039,19 @@ class DENONIPSProfiles extends stdClass
     public const ptTunerAnalogBand   = 'TunerAnalogBand';
     public const ptTunerAnalogMode = 'TunerAnalogMode';
 
+    public const ptSYSMI = 'SysMI';
+    public const ptSYSDA = 'SysDA';
+    public const ptSSINFAISFSV = 'SsInfAISFSV';
 
     public static $order = [
         //Info Display
         self::ptMainZoneName,
         self::ptModel,
+
+        //AVR Infos
+        self::ptSYSMI,
+        self::ptSYSDA,
+        self::ptSSINFAISFSV,
 
         //Power Settings
         self::ptPower,
@@ -1595,12 +1605,12 @@ class DENONIPSProfiles extends stdClass
                     [4, 'Pure Direct', DENON_API_Commands::MSPUREDIRECT],
                     [5, 'Stereo', DENON_API_Commands::MSSTEREO],
                     [6, 'Standard', DENON_API_Commands::MSSTANDARD],
-                    [7, 'Dolby Digital', DENON_API_Commands::MSDOLBYDIGITAL],
+                    [7, 'Dolby Surround', DENON_API_Commands::MSDOLBYDIGITAL],
                     [8, 'DTS Surround', DENON_API_Commands::MSDTSSURROUND],
                     [9, 'Auro 3D', DENON_API_Commands::MSAURO3D],
                     [10, 'Auro 2D', DENON_API_Commands::MSAURO2DSURR],
                     [11, '7 Channel Stereo', DENON_API_Commands::MS7CHSTEREO],
-                    [12, 'Multichannel Stereo', DENON_API_Commands::MSMCHSTEREO],
+                    [12, 'Multi Ch Stereo', DENON_API_Commands::MSMCHSTEREO],
                     [13, 'Wide Screen', DENON_API_Commands::MSWIDESCREEN],
                     [14, 'Super Stadium', DENON_API_Commands::MSSUPERSTADIUM],
                     [15, 'Rock Arena', DENON_API_Commands::MSROCKARENA],
@@ -1629,8 +1639,8 @@ class DENONIPSProfiles extends stdClass
                 'Profilesettings'                      => ['Database', '', '', 0, 0, 0, 0],
                 'Associations'                         => [
                     [0, 'Off', DENON_API_Commands::MULTEQOFF],
-                    [1, 'Audyssey', DENON_API_Commands::MULTEQAUDYSSEY],
-                    [2, 'BYP.LR', DENON_API_Commands::MULTEQBYPLR],
+                    [1, 'Reference', DENON_API_Commands::MULTEQAUDYSSEY],
+                    [2, 'L/R Bypass', DENON_API_Commands::MULTEQBYPLR],
                     [3, 'Flat', DENON_API_Commands::MULTEQFLAT],
                     [4, 'Manual', DENON_API_Commands::MULTEQMANUAL],
                 ],
@@ -1641,9 +1651,9 @@ class DENONIPSProfiles extends stdClass
                 'Profilesettings'                        => ['Database', '', '', 0, 0, 0, 0],
                 'Associations'                           => [
                     [0, 'Off', DENON_API_Commands::PSRSTROFF],
-                    [1, 'Restorer 64', DENON_API_Commands::PSRSTRMODE1],
-                    [2, 'Restorer 96', DENON_API_Commands::PSRSTRMODE2],
-                    [3, 'Restorer HQ', DENON_API_Commands::PSRSTRMODE3],
+                    [1, 'Hoch', DENON_API_Commands::PSRSTRMODE1],
+                    [2, 'Mittel', DENON_API_Commands::PSRSTRMODE2],
+                    [3, 'Gering', DENON_API_Commands::PSRSTRMODE3],
                 ],
             ],
             self::ptFrontSpeaker => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::PSFRONT, 'Name' => 'Front Speaker',
@@ -2311,16 +2321,22 @@ class DENONIPSProfiles extends stdClass
                 'PropertyName'                                            => 'Z2Treble', 'Profilesettings' => ['Intensity', '', ' dB', -10, 10, 1, 0], 'Associations' => $assRange40to60, ],
             self::ptZone3Treble => ['Type'                                => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::Z3PSTRE, 'Name' => 'Zone 3 Treble',
                 'PropertyName'                                            => 'Z3Treble', 'Profilesettings' => ['Intensity', '', ' dB', -10, 10, 1, 0], 'Associations' => $assRange40to60, ],
+            self::ptSSINFAISFSV => ['Type' => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::SSINFAISFSV, 'Name' => 'Audio: Abtastrate',
+                              'PropertyName'                                        => 'SSINFAISFSV', 'Profilesettings' => ['Information', '', ' kHz', 0, 0, 0, 1], 'Associations' => [], 'displayOny' => true],
 
             //Type String
-            self::ptMainZoneName    => ['Type' => DENONIPSVarType::vtString, 'Ident' => 'MainZoneName', 'Name' => 'MainZone Name', 'PropertyName' => 'ZoneName', 'Profilesettings' => ['Information']],
-            self::ptModel           => ['Type' => DENONIPSVarType::vtString, 'Ident' => 'Model', 'Name' => 'Model', 'PropertyName' => 'Model', 'Profilesettings' => ['Information']],
-            self::ptSurroundDisplay => ['Type'                        => DENONIPSVarType::vtString, 'Ident' => DENON_API_Commands::SURROUNDDISPLAY, 'Name' => 'Surround Mode Display',
-                'PropertyName'                                        => 'SurroundDisplay', 'Profilesettings' => ['Information'], ],
+            self::ptMainZoneName    => ['Type' => DENONIPSVarType::vtString, 'Ident' => 'MainZoneName', 'Name' => 'MainZone Name', 'PropertyName' => 'ZoneName', 'Profilesettings' => ['Information'], 'displayOny' => true],
+            self::ptModel           => ['Type' => DENONIPSVarType::vtString, 'Ident' => 'Model', 'Name' => 'Model', 'PropertyName' => 'Model', 'Profilesettings' => ['Information'], 'displayOny' => true],
+            self::ptSurroundDisplay => ['Type' => DENONIPSVarType::vtString, 'Ident' => DENON_API_Commands::SURROUNDDISPLAY, 'Name' => 'Surround Mode Display',
+                                        'PropertyName'                                        => 'SurroundDisplay', 'Profilesettings' => ['Information'], 'displayOny' => true ],
+            self::ptSYSMI => ['Type' => DENONIPSVarType::vtString, 'Ident' => DENON_API_Commands::SYSMI, 'Name' => 'Audio: Soundmodus',
+                                        'PropertyName'                                        => 'SYSMI', 'Profilesettings' => ['Information'], 'Associations' => [], 'displayOny' => true],
+            self::ptSYSDA => ['Type' => DENONIPSVarType::vtString, 'Ident' => DENON_API_Commands::SYSDA, 'Name' => 'Audio: Eingangssignal',
+                                        'PropertyName'                                        => 'SYSDA', 'Profilesettings' => ['Information'], 'Associations' => [], 'displayOny' => true],
             self::ptDisplay => ['Type'                                => DENONIPSVarType::vtString, 'Ident' => DENON_API_Commands::DISPLAY, 'Name' => 'OSD Info', 'ProfilName' => '~HTMLBox', 'PropertyName' => 'Display', 'Profilesettings' => ['TV'],
-                'IndividualStatusRequest'                             => 'NSA', ],
-            self::ptZone2Name => ['Type' => DENONIPSVarType::vtString, 'Ident' => 'Zone2Name', 'Name' => 'Zone 2 Name', 'PropertyName' => self::ptZone2Name, 'Profilesettings' => ['Information']],
-            self::ptZone3Name => ['Type' => DENONIPSVarType::vtString, 'Ident' => 'Zone3Name', 'Name' => 'Zone 3 Name', 'PropertyName' => self::ptZone3Name, 'Profilesettings' => ['Information']],
+                'IndividualStatusRequest'                             => 'NSA', 'displayOny' => true],
+            self::ptZone2Name => ['Type' => DENONIPSVarType::vtString, 'Ident' => 'Zone2Name', 'Name' => 'Zone 2 Name', 'PropertyName' => self::ptZone2Name, 'Profilesettings' => ['Information'], 'displayOny' => true],
+            self::ptZone3Name => ['Type' => DENONIPSVarType::vtString, 'Ident' => 'Zone3Name', 'Name' => 'Zone 3 Name', 'PropertyName' => self::ptZone3Name, 'Profilesettings' => ['Information'], 'displayOny' => true],
         ];
 
         if ($AVRType !== null) {
@@ -2705,6 +2721,8 @@ class DENONIPSProfiles extends stdClass
                         case DENONIPSVarType::vtFloat:
                             $ValueMapping[$association[0]] = $association[1];
                             break;
+                        case DENONIPSVarType::vtString:
+                            break;
                         default:
                             trigger_error(__FUNCTION__ . ': unexpected type: ' . $profile['Type']);
                     }
@@ -2771,6 +2789,7 @@ class DENONIPSProfiles extends stdClass
         //check if all profiles are used in MAX Capabilities
         $all_capabilities = array_merge(
             AVR::$InfoFunctions_max,
+            AVR::$AvrInfos_max,
             AVR::$PowerFunctions_max,
             AVR::$CV_Commands_max,
             AVR::$InputSettings_max,
@@ -4150,11 +4169,14 @@ class DENON_API_Commands extends stdClass
     public const PSLOMOFF = ' OFF'; // SW ATT OFF
     public const LOM = ' ?'; // Return PSATT Status
 
-    //Audio Restorer
+    //Audio Restorer - neue Kommandos bei neueren(?) Modellen
     public const PSRSTROFF = ' OFF'; //Audio Restorer Off
-    public const PSRSTRMODE1 = ' MODE1'; //Audio Restorer 64
-    public const PSRSTRMODE2 = ' MODE2'; //Audio Restorer 96
-    public const PSRSTRMODE3 = ' MODE3'; //Audio Restorer HQ
+    //public const PSRSTRMODE1 = ' MODE1'; //Audio Restorer 64
+    //public const PSRSTRMODE2 = ' MODE2'; //Audio Restorer 96
+    //public const PSRSTRMODE3 = ' MODE3'; //Audio Restorer HQ
+    public const PSRSTRMODE1 = ' HI'; //Audio Restorer 64
+    public const PSRSTRMODE2 = ' MID'; //Audio Restorer 96
+    public const PSRSTRMODE3 = ' LOW'; //Audio Restorer HQ
 
     //Front Speaker
     public const PSFRONTSPA = ' SPA'; //Speaker A
@@ -4254,6 +4276,7 @@ class DENON_API_Commands extends stdClass
     public const DTSNEOXM = 'DTS NEO:X M'; // DTS NEO:X M
     public const DTSNEOXG = 'DTS NEO:X G'; // DTS NEO:X G
     public const NEURALX = 'NEURAL:X'; // NEURAL:X
+    public const VIRTUALX = 'VIRTUAL:X'; // VIRTUAL:X
     public const DTSESDSCRT61 = 'DTS ES DSCRT6.1'; // DTS ES DSCRT6.1
     public const DTSESMTRX61 = 'DTS ES MTRX6.1'; // DTS ES MTRX6.1
     public const DTSPL2XC = 'DTS+PL2X C'; // DTS+PL2X C
@@ -4318,6 +4341,9 @@ class DENON_API_Commands extends stdClass
     public const AUDYSSEYDSX = 'AUDYSSEY DSX'; // AUDYSSEY DSX
 
     public const SURROUNDDISPLAY = 'SurroundDisplay'; // Nur DisplayIdent
+    public const SYSMI = 'SYSMI'; // Nur DisplayIdent
+    public const SYSDA = 'SYSDA'; // Nur DisplayIdent
+    public const SSINFAISFSV = 'SSINFAISFSV'; // Nur DisplayIdent
 
     public const BTTXON = ' ON';
     public const BTTXOFF = ' OFF';
@@ -4452,7 +4478,7 @@ class DenonAVRCP_API_Data extends stdClass
         DENON_API_Commands::MSDTSSURROUND    => 'DTS Surround',
         DENON_API_Commands::MSAURO3D         => 'Auro 3D',
         DENON_API_Commands::MSAURO2DSURR     => 'Auro 2D Surround',
-        DENON_API_Commands::MSMCHSTEREO      => 'Multi Channel Stereo',
+        DENON_API_Commands::MSMCHSTEREO      => 'Multi Ch Stereo',
         DENON_API_Commands::MS7CHSTEREO      => '7 Channel Stereo',
         DENON_API_Commands::MSWIDESCREEN     => 'Wide Screen',
         DENON_API_Commands::MSROCKARENA      => 'Rock Arena',
@@ -4484,6 +4510,7 @@ class DenonAVRCP_API_Data extends stdClass
         DENON_API_Commands::DOLBYATMOS                  => 'Dolby Atmos',
         DENON_API_Commands::DOLBYAUDIODSUR              => 'Dolby Audio DSUR',
         DENON_API_Commands::DOLBYAUDIODD                => 'Dolby Audio Digital',
+        DENON_API_Commands::DOLBYAUDIODDPLUSNEURALX     => 'Dolby Audio Digital + Neural:X',
         DENON_API_Commands::DOLBYAUDIODDPLUSPLUSNEURALX => 'Dolby Audio Digital Plus + Neural:X',
         DENON_API_Commands::DOLBYAUDIODDPLUS            => 'Dolby Audio Digital Plus',
         DENON_API_Commands::DOLBYDEX                    => 'Dolby Digital Ex',
@@ -4541,6 +4568,7 @@ class DenonAVRCP_API_Data extends stdClass
         DENON_API_Commands::DTSNEOXG       => 'DTS + NEO:X Game',
         DENON_API_Commands::DTSPLUSNEURALX => 'DTS + Neural:X',
         DENON_API_Commands::NEURALX        => 'Neural:X',
+        DENON_API_Commands::VIRTUALX        => 'Virtual:X',
         DENON_API_Commands::MULTICNIN      => 'Multi Channel In',
         DENON_API_Commands::MULTICHIN71    => 'Multi Channel In 7.1',
         DENON_API_Commands::MCHINDOLBYEX   => 'Multi Channel In + Dolby Ex',
@@ -4647,10 +4675,15 @@ class DenonAVRCP_API_Data extends stdClass
     public function GetCommandResponse($InputMapping): ?array
     {
         $debug = false;
+        foreach ($this->Data as $response) {
+            if (str_contains($response, "SSINF") || str_contains($response, "SSSINF")){
+                $debug = true;
+            }
+        }
 
         //Debug Log
         if ($debug) {
-            IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'data: ' . json_encode($this->Data));
+            IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'data: ' . json_encode($this->Data, JSON_THROW_ON_ERROR));
         }
 
         // Response an besondere Idents anpassen
@@ -4711,6 +4744,7 @@ class DenonAVRCP_API_Data extends stdClass
         //Response einzeln auswerten
         $VarMapping = (new DENONIPSProfiles($this->AVRType, $InputMapping))->GetVarMapping();
 
+
         if ($VarMapping === false) {
             trigger_error(__CLASS__ . '::' . __FUNCTION__ . ': VarMapping failed');
         }
@@ -4722,11 +4756,11 @@ class DenonAVRCP_API_Data extends stdClass
             }
 
             //Antworten wie 'SSINF', 'AISFSV', 'AISSIG', 'SSSMV', 'SSSMG', 'SSALS' sind laut Denon Support zu ignorieren
-            //auch mit SDARC, OPT, MS MAXxxx, OPSTS und CVEND können wir nichts anfangen
-            //auch TF irnorieren wir, um es nicht speziell für die Anzeige aufbereiten zu müssen.
+            //auch mit SDARC, OPT, MS MAXxxx, OPSTS, OPINF und CVEND können wir nichts anfangen
+            //auch TF ignorieren wir, um es nicht speziell für die Anzeige aufbereiten zu müssen.
             //auch DAB Status Informationen ignorieren: DASTN, DAPTY, DAENL, DAFRQ, DAQUA, DAINF
             $commandToBeIgnored = false;
-            foreach (['SS', 'AIS', 'SY', 'OPT', 'OPSTS', 'MVMAX', 'SDARC', 'CVEND', 'OPALS', 'TFANNAME', 'TF', 'DASTN', 'DAPTY', 'DAENL', 'DAFRQ', 'DAQUA', 'DAINF'] as $Command){
+            foreach (['SSINFSIG', 'SSINFMO', 'SSFUN', 'SSMG', 'AIS', 'SY_XX', 'OPT', 'OPSTS', 'OPINF', 'MVMAX', 'SDARC', 'CVEND', 'OPALS', 'TFANNAME', 'TF', 'DASTN', 'DAPTY', 'DAENL', 'DAFRQ', 'DAQUA', 'DAINF'] as $Command){
                 if (strpos($response, $Command) === 0) {
                     $commandToBeIgnored = true;
                     break;
@@ -4749,6 +4783,10 @@ class DenonAVRCP_API_Data extends stdClass
             }
 
             $response_found = false;
+            if ($debug) { ///sollte wieder geöscht werden
+                IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, sprintf('VarMapping: %s', json_encode($VarMapping)));
+            }
+
             foreach ($VarMapping as $Command => $item) { //Zuordnung suchen
                 if (stripos($response, $Command) === 0) {// Subcommand ermitteln
                     $ResponseSubCommand = substr($response, strlen($Command));
@@ -4786,7 +4824,15 @@ class DenonAVRCP_API_Data extends stdClass
 
                                 return null;
                             }
-                            if (array_key_exists($ResponseSubCommand, $item['ValueMapping'])) {
+
+                            if ($item['ValueMapping'] === []) {
+                                $datavalues[$Command] = [
+                                    'VarType'    => $item['VarType'],
+                                    'Value'      => trim($ResponseSubCommand),
+                                    'Subcommand' => trim($ResponseSubCommand),
+                                ];
+                            }
+                            elseif (array_key_exists($ResponseSubCommand, $item['ValueMapping'])) {
                                 $datavalues[$Command] = [
                                     'VarType'    => $item['VarType'],
                                     'Value'      => $item['ValueMapping'][$ResponseSubCommand],

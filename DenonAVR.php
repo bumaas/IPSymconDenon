@@ -1537,6 +1537,9 @@ class Denon_AVR_X3400H extends Denon_AVR_X3000
     public static $internalID = 36;
     public static $httpMainZone = DENON_HTTP_Interface::NoHTTPInterface;
     public static $InfoFunctions = [];
+    public static $AvrInfos = [DENON_API_Commands::SYSMI, DENON_API_Commands::SYSDA, DENON_API_Commands::SSINFAISFSV];
+
+
     public static $SystemControl_Commands = [
         DENON_API_Commands::MN,
         DENON_API_Commands::MNMEN,

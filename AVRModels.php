@@ -256,6 +256,9 @@ class AVR extends stdClass
     public static $InfoFunctions = ['MainZoneName', 'Model'];
     public static $InfoFunctions_max = ['MainZoneName', 'Model'];
 
+    public static $AvrInfos = [];
+    public static $AvrInfos_max = [DENON_API_Commands::SYSMI, DENON_API_Commands::SYSDA, DENON_API_Commands::SSINFAISFSV];
+
     public static $PowerFunctions = [
         DENON_API_Commands::PW,
         DENON_API_Commands::ZM,
@@ -480,6 +483,7 @@ class AVR extends stdClass
             'internalID'             => static::$internalID,
             'Manufacturer'           => static::$Manufacturer,
             'InfoFunctions'          => static::$InfoFunctions,
+            'AVRInfos'               => static::$AvrInfos,
             'PowerFunctions'         => static::$PowerFunctions,
             'InputSettings'          => static::$InputSettings,
             'SurroundMode'           => static::$SurroundMode,

@@ -7,7 +7,6 @@ require_once __DIR__ . '/../DenonClass.php';  // diverse Klassen
 /** @noinspection AutoloadingIssuesInspection */
 class DenonSplitterTelnet extends IPSModule
 {
-    private const PROPERTY_WRITE_DEBUG_INFORMATION_TO_LOGFILE = 'WriteDebugInformationToLogfile';
 
     public function Create()
     {
@@ -16,8 +15,6 @@ class DenonSplitterTelnet extends IPSModule
 
         //These lines are parsed on Symcon Startup or Instance creation
         //You cannot use variables here. Just static values.
-
-        $this->RegisterPropertyBoolean(self::PROPERTY_WRITE_DEBUG_INFORMATION_TO_LOGFILE, false);
 
         // ClientSocket benötigt
         $this->RequireParent('{3CFF0FD9-E306-41DB-9B5A-9D06D38576C3}'); //Clientsocket
@@ -79,19 +76,7 @@ class DenonSplitterTelnet extends IPSModule
         return json_encode(
             [
                 'status'   => [],
-                'elements' => [
-                    [
-                        'type'    => 'ExpansionPanel',
-                        'caption' => 'Expert Parameters',
-                        'items'   => [
-                            [
-                                'type'    => 'CheckBox',
-                                'name'    => self::PROPERTY_WRITE_DEBUG_INFORMATION_TO_LOGFILE,
-                                'caption' => 'Debug information are written additionally to standard logfile'
-                            ]
-                        ]
-                    ]
-                ]
+                'elements' => []
             ]
         );
     }
@@ -256,7 +241,7 @@ class DenonSplitterTelnet extends IPSModule
         array_pop($data);
 
         $this->SendDebug('Received Data:', json_encode($data), 0);
-        $this->Logger_Dbg(__FUNCTION__, 'received data: ' . json_encode($data));
+        $this->Logger_Dbg(__FUNCTION__, 'Received data: ' . json_encode($data));
 
         $APIData = new DenonAVRCP_API_Data($this->GetValue('AVRType'), $data);
 
@@ -327,9 +312,5 @@ class DenonSplitterTelnet extends IPSModule
     private function Logger_Dbg(string $message, string $data): void
     {
         $this->SendDebug($message, $data, 0);
-
-        if ($this->ReadPropertyBoolean(self::PROPERTY_WRITE_DEBUG_INFORMATION_TO_LOGFILE)) {
-            $this->LogMessage(sprintf('%s: %s', $message, $data), KL_DEBUG);
-        }
     }
 }
