@@ -4677,7 +4677,7 @@ class DenonAVRCP_API_Data extends stdClass
         $debug = false;
         foreach ($this->Data as $response) {
             if (str_contains($response, "SSINF") || str_contains($response, "SSSINF")){
-                $debug = true;
+                //$debug = true; Entwickleroption
             }
         }
 
