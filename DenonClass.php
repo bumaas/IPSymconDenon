@@ -3826,6 +3826,7 @@ class DENON_API_Commands extends stdClass
     public const SD71IN = '7.1IN'; // 7.1 In Mode
     public const SDNO = 'NO'; // no Input
     public const SDARC = 'ARC'; // ARC (nur im Event)
+    public const SDEARC = 'EARC'; // EARC (nur im Event)
 
     //DC Digital Input
     public const DCAUTO = 'AUTO'; // Auto Mode
@@ -4344,6 +4345,7 @@ class DENON_API_Commands extends stdClass
     public const SYSMI = 'SYSMI'; // Nur DisplayIdent
     public const SYSDA = 'SYSDA'; // Nur DisplayIdent
     public const SSINFAISFSV = 'SSINFAISFSV'; // Nur DisplayIdent
+    public const SSINFAISSIG = 'SSINFAISSIG'; // Nur DisplayIdent
 
     public const BTTXON = ' ON';
     public const BTTXOFF = ' OFF';
@@ -4676,8 +4678,8 @@ class DenonAVRCP_API_Data extends stdClass
     {
         $debug = false;
         foreach ($this->Data as $response) {
-            if (str_contains($response, "SSINF") || str_contains($response, "SSSINF")){
-                //$debug = true; Entwickleroption
+            if (strpos($response, "SSINF") === 0 || strpos($response, "SSSINF") === 0){
+                $debug = false; //Entwickleroption
             }
         }
 
@@ -4759,8 +4761,38 @@ class DenonAVRCP_API_Data extends stdClass
             //auch mit SDARC, OPT, MS MAXxxx, OPSTS, OPINF und CVEND können wir nichts anfangen
             //auch TF ignorieren wir, um es nicht speziell für die Anzeige aufbereiten zu müssen.
             //auch DAB Status Informationen ignorieren: DASTN, DAPTY, DAENL, DAFRQ, DAQUA, DAINF
+            //auch SDEARC und SDARC ignorieren
             $commandToBeIgnored = false;
-            foreach (['SSINFSIG', 'SSINFMO', 'SSFUN', 'SSMG', 'AIS', 'SY_XX', 'OPT', 'OPSTS', 'OPINF', 'MVMAX', 'SDARC', 'CVEND', 'OPALS', 'TFANNAME', 'TF', 'DASTN', 'DAPTY', 'DAENL', 'DAFRQ', 'DAQUA', 'DAINF'] as $Command){
+            foreach (
+                [
+                    'SSQS',
+                    'SSINFSIG',
+                    DENON_API_Commands::SSINFAISSIG, //ungeklärt: Beispiel: 'SSINFAISSIG 02'
+                    'SSINFMO',
+                    'SSFUN',
+                    'SSMG',
+                    'SSAST',
+                    'SSAUDSTS',
+                    'AIS',
+                    'SY_XX',
+                    'OPT',
+                    'OPSTS',
+                    'OPINF',
+                    'MVMAX',
+                    DENON_API_Commands::SD . DENON_API_Commands::SDARC, //nur als Event
+                    DENON_API_Commands::SD . DENON_API_Commands::SDEARC, //nur als Event
+                    'CVEND',
+                    'OPALS',
+                    'TFANNAME',
+                    'TF',
+                    'DASTN',
+                    'DAPTY',
+                    'DAENL',
+                    'DAFRQ',
+                    'DAQUA',
+                    'DAINF',
+                ] as $Command
+            ) {
                 if (strpos($response, $Command) === 0) {
                     $commandToBeIgnored = true;
                     break;

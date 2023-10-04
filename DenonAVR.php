@@ -1106,6 +1106,12 @@ class Denon_AVR_X2800H extends Denon_AVR_X2700H
         DENON_API_Commands::PSDELAY,
         DENON_API_Commands::PSRSTR,
     ];
+
+    public static $VSSCH_SubCommands = [
+        DENON_API_Commands::SCH48P, DENON_API_Commands::SCH10I, DENON_API_Commands::SCH72P, DENON_API_Commands::SCH10P,
+        DENON_API_Commands::SCH10P24, DENON_API_Commands::SCH4K, DENON_API_Commands::SCHAUTO, DENON_API_Commands::SCHOFF,
+    ];
+
 }
 
 class Denon_AVR_S960H extends Denon_AVR_X2700H
