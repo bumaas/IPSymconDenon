@@ -7,9 +7,9 @@ class AVRModule extends IPSModule
 {
     private const PROPERTY_WRITE_DEBUG_INFORMATION_TO_LOGFILE = 'WriteDebugInformationToLogfile';
 
-    protected $testAllProperties = false;
+    protected bool $testAllProperties = false;
 
-    private const STATUS_INST_IP_IS_INVALID = 204; //IP Adresse ist ungültig
+    private const STATUS_INST_IP_IS_INVALID = 204; //IP-Adresse ist ungültig
     private const STATUS_INST_NO_MANUFACTURER_SELECTED = 210;
     private const STATUS_INST_NO_NEO_CATEGORY_SELECTED = 211;
     private const STATUS_INST_NO_ZONE_SELECTED = 212;
@@ -58,7 +58,7 @@ class AVRModule extends IPSModule
     {
         if ($this->ReadPropertyBoolean('NEOToggle')) {
             $CatId = $this->ReadPropertyInteger('NEOToggleCategoryID');
-            if (!IPS_ObjectExists($CatId) || (!IPS_GetObject($CatId)['ObjectType'] === 0 /*Category*/)) {
+            if (!IPS_ObjectExists($CatId) || ((int) IPS_GetObject($CatId)['ObjectType'] !== OBJECTTYPE_CATEGORY)) {
                 return false;
             }
         }
@@ -67,12 +67,12 @@ class AVRModule extends IPSModule
     }
 
     // Daten vom Splitter Instanz
-    public function ReceiveData($JSONString)
+    public function ReceiveData($JSONString):void
     {
 
         // Empfangene Daten vom Splitter
-        $data = json_decode($JSONString, false);
-        $this->Logger_Dbg(__FUNCTION__, json_encode($data->Buffer->Data));
+        $data = json_decode($JSONString, false, 512, JSON_THROW_ON_ERROR);
+        $this->Logger_Dbg(__FUNCTION__, json_encode($data->Buffer->Data, JSON_THROW_ON_ERROR));
         $this->UpdateVariable($data->Buffer);
     }
 
@@ -80,7 +80,7 @@ class AVRModule extends IPSModule
     protected function UpdateVariable($data): bool
     {
         //$data = json_decode('{"ResponseType":"TELNET","Data":[],"SurroundDisplay":"","Display":{"1":"\u0001GAMPER & DADONI - BITTERSWEET SYMPHONY (feat. Emily Roberts)","2":"\u0001Radio 7"}}');
-        $this->Logger_Dbg(__FUNCTION__, 'data: ' . json_encode($data));
+        $this->Logger_Dbg(__FUNCTION__, 'data: ' . json_encode($data, JSON_THROW_ON_ERROR));
 
         $ResponseType = $data->ResponseType;
 
@@ -101,7 +101,7 @@ class AVRModule extends IPSModule
                 break;
             case 'TELNET':
                 $datavalues = $data->Data;
-                $this->Logger_Dbg(__FUNCTION__, 'Data Telnet: ' . json_encode($datavalues));
+                $this->Logger_Dbg(__FUNCTION__, 'Data Telnet: ' . json_encode($datavalues, JSON_THROW_ON_ERROR));
 
                 if ($Zone === 0) {
                     //SurroundDisplay
@@ -115,7 +115,7 @@ class AVRModule extends IPSModule
                     // OnScreenDisplay
                     if ($this->ReadPropertyBoolean('Display')) {
                         $OnScreenDisplay = $data->Display;
-                        $this->Logger_Dbg(__FUNCTION__, 'Display: ' . json_encode($OnScreenDisplay));
+                        $this->Logger_Dbg(__FUNCTION__, 'Display: ' . json_encode($OnScreenDisplay, JSON_THROW_ON_ERROR));
 
                         $idDisplay = $this->GetIDForIdent(DENON_API_Commands::DISPLAY);
                         $DisplayHTML = GetValue($idDisplay);
@@ -152,7 +152,7 @@ class AVRModule extends IPSModule
         }
 
         if ($datavalues === null) {
-            $this->Logger_Err(__FUNCTION__ . ': ' . json_encode(debug_backtrace()));
+            $this->Logger_Err(__FUNCTION__ . ': ' . json_encode(debug_backtrace(), JSON_THROW_ON_ERROR));
             return false;
         }
 
@@ -208,7 +208,7 @@ class AVRModule extends IPSModule
 
         $profiles = $DenonAVRVar->GetAllProfiles();
         foreach ($profiles as $profile) {
-            //some variables were registered with 'true' in the former version. So due to compatibility reasons they where registered with 'true' again
+            //some variables were registered with 'true' in the former version. So due to compatibility reasons they were registered with 'true' again
             $DefaultValue = in_array(
                 $profile['PropertyName'],
                 [
@@ -268,7 +268,7 @@ class AVRModule extends IPSModule
 
     protected function RegisterVariables(DENONIPSProfiles $DenonAVRVar, $idents, $AVRType, $manufacturername): bool
     {
-        $this->Logger_Dbg(__FUNCTION__, 'idents: ' . json_encode($idents));
+        $this->Logger_Dbg(__FUNCTION__, 'idents: ' . json_encode($idents, JSON_THROW_ON_ERROR));
 
         if (!in_array($manufacturername, [DENONIPSProfiles::ManufacturerDenon, DENONIPSProfiles::ManufacturerMarantz], true)) {
             trigger_error('ManufacturerName not set');
@@ -351,7 +351,7 @@ class AVRModule extends IPSModule
 
     protected function CreateNEOScripts($NEO_Parameter): void
     {
-        // alle Instancevariablen vom Typ boolean suchen
+        // alle Instanzvariablen vom Typ boolean suchen
         $ObjectIds = IPS_GetChildrenIDs($this->InstanceID);
         foreach ($ObjectIds as $ObjectId) {
             // wenn es sich um eine Variable handelt und die vom Typ Boolean ist
@@ -399,7 +399,7 @@ class AVRModule extends IPSModule
     {
         if (count($Associations) === 0) {
             trigger_error(__FUNCTION__ . ': Associations of profil "' . $ProfileName . '" is empty');
-            IPS_LogMessage(__FUNCTION__, json_encode(debug_backtrace()));
+            IPS_LogMessage(__FUNCTION__, json_encode(debug_backtrace(), JSON_THROW_ON_ERROR));
 
             return;
         }
@@ -465,7 +465,7 @@ class AVRModule extends IPSModule
         return $APICommand;
     }
 
-    protected function GetManufacturerName()
+    protected function GetManufacturerName(): string
     {
         $manufacturer = $this->ReadPropertyInteger('manufacturer');
         switch ($manufacturer) {
@@ -480,8 +480,8 @@ class AVRModule extends IPSModule
                 break;
 
             default:
-                trigger_error('Unnown manufacturer: ' . $manufacturer);
-                $manufacturername = false;
+                trigger_error('Unknown manufacturer: ' . $manufacturer);
+                $manufacturername = '';
         }
 
         return $manufacturername;
@@ -504,7 +504,7 @@ class AVRModule extends IPSModule
             return false;
         }
 
-        foreach (AVRs::getAllAVRs() as $AVRType => $Caps) {
+        foreach (AVRs::getAllAVRs() as $Caps) {
             if ($Caps['internalID'] === $TypeInt) {
                 return $Caps['Name'];
             }
@@ -529,7 +529,7 @@ class AVRModule extends IPSModule
         }
     }
 
-    protected function GetInputsAVR(DENONIPSProfiles $DenonAVRVar)
+    protected function GetInputsAVR(DENONIPSProfiles $DenonAVRVar): array
     {
         $Zone = $this->ReadPropertyInteger('Zone');
 
@@ -765,7 +765,7 @@ class AVRModule extends IPSModule
         return null;
     }
 
-    private function WriteNEOScript($ObjectID, $FunctionName, $LogLabel)
+    private function WriteNEOScript($ObjectID, $FunctionName, $LogLabel): void
     {
         $InstanzID = IPS_GetParent($ObjectID);
         $InstanzName = IPS_GetName($InstanzID);
@@ -774,7 +774,7 @@ class AVRModule extends IPSModule
         $ScriptName = $InstanzName . ' ' . $Name . '_toggle';
         $SkriptID = @IPS_GetScriptIDByName($ScriptName, $KatID);
 
-        if ($SkriptID === false) {
+        if (!$SkriptID) {
             $Content
                 = '
 <?
@@ -798,10 +798,7 @@ elseif ($status == true)// Ausschalten
             IPS_SetParent($ScriptID, $KatID);
             IPS_SetScriptContent($ScriptID, $Content);
 
-            return $ScriptID;
         }
-
-        return false;
     }
 
     protected function Logger_Err(string $message): void
@@ -845,12 +842,12 @@ class DENONIPSVarType extends stdClass
     public const vtString = 3;
 }
 
-class DENONIPSProfiles extends stdClass
+#[AllowDynamicProperties] class DENONIPSProfiles extends stdClass
 {
-    private $debug = false; //wird im Constructor gesetzt
+    private bool  $debug = false; //wird im Constructor gesetzt
 
-    private $AVRType;
-    private $profiles;
+    private mixed $AVRType;
+    private array $profiles;
 
     public const ManufacturerDenon = 'Denon';
     public const ManufacturerMarantz = 'Marantz';
@@ -1043,7 +1040,7 @@ class DENONIPSProfiles extends stdClass
     public const ptSYSDA = 'SysDA';
     public const ptSSINFAISFSV = 'SsInfAISFSV';
 
-    public static $order = [
+    public static array $order = [
         //Info Display
         self::ptMainZoneName,
         self::ptModel,
@@ -1250,7 +1247,10 @@ class DENONIPSProfiles extends stdClass
         if (isset($Logger_Dbg)){
             $this->debug = true;
             $this->Logger_Dbg = $Logger_Dbg;
-            call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'AVRType: ' . ($AVRType ?? 'null') . ', InputMapping: ' . ($InputMapping === null ? 'null' : json_encode($InputMapping)));
+            call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'AVRType: ' . ($AVRType ?? 'null') . ', InputMapping: ' . ($InputMapping === null ? 'null' : json_encode(
+                                                $InputMapping,
+                                                JSON_THROW_ON_ERROR
+                                            )));
         }
 
         $assRange00to98_add05step = $this->GetAssociationOfAsciiTodB('00', '98', '80', 1, true, false);
@@ -1283,7 +1283,7 @@ class DENONIPSProfiles extends stdClass
         // - Name: Variablenname
         // - PropertyName (im Formular)
         // - Profilesettings: Icon, Praefix, Suffix, Minimum, Maximum, Schrittweite, Nachkommastellen
-        // - Associations: die Assoziatonen sind vom Variablentyp abhängig
+        // - Associations: die Assoziationen sind vom Variablentyp abhängig
         //          boolean:    <true/false, Subcommando>
         //          integer:    <Value, Label, Subcommand>
         //          float:
@@ -1495,7 +1495,7 @@ class DENONIPSProfiles extends stdClass
                     [true, DENON_API_Commands::Z3ON],
                 ], ],
 
-            //Ident, Variablename, Profilesettings
+            //Ident, Variablenname, Profilesettings
             //Associations: Value, Label, Association
             self::ptInputSource => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::SI, 'Name' => 'Input Source',
                 'PropertyName'                         => 'InputSource',
@@ -2395,7 +2395,7 @@ class DENONIPSProfiles extends stdClass
             $this->profiles[self::ptZone2InputSource]['Associations'] = $associations;
             $this->profiles[self::ptZone3InputSource]['Associations'] = $associations;
             if ($this->debug) {
-                call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'Association: ' . json_encode($associations));
+                call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'Association: ' . json_encode($associations, JSON_THROW_ON_ERROR));
             }
         }
     }
@@ -2423,7 +2423,7 @@ class DENONIPSProfiles extends stdClass
                 $this->Logger_Dbg,
                 __CLASS__ . '::' . __FUNCTION__,
                 sprintf(
-                    'Parameters - IP: %s, Zone: %s, Favorites: %s, IRadio: %s, Server: %s, Nampster: %s, LastFM: %s, Flickr: %s',
+                    'Parameters - IP: %s, Zone: %s, Favorites: %s, IRadio: %s, Server: %s, Napster: %s, LastFM: %s, Flickr: %s',
                     $DenonIP,
                     $Zone,
                     (int)$FAVORITES,
@@ -2488,7 +2488,7 @@ class DENONIPSProfiles extends stdClass
         }
 
         if ($this->debug) {
-            call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'Associations: ' . json_encode($Associations));
+            call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'Associations: ' . json_encode($Associations, JSON_THROW_ON_ERROR));
         }
 
         switch ($Zone) {
@@ -2517,7 +2517,8 @@ class DENONIPSProfiles extends stdClass
         if (count($InputFuncList) === 0) {
             trigger_error('InputFuncList has no children: '
                 . '(filename correct?: "' . $filename . '", content: '
-                . json_encode($xmlZone));
+                          . json_encode($xmlZone, JSON_THROW_ON_ERROR)
+            );
 
             return null;
         }
@@ -2526,7 +2527,8 @@ class DENONIPSProfiles extends stdClass
         if (count($RenameSource) === 0) {
             trigger_error('RenameSource has no children: '
                 . '(filename correct?: "' . $filename . '", content: '
-                . json_encode($xmlZone));
+                          . json_encode($xmlZone, JSON_THROW_ON_ERROR)
+            );
 
             return null;
         }
@@ -2535,7 +2537,8 @@ class DENONIPSProfiles extends stdClass
         if (count($SourceDelete) === 0) {
             trigger_error('SourceDelete has no children: '
                 . '(filename correct?: "' . $filename . '", content: '
-                . json_encode($xmlZone));
+                          . json_encode($xmlZone, JSON_THROW_ON_ERROR)
+            );
 
             return null;
         }
@@ -2591,7 +2594,8 @@ class DENONIPSProfiles extends stdClass
         if ($xmlZone->count() === 0) {
             trigger_error('xmlzone has no children. '
                 . '(filename correct?: "' . $filename . '", content: '
-                . json_encode($xmlZone));
+                          . json_encode($xmlZone, JSON_THROW_ON_ERROR)
+            );
 
             return null;
         }
@@ -2619,10 +2623,10 @@ class DENONIPSProfiles extends stdClass
             $InputSourcesMapping[] = ['Source' => $association[2], 'RenameSource' => $association[1]];
         }
 
-        $ret = ['AVRType' => $this->AVRType, 'Inputs' => $InputSourcesMapping, 'Writeprotected' => false];
+        $ret = ['AVRType' => $this->AVRType, 'Inputs' => $InputSourcesMapping];
 
         if ($this->debug) {
-            call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'return: ' . json_encode($ret));
+            call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'return: ' . json_encode($ret, JSON_THROW_ON_ERROR));
         }
 
         return $ret;
@@ -2762,8 +2766,12 @@ class DENONIPSProfiles extends stdClass
                 }
             }
             if (count($profile_without_pos) > 0) {
-                IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'Order: ' . json_encode(static::$order));
-                trigger_error(__CLASS__ . '::' . __FUNCTION__ . ': Profiles without positions: ' . json_encode($profile_without_pos));
+                IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'Order: ' . json_encode(static::$order, JSON_THROW_ON_ERROR));
+                trigger_error(__CLASS__ . '::' . __FUNCTION__ . ': Profiles without positions: ' . json_encode(
+                                  $profile_without_pos,
+                                  JSON_THROW_ON_ERROR
+                              )
+                );
 
                 return false;
             }
@@ -2778,9 +2786,13 @@ class DENONIPSProfiles extends stdClass
                 }
             }
             if (count($order_without_definition) > 0) {
-                IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'Profiles: ' . json_encode($this->profiles));
-                IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'Keys: ' . json_encode(array_keys($this->profiles)));
-                trigger_error(__CLASS__ . '::' . __FUNCTION__ . ': Order Element without definition: ' . json_encode($order_without_definition));
+                IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'Profiles: ' . json_encode($this->profiles, JSON_THROW_ON_ERROR));
+                IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'Keys: ' . json_encode(array_keys($this->profiles), JSON_THROW_ON_ERROR));
+                trigger_error(__CLASS__ . '::' . __FUNCTION__ . ': Order Element without definition: ' . json_encode(
+                                  $order_without_definition,
+                                  JSON_THROW_ON_ERROR
+                              )
+                );
 
                 return false;
             }
@@ -2811,8 +2823,16 @@ class DENONIPSProfiles extends stdClass
         }
 
         if (count($profile_not_used_in_caps) > 0) {
-            trigger_error(__CLASS__ . '::' . __FUNCTION__ . ': Profiles not used in Capabilities(MAX):' . json_encode($profile_not_used_in_caps) . PHP_EOL . 'Capabilities: ' . json_encode($all_capabilities));
-            IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'Profiles not used in Capabilities(MAX):' . json_encode($profile_not_used_in_caps) . PHP_EOL . 'Capabilities: ' . json_encode($all_capabilities));
+            trigger_error(__CLASS__ . '::' . __FUNCTION__ . ': Profiles not used in Capabilities(MAX):' . json_encode(
+                              $profile_not_used_in_caps,
+                              JSON_THROW_ON_ERROR
+                          ) . PHP_EOL . 'Capabilities: ' . json_encode($all_capabilities, JSON_THROW_ON_ERROR)
+            );
+            IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'Profiles not used in Capabilities(MAX):' . json_encode(
+                                                              $profile_not_used_in_caps,
+                                                              JSON_THROW_ON_ERROR
+                                                          ) . PHP_EOL . 'Capabilities: ' . json_encode($all_capabilities, JSON_THROW_ON_ERROR)
+            );
 
             return false;
         }
@@ -2826,7 +2846,7 @@ class DENONIPSProfiles extends stdClass
         foreach ($this->profiles as $profile) {
             if (($profile['Ident'] === $Ident) && isset($profile['Associations'])) {
                 if ($this->debug){
-                    call_user_func($this->Logger_Dbg, __FUNCTION__, 'Profile "' . $Ident . '" found: ' . json_encode($profile));
+                    call_user_func($this->Logger_Dbg, __FUNCTION__, 'Profile "' . $Ident . '" found: ' . json_encode($profile, JSON_THROW_ON_ERROR));
                 }
                 foreach ($profile['Associations'] as $item) {
                     switch ($profile['Type']) {
@@ -2875,7 +2895,6 @@ class DENONIPSProfiles extends stdClass
         foreach ($this->profiles as $profile) {
             if (($profile['Ident'] === $Ident) && isset($profile['Associations'])) {
                 foreach ($profile['Associations'] as $item) {
-                    /** @noinspection DegradedSwitchInspection */
                     switch ($profile['Type']) {
                         case DENONIPSVarType::vtInteger:
                             if (strtoupper($item[1]) === strtoupper($ValueName)) {
@@ -2985,9 +3004,9 @@ class DENONIPSProfiles extends stdClass
     }
 }
 
-class DENON_StatusHTML extends stdClass
+#[AllowDynamicProperties] class DENON_StatusHTML extends stdClass
 {
-    private $debug = false; //wird im Constructor gesetzt
+    private bool $debug = false; //wird im Constructor gesetzt
 
     public function __construct(callable $Logger_Dbg = null)
     {
@@ -3026,9 +3045,13 @@ class DENON_StatusHTML extends stdClass
 
         if ($this->debug) {
 
-            call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'VarMappings: ' . json_encode($VarMappings));
-            call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'InputVarMapping: ' . json_encode($InputVarMapping));
-            call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'Inputs: ' . json_encode($Inputs));
+            call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'VarMappings: ' . json_encode($VarMappings, JSON_THROW_ON_ERROR));
+            call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'InputVarMapping: ' . json_encode(
+                                                $InputVarMapping,
+                                                JSON_THROW_ON_ERROR
+                                            )
+            );
+            call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'Inputs: ' . json_encode($Inputs, JSON_THROW_ON_ERROR));
         }
 
         try {
@@ -3128,7 +3151,7 @@ class DENON_StatusHTML extends stdClass
         ];
 
         if ($this->debug) {
-            call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'DataSend: ' . json_encode($datasend));
+            call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'DataSend: ' . json_encode($datasend, JSON_THROW_ON_ERROR));
         }
 
         return $datasend;
@@ -3165,7 +3188,7 @@ class DENON_StatusHTML extends stdClass
         if ($Element) {
             $SubCommand = (string) $Element[0]->value;
 
-            // first it is checked, if if the source input is renamed
+            // first it is checked, if the source input is renamed
             foreach ($Inputs as $Input){
                 if ($Input['RenameSource'] === str_replace(' ', '', $SubCommand)) {
                     $SubCommand = $Input['Source'];
@@ -3173,14 +3196,15 @@ class DENON_StatusHTML extends stdClass
                 }
             }
 
-            // some values are unusal and have to be mapped
+            // some values are unusual and have to be mapped
             if (array_key_exists($SubCommand, DENON_API_Commands::$SIMapping)) {
                 $SubCommand = DENON_API_Commands::$SIMapping[$SubCommand];
             }
 
             $VarMapping = $VarMappings[DENON_API_Commands::SI];
             if ($this->debug) {
-                call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, sprintf('VarMapping: %s, SubCommand: %s', json_encode($VarMapping), $SubCommand));
+                call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, sprintf('VarMapping: %s, SubCommand: %s',
+                                                                                           json_encode($VarMapping, JSON_THROW_ON_ERROR), $SubCommand));
             }
 
             $data[DENON_API_Commands::SI] = ['VarType' => $VarMapping['VarType'], 'Value' => $VarMapping['ValueMapping'][strtoupper($SubCommand)], 'Subcommand' => $SubCommand];
@@ -3500,7 +3524,7 @@ class DENON_API_Commands extends stdClass
     //PS
     public const PS = 'PS'; // Parameter Setting
     public const PSATT = 'PSATT'; // SW ATT
-    public const PSTONECTRL = 'PSTONE_CTRL'; // Tone Control !!da Ident nur Buchstaben und Zahlen enthalten darf, wurde das Blank ersetzt
+    public const PSTONECTRL = 'PSTONE_CTRL'; // Tone Control !da Ident nur Buchstaben und Zahlen enthalten darf, wurde das Blank ersetzt
     public const PSSB = 'PSSB'; // Surround Back SP Mode
     public const PSCINEMAEQ = 'PSCINEMA_EQ'; // Cinema EQ
     public const PSHTEQ = 'PSHT_EQ'; // Cinema EQ
@@ -3701,7 +3725,7 @@ class DENON_API_Commands extends stdClass
 
     //PW
     public const PWON = 'ON'; // Power On
-    public const PWSTANDBY = 'STANDBY'; // Power Standbye
+    public const PWSTANDBY = 'STANDBY'; // Power Standby
     public const PWOFF = 'OFF'; // Power OFF - beim X1200 im XML beobachtet
 
     //MV
@@ -3754,24 +3778,24 @@ class DENON_API_Commands extends stdClass
     public const IS_ON        = 'ON'; // Select Input Source On
     public const IS_OFF       = 'OFF'; // Select Input Source Off
 
-    public static $SIMapping = ['CBL/SAT'         => self::IS_SAT_CBL,
-                                'MediaPlayer'                             => self::IS_MPLAY,
-                                'Media Player'                            => self::IS_MPLAY,
-                                'Media Server'                            => self::IS_SERVER,
-                                'iPod/USB'                                => self::IS_USB_IPOD,
-                                'M-XPORT'                                 => self::IS_MXPORT,
-                                'TVAUDIO'                                 => self::IS_TV,
-                                'TV AUDIO'                                => self::IS_TV,
-                                'Bluetooth'                               => self::IS_BT,
-                                'Blu-ray'                                 => self::IS_BD,
-                                'Online Music'                            => self::IS_NET,
-                                'NETWORK'                                 => self::IS_NET,
-                                'Internet Radio'                          => self::IS_IRADIO,
-                                'Last. fm'                                => self::IS_LASTFM,
-                                'FM'                                      => self::IS_TUNER,
+    public static array $SIMapping        = ['CBL/SAT'      => self::IS_SAT_CBL,
+                                             'MediaPlayer'  => self::IS_MPLAY,
+                                             'Media Player' => self::IS_MPLAY,
+                                             'Media Server' => self::IS_SERVER,
+                                             'iPod/USB'     => self::IS_USB_IPOD,
+                                             'M-XPORT'      => self::IS_MXPORT,
+                                             'TVAUDIO'      => self::IS_TV,
+                                             'TV AUDIO'     => self::IS_TV,
+                                             'Bluetooth'    => self::IS_BT,
+                                             'Blu-ray'      => self::IS_BD,
+                                             'Online Music' => self::IS_NET,
+                                             'NETWORK'                                 => self::IS_NET,
+                                             'Internet Radio'                          => self::IS_IRADIO,
+                                             'Last. fm'                                => self::IS_LASTFM,
+                                             'FM'                                      => self::IS_TUNER,
     ];
 
-    public static $SI_InputSettings = [
+    public static array $SI_InputSettings = [
         self::IS_PHONO,
         self::IS_CD,
         self::IS_TUNER,
@@ -3839,7 +3863,7 @@ class DENON_API_Commands extends stdClass
     public const MSSTEREO = 'STEREO'; // Stereo Mode
     public const MSSTANDARD = 'STANDARD'; // Standard Mode
     public const MSDOLBYDIGITAL = 'DOLBY DIGITAL'; // Dolby Digital Mode
-    public const MSDTSSURROUND = 'DTS SURROUND'; // DTS Suround Mode
+    public const MSDTSSURROUND = 'DTS SURROUND'; // DTS Surround Mode
     public const MSMCHSTEREO = 'MCH STEREO'; // Multi Channel Stereo Mode
     public const MS7CHSTEREO = '7CH STEREO'; // 7 Channel Stereo Mode
     public const MSWIDESCREEN = 'WIDE SCREEN'; // Wide Screen Mode
@@ -3895,7 +3919,7 @@ class DENON_API_Commands extends stdClass
     //VSASP
     public const ASPNRM = 'NRM'; // Set Normal Mode
     public const ASPFUL = 'FUL'; // Set Full Mode
-    public const ASP = ' ?'; // ASP ? Return VSASP Status
+    public const ASP = ' ?'; // ASP? Return VSASP Status
 
     //VSSC Set Resolution
     public const SC48P = '48P'; // Set Resolution to 480p/576p
@@ -3907,7 +3931,7 @@ class DENON_API_Commands extends stdClass
     public const SC4KF = '4KF'; // Set Resolution to 4K (60/50)
     public const SC8K = '8K'; // Set Resolution to 8K
     public const SCAUTO = 'AUTO'; // Set Resolution to Auto
-    public const SC = ' ?'; // SC ? Return VSSC Status
+    public const SC = ' ?'; // SC? Return VSSC Status
 
     //VSSCH Set Resolution HDMI
     public const SCH48P = '48P'; // Set Resolution to 480p/576p HDMI
@@ -3919,25 +3943,25 @@ class DENON_API_Commands extends stdClass
     public const SCH4KF = '4KF'; // Set Resolution to 4K (60/50)
     public const SCH8K = '8K'; // Set Resolution to 8K
     public const SCHAUTO = 'AUTO'; // Set HDMI Upcaler to Auto
-    public const SCHOFF = 'OFF'; // Set HDMI Upcaler to Off
-    public const SCH = ' ?'; // SCH ? Return VSSCH Status(HDMI)
+    public const SCHOFF = 'OFF'; // Set HDMI Upscale to Off
+    public const SCH = ' ?'; // SCH? Return VSSCH Status(HDMI)
 
     //VSAUDIO Set HDMI Audio Output
     public const AUDIOAMP = ' AMP'; // Set HDMI Audio Output to AMP
     public const AUDIOTV = ' TV'; // Set HDMI Audio Output to TV
-    public const AUDIO = ' ?'; // AUDIO ? Return VSAUDIO Status
+    public const AUDIO = ' ?'; // AUDIO? Return VSAUDIO Status
 
     //VSVPM Set Video Processing Mode
     public const VPMAUTO = 'AUTO'; // Set Video Processing Mode to Auto
     public const VPGAME = 'GAME'; // Set Video Processing Mode to Game
     public const VPMOVI = 'MOVI'; // Set Video Processing Mode to Movie
     public const VPMBYP = 'MBYP'; // Set Video Processing Mode to Bypass
-    public const VPM = ' ?'; // VPM ? Return VSVPM Status
+    public const VPM = ' ?'; // VPM? Return VSVPM Status
 
     //VSVST Set Vertical Stretch
     public const VSTON = ' ON'; // Set Vertical Stretch On
     public const VSTOFF = ' OFF'; // Set Vertical Stretch Off
-    public const VST = ' ?'; // VST ? Return VSVST Status
+    public const VST = ' ?'; // VST? Return VSVST Status
 
     //PS Parameter
     //PSTONE Tone Control
@@ -4467,11 +4491,11 @@ class DENON_API_Commands extends stdClass
 
 class DenonAVRCP_API_Data extends stdClass
 {
-    private $AVRType;
-    private $Data;
+    private string $AVRType;
+    private array $Data;
 
     //Surround Display
-    public static $SurroundModes = [
+    public static array $SurroundModes      = [
         //show display => response display
         DENON_API_Commands::MSDIRECT         => 'Direct',
         DENON_API_Commands::MSPUREDIRECT     => 'Pure Direct',
@@ -4493,7 +4517,7 @@ class DenonAVRCP_API_Data extends stdClass
         DENON_API_Commands::MSVIRTUAL        => 'Virtual',
     ];
 
-    public static $DolbySurroundModes = [
+    public static array $DolbySurroundModes = [
         //show display => response display
         DENON_API_Commands::DOLBYPROLOGIC               => 'Dolby Pro Logic',
         DENON_API_Commands::DOLBYPL2C                   => 'Dolby Pro Logic II Cinema',
@@ -4550,7 +4574,7 @@ class DenonAVRCP_API_Data extends stdClass
         DENON_API_Commands::DOLBYAUDIOTRUEHDNEURALX     => 'Dolby Audio True HD + Neural:X',
     ];
 
-    public static $DTSSurroundModes = [
+    public static array $DTSSurroundModes   = [
         //show display => response display
         DENON_API_Commands::DTSESDSCRT61   => 'DTS ES Discrete 6.1',
         DENON_API_Commands::DTSESMTRX61    => 'DTS ES Matrix 6.1',
@@ -4651,7 +4675,7 @@ class DenonAVRCP_API_Data extends stdClass
     {
         $debug = false;
         if ($debug){
-            IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'data: ' . json_encode($data));
+            IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'data: ' . json_encode($data, JSON_THROW_ON_ERROR));
         }
 
         $Display = [];
@@ -4660,7 +4684,7 @@ class DenonAVRCP_API_Data extends stdClass
             $Row = substr($response, 3, 1);
             if ((stripos($response, 'NSA') === 0) || (stripos($response, 'NSE') === 0)) { //Display auslesen
                 if ($debug) {
-                    IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'response (' . $key . ') found: ' . json_encode($response));
+                    IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'response (' . $key . ') found: ' . json_encode($response, JSON_THROW_ON_ERROR));
                     IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'response (' . $key . ') found (hex): ' . bin2hex($response));
                 }
                 //the first characters ('NSEx', 'NSAx') are cut
@@ -4678,7 +4702,7 @@ class DenonAVRCP_API_Data extends stdClass
     {
         $debug = false;
         foreach ($this->Data as $response) {
-            if (strpos($response, "SSINF") === 0 || strpos($response, "SSSINF") === 0){
+            if (str_starts_with($response, "SSINF") || str_starts_with($response, "SSSINF")){
                 $debug = false; //Entwickleroption
             }
         }
@@ -4719,7 +4743,7 @@ class DenonAVRCP_API_Data extends stdClass
             $specialcommands['Z' . $Zone . 'ON'] = 'Z' . $Zone . 'POWERON';
             $specialcommands['Z' . $Zone . 'OFF'] = 'Z' . $Zone . 'POWEROFF';
 
-            // add spezialcommands for input settings
+            // add specialcommands for input settings
             foreach (DENON_API_Commands::$SI_InputSettings as $InputSetting) {
                 $specialcommands['Z' . $Zone . $InputSetting] = 'Z' . $Zone . 'INPUT' . $InputSetting;
             }
@@ -4752,7 +4776,7 @@ class DenonAVRCP_API_Data extends stdClass
         }
 
         foreach ($this->Data as $response) {
-            if (strpos($response, 'NS') === 0) {
+            if (str_starts_with($response, 'NS')) {
                 //die Antworten 'NSA' und 'NSE' werden separat in getDisplay ausgewertet
                 continue;
             }
@@ -4770,7 +4794,7 @@ class DenonAVRCP_API_Data extends stdClass
                     DENON_API_Commands::SSINFAISSIG, //ungeklärt: Beispiel: 'SSINFAISSIG 02'
                     'SSINFMO',
                     'SSFUN',
-                    'SSMG',
+                    'SSSMG', //ungeklärt: Beispiel 'SSSMG MUS' oder SSSMG PUR
                     'SSAST',
                     'SSAUDSTS',
                     'AIS',
@@ -4781,6 +4805,8 @@ class DenonAVRCP_API_Data extends stdClass
                     'MVMAX',
                     DENON_API_Commands::SD . DENON_API_Commands::SDARC, //nur als Event
                     DENON_API_Commands::SD . DENON_API_Commands::SDEARC, //nur als Event
+                    DENON_API_Commands::CVTTR . ' ON',
+                    DENON_API_Commands::CVTTR . ' OFF',
                     'CVEND',
                     'OPALS',
                     'TFANNAME',
@@ -4793,7 +4819,7 @@ class DenonAVRCP_API_Data extends stdClass
                     'DAINF',
                 ] as $Command
             ) {
-                if (strpos($response, $Command) === 0) {
+                if (str_starts_with($response, $Command)) {
                     $commandToBeIgnored = true;
                     break;
                 }
@@ -4815,8 +4841,8 @@ class DenonAVRCP_API_Data extends stdClass
             }
 
             $response_found = false;
-            if ($debug) { ///sollte wieder geöscht werden
-                IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, sprintf('VarMapping: %s', json_encode($VarMapping)));
+            if ($debug) { ///sollte wieder geböscht werden
+                IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, sprintf('VarMapping: %s', json_encode($VarMapping, JSON_THROW_ON_ERROR)));
             }
 
             foreach ($VarMapping as $Command => $item) { //Zuordnung suchen
@@ -4852,7 +4878,11 @@ class DenonAVRCP_API_Data extends stdClass
 
                         default:
                             if (!isset($item['ValueMapping'])) {
-                                IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'ValueMapping not set - Item: ' . json_encode($item));
+                                IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'ValueMapping not set - Item: ' . json_encode(
+                                                                                  $item,
+                                                                                  JSON_THROW_ON_ERROR
+                                                                              )
+                                );
 
                                 return null;
                             }
@@ -4870,12 +4900,15 @@ class DenonAVRCP_API_Data extends stdClass
                                     'Value'      => $item['ValueMapping'][$ResponseSubCommand],
                                     'Subcommand' => $ResponseSubCommand,
                                 ];
-                            } elseif (in_array($Command, [DENON_API_Commands::SI, DENON_API_Commands::Z2INPUT, DENON_API_Commands::Z3INPUT]) && in_array($ResponseSubCommand, [DENON_API_Commands::IS_FAVORITES, DENON_API_Commands::IS_IRADIO, DENON_API_Commands::IS_SERVER, DENON_API_Commands::IS_NAPSTER, DENON_API_Commands::IS_LASTFM, DENON_API_Commands::IS_FLICKR])) {
+                            } elseif (in_array($Command, [DENON_API_Commands::SI, DENON_API_Commands::Z2INPUT, DENON_API_Commands::Z3INPUT], true) && in_array($ResponseSubCommand, [DENON_API_Commands::IS_FAVORITES, DENON_API_Commands::IS_IRADIO, DENON_API_Commands::IS_SERVER, DENON_API_Commands::IS_NAPSTER, DENON_API_Commands::IS_LASTFM, DENON_API_Commands::IS_FLICKR], true)) {
                                 IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, sprintf('*Hint*: Input Source %s not configured, check your configuration. Current inputs: %s'
-                                    , $ResponseSubCommand, json_encode($item['ValueMapping'])));
+                                    ,                                                   $ResponseSubCommand,
+                                                                                        json_encode($item['ValueMapping'], JSON_THROW_ON_ERROR)
+                                ));
                             } else {
                                 IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, sprintf('*Warning*: No value found for SubCommand \'%s\' in response \'%s\', ValueMapping: %s, Model: %s'
-                                    , $ResponseSubCommand, $response, json_encode($item['ValueMapping']), $this->AVRType));
+                                    ,                                                   $ResponseSubCommand, $response,
+                                                                                        json_encode($item['ValueMapping'], JSON_THROW_ON_ERROR), $this->AVRType));
                             }
                             break;
                     }
@@ -4898,7 +4931,7 @@ class DenonAVRCP_API_Data extends stdClass
 
         //Debug Log
         if ($debug) {
-            IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'datasend:' . json_encode($datasend));
+            IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'datasend:' . json_encode($datasend, JSON_THROW_ON_ERROR));
         }
 
         return $datasend;

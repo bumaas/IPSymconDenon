@@ -58,16 +58,14 @@ class DenonAVRIOHTTP extends IPSModule
         $InputsMapping = json_decode($InputsMapping);
         //Varmapping generieren
         $AVRType        = $InputsMapping->AVRType;
-        $Writeprotected = $InputsMapping->Writeprotected;
         $Inputs         = $InputsMapping->Inputs;
         $Varmapping     = [];
         foreach ($Inputs as $Key => $Input) {
             $Command              = $Input->Source;
             $Varmapping[$Command] = $Key;
         }
-        $InputArray = ['AVRType' => $AVRType, 'Writeprotected' => $Writeprotected, 'Inputs' => $Inputs];
 
-        return $InputArray;
+        return ['AVRType' => $AVRType, 'Inputs' => $Inputs];
     }
 
     //################# Datapoints
@@ -116,16 +114,15 @@ class DenonAVRIOHTTP extends IPSModule
                 // Senden fehlgeschlagen
                 $this->unlock('HTTPGetState');
 
-                throw new Exception($exc);
+                throw new Exception('SendJson failed');
             }
             $this->unlock('HTTPGetState');
 
             return $data;
-        } else {
-            echo "Can not send to parent \n";
-            $this->unlock('HTTPGetState');
-            //throw new Exception("Can not send to parent",E_USER_NOTICE);
         }
+
+        echo "Can not send to parent \n";
+        $this->unlock('HTTPGetState');
 
         return false;
     }
@@ -156,7 +153,7 @@ class DenonAVRIOHTTP extends IPSModule
                 // Senden fehlgeschlagen
                 $this->unlock('HTTPCommandSend');
 
-                throw new Exception($exc);
+                throw new Exception('file_get_contents failed');
             }
             $this->unlock('HTTPCommandSend');
         } else {
@@ -176,7 +173,7 @@ class DenonAVRIOHTTP extends IPSModule
             } catch (Exception $exc) {
                 $this->unlock('HTTPCommandSend');
 
-                throw new Exception($exc);
+                throw new Exception('GetStatus failed');
             }
             $this->unlock('HTTPCommandSend');
         } else {
@@ -184,7 +181,6 @@ class DenonAVRIOHTTP extends IPSModule
             $this->SendDebug('Denon HTTP I/O:', 'Can not get response', 0);
             IPS_LogMessage('Denon AVR I/O', 'Can not get response');
             $this->unlock('HTTPCommandSend');
-            //throw new Exception("Can not send to parent",E_USER_NOTICE);
         }
     }
 
@@ -194,14 +190,10 @@ class DenonAVRIOHTTP extends IPSModule
         if ($this->GetIDForIdent('InputMapping')) {
             $InputsMapping = GetValue($this->GetIDForIdent('InputMapping'));
             if (($InputsMapping !== '') && ($InputsMapping !== 'null')) {
-                $InputsMapping  = json_decode($InputsMapping);
-                $Writeprotected = $InputsMapping->Writeprotected;
-                if (!$Writeprotected) {
-                    $MappingInputsArr = json_decode($MappingInputs);
-                    $AVRType          = $MappingInputsArr->AVRType;
-                    SetValue($this->GetIDForIdent('InputMapping'), $MappingInputs);
-                    SetValue($this->GetIDForIdent('AVRType'), $AVRType);
-                }
+                $MappingInputsArr = json_decode($MappingInputs);
+                $AVRType          = $MappingInputsArr->AVRType;
+                SetValue($this->GetIDForIdent('InputMapping'), $MappingInputs);
+                SetValue($this->GetIDForIdent('AVRType'), $AVRType);
             } else {
                 $MappingInputsArr = json_decode($MappingInputs);
                 $AVRType          = $MappingInputsArr->AVRType;
@@ -242,9 +234,7 @@ class DenonAVRIOHTTP extends IPSModule
 
     private function GetAVRType()
     {
-        $GetAVRType = GetValue($this->GetIDForIdent('AVRType'));
-
-        return $GetAVRType;
+        return GetValue($this->GetIDForIdent('AVRType'));
     }
 
     //################# SEMAPHOREN Helper  - private
@@ -254,9 +244,9 @@ class DenonAVRIOHTTP extends IPSModule
         for ($i = 0; $i < 10; $i++) {
             if (IPS_SemaphoreEnter(get_class() . '_' . (string) $this->InstanceID . (string) $ident, 1000)) {
                 return true;
-            } else {
-                IPS_Sleep(mt_rand(1, 5));
             }
+
+            IPS_Sleep(random_int(1, 5));
         }
 
         return false;

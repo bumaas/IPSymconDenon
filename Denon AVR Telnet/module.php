@@ -3,10 +3,9 @@
 declare(strict_types=1);
 require_once __DIR__ . '/../DenonClass.php';  // diverse Klassen
 
-/** @noinspection AutoloadingIssuesInspection */
 class DenonAVRTelnet extends AVRModule
 {
-    public static $NEO_Parameter = ['PW' => ['DAVRT_Power', 'Power'],
+    public static array $NEO_Parameter = ['PW' => ['DAVRT_Power', 'Power'],
         'ZM'                             => ['DAVRT_MainZonePower', 'MainZonePower'],
         'MU'                             => ['DAVRT_MainMute', 'Mute'],
         'Z2POWER'                        => ['DAVRT_Zone2Power', 'Zone2Power'],
@@ -28,7 +27,7 @@ class DenonAVRTelnet extends AVRModule
         'MNSRC'                          => ['DAVRT_GUISourceSelectMenu', 'GUI Source Select Menu'],
     ];
 
-    public function Create()
+    public function Create():void
     {
         //Never delete this line!
         parent::Create();
@@ -49,9 +48,9 @@ class DenonAVRTelnet extends AVRModule
 
     }
 
-    public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
+    public function MessageSink($TimeStamp, $SenderID, $Message, $Data): void
     {
-        $this->Logger_Dbg(__FUNCTION__, 'SenderID: ' . $SenderID . ', Message: ' . $Message . ', Data:' . json_encode($Data));
+        $this->Logger_Dbg(__FUNCTION__, 'SenderID: ' . $SenderID . ', Message: ' . $Message . ', Data:' . json_encode($Data, JSON_THROW_ON_ERROR));
 
         switch ($Message) {
             case IPS_KERNELMESSAGE:
@@ -71,10 +70,8 @@ class DenonAVRTelnet extends AVRModule
         $object = new stdClass();
         foreach ($array as $key => $value) {
             if (is_array($value)) {
-                /** @noinspection PhpVariableVariableInspection */
                 $object->$key = $this->arrayToObject($value);
             } else {
-                /** @noinspection PhpVariableVariableInspection */
                 $object->$key = $value;
             }
         }
@@ -82,13 +79,13 @@ class DenonAVRTelnet extends AVRModule
         return $object;
     }
 
-    public function ApplyChanges()
+    public function ApplyChanges(): bool
     {
         //Never delete this line!
         parent::ApplyChanges();
 
         if (IPS_GetKernelRunlevel() !== KR_READY) {
-            return;
+            return false;
         }
 
 
@@ -101,7 +98,7 @@ class DenonAVRTelnet extends AVRModule
             // über http werden zusätzliche Daten geholt (MainZoneName, Model)
             if (AVRs::getCapabilities($AVRType)['httpMainZone'] !== DENON_HTTP_Interface::NoHTTPInterface) {
                 $data = $this->GetStateHTTP();
-                //das Array muss für die weitere Verabeitung in ein Object umgewandelt werden
+                //das Array muss für die weitere Verarbeitung in ein Object umgewandelt werden
                 $data = $this->arrayToObject($data);
                 $this->UpdateVariable($data);
             }
@@ -110,6 +107,7 @@ class DenonAVRTelnet extends AVRModule
         }
 
         $this->RegisterReferences();
+        return true;
 
     }
 
@@ -121,7 +119,8 @@ class DenonAVRTelnet extends AVRModule
         });
         //Input ablegen, damit sie später dem Splitter zur Verfügung stehen
         try {
-            DAVRST_SaveInputVarmapping($this->GetParent(), json_encode($this->GetInputsAVR($DenonAVRVar)));
+            /** @noinspection PhpUndefinedFunctionInspection */
+            DAVRST_SaveInputVarmapping($this->GetParent(), json_encode($this->GetInputsAVR($DenonAVRVar), JSON_THROW_ON_ERROR));
         }
         catch(Exception $e) {
             trigger_error($e->getMessage());
@@ -132,7 +131,7 @@ class DenonAVRTelnet extends AVRModule
         $profiles = $DenonAVRVar->GetAllProfilesSortedByPos();
         $idents = [];
 
-        if ($Zone === 0) {//Mainzone
+        if ($Zone === 0) {//Main zone
 
             $idents[DENONIPSProfiles::ptMainZoneName] = $this->ReadPropertyBoolean('ZoneName');
             $idents[DENONIPSProfiles::ptModel] = $this->ReadPropertyBoolean('Model');
@@ -155,7 +154,6 @@ class DenonAVRTelnet extends AVRModule
             foreach ($CommandAreas as $commandArea) {
                 if ($this->testAllProperties) {
                     $commandArea_max = $commandArea . '_max';
-                    /** @noinspection PhpVariableVariableInspection */
                     $Caps = AVR::$$commandArea_max;
                 } else {
                     $Caps = $AVRCaps[$commandArea];
@@ -176,8 +174,8 @@ class DenonAVRTelnet extends AVRModule
                         || in_array(substr($profile['Ident'], 0, 5), ['Zone2', 'Zone3'])) {
 
                         //select only the idents of the current zone
-                        if ((strpos($profile['Ident'], 'Z' . ($Zone + 1)) === 0)
-                            || (strpos($profile['Ident'], 'Zone' . ($Zone + 1)) === 0)) {
+                        if ((str_starts_with($profile['Ident'], 'Z' . ($Zone + 1)))
+                            || (str_starts_with($profile['Ident'], 'Zone' . ($Zone + 1)))) {
                             $idents[$key] = $this->ReadPropertyBoolean($profile['PropertyName']);
                         }
                     } else {
@@ -198,7 +196,7 @@ class DenonAVRTelnet extends AVRModule
 
     /**
      * Die folgenden Funktionen stehen automatisch zur Verfügung, wenn das Modul über die "Module Control" eingefügt wurden.
-     * Die Funktionen werden, mit dem selbst eingerichteten Prefix, in PHP und JSON-RPC wiefolgt zur Verfügung gestellt:.
+     * Die Funktionen werden, mit dem selbst eingerichteten Prefix, in PHP und JSON-RPC wie folgt zur Verfügung gestellt:.
      */
     public function GetStates(): void
     {
@@ -246,7 +244,7 @@ class DenonAVRTelnet extends AVRModule
         $AVRType = $this->GetAVRType($this->GetManufacturerName());
         if (AVRs::getCapabilities($AVRType)['httpMainZone'] !== DENON_HTTP_Interface::NoHTTPInterface) {
             $data = $this->GetStateHTTP();
-            //das Array muss für die weitere Verabeitung in ein Object umgewandelt werden
+            //das Array muss für die weitere Verarbeitung in ein Object umgewandelt werden
             $data = $this->arrayToObject($data);
             $this->UpdateVariable($data);
         }
@@ -264,8 +262,9 @@ class DenonAVRTelnet extends AVRModule
     {
 
         //Input übergeben
+        /** @noinspection PhpUndefinedFunctionInspection */
         $InputMapping = DAVRST_GetInputVarMapping($this->GetParent());
-        $this->Logger_Dbg(__FUNCTION__, 'Denon Telnet AVR: InputMapping: ' . json_encode($InputMapping));
+        $this->Logger_Dbg(__FUNCTION__, 'Denon Telnet AVR: InputMapping: ' . json_encode($InputMapping, JSON_THROW_ON_ERROR));
 
         //Command aus Ident
         $APICommand = $this->GetAPICommandFromIdent($Ident);
@@ -349,17 +348,18 @@ class DenonAVRTelnet extends AVRModule
     {
         $sendcommand = $payload . chr(13);
         $this->SendDebug('Send Command Telnet:', print_r($sendcommand, true), 0);
-        $this->SendDataToParent(json_encode(['DataID' => '{01A68655-DDAF-4F79-9F35-65878A86F344}', 'Buffer' => $sendcommand])); //Denon AVR Telnet Interface GUI
+        $this->SendDataToParent(json_encode(['DataID' => '{01A68655-DDAF-4F79-9F35-65878A86F344}', 'Buffer' => $sendcommand], JSON_THROW_ON_ERROR)); //Denon AVR Telnet Interface GUI
     }
 
     //Get Status HTTP
-    public function GetStateHTTP()
+    public function GetStateHTTP(): ?array
     {
         $AVRType = $this->GetAVRType($this->GetManufacturerName());
 
         $DenonGet = new DENON_StatusHTML();
 
         try {
+            /** @noinspection PhpUndefinedFunctionInspection */
             $InputMapping = DAVRST_GetInputVarMapping($this->GetParent());
             return $DenonGet->getStates($this->GetIPParent(), $InputMapping, $AVRType);
         }
@@ -378,14 +378,14 @@ class DenonAVRTelnet extends AVRModule
         $this->SendCommand(DENON_API_Commands::PW . $SubCommand);
     }
 
-    //Mainzone Power
+    //Main zone Power
     public function MainZonePower(bool $Value): void
     { // MainZone true (On) or false (Off)
         $SubCommand = (new DENONIPSProfiles())->GetSubCommandOfValue(DENON_API_Commands::ZM, $Value);
         $this->SendCommand(DENON_API_Commands::ZM . $SubCommand);
     }
 
-    //Mainzone Standby Setting
+    //Main zone Standby Setting
     public function MainzoneAutoStandbySetting(int $Value): bool
     { // 0 (Off) / 15 / 30 / 60 (Minuten)
         switch ($Value) {
@@ -426,7 +426,7 @@ class DenonAVRTelnet extends AVRModule
         $this->SendCommand($payload);
     }
 
-    public function MasterVolumeStep(string $command, float $step) // "UP" or "DOWN" , Step Schrittweite der Lautstärke Änderung Minimum 0.5
+    public function MasterVolumeStep(string $command, float $step) // "UP" or "DOWN", Step Schrittweite der Lautstärke Änderung Minimum 0.5
     : void
     {
         if ($step < 1 || $step > 40) {
@@ -1093,7 +1093,11 @@ class DenonAVRTelnet extends AVRModule
     }
 
     /** HDMI Monitor.
+     *
      * @param string $Value AUTO / 1 / 2
+     *
+     * @throws \JsonException
+     * @throws \JsonException
      */
     public function HDMIMonitor(string $Value): void
     { // HDMI Monitor AUTO / Monitor 1 / Monitor 2
@@ -1365,7 +1369,7 @@ class DenonAVRTelnet extends AVRModule
     }
 
     public function Zone2QuickSelect(string $command): void
-    { // Zone 2 Quickselect 1-5
+    { // Zone 2 Quick select 1-5
         $this->SendCommand(DENON_API_Commands::Z2QUICK . $command);
     }
 
@@ -1422,7 +1426,7 @@ class DenonAVRTelnet extends AVRModule
     }
 
     public function Zone3QuickSelect(string $command): void
-    { // Zone 3 Quickselect 1-5
+    { // Zone 3 Quick select 1-5
         $this->SendCommand(DENON_API_Commands::Z3QUICK . $command);
     }
 
@@ -1435,21 +1439,25 @@ class DenonAVRTelnet extends AVRModule
      * build configuration form.
      *
      * @return string
+     * @throws \JsonException
+     * @throws \JsonException
      */
     public function GetConfigurationForm(): string
     {
         // return current form
         return json_encode([
-            'elements' => $this->FormElements(),
-            'actions'  => $this->FormActions(),
-            'status'   => $this->FormStatus()
-        ]);
+                               'elements' => $this->FormElements(),
+                               'actions'  => $this->FormActions(),
+                               'status'   => $this->FormStatus()
+                           ], JSON_THROW_ON_ERROR);
     }
 
     /**
      * return form configurations on configuration step.
      *
      * @return array
+     * @throws \JsonException
+     * @throws \JsonException
      */
     private function FormElements(): array
     {
@@ -1526,14 +1534,14 @@ class DenonAVRTelnet extends AVRModule
 
         $form = array_merge($form, $this->FormExpertParameters());
 
-        $this->Logger_Dbg(__FUNCTION__, 'form_telnet_gen.json: ' . json_encode($form));
+        $this->Logger_Dbg(__FUNCTION__, 'form_telnet_gen.json: ' . json_encode($form, JSON_THROW_ON_ERROR));
         return $form;
     }
 
     private function FormMainzone($Zone, $AVRType): array
     {
         $AVRCaps = AVRs::getCapabilities($AVRType);
-        $this->Logger_Dbg(__FUNCTION__, 'AVR Caps (' . $AVRType . '): ' . json_encode($AVRCaps));
+        $this->Logger_Dbg(__FUNCTION__, 'AVR Caps (' . $AVRType . '): ' . json_encode($AVRCaps, JSON_THROW_ON_ERROR));
 
         $profiles = (new DENONIPSProfiles($AVRType))->GetAllProfilesSortedByPos();
 
@@ -1564,9 +1572,7 @@ class DenonAVRTelnet extends AVRModule
                 'items'   => $this->FormAVRProfile($Zone, $AVRType, $commandArea, $profiles)];
         }
 
-        $form = array_merge($form, $this->FormMoreInputs());
-
-        return $form;
+        return array_merge($form, $this->FormMoreInputs());
     }
 
     private function FormZone($Zone, $AVRType): array
@@ -1589,14 +1595,13 @@ class DenonAVRTelnet extends AVRModule
                 'items'   => $this->FormAVRProfile($Zone, $AVRType, $commandArea, $profiles)];
         }
 
-        $form = array_merge($form, $this->FormMoreInputs());
-        return $form;
+        return array_merge($form, $this->FormMoreInputs());
     }
 
     private function FormAVRProfile($Zone, $AVRType, $commandArea, $profiles): array
     {
         $AVRCaps = AVRs::getCapabilities($AVRType);
-        $this->Logger_Dbg(__FUNCTION__, 'AVR Caps (' . $AVRType . '): ' . json_encode($AVRCaps));
+        $this->Logger_Dbg(__FUNCTION__, 'AVR Caps (' . $AVRType . '): ' . json_encode($AVRCaps, JSON_THROW_ON_ERROR));
 
         $form = [];
         if($Zone === 0)
@@ -1604,7 +1609,6 @@ class DenonAVRTelnet extends AVRModule
             foreach ($profiles as $profile) {
                 if ($this->testAllProperties) {
                     $commandArea_max = $commandArea . '_max';
-                    /** @noinspection PhpVariableVariableInspection */
                     $Caps = AVR::$$commandArea_max;
                 } else {
                     $Caps = $AVRCaps[$commandArea];
@@ -1623,8 +1627,8 @@ class DenonAVRTelnet extends AVRModule
                     || in_array(substr($profile['Ident'], 0, 5), ['Zone2', 'Zone3'])) {
 
                     //select only the idents of the current zone
-                    if ((strpos($profile['Ident'], 'Z' . $Zone) === 0)
-                        || (strpos($profile['Ident'], 'Zone' . $Zone) === 0)) {
+                    if ((str_starts_with($profile['Ident'], 'Z' . $Zone))
+                        || (str_starts_with($profile['Ident'], 'Zone' . $Zone))) {
                         $item = $this->getTypeItem('CheckBox', $profile['Ident'], $profile['PropertyName'], $profile['Name'], $AVRCaps['Zone_Commands']);
                         if ($item){
                             $form[] = $item;

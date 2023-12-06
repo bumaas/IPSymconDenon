@@ -1,4 +1,4 @@
-<?php /** @noinspection AutoloadingIssuesInspection */
+<?php
 
 declare(strict_types=1);
 
@@ -30,7 +30,7 @@ class DenonDiscovery extends IPSModule
     private const MODID_DENON_TELNET    = '{DC733830-533B-43CD-98F5-23FC2E61287F}';
     private const MODID_CLIENT_SOCKET   = '{3CFF0FD9-E306-41DB-9B5A-9D06D38576C3}';
 
-    public function Create()
+    public function Create(): void
     {
         //Never delete this line!
         parent::Create();
@@ -84,16 +84,17 @@ class DenonDiscovery extends IPSModule
      * Liefert alle Geräte.
      *
      * @return array configlist all devices
+     * @throws \JsonException
      */
     private function Get_ConfiguratorValues(): array
     {
         $config_values = [];
 
         $configuredDevices = IPS_GetInstanceListByModuleID(self::MODID_DENON_TELNET);
-        $this->SendDebug('configured devices', json_encode($configuredDevices), 0);
+        $this->SendDebug('configured devices', json_encode($configuredDevices, JSON_THROW_ON_ERROR), 0);
 
         $discoveredDevices = $this->DiscoverDevices();
-        $this->SendDebug('discovered devices', json_encode($discoveredDevices), 0);
+        $this->SendDebug('discovered devices', json_encode($discoveredDevices, JSON_THROW_ON_ERROR), 0);
 
         foreach ($discoveredDevices as $device) {
             $instanceID     = 0;
@@ -173,7 +174,6 @@ class DenonDiscovery extends IPSModule
             'HOST: 239.255.255.250:1900',
             'MAN: "ssdp:discover"',
             'MX: 2',                    // maximum amount of seconds it takes for a device to respond
-            // 'ST: upnp:rootdevice'       //This defines the devices we would like to discover on the network.
             'ST: ' . self::WS_DISCOVERY_ST       //This defines the devices we would like to discover on the network.
         ];
         $SendData = implode("\r\n", $message) . "\r\n\r\n";
@@ -195,7 +195,7 @@ class DenonDiscovery extends IPSModule
             return [];
         }
 
-        // RECIEVE RESPONSE
+        // RECEIVE RESPONSE
         $device_info      = [];
         $IPAddress        = '';
         $Port             = 0;
@@ -212,7 +212,7 @@ class DenonDiscovery extends IPSModule
             if (!is_null($buf)) {
                 $device = $this->parseHeader($buf);
                 if (isset($device['SERVER'])) {
-                    if ((strpos($device['SERVER'], 'Denon') !== false) || (strpos($device['SERVER'], 'KnOS') !== false)) {
+                    if ((str_contains($device['SERVER'], 'Denon')) || (str_contains($device['SERVER'], 'KnOS'))) {
                         $locationInfo  = $this->GetDeviceInfoFromLocation($device['LOCATION']);
                         $device_info[] = [
                             'host'         => $IPAddress,
@@ -286,17 +286,16 @@ class DenonDiscovery extends IPSModule
      * build configuration form.
      *
      * @return string
+     * @throws \JsonException
      */
     public function GetConfigurationForm(): string
     {
         // return current form
-        $Form = json_encode(
-            [
-                'elements' => $this->FormElements(),
-                'actions'  => $this->FormActions(),
-                'status'   => []
-            ]
-        );
+        $Form = json_encode([
+                                'elements' => $this->FormElements(),
+                                'actions'  => $this->FormActions(),
+                                'status'   => []
+                            ], JSON_THROW_ON_ERROR);
         $this->SendDebug('FORM', $Form, 0);
         $this->SendDebug('FORM', json_last_error_msg(), 0);
         return $Form;
@@ -322,6 +321,7 @@ class DenonDiscovery extends IPSModule
      * return form actions
      *
      * @return array
+     * @throws \JsonException
      */
     private function FormActions(): array
     {

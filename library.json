@@ -4,9 +4,9 @@
   "name":          "Denon/Marantz AV Receiver",
   "url":           "www.denon.de",
   "compatibility": {
-    "version": "5.1"
+    "version": "7.0"
   },
   "version":       "2.10",
-  "build":         48,
-  "date":          1696411704
+  "build":         49,
+  "date":          1701870307
 }

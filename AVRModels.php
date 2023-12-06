@@ -250,22 +250,22 @@ class AVRs extends stdClass
 
 class AVR extends stdClass
 {
-    public static $Name = __CLASS__;
-    public static $internalID;
+    public static string $Name = __CLASS__;
+    public static int $internalID;
 
-    public static $InfoFunctions = ['MainZoneName', 'Model'];
-    public static $InfoFunctions_max = ['MainZoneName', 'Model'];
+    public static array $InfoFunctions = ['MainZoneName', 'Model'];
+    public static array $InfoFunctions_max = ['MainZoneName', 'Model'];
 
-    public static $AvrInfos = [];
-    public static $AvrInfos_max = [DENON_API_Commands::SYSMI, DENON_API_Commands::SYSDA, DENON_API_Commands::SSINFAISFSV];
+    public static array $AvrInfos = [];
+    public static array $AvrInfos_max = [DENON_API_Commands::SYSMI, DENON_API_Commands::SYSDA, DENON_API_Commands::SSINFAISFSV];
 
-    public static $PowerFunctions = [
+    public static array $PowerFunctions = [
         DENON_API_Commands::PW,
         DENON_API_Commands::ZM,
         DENON_API_Commands::SLP,
         DENON_API_Commands::MU,
     ];
-    public static $PowerFunctions_max = [
+    public static array $PowerFunctions_max = [
         DENON_API_Commands::PW,
         DENON_API_Commands::ZM,
         DENON_API_Commands::MU,
@@ -274,8 +274,8 @@ class AVR extends stdClass
         DENON_API_Commands::SLP,
     ];
 
-    public static $InputSettings = [];
-    public static $InputSettings_max = [
+    public static array $InputSettings = [];
+    public static array $InputSettings_max = [
         DENON_API_Commands::SI,
         DENON_API_Commands::MSSMART,
         DENON_API_Commands::MSQUICK,
@@ -283,8 +283,8 @@ class AVR extends stdClass
         DENON_API_Commands::DC,
         DENON_API_Commands::SV,
     ];
-    public static $SI_SubCommands = [];
-    public static $SV_SubCommands = [
+    public static array $SI_SubCommands = [];
+    public static array $SV_SubCommands = [
         DENON_API_Commands::IS_DVD,
         DENON_API_Commands::IS_BD,
         DENON_API_Commands::IS_TV,
@@ -298,23 +298,23 @@ class AVR extends stdClass
         DENON_API_Commands::IS_OFF,
     ];
 
-    public static $SurroundMode = [DENON_API_Commands::MS, DENON_API_Commands::SURROUNDDISPLAY];
-    public static $SurroundMode_max = [DENON_API_Commands::MS, DENON_API_Commands::SURROUNDDISPLAY];
+    public static array $SurroundMode = [DENON_API_Commands::MS, DENON_API_Commands::SURROUNDDISPLAY];
+    public static array $SurroundMode_max = [DENON_API_Commands::MS, DENON_API_Commands::SURROUNDDISPLAY];
 
-    public static $MS_SubCommands = [DENON_API_Commands::MSDIRECT,
+    public static array $MS_SubCommands = [DENON_API_Commands::MSDIRECT,
         DENON_API_Commands::MSSTEREO,
         DENON_API_Commands::MSDOLBYDIGITAL,
         DENON_API_Commands::MSDTSSURROUND,
         DENON_API_Commands::MSMCHSTEREO,
         DENON_API_Commands::MSVIRTUAL,
     ];
-    public static $CV_Commands = [
+    public static array $CV_Commands = [
         DENON_API_Commands::MV,
         DENON_API_Commands::CVFL, DENON_API_Commands::CVFR, DENON_API_Commands::CVC,
         DENON_API_Commands::CVSW,
         DENON_API_Commands::CVSL, DENON_API_Commands::CVSR,
     ];
-    public static $CV_Commands_max = [
+    public static array $CV_Commands_max = [
         DENON_API_Commands::MV,
         DENON_API_Commands::CVFL, DENON_API_Commands::CVFR, DENON_API_Commands::CVC,
         DENON_API_Commands::CVSW,
@@ -335,14 +335,14 @@ class AVR extends stdClass
         DENON_API_Commands::CVZRL,
         DENON_API_Commands::CVTTR,
     ];
-    public static $VS_Commands = [
+    public static array $VS_Commands = [
         DENON_API_Commands::VSMONI,
         DENON_API_Commands::VSSC, DENON_API_Commands::VSSCH,
         DENON_API_Commands::VSVST,
         DENON_API_Commands::VSAUDIO,
         DENON_API_Commands::VSVPM,
     ];
-    public static $VS_Commands_max = [
+    public static array $VS_Commands_max = [
         DENON_API_Commands::VSASP,
         DENON_API_Commands::VSMONI,
         DENON_API_Commands::VSSC, DENON_API_Commands::VSSCH,
@@ -350,16 +350,16 @@ class AVR extends stdClass
         DENON_API_Commands::VSAUDIO,
         DENON_API_Commands::VSVPM,
     ];
-    public static $VSSC_SubCommands = [];
-    public static $VSSCH_SubCommands = [];
+    public static array $VSSC_SubCommands = [];
+    public static array $VSSCH_SubCommands = [];
 
-    public static $SystemControl_Commands = [
+    public static array $SystemControl_Commands = [
         DENON_API_Commands::MN,
         DENON_API_Commands::MNMEN,
         DENON_API_Commands::DISPLAY,
         DENON_API_Commands::NS,
     ];
-    public static $SystemControl_Commands_max = [
+    public static array $SystemControl_Commands_max = [
         DENON_API_Commands::MN,
         DENON_API_Commands::MNMEN,
         DENON_API_Commands::MNSRC,
@@ -371,8 +371,8 @@ class AVR extends stdClass
         DENON_API_Commands::BTTX,
         DENON_API_Commands::SPPR,
     ];
-    public static $PS_Commands = [];
-    public static $PS_Commands_max = [
+    public static array $PS_Commands = [];
+    public static array $PS_Commands_max = [
         DENON_API_Commands::PSFRONT,
         DENON_API_Commands::PSSP,
         DENON_API_Commands::PSFH,
@@ -428,23 +428,23 @@ class AVR extends stdClass
         DENON_API_Commands::PSRSZ,
         DENON_API_Commands::PSRSTR,
     ];
-    public static $PSSP_SubCommands = [];
-    public static $PSDYNVOL_SubCommands = [ //bei neueren Geräten
+    public static array $PSSP_SubCommands = [];
+    public static array $PSDYNVOL_SubCommands = [ //bei neueren Geräten
         DENON_API_Commands::DYNVOLOFF,
         DENON_API_Commands::DYNVOLLIT,
         DENON_API_Commands::DYNVOLMED,
         DENON_API_Commands::DYNVOLHEV,
     ];
-    public static $PV_Commands = [];
-    public static $PV_Commands_max = [
+    public static array $PV_Commands = [];
+    public static array $PV_Commands_max = [
         DENON_API_Commands::PVPICT,
         DENON_API_Commands::PVCN, DENON_API_Commands::PVBR,
         DENON_API_Commands::PVST,
         DENON_API_Commands::PVCM, DENON_API_Commands::PVHUE,
         DENON_API_Commands::PVDNR, DENON_API_Commands::PVENH,
     ];
-    public static $Zone_Commands = [];
-    public static $Zone_Commands_max = [
+    public static array $Zone_Commands = [];
+    public static array $Zone_Commands_max = [
         DENON_API_Commands::Z2POWER, DENON_API_Commands::Z3POWER,
         DENON_API_Commands::Z2INPUT, DENON_API_Commands::Z3INPUT,
         DENON_API_Commands::Z2VOL, DENON_API_Commands::Z3VOL,
@@ -462,20 +462,20 @@ class AVR extends stdClass
         'Model', 'Zone2Name', 'Zone3Name',
     ];
 
-    public static $Tuner_Control = [
+    public static array $Tuner_Control = [
         DENON_API_Commands::TPAN,
         DENON_API_Commands::TMAN_BAND,
         DENON_API_Commands::TMAN_MODE,
     ];
 
-    public static $Tuner_Control_max = [
+    public static array $Tuner_Control_max = [
         DENON_API_Commands::TPAN,
         DENON_API_Commands::TMAN_BAND,
         DENON_API_Commands::TMAN_MODE,
     ];
 
 
-    public static $httpMainZone = DENON_HTTP_Interface::MainForm;
+    public static string $httpMainZone = DENON_HTTP_Interface::MainForm;
 
     public static function getCapabilities(): array
     {
@@ -686,7 +686,7 @@ class AVR extends stdClass
 
     public function getAVRCapabilitiesByAVRId(int $id)
     {
-        foreach (AVRs::getAllAVRs() as $AVRType => $Caps) {
+        foreach (AVRs::getAllAVRs() as $Caps) {
             if ($Caps['internalID'] === $id) {
                 return $Caps;
             }
