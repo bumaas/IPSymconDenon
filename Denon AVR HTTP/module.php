@@ -128,7 +128,6 @@ class DenonAVRHTTP extends AVRModule
 
         //Input übergeben
         $InputMapping = DAVRSH_GetInputVarMapping($this->GetParent());
-        IPS_LogMessage(get_class() . '::' . __FUNCTION__, 'InputMapping: ' . json_encode($InputMapping));
 
         //Command aus Ident
         $APICommand = $this->GetAPICommandFromIdent($Ident);
@@ -136,7 +135,7 @@ class DenonAVRHTTP extends AVRModule
         // Subcommand holen
         $AVRType = $this->GetAVRType($this->GetManufacturerName());
         $APISubCommand = (new DENONIPSProfiles($AVRType, $InputMapping))->GetSubCommandOfValue($Ident, $Value);
-        IPS_LogMessage(get_class() . '::' . __FUNCTION__, 'Ident: ' . $Ident . ', Value: ' . $Value . ', SubCommand: ' . $APISubCommand);
+        $this->SendDebug(get_class() . '::' . __FUNCTION__, 'Ident: ' . $Ident . ', Value: ' . $Value . ', SubCommand: ' . $APISubCommand, 0);
 
         // Daten senden        Rückgabe ist egal, Variable wird automatisch durch getstatus() im IO-Modul nachgeführt
         try {
@@ -280,7 +279,7 @@ class DenonAVRHTTP extends AVRModule
             ]
         ];
 
-        if($manufacturername == 'none')
+        if($manufacturername === 'none')
         {
             $this->SendDebug('Form', 'no manufacturer selected', 0);
         }
@@ -466,7 +465,7 @@ class DenonAVRHTTP extends AVRModule
         $manufacturername = $this->GetManufacturerName();
         $form = [
         ];
-        if ($manufacturername == 'none') {
+        if ($manufacturername === 'none') {
             $form = array_merge_recursive(
                 $form,
                 []

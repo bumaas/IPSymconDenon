@@ -399,7 +399,7 @@ class AVRModule extends IPSModule
     {
         if (count($Associations) === 0) {
             trigger_error(__FUNCTION__ . ': Associations of profil "' . $ProfileName . '" is empty');
-            IPS_LogMessage(__FUNCTION__, json_encode(debug_backtrace(), JSON_THROW_ON_ERROR));
+            $this->Logger_Err(__FUNCTION__ . ': ' .  json_encode(debug_backtrace(), JSON_THROW_ON_ERROR));
 
             return;
         }
@@ -2766,7 +2766,7 @@ class DENONIPSVarType extends stdClass
                 }
             }
             if (count($profile_without_pos) > 0) {
-                IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'Order: ' . json_encode(static::$order, JSON_THROW_ON_ERROR));
+                call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'Order: ' . json_encode(static::$order, JSON_THROW_ON_ERROR));
                 trigger_error(__CLASS__ . '::' . __FUNCTION__ . ': Profiles without positions: ' . json_encode(
                                   $profile_without_pos,
                                   JSON_THROW_ON_ERROR
@@ -2786,8 +2786,8 @@ class DENONIPSVarType extends stdClass
                 }
             }
             if (count($order_without_definition) > 0) {
-                IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'Profiles: ' . json_encode($this->profiles, JSON_THROW_ON_ERROR));
-                IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'Keys: ' . json_encode(array_keys($this->profiles), JSON_THROW_ON_ERROR));
+                call_user_func($this->Logger_Dbg,__CLASS__ . '::' . __FUNCTION__, 'Profiles: ' . json_encode($this->profiles, JSON_THROW_ON_ERROR));
+                call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'Keys: ' . json_encode(array_keys($this->profiles), JSON_THROW_ON_ERROR));
                 trigger_error(__CLASS__ . '::' . __FUNCTION__ . ': Order Element without definition: ' . json_encode(
                                   $order_without_definition,
                                   JSON_THROW_ON_ERROR
@@ -2828,7 +2828,7 @@ class DENONIPSVarType extends stdClass
                               JSON_THROW_ON_ERROR
                           ) . PHP_EOL . 'Capabilities: ' . json_encode($all_capabilities, JSON_THROW_ON_ERROR)
             );
-            IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'Profiles not used in Capabilities(MAX):' . json_encode(
+            call_user_func($this->Logger_Dbg,__CLASS__ . '::' . __FUNCTION__, 'Profiles not used in Capabilities(MAX):' . json_encode(
                                                               $profile_not_used_in_caps,
                                                               JSON_THROW_ON_ERROR
                                                           ) . PHP_EOL . 'Capabilities: ' . json_encode($all_capabilities, JSON_THROW_ON_ERROR)
@@ -2895,14 +2895,12 @@ class DENONIPSVarType extends stdClass
         foreach ($this->profiles as $profile) {
             if (($profile['Ident'] === $Ident) && isset($profile['Associations'])) {
                 foreach ($profile['Associations'] as $item) {
-                    switch ($profile['Type']) {
-                        case DENONIPSVarType::vtInteger:
-                            if (strtoupper($item[1]) === strtoupper($ValueName)) {
-                                $ret = $item[2];
-                            }
-                            break;
-                        default:
-                            trigger_error(__FUNCTION__ . ': unknown type: ' . $profile['Type']);
+                    if ($profile['Type'] == DENONIPSVarType::vtInteger) {
+                        if (strtoupper($item[1]) === strtoupper($ValueName)) {
+                            $ret = $item[2];
+                        }
+                    } else {
+                        trigger_error(__FUNCTION__ . ': unknown type: ' . $profile['Type']);
                     }
                     if ($ret !== null) {
                         break;
@@ -4675,7 +4673,7 @@ class DenonAVRCP_API_Data extends stdClass
     {
         $debug = false;
         if ($debug){
-            IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'data: ' . json_encode($data, JSON_THROW_ON_ERROR));
+            call_user_func($this->Logger_Dbg,__CLASS__ . '::' . __FUNCTION__, 'data: ' . json_encode($data, JSON_THROW_ON_ERROR));
         }
 
         $Display = [];
@@ -4684,8 +4682,8 @@ class DenonAVRCP_API_Data extends stdClass
             $Row = substr($response, 3, 1);
             if ((stripos($response, 'NSA') === 0) || (stripos($response, 'NSE') === 0)) { //Display auslesen
                 if ($debug) {
-                    IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'response (' . $key . ') found: ' . json_encode($response, JSON_THROW_ON_ERROR));
-                    IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'response (' . $key . ') found (hex): ' . bin2hex($response));
+                    call_user_func($this->Logger_Dbg,__CLASS__ . '::' . __FUNCTION__, 'response (' . $key . ') found: ' . json_encode($response, JSON_THROW_ON_ERROR));
+                    call_user_func($this->Logger_Dbg,__CLASS__ . '::' . __FUNCTION__, 'response (' . $key . ') found (hex): ' . bin2hex($response));
                 }
                 //the first characters ('NSEx', 'NSAx') are cut
                 $response = rtrim(substr($response, 4));
@@ -4709,7 +4707,7 @@ class DenonAVRCP_API_Data extends stdClass
 
         //Debug Log
         if ($debug) {
-            IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'data: ' . json_encode($this->Data, JSON_THROW_ON_ERROR));
+            call_user_func($this->Logger_Dbg,__CLASS__ . '::' . __FUNCTION__, 'data: ' . json_encode($this->Data, JSON_THROW_ON_ERROR));
         }
 
         // Response an besondere Idents anpassen
@@ -4758,7 +4756,7 @@ class DenonAVRCP_API_Data extends stdClass
         foreach ($this->Data as $key => $response) {
             if (array_key_exists($response, $specialcommands)) {
                 if ($debug) {
-                    IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, $this->Data[$key] . ' replaced by ' . $specialcommands[$response]);
+                    call_user_func($this->Logger_Dbg,__CLASS__ . '::' . __FUNCTION__, $this->Data[$key] . ' replaced by ' . $specialcommands[$response]);
                 }
                 $this->Data[$key] = $specialcommands[$response];
             }
@@ -4842,14 +4840,14 @@ class DenonAVRCP_API_Data extends stdClass
 
             $response_found = false;
             if ($debug) { ///sollte wieder geböscht werden
-                IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, sprintf('VarMapping: %s', json_encode($VarMapping, JSON_THROW_ON_ERROR)));
+                call_user_func($this->Logger_Dbg,__CLASS__ . '::' . __FUNCTION__, sprintf('VarMapping: %s', json_encode($VarMapping, JSON_THROW_ON_ERROR)));
             }
 
             foreach ($VarMapping as $Command => $item) { //Zuordnung suchen
                 if (stripos($response, $Command) === 0) {// Subcommand ermitteln
                     $ResponseSubCommand = substr($response, strlen($Command));
                     if ($debug) {
-                        IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, sprintf('Command found: %s, SubCommand: %s', $Command, $ResponseSubCommand));
+                        call_user_func($this->Logger_Dbg,__CLASS__ . '::' . __FUNCTION__, sprintf('Command found: %s, SubCommand: %s', $Command, $ResponseSubCommand));
                     }
 
                     /** @noinspection DegradedSwitchInspection */
@@ -4878,7 +4876,7 @@ class DenonAVRCP_API_Data extends stdClass
 
                         default:
                             if (!isset($item['ValueMapping'])) {
-                                IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'ValueMapping not set - Item: ' . json_encode(
+                                call_user_func($this->Logger_Dbg,__CLASS__ . '::' . __FUNCTION__, 'ValueMapping not set - Item: ' . json_encode(
                                                                                   $item,
                                                                                   JSON_THROW_ON_ERROR
                                                                               )
@@ -4901,12 +4899,12 @@ class DenonAVRCP_API_Data extends stdClass
                                     'Subcommand' => $ResponseSubCommand,
                                 ];
                             } elseif (in_array($Command, [DENON_API_Commands::SI, DENON_API_Commands::Z2INPUT, DENON_API_Commands::Z3INPUT], true) && in_array($ResponseSubCommand, [DENON_API_Commands::IS_FAVORITES, DENON_API_Commands::IS_IRADIO, DENON_API_Commands::IS_SERVER, DENON_API_Commands::IS_NAPSTER, DENON_API_Commands::IS_LASTFM, DENON_API_Commands::IS_FLICKR], true)) {
-                                IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, sprintf('*Hint*: Input Source %s not configured, check your configuration. Current inputs: %s'
+                                call_user_func($this->Logger_Dbg,__CLASS__ . '::' . __FUNCTION__, sprintf('*Hint*: Input Source %s not configured, check your configuration. Current inputs: %s'
                                     ,                                                   $ResponseSubCommand,
                                                                                         json_encode($item['ValueMapping'], JSON_THROW_ON_ERROR)
                                 ));
                             } else {
-                                IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, sprintf('*Warning*: No value found for SubCommand \'%s\' in response \'%s\', ValueMapping: %s, Model: %s'
+                                call_user_func($this->Logger_Dbg,__CLASS__ . '::' . __FUNCTION__, sprintf('*Warning*: No value found for SubCommand \'%s\' in response \'%s\', ValueMapping: %s, Model: %s'
                                     ,                                                   $ResponseSubCommand, $response,
                                                                                         json_encode($item['ValueMapping'], JSON_THROW_ON_ERROR), $this->AVRType));
                             }
@@ -4918,7 +4916,7 @@ class DenonAVRCP_API_Data extends stdClass
                 }
             }
             if (!$response_found) {
-                IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, sprintf('*Warning*: No mapping found for response \'%s\', Model: %s', $response, $this->AVRType));
+                call_user_func($this->Logger_Dbg,__CLASS__ . '::' . __FUNCTION__, sprintf('*Warning*: No mapping found for response \'%s\', Model: %s', $response, $this->AVRType));
             }
         }
 
@@ -4931,7 +4929,7 @@ class DenonAVRCP_API_Data extends stdClass
 
         //Debug Log
         if ($debug) {
-            IPS_LogMessage(__CLASS__ . '::' . __FUNCTION__, 'datasend:' . json_encode($datasend, JSON_THROW_ON_ERROR));
+            call_user_func($this->Logger_Dbg,__CLASS__ . '::' . __FUNCTION__, 'datasend:' . json_encode($datasend, JSON_THROW_ON_ERROR));
         }
 
         return $datasend;

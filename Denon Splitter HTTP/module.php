@@ -56,9 +56,7 @@ class DenonSplitterHTTP extends IPSModule
 
     public function GetInputVarMapping()
     {
-        $InputsMapping = DAVRIO_GetInputVarMapping($this->GetParent());
-
-        return $InputsMapping;
+        return DAVRIO_GetInputVarMapping($this->GetParent());
     }
 
     //################# DUMMYS / WOARKAROUNDS - protected
@@ -78,8 +76,6 @@ class DenonSplitterHTTP extends IPSModule
         $data   = json_decode($JSONString, false);
         $dataio = json_encode($data->Buffer);
         $this->SendDebug('Buffer IN', $dataio, 0);
-
-        //IPS_LogMessage("ReceiveData Denon HTTP Splitter", utf8_decode($data->Buffer)); //utf8_decode geht nur bei string
 
         // Hier werden die Daten verarbeitet
 

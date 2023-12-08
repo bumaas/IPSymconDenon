@@ -43,10 +43,7 @@ class DenonSplitterTelnet extends IPSModule
         parent::ApplyChanges();
 
         $this->RegisterVariableString('InputMapping', 'Input Mapping', '', 1);
-        IPS_SetHidden($this->GetIDForIdent('InputMapping'), true);
-
         $this->RegisterVariableString('AVRType', 'AVRType', '', 2);
-        IPS_SetHidden($this->GetIDForIdent('AVRType'), true);
 
         if ($this->HasActiveParent()) {
             //Instanz aktiv
@@ -133,7 +130,7 @@ class DenonSplitterTelnet extends IPSModule
         $InputsMapping = json_decode($this->GetValue('InputMapping'), false, 512, JSON_THROW_ON_ERROR);
 
         if (!isset($InputsMapping->AVRType)) {
-            IPS_LogMessage(__FUNCTION__, 'AVRType not set!');
+            $this->Logger_Err(__FUNCTION__ . ': AVRType not set!');
 
             return false;
         }

@@ -83,7 +83,6 @@ class DenonAVRIOHTTP extends IPSModule
         try {
             // Absenden an Denon AVR
             $command = $data->Buffer;
-            IPS_LogMessage('Denon AVR I/O', 'HTTP Command Out ' . json_encode($command));
             $this->SendDebug('Command Out', json_encode($command), 0);
             $this->SendCommand($command);
         } catch (Exception $ex) {
@@ -159,7 +158,7 @@ class DenonAVRIOHTTP extends IPSModule
         } else {
             echo "Can not send to parent \n";
             $this->SendDebug('Denon HTTP I/O:', 'Can not send to AVR', 0);
-            IPS_LogMessage('Denon AVR I/O', 'Can not send to parent');
+            $this->LogMessage('Denon AVR I/O: ' . 'Can not send to parent', KL_ERROR);
             $this->unlock('HTTPCommandSend');
             //throw new Exception("Can not send to parent",E_USER_NOTICE);
         }
@@ -179,7 +178,7 @@ class DenonAVRIOHTTP extends IPSModule
         } else {
             echo "Can not get response \n";
             $this->SendDebug('Denon HTTP I/O:', 'Can not get response', 0);
-            IPS_LogMessage('Denon AVR I/O', 'Can not get response');
+            $this->LogMessage('Denon AVR I/O: ' . 'Can not get response', KL_ERROR);
             $this->unlock('HTTPCommandSend');
         }
     }
