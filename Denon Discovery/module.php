@@ -7,7 +7,6 @@ require_once __DIR__ . '/../DenonClass.php';  // diverse Klassen
 class DenonDiscovery extends IPSModule
 {
 
-    private const PROPERTY_TARGET_CATEGORY_ID = 'targetCategoryID';
     /**
      * The maximum number of seconds that will be allowed for the discovery request.
      */
@@ -35,8 +34,6 @@ class DenonDiscovery extends IPSModule
         //Never delete this line!
         parent::Create();
 
-        $this->RegisterPropertyInteger(self::PROPERTY_TARGET_CATEGORY_ID, 0);
-
         //we will wait until the kernel is ready
         $this->RegisterMessage(0, IPS_KERNELMESSAGE);
     }
@@ -44,7 +41,7 @@ class DenonDiscovery extends IPSModule
     /**
      * Interne Funktion des SDK.
      */
-    public function ApplyChanges()
+    public function ApplyChanges(): void
     {
         //Never delete this line!
         parent::ApplyChanges();
@@ -56,28 +53,11 @@ class DenonDiscovery extends IPSModule
         $this->SetStatus(IS_ACTIVE);
     }
 
-    public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
+    public function MessageSink($TimeStamp, $SenderID, $Message, $Data): void
     {
         if (($Message === IPS_KERNELMESSAGE) && ($Data[0] === KR_READY)) {
             $this->ApplyChanges();
         }
-    }
-
-    private function getPathOfCategory(int $categoryId): array
-    {
-        if ($categoryId === 0) {
-            return [];
-        }
-
-        $path[]   = IPS_GetName($categoryId);
-        $parentId = IPS_GetObject($categoryId)['ParentID'];
-
-        while ($parentId > 0) {
-            $path[]   = IPS_GetName($parentId);
-            $parentId = IPS_GetObject($parentId)['ParentID'];
-        }
-
-        return array_reverse($path);
     }
 
     /**
@@ -132,8 +112,7 @@ class DenonDiscovery extends IPSModule
                             'manufacturer' => $manufacturerID,
                             'AVRTypeDenon' => $AVRType,
                             'Zone'         => 0
-                        ],
-                        'location'      => $this->getPathOfCategory($this->ReadPropertyInteger(self::PROPERTY_TARGET_CATEGORY_ID))
+                        ]
                     ],
                     [
                         'moduleID'      => self::MODID_SPLITTER_TELNET,
@@ -292,29 +271,12 @@ class DenonDiscovery extends IPSModule
     {
         // return current form
         $Form = json_encode([
-                                'elements' => $this->FormElements(),
-                                'actions'  => $this->FormActions(),
-                                'status'   => []
+                                'actions' => $this->FormActions(),
+                                'status'  => []
                             ], JSON_THROW_ON_ERROR);
         $this->SendDebug('FORM', $Form, 0);
         $this->SendDebug('FORM', json_last_error_msg(), 0);
         return $Form;
-    }
-
-    /**
-     * return form elements
-     *
-     * @return array
-     */
-    private function FormElements(): array
-    {
-        return [
-            [
-                'type'    => 'SelectCategory',
-                'name'    => 'targetCategoryID',
-                'caption' => 'Target Category'
-            ]
-        ];
     }
 
     /**
