@@ -3002,9 +3002,10 @@ class DENONIPSVarType extends stdClass
     }
 }
 
-#[AllowDynamicProperties] class DENON_StatusHTML extends stdClass
+class DENON_StatusHTML extends stdClass
 {
     private bool $debug = false; //wird im Constructor gesetzt
+    private $Logger_Dbg;
 
     public function __construct(callable $Logger_Dbg = null)
     {
@@ -4643,7 +4644,10 @@ class DenonAVRCP_API_Data extends stdClass
         DENON_API_Commands::DSDPUREDIRECT  => 'DSD Pure Direct',
     ];
 
-    public function __construct($AVRType, array $Data)
+    private $Logger_Dbg;
+
+
+    public function __construct($AVRType, array $Data, callable $Logger_Dbg)
     {
         if ($AVRType === null) {
             trigger_error(__CLASS__ . '::' . __FUNCTION__ . ': AVRType ist nicht gesetzt!');
@@ -4651,6 +4655,9 @@ class DenonAVRCP_API_Data extends stdClass
 
         $this->AVRType = $AVRType;
         $this->Data = $Data;
+
+        $this->Logger_Dbg = $Logger_Dbg;
+
     }
 
     private function getshowsurrounddisplay($response)
