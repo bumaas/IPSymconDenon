@@ -13,7 +13,7 @@ Module for IP-Symcon version 5.1 or higher. Allows communication with a Denon AV
 1. [Features](#1-features)
 2. [Requirements](#2-requirements)
 3. [Installation](#3-installation)
-4. [Function reference](#4-functionreference)
+4. [Function reference](#4-function-reference)
 5. [Configuration](#5-configuration)
 6. [Annex](#6-annex)
 
@@ -45,7 +45,8 @@ AVR-X4200W, AVR-X4300H, AVR-X4400H, AVR-X4500H, AVR-X4700H, AVR-X5200W, AVR-X620
 
 Marantz-NR1504,	Marantz-NR1506,	Marantz-NR1508,	Marantz-NR1509,	Marantz-NR1602,	Marantz-NR1603,	Marantz-NR1604,	Marantz-NR1605,	Marantz-NR1606,	Marantz-NR1607,	Marantz-NR1608, Marantz-NR1609, Marantz-NR1711, Marantz-SR5006, Marantz-SR5007, Marantz-SR5008, Marantz-SR5009, Marantz-SR5010,
 Marantz-SR5011, Marantz-SR5012, Marantz-SR5013, Marantz-SR5015,	Marantz-SR6005,	Marantz-SR6006,	Marantz-SR6007, Marantz-SR6008, Marantz-SR6009, Marantz-SR6010, Marantz-SR6011, Marantz-SR6012, Marantz-SR6013, Marantz-SR6015, Marantz-SR7005, Marantz-SR7007, Marantz-SR7008, Marantz-SR7009, Marantz-SR7010,
-Marantz-SR7011, Marantz-SR7012,  Marantz-SR7013, Marantz-SR7015, Marantz-SR8015, Marantz-AV7005, Marantz-AV7701, Marantz-AV7702, Marantz-AV7702 mk II, Marantz-AV7703, Marantz-AV7704, Marantz-AV7705, Marantz-AV7706, Marantz-AV8801, Marantz-AV8802
+Marantz-SR7011, Marantz-SR7012,  Marantz-SR7013, Marantz-SR7015, Marantz-SR8015, Marantz-AV7005, Marantz-AV7701, Marantz-AV7702, Marantz-AV7702 mk II, Marantz-AV7703, Marantz-AV7704, Marantz-AV7705, Marantz-AV7706, Marantz-AV8801, Marantz-AV8802, Marantz-STEREO 70s, Marantz-CINEMA 70s, Marantz-CINEMA 60,
+Marantz-CINEMA 50, Marantz-CINEMA 40
 
 ## 2. Requirements
 

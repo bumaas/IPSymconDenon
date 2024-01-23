@@ -856,6 +856,7 @@ class DENONIPSVarType extends stdClass
     //Profiltype
     public const ptPower = 'Power';
     public const ptMasterVolume = 'MasterVolume';
+    public const ptBalance = 'Balance';
 
     public const ptChannelVolumeFL = 'ChannelVolumeFL';
     public const ptChannelVolumeFR = 'ChannelVolumeFR';
@@ -900,6 +901,7 @@ class DENONIPSVarType extends stdClass
     public const ptAudysseyLFC = 'AudysseyLFC';
     public const ptAudysseyContainmentAmount = 'AudysseyContainmantAmount';
     public const ptReferenceLevel = 'ReferenceLevel';
+    public const ptDiracLiveFilter = 'DiracLiveFilter';
     public const ptDynamicVolume = 'DynamicVolume';
     public const ptAudysseyDSX = 'AudysseyDSX';
     public const ptStageWidth = 'StageWidth';
@@ -1079,6 +1081,7 @@ class DENONIPSVarType extends stdClass
 
         //Channel Volumes
         self::ptMasterVolume,
+        self::ptBalance,
         self::ptChannelVolumeFL,
         self::ptChannelVolumeFR,
         self::ptChannelVolumeC,
@@ -1156,6 +1159,7 @@ class DENONIPSVarType extends stdClass
         self::ptMultiEQMode,
         self::ptDynamicEQ,
         self::ptReferenceLevel,
+        self::ptDiracLiveFilter,
         self::ptDynamicVolume,
         self::ptAudysseyLFC,
         self::ptAudysseyContainmentAmount,
@@ -1497,6 +1501,38 @@ class DENONIPSVarType extends stdClass
 
             //Ident, Variablenname, Profilesettings
             //Associations: Value, Label, Association
+            self::ptBalance => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::BL, 'Name' => 'Balance',
+                                   'PropertyName'                        => 'Balance',
+                                   'Profilesettings'                     => ['', '', '', 0, 0, 0, 0],
+                                   'Associations'                        => [
+                                       [-12, 'L 12', 'L12'],
+                                       [-11, 'L 11', 'L11'],
+                                       [-10, 'L 10', 'L10'],
+                                       [-9, 'L 9', 'L09'],
+                                       [-8, 'L 8', 'L08'],
+                                       [-7, 'L 7', 'L07'],
+                                       [-6, 'L 6', 'L06'],
+                                       [-5, 'L 5', 'L05'],
+                                       [-4, 'L 4', 'L04'],
+                                       [-3, 'L 3', 'L03'],
+                                       [-2, 'L 2', 'L02'],
+                                       [-1, 'L 1', 'L01'],
+                                       [0, '0', '0'],
+                                       [1, 'R 1', 'R01'],
+                                       [2, 'R 2', 'R02'],
+                                       [3, 'R 3', 'R03'],
+                                       [4, 'R 4', 'R04'],
+                                       [5, 'R 5', 'R05'],
+                                       [6, 'R 6', 'R06'],
+                                       [7, 'R 7', 'R07'],
+                                       [8, 'R 8', 'R08'],
+                                       [9, 'R 9', 'R09'],
+                                       [10, 'R 10', 'R10'],
+                                       [11, 'R 11', 'R11'],
+                                       [12, 'R 12', 'R12'],
+                                   ],
+            ],
+
             self::ptInputSource => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::SI, 'Name' => 'Input Source',
                 'PropertyName'                         => 'InputSource',
                 'Profilesettings'                      => ['Database', '', '', 0, 0, 0, 0],
@@ -1778,6 +1814,16 @@ class DENONIPSVarType extends stdClass
                     [5, 'Offset 5', DENON_API_Commands::REFLEV5],
                     [10, 'Offset 10', DENON_API_Commands::REFLEV10],
                     [15, 'Offset 15', DENON_API_Commands::REFLEV15],
+                ],
+            ],
+            self::ptDiracLiveFilter   => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::PSDIRAC, 'Name' => 'Dirac Live Filter',
+                'PropertyName'                              => 'DiracLiveFilter',
+                'Profilesettings'                           => ['Intensity', '', '', 0, 0, 0, 0],
+                'Associations'                              => [
+                    [0, 'Off', DENON_API_Commands::DIRACOFF],
+                    [1, 'Slot 1', DENON_API_Commands::DIRAC1],
+                    [2, 'Slot 2', DENON_API_Commands::DIRAC2],
+                    [3, 'Slot 3', DENON_API_Commands::DIRAC3]
                 ],
             ],
             self::ptPLIIZHeightGain => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::PSPHG, 'Name' => 'PLIIZ Height Gain',
@@ -3475,6 +3521,7 @@ class DENON_API_Commands extends stdClass
     //MAIN Zone
     public const PW = 'PW'; // Power
     public const MV = 'MV'; // Master Volume
+    public const BL = 'BL'; // Balance
     //CV
     public const CVFL = 'CVFL'; // Channel Volume Front Left
     public const CVFR = 'CVFR'; // Channel Volume Front Right
@@ -4066,6 +4113,13 @@ class DENON_API_Commands extends stdClass
     public const REFLEV15 = ' 15'; // Reference Level Offset=15dB
     public const REFLEV = ' ?'; // Return PSREFLEV Status
 
+    //PSREFLEV Reference Level Offset
+    public const DIRAC1 = ' 1'; // Filter Slot 1
+    public const DIRAC2 = ' 2'; // Filter Slot 2
+    public const DIRAC3 = ' 3'; // Filter Slot 3
+    public const DIRACOFF = ' OFF'; // Filter Off
+
+
     //PSDYNVOL (old version)
     public const DYNVOLNGT = ' NGT'; // Dynamic Volume = Midnight
     public const DYNVOLEVE = ' EVE'; // Dynamic Volume = Evening
@@ -4465,6 +4519,7 @@ class DENON_API_Commands extends stdClass
     public const PSAUROMODEDRCT = ' DRCTSMA'; // Auro 3D Mode Direct
     public const PSAUROMODEEXP = ' EXP'; // Auro 3D Mode Channel Expansion
 
+    public const PSDIRAC = 'PSDIRAC'; //Dirac Live Filter
     public const CVSHL = 'CVSHL'; // Surround Height Left
     public const CVSHR = 'CVSHR'; // Surround Height Right
     public const CVTS = 'CVTS'; // Top Surround

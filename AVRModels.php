@@ -113,12 +113,19 @@ require_once __DIR__ . '/DenonAVR.php';  // diverse Klassen
                 103 => "Marantz-SR6013", //
                 104 => "Marantz-SR7013", //
                 105 => "Marantz-AV7705", //
-                106 => "Marantz-NR1711", //
-                107 => "Marantz-SR5015", //
-                108 => "Marantz-SR6015", //
-                109 => "Marantz-SR7015", //
-                110 => "Marantz-SR8015", //
-                111 => "Marantz-AV7706", //
+                106 => "Marantz-NR1711", // 7.2
+                107 => "Marantz-SR5015", // 7.2
+                108 => "Marantz-SR6015", // 7.2
+                109 => "Marantz-SR7015", // 11.2
+                110 => "Marantz-SR8015", // 11.2
+                111 => "Marantz-AV7706", // 11.2
+                112 => "Marantz-STEREO70s", // 7.2
+                113 => "Marantz-CINEMA70s", // 7.2 -> NR1711
+                114 => "Marantz-CINEMA60", // 7.2 -> SR5015
+                115 => "Marantz-CINEMA50", // 9.4 -> SR6015
+                116 => "Marantz-CINEMA40", // 11.4, 9 Endstufen -> SR7015
+         //       117 => "Marantz-CINEMA30", //  -> SR8015
+                118 => "Marantz-AV10", // 15.4 (neu)
 
                 50 => "None"
  */
@@ -130,56 +137,56 @@ class AVRs extends stdClass
         //supported Denon and Marantz models
         //Hint: the order of this list determines the order of selectable AVRs in IPS Instances
         return [
-            Denon_AVR_3808A::$Name     => Denon_AVR_3808A::getCapabilities(),
-            Denon_AVR_3310::$Name      => Denon_AVR_3310::getCapabilities(),
-            Denon_AVR_3311::$Name      => Denon_AVR_3311::getCapabilities(),
-            Denon_AVR_3312::$Name      => Denon_AVR_3312::getCapabilities(),
-            Denon_AVR_3313::$Name      => Denon_AVR_3313::getCapabilities(),
-            Denon_AVR_4310::$Name      => Denon_AVR_4310::getCapabilities(),
-            Denon_AVR_4311::$Name      => Denon_AVR_4311::getCapabilities(),
-            Denon_AVR_4810::$Name      => Denon_AVR_4810::getCapabilities(),
-            Denon_AVR_X1100W::$Name    => Denon_AVR_X1100W::getCapabilities(),
-            Denon_AVR_X1200W::$Name    => Denon_AVR_X1200W::getCapabilities(),
-            Denon_AVR_X1300W::$Name    => Denon_AVR_X1300W::getCapabilities(),
-            Denon_AVR_X1400H::$Name    => Denon_AVR_X1400H::getCapabilities(),
-            Denon_AVR_X1500H::$Name    => Denon_AVR_X1500H::getCapabilities(),
-            Denon_AVR_X1600H::$Name    => Denon_AVR_X1600H::getCapabilities(),
-            Denon_AVR_X2000::$Name     => Denon_AVR_X2000::getCapabilities(),
-            Denon_AVR_X2100W::$Name    => Denon_AVR_X2100W::getCapabilities(),
-            Denon_AVR_X2200W::$Name    => Denon_AVR_X2200W::getCapabilities(),
-            Denon_AVR_X2300W::$Name    => Denon_AVR_X2300W::getCapabilities(),
-            Denon_AVR_X2400H::$Name    => Denon_AVR_X2400H::getCapabilities(),
-            Denon_AVR_X2500H::$Name    => Denon_AVR_X2500H::getCapabilities(),
-            Denon_AVR_X2600H::$Name    => Denon_AVR_X2600H::getCapabilities(),
-            Denon_AVR_X2700H::$Name    => Denon_AVR_X2700H::getCapabilities(),
-            Denon_AVR_X2800H::$Name    => Denon_AVR_X2800H::getCapabilities(),
-            Denon_AVR_X3000::$Name     => Denon_AVR_X3000::getCapabilities(),
-            Denon_AVR_X3400H::$Name    => Denon_AVR_X3400H::getCapabilities(),
-            Denon_AVR_X3500H::$Name    => Denon_AVR_X3500H::getCapabilities(),
-            Denon_AVR_X3700H::$Name    => Denon_AVR_X3700H::getCapabilities(),
-            Denon_AVR_X3800H::$Name    => Denon_AVR_X3800H::getCapabilities(),
-            Denon_AVR_X4000::$Name     => Denon_AVR_X4000::getCapabilities(),
-            Denon_AVR_X4100W::$Name    => Denon_AVR_X4100W::getCapabilities(),
-            Denon_AVR_X4200W::$Name    => Denon_AVR_X4200W::getCapabilities(),
-            Denon_AVR_X4300H::$Name    => Denon_AVR_X4300H::getCapabilities(),
-            Denon_AVR_X4400H::$Name    => Denon_AVR_X4400H::getCapabilities(),
-            Denon_AVR_X4500H::$Name    => Denon_AVR_X4500H::getCapabilities(),
-            Denon_AVR_X4700H::$Name    => Denon_AVR_X4700H::getCapabilities(),
-            Denon_AVR_X4800H::$Name    => Denon_AVR_X4800H::getCapabilities(),
-            Denon_AVR_X5200W::$Name    => Denon_AVR_X5200W::getCapabilities(),
-            Denon_AVR_X6200W::$Name    => Denon_AVR_X6200W::getCapabilities(),
-            Denon_AVR_X6300H::$Name    => Denon_AVR_X6300H::getCapabilities(),
-            Denon_AVR_X6400H::$Name    => Denon_AVR_X6400H::getCapabilities(),
-            Denon_AVR_X6500H::$Name    => Denon_AVR_X6500H::getCapabilities(),
-            Denon_AVR_X6700H::$Name    => Denon_AVR_X6700H::getCapabilities(),
-            Denon_AVR_X7200W::$Name    => Denon_AVR_X7200W::getCapabilities(),
-            Denon_AVR_X7200WA::$Name   => Denon_AVR_X7200WA::getCapabilities(),
-            Denon_AVC_X8500H::$Name    => Denon_AVC_X8500H::getCapabilities(),
-            Denon_AVR_S750H::$Name     => Denon_AVR_S750H::getCapabilities(),
-            Denon_AVR_S960H::$Name     => Denon_AVR_S960H::getCapabilities(),
-            Denon_AVR_S970H::$Name     => Denon_AVR_S970H::getCapabilities(),
-            Denon_DRA_N5::$Name        => Denon_DRA_N5::getCapabilities(),
-            Denon_RCD_N8::$Name        => Denon_RCD_N8::getCapabilities(),
+            Denon_AVR_3808A::$Name   => Denon_AVR_3808A::getCapabilities(),
+            Denon_AVR_3310::$Name    => Denon_AVR_3310::getCapabilities(),
+            Denon_AVR_3311::$Name    => Denon_AVR_3311::getCapabilities(),
+            Denon_AVR_3312::$Name    => Denon_AVR_3312::getCapabilities(),
+            Denon_AVR_3313::$Name    => Denon_AVR_3313::getCapabilities(),
+            Denon_AVR_4310::$Name    => Denon_AVR_4310::getCapabilities(),
+            Denon_AVR_4311::$Name    => Denon_AVR_4311::getCapabilities(),
+            Denon_AVR_4810::$Name    => Denon_AVR_4810::getCapabilities(),
+            Denon_AVR_X1100W::$Name  => Denon_AVR_X1100W::getCapabilities(),
+            Denon_AVR_X1200W::$Name  => Denon_AVR_X1200W::getCapabilities(),
+            Denon_AVR_X1300W::$Name  => Denon_AVR_X1300W::getCapabilities(),
+            Denon_AVR_X1400H::$Name  => Denon_AVR_X1400H::getCapabilities(),
+            Denon_AVR_X1500H::$Name  => Denon_AVR_X1500H::getCapabilities(),
+            Denon_AVR_X1600H::$Name  => Denon_AVR_X1600H::getCapabilities(),
+            Denon_AVR_X2000::$Name   => Denon_AVR_X2000::getCapabilities(),
+            Denon_AVR_X2100W::$Name  => Denon_AVR_X2100W::getCapabilities(),
+            Denon_AVR_X2200W::$Name  => Denon_AVR_X2200W::getCapabilities(),
+            Denon_AVR_X2300W::$Name  => Denon_AVR_X2300W::getCapabilities(),
+            Denon_AVR_X2400H::$Name  => Denon_AVR_X2400H::getCapabilities(),
+            Denon_AVR_X2500H::$Name  => Denon_AVR_X2500H::getCapabilities(),
+            Denon_AVR_X2600H::$Name  => Denon_AVR_X2600H::getCapabilities(),
+            Denon_AVR_X2700H::$Name  => Denon_AVR_X2700H::getCapabilities(),
+            Denon_AVR_X2800H::$Name  => Denon_AVR_X2800H::getCapabilities(),
+            Denon_AVR_X3000::$Name   => Denon_AVR_X3000::getCapabilities(),
+            Denon_AVR_X3400H::$Name  => Denon_AVR_X3400H::getCapabilities(),
+            Denon_AVR_X3500H::$Name  => Denon_AVR_X3500H::getCapabilities(),
+            Denon_AVR_X3700H::$Name  => Denon_AVR_X3700H::getCapabilities(),
+            Denon_AVR_X3800H::$Name  => Denon_AVR_X3800H::getCapabilities(),
+            Denon_AVR_X4000::$Name   => Denon_AVR_X4000::getCapabilities(),
+            Denon_AVR_X4100W::$Name  => Denon_AVR_X4100W::getCapabilities(),
+            Denon_AVR_X4200W::$Name  => Denon_AVR_X4200W::getCapabilities(),
+            Denon_AVR_X4300H::$Name  => Denon_AVR_X4300H::getCapabilities(),
+            Denon_AVR_X4400H::$Name  => Denon_AVR_X4400H::getCapabilities(),
+            Denon_AVR_X4500H::$Name  => Denon_AVR_X4500H::getCapabilities(),
+            Denon_AVR_X4700H::$Name  => Denon_AVR_X4700H::getCapabilities(),
+            Denon_AVR_X4800H::$Name  => Denon_AVR_X4800H::getCapabilities(),
+            Denon_AVR_X5200W::$Name  => Denon_AVR_X5200W::getCapabilities(),
+            Denon_AVR_X6200W::$Name  => Denon_AVR_X6200W::getCapabilities(),
+            Denon_AVR_X6300H::$Name  => Denon_AVR_X6300H::getCapabilities(),
+            Denon_AVR_X6400H::$Name  => Denon_AVR_X6400H::getCapabilities(),
+            Denon_AVR_X6500H::$Name  => Denon_AVR_X6500H::getCapabilities(),
+            Denon_AVR_X6700H::$Name  => Denon_AVR_X6700H::getCapabilities(),
+            Denon_AVR_X7200W::$Name  => Denon_AVR_X7200W::getCapabilities(),
+            Denon_AVR_X7200WA::$Name => Denon_AVR_X7200WA::getCapabilities(),
+            Denon_AVC_X8500H::$Name  => Denon_AVC_X8500H::getCapabilities(),
+            Denon_AVR_S750H::$Name   => Denon_AVR_S750H::getCapabilities(),
+            Denon_AVR_S960H::$Name   => Denon_AVR_S960H::getCapabilities(),
+            Denon_AVR_S970H::$Name   => Denon_AVR_S970H::getCapabilities(),
+            Denon_DRA_N5::$Name      => Denon_DRA_N5::getCapabilities(),
+            Denon_RCD_N8::$Name      => Denon_RCD_N8::getCapabilities(),
 
             Marantz_NR1504::$Name     => Marantz_NR1504::getCapabilities(),
             Marantz_NR1506::$Name     => Marantz_NR1506::getCapabilities(),
@@ -194,6 +201,8 @@ class AVRs extends stdClass
             Marantz_NR1608::$Name     => Marantz_NR1608::getCapabilities(),
             Marantz_NR1609::$Name     => Marantz_NR1609::getCapabilities(),
             Marantz_NR1711::$Name     => Marantz_NR1711::getCapabilities(),
+            Marantz_CINEMA_70s::$Name => Marantz_CINEMA_70s::getCapabilities(),
+            Marantz_STEREO_70s::$Name => Marantz_STEREO_70s::getCapabilities(),
             Marantz_SR5006::$Name     => Marantz_SR5006::getCapabilities(),
             Marantz_SR5007::$Name     => Marantz_SR5007::getCapabilities(),
             Marantz_SR5008::$Name     => Marantz_SR5008::getCapabilities(),
@@ -203,6 +212,7 @@ class AVRs extends stdClass
             Marantz_SR5012::$Name     => Marantz_SR5012::getCapabilities(),
             Marantz_SR5013::$Name     => Marantz_SR5013::getCapabilities(),
             Marantz_SR5015::$Name     => Marantz_SR5015::getCapabilities(),
+            Marantz_CINEMA_60::$Name  => Marantz_CINEMA_60::getCapabilities(),
             Marantz_SR6005::$Name     => Marantz_SR6005::getCapabilities(),
             Marantz_SR6006::$Name     => Marantz_SR6006::getCapabilities(),
             Marantz_SR6007::$Name     => Marantz_SR6007::getCapabilities(),
@@ -213,6 +223,7 @@ class AVRs extends stdClass
             Marantz_SR6012::$Name     => Marantz_SR6012::getCapabilities(),
             Marantz_SR6013::$Name     => Marantz_SR6013::getCapabilities(),
             Marantz_SR6015::$Name     => Marantz_SR6015::getCapabilities(),
+            Marantz_CINEMA_50::$Name  => Marantz_CINEMA_50::getCapabilities(),
             Marantz_SR7005::$Name     => Marantz_SR7005::getCapabilities(),
             Marantz_SR7007::$Name     => Marantz_SR7007::getCapabilities(),
             Marantz_SR7008::$Name     => Marantz_SR7008::getCapabilities(),
@@ -222,6 +233,7 @@ class AVRs extends stdClass
             Marantz_SR7012::$Name     => Marantz_SR7012::getCapabilities(),
             Marantz_SR7013::$Name     => Marantz_SR7013::getCapabilities(),
             Marantz_SR7015::$Name     => Marantz_SR7015::getCapabilities(),
+            Marantz_CINEMA_40::$Name  => Marantz_CINEMA_40::getCapabilities(),
             Marantz_SR8015::$Name     => Marantz_SR8015::getCapabilities(),
             Marantz_AV7005::$Name     => Marantz_AV7005::getCapabilities(),
             Marantz_AV7701::$Name     => Marantz_AV7701::getCapabilities(),
@@ -239,9 +251,9 @@ class AVRs extends stdClass
     public static function getCapabilities($AVRType)
     {
         $caps = self::getAllAVRs()[$AVRType];
-        if (($caps['httpMainZone'] !== DENON_HTTP_Interface::NoHTTPInterface) && (count($caps['SI_SubCommands']) > 0)){
+        if (($caps['httpMainZone'] !== DENON_HTTP_Interface::NoHTTPInterface) && (count($caps['SI_SubCommands']) > 0)) {
             trigger_error('Faulty configuration: No SI_SubCommands expected when httpMainZone is set', E_USER_ERROR);
-        } elseif (($caps['httpMainZone'] === DENON_HTTP_Interface::NoHTTPInterface) && (count($caps['SI_SubCommands']) === 0)){
+        } elseif (($caps['httpMainZone'] === DENON_HTTP_Interface::NoHTTPInterface) && (count($caps['SI_SubCommands']) === 0)) {
             trigger_error('Faulty configuration: No SI_SubCommands defined although httpMainZone is not set', E_USER_ERROR);
         }
         return $caps;
@@ -250,22 +262,26 @@ class AVRs extends stdClass
 
 class AVR extends stdClass
 {
-    public static string $Name = __CLASS__;
-    public static int $internalID;
+    public static string $Name                       = __CLASS__;
 
-    public static array $InfoFunctions = ['MainZoneName', 'Model'];
-    public static array $InfoFunctions_max = ['MainZoneName', 'Model'];
+    public static int    $internalID;
 
-    public static array $AvrInfos = [];
-    public static array $AvrInfos_max = [DENON_API_Commands::SYSMI, DENON_API_Commands::SYSDA, DENON_API_Commands::SSINFAISFSV];
+    public static array  $InfoFunctions              = ['MainZoneName', 'Model'];
 
-    public static array $PowerFunctions = [
+    public static array  $InfoFunctions_max          = ['MainZoneName', 'Model'];
+
+    public static array  $AvrInfos                   = [];
+
+    public static array  $AvrInfos_max               = [DENON_API_Commands::SYSMI, DENON_API_Commands::SYSDA, DENON_API_Commands::SSINFAISFSV];
+
+    public static array  $PowerFunctions             = [
         DENON_API_Commands::PW,
         DENON_API_Commands::ZM,
         DENON_API_Commands::SLP,
         DENON_API_Commands::MU,
     ];
-    public static array $PowerFunctions_max = [
+
+    public static array  $PowerFunctions_max         = [
         DENON_API_Commands::PW,
         DENON_API_Commands::ZM,
         DENON_API_Commands::MU,
@@ -274,8 +290,9 @@ class AVR extends stdClass
         DENON_API_Commands::SLP,
     ];
 
-    public static array $InputSettings = [];
-    public static array $InputSettings_max = [
+    public static array  $InputSettings              = [];
+
+    public static array  $InputSettings_max          = [
         DENON_API_Commands::SI,
         DENON_API_Commands::MSSMART,
         DENON_API_Commands::MSQUICK,
@@ -283,8 +300,10 @@ class AVR extends stdClass
         DENON_API_Commands::DC,
         DENON_API_Commands::SV,
     ];
-    public static array $SI_SubCommands = [];
-    public static array $SV_SubCommands = [
+
+    public static array  $SI_SubCommands             = [];
+
+    public static array  $SV_SubCommands             = [
         DENON_API_Commands::IS_DVD,
         DENON_API_Commands::IS_BD,
         DENON_API_Commands::IS_TV,
@@ -298,68 +317,101 @@ class AVR extends stdClass
         DENON_API_Commands::IS_OFF,
     ];
 
-    public static array $SurroundMode = [DENON_API_Commands::MS, DENON_API_Commands::SURROUNDDISPLAY];
-    public static array $SurroundMode_max = [DENON_API_Commands::MS, DENON_API_Commands::SURROUNDDISPLAY];
+    public static array  $SurroundMode               = [DENON_API_Commands::MS, DENON_API_Commands::SURROUNDDISPLAY];
 
-    public static array $MS_SubCommands = [DENON_API_Commands::MSDIRECT,
+    public static array  $SurroundMode_max           = [DENON_API_Commands::MS, DENON_API_Commands::SURROUNDDISPLAY];
+
+    public static array  $MS_SubCommands             = [
+        DENON_API_Commands::MSDIRECT,
         DENON_API_Commands::MSSTEREO,
         DENON_API_Commands::MSDOLBYDIGITAL,
         DENON_API_Commands::MSDTSSURROUND,
         DENON_API_Commands::MSMCHSTEREO,
         DENON_API_Commands::MSVIRTUAL,
     ];
-    public static array $CV_Commands = [
+
+    public static array  $CV_Commands                = [
         DENON_API_Commands::MV,
-        DENON_API_Commands::CVFL, DENON_API_Commands::CVFR, DENON_API_Commands::CVC,
+        DENON_API_Commands::CVFL,
+        DENON_API_Commands::CVFR,
+        DENON_API_Commands::CVC,
         DENON_API_Commands::CVSW,
-        DENON_API_Commands::CVSL, DENON_API_Commands::CVSR,
+        DENON_API_Commands::CVSL,
+        DENON_API_Commands::CVSR,
     ];
-    public static array $CV_Commands_max = [
+
+    public static array  $CV_Commands_max            = [
         DENON_API_Commands::MV,
-        DENON_API_Commands::CVFL, DENON_API_Commands::CVFR, DENON_API_Commands::CVC,
+        DENON_API_Commands::BL,
+        DENON_API_Commands::CVFL,
+        DENON_API_Commands::CVFR,
+        DENON_API_Commands::CVC,
         DENON_API_Commands::CVSW,
-        DENON_API_Commands::CVSW2, DENON_API_Commands::CVSW3,DENON_API_Commands::CVSW4,
-        DENON_API_Commands::CVSL, DENON_API_Commands::CVSR,
-        DENON_API_Commands::CVSBL, DENON_API_Commands::CVSBR, DENON_API_Commands::CVSB,
-        DENON_API_Commands::CVFHL, DENON_API_Commands::CVFHR,
-        DENON_API_Commands::CVFWL, DENON_API_Commands::CVFWR,
-        DENON_API_Commands::CVTFL, DENON_API_Commands::CVTFR,
-        DENON_API_Commands::CVTML, DENON_API_Commands::CVTMR,
-        DENON_API_Commands::CVTRL, DENON_API_Commands::CVTRR,
-        DENON_API_Commands::CVRHL, DENON_API_Commands::CVRHR,
-        DENON_API_Commands::CVFDL, DENON_API_Commands::CVFDR,
-        DENON_API_Commands::CVSDL, DENON_API_Commands::CVSDR,
-        DENON_API_Commands::CVBDL, DENON_API_Commands::CVBDR,
-        DENON_API_Commands::CVSHL, DENON_API_Commands::CVSHR, DENON_API_Commands::CVTS,
+        DENON_API_Commands::CVSW2,
+        DENON_API_Commands::CVSW3,
+        DENON_API_Commands::CVSW4,
+        DENON_API_Commands::CVSL,
+        DENON_API_Commands::CVSR,
+        DENON_API_Commands::CVSBL,
+        DENON_API_Commands::CVSBR,
+        DENON_API_Commands::CVSB,
+        DENON_API_Commands::CVFHL,
+        DENON_API_Commands::CVFHR,
+        DENON_API_Commands::CVFWL,
+        DENON_API_Commands::CVFWR,
+        DENON_API_Commands::CVTFL,
+        DENON_API_Commands::CVTFR,
+        DENON_API_Commands::CVTML,
+        DENON_API_Commands::CVTMR,
+        DENON_API_Commands::CVTRL,
+        DENON_API_Commands::CVTRR,
+        DENON_API_Commands::CVRHL,
+        DENON_API_Commands::CVRHR,
+        DENON_API_Commands::CVFDL,
+        DENON_API_Commands::CVFDR,
+        DENON_API_Commands::CVSDL,
+        DENON_API_Commands::CVSDR,
+        DENON_API_Commands::CVBDL,
+        DENON_API_Commands::CVBDR,
+        DENON_API_Commands::CVSHL,
+        DENON_API_Commands::CVSHR,
+        DENON_API_Commands::CVTS,
         DENON_API_Commands::CVCH,
         DENON_API_Commands::CVZRL,
         DENON_API_Commands::CVTTR,
     ];
-    public static array $VS_Commands = [
+
+    public static array  $VS_Commands                = [
         DENON_API_Commands::VSMONI,
-        DENON_API_Commands::VSSC, DENON_API_Commands::VSSCH,
+        DENON_API_Commands::VSSC,
+        DENON_API_Commands::VSSCH,
         DENON_API_Commands::VSVST,
         DENON_API_Commands::VSAUDIO,
         DENON_API_Commands::VSVPM,
     ];
-    public static array $VS_Commands_max = [
+
+    public static array  $VS_Commands_max            = [
         DENON_API_Commands::VSASP,
         DENON_API_Commands::VSMONI,
-        DENON_API_Commands::VSSC, DENON_API_Commands::VSSCH,
+        DENON_API_Commands::VSSC,
+        DENON_API_Commands::VSSCH,
         DENON_API_Commands::VSVST,
         DENON_API_Commands::VSAUDIO,
         DENON_API_Commands::VSVPM,
     ];
-    public static array $VSSC_SubCommands = [];
-    public static array $VSSCH_SubCommands = [];
 
-    public static array $SystemControl_Commands = [
+    public static array  $VSSC_SubCommands           = [];
+
+    public static array  $VSSCH_SubCommands          = [];
+
+    public static array  $SystemControl_Commands     = [
         DENON_API_Commands::MN,
         DENON_API_Commands::MNMEN,
         DENON_API_Commands::DISPLAY,
         DENON_API_Commands::NS,
     ];
-    public static array $SystemControl_Commands_max = [
+
+    public static array  $SystemControl_Commands_max = [
         DENON_API_Commands::MN,
         DENON_API_Commands::MNMEN,
         DENON_API_Commands::MNSRC,
@@ -371,14 +423,17 @@ class AVR extends stdClass
         DENON_API_Commands::BTTX,
         DENON_API_Commands::SPPR,
     ];
-    public static array $PS_Commands = [];
-    public static array $PS_Commands_max = [
+
+    public static array  $PS_Commands                = [];
+
+    public static array  $PS_Commands_max            = [
         DENON_API_Commands::PSFRONT,
         DENON_API_Commands::PSSP,
         DENON_API_Commands::PSFH,
         DENON_API_Commands::PSSWR,
         DENON_API_Commands::PSTONECTRL,
-        DENON_API_Commands::PSBAS, DENON_API_Commands::PSTRE,
+        DENON_API_Commands::PSBAS,
+        DENON_API_Commands::PSTRE,
         DENON_API_Commands::PSLOM,
         DENON_API_Commands::PSBSC,
         DENON_API_Commands::PSDEH,
@@ -402,7 +457,8 @@ class AVR extends stdClass
         DENON_API_Commands::PSMODE,
         DENON_API_Commands::PSPHG,
         DENON_API_Commands::PSDSX,
-        DENON_API_Commands::PSSTW, DENON_API_Commands::PSSTH,
+        DENON_API_Commands::PSSTW,
+        DENON_API_Commands::PSSTH,
         DENON_API_Commands::PSCINEMAEQ,
         DENON_API_Commands::PSHTEQ,
         DENON_API_Commands::PSMULTEQ,
@@ -417,9 +473,14 @@ class AVR extends stdClass
         DENON_API_Commands::PSDCO,
         DENON_API_Commands::PSMDAX,
         DENON_API_Commands::PSDELAY,
-        DENON_API_Commands::PSAUROPR, DENON_API_Commands::PSAUROST, DENON_API_Commands::PSAUROMODE,
+        DENON_API_Commands::PSAUROPR,
+        DENON_API_Commands::PSAUROST,
+        DENON_API_Commands::PSAUROMODE,
+        DENON_API_Commands::PSDIRAC,
         //Denon only
-        DENON_API_Commands::PSDOLVOL, DENON_API_Commands::PSVOLMOD, DENON_API_Commands::PSVOLLEV, // only Denon 4311
+        DENON_API_Commands::PSDOLVOL,
+        DENON_API_Commands::PSVOLMOD,
+        DENON_API_Commands::PSVOLLEV, // only Denon 4311
         DENON_API_Commands::PSSB,  //only some Denon models
         DENON_API_Commands::PSATT, //only some Denon models
         DENON_API_Commands::PSEFF,
@@ -428,47 +489,73 @@ class AVR extends stdClass
         DENON_API_Commands::PSRSZ,
         DENON_API_Commands::PSRSTR,
     ];
-    public static array $PSSP_SubCommands = [];
-    public static array $PSDYNVOL_SubCommands = [ //bei neueren Geräten
-        DENON_API_Commands::DYNVOLOFF,
-        DENON_API_Commands::DYNVOLLIT,
-        DENON_API_Commands::DYNVOLMED,
-        DENON_API_Commands::DYNVOLHEV,
-    ];
-    public static array $PV_Commands = [];
-    public static array $PV_Commands_max = [
-        DENON_API_Commands::PVPICT,
-        DENON_API_Commands::PVCN, DENON_API_Commands::PVBR,
-        DENON_API_Commands::PVST,
-        DENON_API_Commands::PVCM, DENON_API_Commands::PVHUE,
-        DENON_API_Commands::PVDNR, DENON_API_Commands::PVENH,
-    ];
-    public static array $Zone_Commands = [];
-    public static array $Zone_Commands_max = [
-        DENON_API_Commands::Z2POWER, DENON_API_Commands::Z3POWER,
-        DENON_API_Commands::Z2INPUT, DENON_API_Commands::Z3INPUT,
-        DENON_API_Commands::Z2VOL, DENON_API_Commands::Z3VOL,
-        DENON_API_Commands::Z2MU, DENON_API_Commands::Z3MU,
-        DENON_API_Commands::Z2SMART, DENON_API_Commands::Z3SMART, //only Marantz
-        DENON_API_Commands::Z2QUICK, DENON_API_Commands::Z3QUICK, //only Denon
-        DENON_API_Commands::Z2STBY, DENON_API_Commands::Z3STBY,
-        DENON_API_Commands::Z2CS, DENON_API_Commands::Z3CS,
-        DENON_API_Commands::Z2CVFL, DENON_API_Commands::Z3CVFL, DENON_API_Commands::Z2CVFR, DENON_API_Commands::Z3CVFR,
-        DENON_API_Commands::Z2HPF, DENON_API_Commands::Z3HPF,
-        DENON_API_Commands::Z2HDA,
-        DENON_API_Commands::Z2PSBAS, DENON_API_Commands::Z3PSBAS,
-        DENON_API_Commands::Z2PSTRE, DENON_API_Commands::Z3PSTRE,
-        DENON_API_Commands::Z2SLP, DENON_API_Commands::Z3SLP,
-        'Model', 'Zone2Name', 'Zone3Name',
+
+    public static array  $PSSP_SubCommands           = [];
+
+    public static array  $PSDYNVOL_SubCommands       = [ //bei neueren Geräten
+                                                         DENON_API_Commands::DYNVOLOFF,
+                                                         DENON_API_Commands::DYNVOLLIT,
+                                                         DENON_API_Commands::DYNVOLMED,
+                                                         DENON_API_Commands::DYNVOLHEV,
     ];
 
-    public static array $Tuner_Control = [
+    public static array  $PV_Commands                = [];
+
+    public static array  $PV_Commands_max            = [
+        DENON_API_Commands::PVPICT,
+        DENON_API_Commands::PVCN,
+        DENON_API_Commands::PVBR,
+        DENON_API_Commands::PVST,
+        DENON_API_Commands::PVCM,
+        DENON_API_Commands::PVHUE,
+        DENON_API_Commands::PVDNR,
+        DENON_API_Commands::PVENH,
+    ];
+
+    public static array  $Zone_Commands              = [];
+
+    public static array  $Zone_Commands_max          = [
+        DENON_API_Commands::Z2POWER,
+        DENON_API_Commands::Z3POWER,
+        DENON_API_Commands::Z2INPUT,
+        DENON_API_Commands::Z3INPUT,
+        DENON_API_Commands::Z2VOL,
+        DENON_API_Commands::Z3VOL,
+        DENON_API_Commands::Z2MU,
+        DENON_API_Commands::Z3MU,
+        DENON_API_Commands::Z2SMART,
+        DENON_API_Commands::Z3SMART, //only Marantz
+        DENON_API_Commands::Z2QUICK,
+        DENON_API_Commands::Z3QUICK, //only Denon
+        DENON_API_Commands::Z2STBY,
+        DENON_API_Commands::Z3STBY,
+        DENON_API_Commands::Z2CS,
+        DENON_API_Commands::Z3CS,
+        DENON_API_Commands::Z2CVFL,
+        DENON_API_Commands::Z3CVFL,
+        DENON_API_Commands::Z2CVFR,
+        DENON_API_Commands::Z3CVFR,
+        DENON_API_Commands::Z2HPF,
+        DENON_API_Commands::Z3HPF,
+        DENON_API_Commands::Z2HDA,
+        DENON_API_Commands::Z2PSBAS,
+        DENON_API_Commands::Z3PSBAS,
+        DENON_API_Commands::Z2PSTRE,
+        DENON_API_Commands::Z3PSTRE,
+        DENON_API_Commands::Z2SLP,
+        DENON_API_Commands::Z3SLP,
+        'Model',
+        'Zone2Name',
+        'Zone3Name',
+    ];
+
+    public static array  $Tuner_Control              = [
         DENON_API_Commands::TPAN,
         DENON_API_Commands::TMAN_BAND,
         DENON_API_Commands::TMAN_MODE,
     ];
 
-    public static array $Tuner_Control_max = [
+    public static array  $Tuner_Control_max          = [
         DENON_API_Commands::TPAN,
         DENON_API_Commands::TMAN_BAND,
         DENON_API_Commands::TMAN_MODE,
@@ -479,7 +566,8 @@ class AVR extends stdClass
 
     public static function getCapabilities(): array
     {
-        return ['Name'               => static::$Name,
+        return [
+            'Name'                   => static::$Name,
             'internalID'             => static::$internalID,
             'Manufacturer'           => static::$Manufacturer,
             'InfoFunctions'          => static::$InfoFunctions,
@@ -658,6 +746,8 @@ class AVR extends stdClass
                 return new Marantz_SR7013();
             case Marantz_SR7015::$Name:
                 return new Marantz_SR7015();
+            case Marantz_CINEMA_40::$Name:
+                return new Marantz_CINEMA_40();
             case Marantz_SR8015::$Name:
                 return new Marantz_SR8015();
             case Marantz_AV7701::$Name:
