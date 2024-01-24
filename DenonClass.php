@@ -4261,7 +4261,7 @@ class DENON_API_Commands extends stdClass
     //Front Speaker
     public const PSFRONTSPA = ' SPA'; //Speaker A
     public const PSFRONTSPB = ' SPB'; //Speaker B
-    public const PSFRONTSPAB = ' SPA+B'; //Speaker A+B
+    public const PSFRONTSPAB = ' A+B'; //Speaker A+B
 
     //Cursor Menu
     public const MNCUP = 'CUP'; // Cursor Up
