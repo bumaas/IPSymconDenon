@@ -844,6 +844,8 @@ class DENONIPSVarType extends stdClass
 
 #[AllowDynamicProperties] class DENONIPSProfiles extends stdClass
 {
+    private $Logger_Dbg;
+
     private bool  $debug = false; //wird im Constructor gesetzt
 
     private mixed $AVRType;
@@ -1508,25 +1510,25 @@ class DENONIPSVarType extends stdClass
                                        [-12, 'L 12', 'L12'],
                                        [-11, 'L 11', 'L11'],
                                        [-10, 'L 10', 'L10'],
-                                       [-9, 'L 9', 'L09'],
-                                       [-8, 'L 8', 'L08'],
-                                       [-7, 'L 7', 'L07'],
-                                       [-6, 'L 6', 'L06'],
-                                       [-5, 'L 5', 'L05'],
-                                       [-4, 'L 4', 'L04'],
-                                       [-3, 'L 3', 'L03'],
-                                       [-2, 'L 2', 'L02'],
-                                       [-1, 'L 1', 'L01'],
+                                       [-9, 'L 9', 'L9'],
+                                       [-8, 'L 8', 'L8'],
+                                       [-7, 'L 7', 'L7'],
+                                       [-6, 'L 6', 'L6'],
+                                       [-5, 'L 5', 'L5'],
+                                       [-4, 'L 4', 'L4'],
+                                       [-3, 'L 3', 'L3'],
+                                       [-2, 'L 2', 'L2'],
+                                       [-1, 'L 1', 'L1'],
                                        [0, '0', '0'],
-                                       [1, 'R 1', 'R01'],
-                                       [2, 'R 2', 'R02'],
-                                       [3, 'R 3', 'R03'],
-                                       [4, 'R 4', 'R04'],
-                                       [5, 'R 5', 'R05'],
-                                       [6, 'R 6', 'R06'],
-                                       [7, 'R 7', 'R07'],
-                                       [8, 'R 8', 'R08'],
-                                       [9, 'R 9', 'R09'],
+                                       [1, 'R 1', 'R1'],
+                                       [2, 'R 2', 'R2'],
+                                       [3, 'R 3', 'R3'],
+                                       [4, 'R 4', 'R4'],
+                                       [5, 'R 5', 'R5'],
+                                       [6, 'R 6', 'R6'],
+                                       [7, 'R 7', 'R7'],
+                                       [8, 'R 8', 'R8'],
+                                       [9, 'R 9', 'R9'],
                                        [10, 'R 10', 'R10'],
                                        [11, 'R 11', 'R11'],
                                        [12, 'R 12', 'R12'],
@@ -1692,7 +1694,7 @@ class DENONIPSVarType extends stdClass
                     [3, 'Gering', DENON_API_Commands::PSRSTRMODE3],
                 ],
             ],
-            self::ptFrontSpeaker => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::PSFRONT, 'Name' => 'Front Speaker',
+            self::ptFrontSpeaker => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::PSFRONT, 'Name' => 'Speaker A/B',
                 'PropertyName'                          => 'FrontSpeaker',
                 'Profilesettings'                       => ['Database', '', '', 0, 0, 0, 0],
                 'Associations'                          => [

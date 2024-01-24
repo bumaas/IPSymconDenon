@@ -98,7 +98,7 @@ Die Instanz _'Modules'_ unterhalb von Kerninstanzen im Objektbaum von IP-Symcon 
 Im Feld die folgende URL eintragen und mit _OK_ bestätigen:
 
 ```
-https://github.com/Wolbolar/IPSymconDenon
+https://github.com/bumaas/IPSymconDenon
 ```  
 	
 Anschließend erscheint ein Eintrag für das Modul in der Liste der Instanz _Modules_    

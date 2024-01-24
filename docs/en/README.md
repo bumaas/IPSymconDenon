@@ -95,7 +95,7 @@ Enter the following URL in the field and confirm with _OK_:
 
 
 ```	
-https://github.com/Wolbolar/IPSymconDenon
+https://github.com/bumaas/IPSymconDenon
 ```
     
 and confirm with _OK_.    
