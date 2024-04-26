@@ -4,7 +4,8 @@
       "name": "Name",
       "host": "IP Adresse",
       "model": "Modell",
-      "manufacturer": "Hersteller"
+      "manufacturer": "Hersteller",
+      "The configurator is currently searching for devices. This could take a while...": "Der Konfigurator sucht nach Geräten. Einen Moment ..."
     }
   }
 }

@@ -17,17 +17,16 @@ class DenonDiscovery extends IPSModule
      */
     private const WS_DISCOVERY_MULTICAST_ADDRESS = '239.255.255.250';
 
-    /**
-     * The port that will be used in the socket for the discovery request.
-     */
-    private const WS_DISCOVERY_MULTICAST_PORT = 1900;
-
-    private const WS_DISCOVERY_ST = 'urn:schemas-upnp-org:device:MediaRenderer:1';
-
+    private const DISCOVERY_SEARCHTARGET = 'urn:schemas-upnp-org:device:MediaRenderer:1';
 
     private const MODID_SPLITTER_TELNET = '{9AE3087F-DC25-4ADB-AB46-AD7455E71032}';
     private const MODID_DENON_TELNET    = '{DC733830-533B-43CD-98F5-23FC2E61287F}';
     private const MODID_CLIENT_SOCKET   = '{3CFF0FD9-E306-41DB-9B5A-9D06D38576C3}';
+    private const MODID_SSDP            = '{FFFFA648-B296-E785-96ED-065F7CEE6F29}';
+
+    private const BUFFER_DEVICES      = 'Devices';
+    private const BUFFER_SEARCHACTIVE = 'SearchActive';
+    private const TIMER_LOADDEVICES   = 'LoadDevicesTimer';
 
     public function Create(): void
     {
@@ -36,6 +35,10 @@ class DenonDiscovery extends IPSModule
 
         //we will wait until the kernel is ready
         $this->RegisterMessage(0, IPS_KERNELMESSAGE);
+
+        $this->SetBuffer(self::BUFFER_DEVICES, json_encode([]));
+        $this->SetBuffer(self::BUFFER_SEARCHACTIVE, json_encode(false));
+
     }
 
     /**
@@ -60,20 +63,30 @@ class DenonDiscovery extends IPSModule
         }
     }
 
+    public function RequestAction($Ident, $Value): bool
+    {
+        $this->SendDebug(__FUNCTION__, sprintf('Ident: %s, Value: %s', $Ident, $Value), 0);
+
+        if ($Ident === 'loadDevices') {
+            $this->loadDevices();
+        }
+        return true;
+    }
+
     /**
      * Liefert alle Geräte.
      *
      * @return array configlist all devices
      * @throws \JsonException
      */
-    private function Get_ConfiguratorValues(): array
+    private function loadDevices(): void
     {
-        $config_values = [];
+        $configurationValues = [];
 
         $configuredDevices = IPS_GetInstanceListByModuleID(self::MODID_DENON_TELNET);
         $this->SendDebug('configured devices', json_encode($configuredDevices, JSON_THROW_ON_ERROR), 0);
 
-        $discoveredDevices = $this->DiscoverDevices();
+        $discoveredDevices = $this->getDiscoveredDevices();
         $this->SendDebug('discovered devices', json_encode($discoveredDevices, JSON_THROW_ON_ERROR), 0);
 
         foreach ($discoveredDevices as $device) {
@@ -98,7 +111,7 @@ class DenonDiscovery extends IPSModule
             $AVRType = $this->GetAVRType($manufacturerID, $model);
             $this->SendDebug('Manufacturer:', sprintf('Manufacturer: %s, Model: %s, Type: %s', $manufacturerID, $model, $AVRType), 0);
 
-            $config_values[] = [
+            $configurationValues[] = [
                 'instanceID'   => $instanceID,
                 'id'           => $device_id,
                 'name'         => $name,
@@ -129,7 +142,16 @@ class DenonDiscovery extends IPSModule
             ];
         }
 
-        return $config_values;
+        $configurationValuesEncoded = json_encode($configurationValues);
+        $this->SendDebug(__FUNCTION__, '$configurationValues: ' . $configurationValuesEncoded, 0);
+
+        $this->SetBuffer(self::BUFFER_SEARCHACTIVE, json_encode(false));
+        $this->SendDebug(__FUNCTION__, 'SearchActive deactivated', 0);
+
+        $this->SetBuffer(self::BUFFER_DEVICES, $configurationValuesEncoded);
+        $this->UpdateFormField('configurator', 'values', $configurationValuesEncoded);
+        $this->UpdateFormField('searchingInfo', 'visible', false);
+
     }
 
     private function GetAVRType(int $manufacturerID, string $model_name): int
@@ -145,67 +167,32 @@ class DenonDiscovery extends IPSModule
         return -1;
     }
 
-    private function DiscoverDevices(): array
+    private function receiveDevicesInfo(array $devices): array
     {
-        // BUILD MESSAGE
-        $message  = [
-            'M-SEARCH * HTTP/1.1',
-            'HOST: 239.255.255.250:1900',
-            'MAN: "ssdp:discover"',
-            'MX: 2',                    // maximum amount of seconds it takes for a device to respond
-            'ST: ' . self::WS_DISCOVERY_ST       //This defines the devices we would like to discover on the network.
-        ];
-        $SendData = implode("\r\n", $message) . "\r\n\r\n";
+        $devicesInfo = [];
 
-        $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
-        $this->SendDebug('----' . __FUNCTION__, 'ST: ' . self::WS_DISCOVERY_ST, 0);
-        if (!$socket) {
-            return [];
+        foreach ($devices as $device) {
+            // Check if Server key exists and Fedora is found in its value
+            if (isset($device['Server']) && (str_contains($device['Server'], 'Denon') || str_contains($device['Server'], 'KnOS'))) {
+                $locationInfo = $this->getDeviceInfoFromLocation($device['Location']);
+                // Add to existing device info array
+                $devicesInfo[] = [
+                    'host'         => $device['IPv4'],
+                    'friendlyName' => $locationInfo['friendlyName'],
+                    'manufacturer' => $locationInfo['manufacturer'],
+                    'modelName'    => $locationInfo['modelName']
+                ];
+            }
         }
 
-        socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, true);
-        socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, true);
-        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, ['sec' => 2, 'usec' => 100000]);
-        socket_set_option($socket, IPPROTO_IP, IP_MULTICAST_TTL, 4);
+        return $devicesInfo;
+    }
 
-        $this->SendDebug('Search', $SendData, 0);
-        if (@socket_sendto($socket, $SendData, strlen($SendData), 0, self::WS_DISCOVERY_MULTICAST_ADDRESS, self::WS_DISCOVERY_MULTICAST_PORT)
-            === false) {
-            return [];
-        }
-
-        // RECEIVE RESPONSE
-        $device_info      = [];
-        $IPAddress        = '';
-        $Port             = 0;
-        $discoveryTimeout = time() + self::WS_DISCOVERY_TIMEOUT;
-
-        do {
-            $buf   = null;
-            $bytes = @socket_recvfrom($socket, $buf, 2048, 0, $IPAddress, $Port);
-            if ((bool)$bytes === false) {
-                break;
-            }
-            $this->SendDebug(sprintf('Receive (%s:%s)', $IPAddress, $Port), (string)$buf, 0);
-
-            if (!is_null($buf)) {
-                $device = $this->parseHeader($buf);
-                if (isset($device['SERVER'])) {
-                    if ((str_contains($device['SERVER'], 'Denon')) || (str_contains($device['SERVER'], 'KnOS'))) {
-                        $locationInfo  = $this->GetDeviceInfoFromLocation($device['LOCATION']);
-                        $device_info[] = [
-                            'host'         => $IPAddress,
-                            'friendlyName' => $locationInfo['friendlyName'],
-                            'manufacturer' => $locationInfo['manufacturer'],
-                            'modelName'    => $locationInfo['modelName']
-                        ];
-                    }
-                }
-            }
-        } while (time() < $discoveryTimeout);
-
-        // CLOSE SOCKET
-        socket_close($socket);
+    private function getDiscoveredDevices(): array
+    {
+        $ssdp_id     = IPS_GetInstanceListByModuleID(self::MODID_SSDP)[0];
+        $devices     = YC_SearchDevices($ssdp_id, self::DISCOVERY_SEARCHTARGET);
+        $device_info = $this->receiveDevicesInfo($devices);
 
         // zum Test wird der Eintrag verdoppelt und eine abweichende IP eingesetzt
         //$denon_info[]=$denon_info[0];
@@ -269,9 +256,22 @@ class DenonDiscovery extends IPSModule
      */
     public function GetConfigurationForm(): string
     {
+
+        $this->SendDebug(__FUNCTION__, 'Start', 0);
+        $this->SendDebug(__FUNCTION__, 'SearchActive: ' . $this->GetBuffer(self::BUFFER_SEARCHACTIVE), 0);
+
+        // Do not start a new search, if a search is currently active
+        if (!json_decode($this->GetBuffer(self::BUFFER_SEARCHACTIVE))) {
+            $this->SetBuffer(self::BUFFER_SEARCHACTIVE, json_encode(true));
+
+            // Start device search in a timer, not prolonging the execution of GetConfigurationForm
+            $this->SendDebug(__FUNCTION__, 'RegisterOnceTimer', 0);
+            $this->RegisterOnceTimer(self::TIMER_LOADDEVICES, 'IPS_RequestAction($_IPS["TARGET"], "loadDevices", "");');
+        }
         // return current form
         $Form = json_encode([
-                                'actions' => $this->FormActions(),
+                                'elements' => [],
+                                'actions' => $this->formActions(),
                                 'status'  => []
                             ], JSON_THROW_ON_ERROR);
         $this->SendDebug('FORM', $Form, 0);
@@ -285,11 +285,22 @@ class DenonDiscovery extends IPSModule
      * @return array
      * @throws \JsonException
      */
-    private function FormActions(): array
+    private function formActions(): array
     {
+        $devices = json_decode($this->GetBuffer(self::BUFFER_DEVICES));
+
         return [
             [
-                'name'     => 'DenonDiscovery',
+                // Inform user, that the search for devices could take a while if no devices were found yet
+                [
+                    'name'          => 'searchingInfo',
+                    'type'          => 'ProgressBar',
+                    'caption'       => 'The configurator is currently searching for devices. This could take a while...',
+                    'indeterminate' => true,
+                    'visible'       => count($devices) === 0
+                ],
+
+                'name'     => 'configurator',
                 'type'     => 'Configurator',
                 'rowCount' => 20,
                 'add'      => false,
@@ -326,8 +337,7 @@ class DenonDiscovery extends IPSModule
                         'width'   => '250px'
                     ]
                 ],
-                'values'   => $this->Get_ConfiguratorValues()
-                //'values' => []
+                'values'   => $devices
             ]
         ];
     }
