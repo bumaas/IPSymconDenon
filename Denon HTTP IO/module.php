@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../DenonClass.php';  // diverse Klassen
 
-class DenonAVRIOHTTP extends IPSModule
+class DenonAVRIOHTTP extends IPSModuleStrict
 {
     const STATUS_INST_IP_IS_INVALID = 204; //IP Adresse ist ungültig
 
-    public function Create()
+    public function Create(): void
     {
         //Never delete this line!
         parent::Create();
@@ -22,7 +22,7 @@ class DenonAVRIOHTTP extends IPSModule
         $this->RegisterTimer('Update', 0, 'DAVRIO_GetStatus(' . $this->InstanceID . ');');
     }
 
-    public function ApplyChanges()
+    public function ApplyChanges(): void
     {
         //Never delete this line!
         parent::ApplyChanges();
@@ -46,13 +46,13 @@ class DenonAVRIOHTTP extends IPSModule
         $this->SetUpdateTimerInterval();
     }
 
-    protected function SetUpdateTimerInterval()
+    protected function SetUpdateTimerInterval(): void
     {
         $Interval = $this->ReadPropertyInteger('UpdateInterval') * 1000;
         $this->SetTimerInterval('Update', $Interval);
     }
 
-    public function GetInputArrayStatus()
+    public function GetInputArrayStatus(): array
     {
         $InputsMapping = GetValue($this->GetIDForIdent('InputMapping'));
         $InputsMapping = json_decode($InputsMapping);
@@ -72,7 +72,7 @@ class DenonAVRIOHTTP extends IPSModule
 
     //################# DATAPOINT RECEIVE FROM CHILD
 
-    public function ForwardData($JSONString)
+    public function ForwardDatastring ( string $JSONString): string
     {
 
         // Empfangene Daten von der Splitter Instanz
@@ -89,9 +89,10 @@ class DenonAVRIOHTTP extends IPSModule
             echo $ex->getMessage();
             echo ' in ' . $ex->getFile() . ' line: ' . $ex->getLine() . '.';
         }
+        return '';
     }
 
-    public function GetStatus()
+    public function GetStatus(): int
     {
         // Empfangene Daten vom Denon AVR Receiver
 
@@ -117,13 +118,14 @@ class DenonAVRIOHTTP extends IPSModule
             }
             $this->unlock('HTTPGetState');
 
-            return $data;
+            //return $data;
+            return 0; // keine Ahnung, was hier passieren soll todo
         }
 
         echo "Can not send to parent \n";
         $this->unlock('HTTPGetState');
 
-        return false;
+        return 0; //keine Ahnung, welchen Status die Instanz liefern sollte todo
     }
 
     private function SendJSON($data)

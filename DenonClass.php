@@ -3,80 +3,98 @@
 declare(strict_types=1);
 require_once __DIR__ . '/AVRModels.php';  // diverse Klassen
 
-class AVRModule extends IPSModule
+class AVRModule extends IPSModuleStrict
 {
-    private const PROPERTY_WRITE_DEBUG_INFORMATION_TO_LOGFILE = 'WriteDebugInformationToLogfile';
+    private const string PROPERTY_WRITE_DEBUG_INFORMATION_TO_LOGFILE = 'WriteDebugInformationToLogfile';
+
+    // Konstante für die Übersichtlichkeit und einfache Wartung
+    private const array LEGACY_TRUE_PROPERTIES = [
+        DENONIPSProfiles::ptPower,
+        DENONIPSProfiles::ptMainZonePower,
+        DENONIPSProfiles::ptMainMute,
+        'InputSource', // Tipp: Auch hierfür eine Konstante in DENONIPSProfiles nutzen, falls möglich
+        DENONIPSProfiles::ptSurroundMode,
+        DENONIPSProfiles::ptMasterVolume,
+        DENONIPSProfiles::ptZone2Name,
+        DENONIPSProfiles::ptZone3Name,
+        DENONIPSProfiles::ptZone2Power,
+        DENONIPSProfiles::ptZone3Power,
+        DENONIPSProfiles::ptZone2Mute,
+        DENONIPSProfiles::ptZone3Mute,
+        DENONIPSProfiles::ptZone2Volume,
+        DENONIPSProfiles::ptZone3Volume,
+        DENONIPSProfiles::ptZone2InputSource,
+        DENONIPSProfiles::ptZone3InputSource,
+    ];
 
     protected bool $testAllProperties = false;
 
-    private const STATUS_INST_IP_IS_INVALID = 204; //IP-Adresse ist ungültig
-    private const STATUS_INST_NO_MANUFACTURER_SELECTED = 210;
-    private const STATUS_INST_NO_NEO_CATEGORY_SELECTED = 211;
-    private const STATUS_INST_NO_ZONE_SELECTED = 212;
-    private const STATUS_INST_NO_DENON_AVR_TYPE_SELECTED = 213;
-    private const STATUS_INST_NO_MARANTZ_AVR_TYPE_SELECTED = 214;
+    private const int STATUS_INST_IP_IS_INVALID                = 204; //IP-Adresse ist ungültig
+    private const int STATUS_INST_NO_MANUFACTURER_SELECTED     = 210;
+    private const int STATUS_INST_NO_ZONE_SELECTED             = 212;
+    private const int STATUS_INST_NO_DENON_AVR_TYPE_SELECTED   = 213;
+    private const int STATUS_INST_NO_MARANTZ_AVR_TYPE_SELECTED = 214;
+
+    private const string ZERO_WIDTH_SPACE = "\u{200B}";
+
 
     protected function SetInstanceStatus(): bool
     {
         if (IPS_GetKernelRunlevel() !== KR_READY) {
             return false;
         }
-        //Zone prüfen
-        $Zone = $this->ReadPropertyInteger('Zone');
+
         $manufacturer = $this->ReadPropertyInteger('manufacturer');
+        $zone = $this->ReadPropertyInteger('Zone');
 
-        $Status = IS_INACTIVE;
-
+        // 1. Validierung der Basiseigenschaften (Guard Clauses)
         if ($manufacturer === 0) {
-            // Error Manufacturer auswählen
-            $Status = self::STATUS_INST_NO_MANUFACTURER_SELECTED;
-        } elseif ($manufacturer === 1 && $this->ReadPropertyInteger('AVRTypeDenon') === 50) {
-            // Error Denon AVR Type auswählen
-            $Status = self::STATUS_INST_NO_DENON_AVR_TYPE_SELECTED;
-        } elseif ($manufacturer === 2 && $this->ReadPropertyInteger('AVRTypeMarantz') === 50) {
-            // Error Marantz AVR Type auswählen
-            $Status = self::STATUS_INST_NO_MARANTZ_AVR_TYPE_SELECTED;
-        } elseif ($Zone === 6) {
-            // Error Zone auswählen
-            $Status = self::STATUS_INST_NO_ZONE_SELECTED;
-        } elseif (!$this->isNeoCategoryValid()) {
-            // Error keine gültige Category ausgewählt
-            $Status = self::STATUS_INST_NO_NEO_CATEGORY_SELECTED;
-        } elseif ($this->GetIPParent() === false) {
-            // Status keine gültige IP
-            $Status = self::STATUS_INST_IP_IS_INVALID;
-        } elseif ($this->HasActiveParent()) {
-            $Status = IS_ACTIVE;
+            $this->SetStatus(self::STATUS_INST_NO_MANUFACTURER_SELECTED);
+            return false;
         }
 
-        $this->SetStatus($Status);
-
-        return $Status === IS_ACTIVE;
-    }
-
-    private function isNeoCategoryValid(): bool
-    {
-        if ($this->ReadPropertyBoolean('NEOToggle')) {
-            $CatId = $this->ReadPropertyInteger('NEOToggleCategoryID');
-            if (!IPS_ObjectExists($CatId) || ((int) IPS_GetObject($CatId)['ObjectType'] !== OBJECTTYPE_CATEGORY)) {
-                return false;
-            }
+        // Hersteller-spezifische Prüfung
+        if ($manufacturer === 1 && $this->ReadPropertyInteger('AVRTypeDenon') === 50) {
+            $this->SetStatus(self::STATUS_INST_NO_DENON_AVR_TYPE_SELECTED);
+            return false;
         }
 
-        return true;
+        if ($manufacturer === 2 && $this->ReadPropertyInteger('AVRTypeMarantz') === 50) {
+            $this->SetStatus(self::STATUS_INST_NO_MARANTZ_AVR_TYPE_SELECTED);
+            return false;
+        }
+
+        // Zone und Kategorie
+        if ($zone === 6) {
+            $this->SetStatus(self::STATUS_INST_NO_ZONE_SELECTED);
+            return false;
+        }
+
+        // 2. Verbindung prüfen
+        if ($this->GetIPParent() === false) {
+            $this->SetStatus(self::STATUS_INST_IP_IS_INVALID);
+            return false;
+        }
+
+        // 3. Finaler Status
+        $status = $this->HasActiveParent() ? IS_ACTIVE : IS_INACTIVE;
+        $this->SetStatus($status);
+
+        return $status === IS_ACTIVE;
     }
 
     // Daten vom Splitter Instanz
-    public function ReceiveData($JSONString):void
+    public function ReceiveData(string $JSONString):string
     {
 
         // Empfangene Daten vom Splitter
         $data = json_decode($JSONString, false, 512, JSON_THROW_ON_ERROR);
         $this->Logger_Dbg(__FUNCTION__, json_encode($data->Buffer->Data, JSON_THROW_ON_ERROR));
         $this->UpdateVariable($data->Buffer);
+        return '';
     }
 
-    // Wertet Response aus und setzt Variable
+    // Wertet Response aus und setzt Variablen
     protected function UpdateVariable($data): bool
     {
         //$data = json_decode('{"ResponseType":"TELNET","Data":[],"SurroundDisplay":"","Display":{"1":"\u0001GAMPER & DADONI - BITTERSWEET SYMPHONY (feat. Emily Roberts)","2":"\u0001Radio 7"}}');
@@ -87,18 +105,16 @@ class AVRModule extends IPSModule
         $Zone = $this->ReadPropertyInteger('Zone');
         $this->Logger_Dbg(__FUNCTION__, sprintf('ResponseType: %s, Zone: %s', $ResponseType, $Zone));
 
-        $datavalues = null;
-
         switch ($ResponseType) {
             case 'HTTP':
-                if ($Zone === 0) {
-                    $datavalues = $data->Data->Mainzone;
-                } elseif ($Zone === 1) {
-                    $datavalues = $data->Data->Zone2;
-                } elseif ($Zone === 2) {
-                    $datavalues = $data->Data->Zone3;
-                }
+                $datavalues = match ($Zone) {
+                    0       => $data->Data->Mainzone,
+                    1       => $data->Data->Zone2,
+                    2       => $data->Data->Zone3,
+                    default => null,
+                };
                 break;
+
             case 'TELNET':
                 $datavalues = $data->Data;
                 $this->Logger_Dbg(__FUNCTION__, 'Data Telnet: ' . json_encode($datavalues, JSON_THROW_ON_ERROR));
@@ -109,7 +125,8 @@ class AVRModule extends IPSModule
                         $SurroundDisplay = $data->SurroundDisplay;
                         if ($SurroundDisplay !== '') {
                             $this->Logger_Dbg(__FUNCTION__, 'Surround Display: ' . $SurroundDisplay);
-                            SetValueString($this->GetIDForIdent('SurroundDisplay'), $SurroundDisplay);
+                            $this->SetValue('SurroundDisplay', $SurroundDisplay);
+                            //SetValueString($this->GetIDForIdent('SurroundDisplay'), $SurroundDisplay);
                         }
                     }
                     // OnScreenDisplay
@@ -117,8 +134,7 @@ class AVRModule extends IPSModule
                         $OnScreenDisplay = $data->Display;
                         $this->Logger_Dbg(__FUNCTION__, 'Display: ' . json_encode($OnScreenDisplay, JSON_THROW_ON_ERROR));
 
-                        $idDisplay = $this->GetIDForIdent(DENON_API_Commands::DISPLAY);
-                        $DisplayHTML = GetValue($idDisplay);
+                        $DisplayHTML = $this->GetValue(DENON_API_Commands::DISPLAY);
                         $doc = new DOMDocument();
                         $doc->loadHTML($DisplayHTML);
                         foreach ($OnScreenDisplay as $row => $content) {
@@ -141,7 +157,7 @@ class AVRModule extends IPSModule
                             $node->textContent = $content;
                         }
 
-                        SetValueString($idDisplay, $doc->saveHTML());
+                        $this->SetValue(DENON_API_Commands::DISPLAY, $doc->saveHTML());
                     }
                 }
                 break;
@@ -157,35 +173,42 @@ class AVRModule extends IPSModule
         }
 
         foreach ($datavalues as $Ident => $Values) {
-            $Ident = str_replace(' ', '_', $Ident); //Ident Leerzeichen von Command mit _ ersetzten
+            $Ident = str_replace(' ', '_', $Ident);
             $VarID = @$this->GetIDForIdent($Ident);
-            if ($VarID > 0) {
-                $VarType = $Values->VarType;
-                $Subcommand = $Values->Subcommand;
-                $Subcommandvalue = $Values->Value;
-                switch ($VarType) {
-                    case 0: //Boolean
-                        SetValueBoolean($VarID, $Subcommandvalue);
-                        $this->Logger_Dbg(__FUNCTION__, 'Update ObjektID ' . $VarID . ' (' . IPS_GetName($VarID) . '): ' . $Subcommand . '(' . (int) $Subcommandvalue . ')');
-                        break;
-                    case 1: //Integer
-                        SetValueInteger($VarID, $Subcommandvalue);
-                        $this->Logger_Dbg(__FUNCTION__, 'Update ObjektID ' . $VarID . ' (' . IPS_GetName($VarID) . '): ' . $Subcommand . '(' . $Subcommandvalue . ')');
-                        break;
-                    case 2: //Float
-                        SetValueFloat($this->GetIDForIdent($Ident), is_numeric($Subcommandvalue)?$Subcommandvalue:0);
-                        $this->Logger_Dbg(__FUNCTION__, 'Update ObjektID ' . $VarID . ' (' . IPS_GetName($VarID) . '): ' . $Subcommand . '(' . $Subcommandvalue . ')');
-                        break;
-                    case 3: //String
-                        SetValueString($this->GetIDForIdent($Ident), $Subcommandvalue);
-                        $this->Logger_Dbg(__FUNCTION__, 'Update ObjektID ' . $VarID . ' (' . IPS_GetName($VarID) . '): ' . $Subcommandvalue);
-                        break;
-                    default:
-                        trigger_error(__CLASS__ . '::' . __FUNCTION__ . ': invalid VarType: ' . $VarType);
-                }
-            } else {
+
+            if ($VarID <= 0) {
                 $this->Logger_Dbg(__FUNCTION__, $this->InstanceID . ': Info: Keine Variable mit dem Ident "' . $Ident . '" gefunden.');
+                continue;
             }
+
+            $VarType = $Values->VarType;
+            $Subcommand = $Values->Subcommand;
+            $value = $Values->Value;
+
+            // Spezialbehandlung für Float (is_numeric Check)
+            if ($VarType === DENONIPSVarType::vtFloat) {
+                $value = is_numeric($value) ? (float)$value : 0.0;
+            }
+
+            // Setzen des Wertes
+            $this->SetValue($Ident, $value);
+
+            // Logging vorbereiten
+            $logValue = ($VarType === DENONIPSVarType::vtBoolean) ? (int)$value : $value;
+            $logMessage = sprintf(
+                'Update ObjektID %d (%s): %s(%s)',
+                $VarID,
+                IPS_GetName($VarID),
+                $Subcommand,
+                $logValue
+            );
+
+            // Spezielle Log-Anpassung für String (falls Subcommand nicht nötig)
+            if ($VarType === DENONIPSVarType::vtString) {
+                $logMessage = sprintf('Update ObjektID %d (%s): %s', $VarID, IPS_GetName($VarID), $value);
+            }
+
+            $this->Logger_Dbg(__FUNCTION__, $logMessage);
         }
 
         return true;
@@ -193,177 +216,191 @@ class AVRModule extends IPSModule
 
     protected function RegisterProperties(): void
     {
-        //Expert Parameters, must set first, because Logging functions are using it
+        // 1. Experten-Parameter (Logging)
         $this->RegisterPropertyBoolean(self::PROPERTY_WRITE_DEBUG_INFORMATION_TO_LOGFILE, false);
 
+        // 2. Geräte-Basiskonfiguration
         $this->RegisterPropertyInteger('manufacturer', 0);
         $this->RegisterPropertyInteger('AVRTypeDenon', 50);
         $this->RegisterPropertyInteger('AVRTypeMarantz', 50);
         $this->RegisterPropertyInteger('Zone', 6);
 
-        // all Checkboxes for the selection of the variables have to be registered
-        $DenonAVRVar = new DENONIPSProfiles(null, null, function (string $message, string $data) {
+        // 3. Dynamische Profile registrieren
+        $this->registerDynamicAVRProperties();
+
+        // 4. Zusätzliche Features
+        $this->registerAdditionalInputs();
+    }
+
+    private function registerDynamicAVRProperties(): void
+    {
+        $profileManager = new DENONIPSProfiles(null, null, function (string $message, string $data) {
             $this->Logger_Dbg($message, $data);
         });
 
-        $profiles = $DenonAVRVar->GetAllProfiles();
-        foreach ($profiles as $profile) {
-            //some variables were registered with 'true' in the former version. So due to compatibility reasons they were registered with 'true' again
-            $DefaultValue = in_array(
-                $profile['PropertyName'],
-                [
-                    DENONIPSProfiles::ptPower,
-                    DENONIPSProfiles::ptMainZonePower,
-                    DENONIPSProfiles::ptMainMute,
-                    'InputSource',
-                    DENONIPSProfiles::ptSurroundMode,
-                    DENONIPSProfiles::ptMasterVolume,
-                    DENONIPSProfiles::ptZone2Name,
-                    DENONIPSProfiles::ptZone3Name,
-                    DENONIPSProfiles::ptZone2Power,
-                    DENONIPSProfiles::ptZone3Power,
-                    DENONIPSProfiles::ptZone2Mute,
-                    DENONIPSProfiles::ptZone3Mute,
-                    DENONIPSProfiles::ptZone2Volume,
-                    DENONIPSProfiles::ptZone3Volume,
-                    DENONIPSProfiles::ptZone2InputSource,
-                    DENONIPSProfiles::ptZone3InputSource,
-                    ],
-                true
-            );
-            $this->Logger_Dbg(__FUNCTION__, 'Property registered: ' . $profile['PropertyName'] . '(' . (int) $DefaultValue . ')');
-            $this->RegisterPropertyBoolean($profile['PropertyName'], $DefaultValue);
+        foreach ($profileManager->GetAllProfiles() as $profile) {
+            $name = $profile['PropertyName'];
+            $defaultValue = in_array($name, self::LEGACY_TRUE_PROPERTIES, true);
+
+            $this->RegisterPropertyBoolean($name, $defaultValue);
         }
-
-        //Zusätzliche Inputs
-        $this->RegisterPropertyBoolean('FAVORITES', false);
-        $this->RegisterPropertyBoolean('IRADIO', false);
-        $this->RegisterPropertyBoolean('SERVER', false);
-        $this->RegisterPropertyBoolean('NAPSTER', false);
-        $this->RegisterPropertyBoolean('LASTFM', false);
-        $this->RegisterPropertyBoolean('FLICKR', false);
-
-        //Neo
-        $this->RegisterPropertyBoolean('NEOToggle', false);
-        $this->RegisterPropertyInteger('NEOToggleCategoryID', 0);
-
     }
 
-    protected function RegisterReferences(): void
+    private function registerAdditionalInputs(): void
     {
-        $objectIDs = [
-            $this->ReadPropertyInteger('NEOToggleCategoryID')
+        $inputs = ['FAVORITES', 'IRADIO', 'SERVER', 'NAPSTER', 'LASTFM', 'FLICKR'];
+        foreach ($inputs as $input) {
+            $this->RegisterPropertyBoolean($input, false);
+        }
+    }
+
+    protected function GetVariablePresentation(array $varDef): array|string
+    {
+
+        $suffix = match ($varDef['Suffix'] ?? '') {
+            '%' => self::ZERO_WIDTH_SPACE . '%',
+            '' => '',
+            default => ' ' . $varDef['Suffix']
+        };
+
+        $options = null;
+        if (!empty($varDef['Associations'])) {
+            $formattedOptions = [];
+            foreach ($varDef['Associations'] as $value) {
+                $formattedOptions[] = [
+                    'Value'      => $value[0],
+                    'Caption'    => $value[1],
+                    'IconActive' => false,
+                    'IconValue'  => '',
+                    'ColorActive'=> false,
+                    'ColorValue' => -1,
+                ];
+            }
+            $options = json_encode($formattedOptions, JSON_THROW_ON_ERROR);
+        }
+
+        if ($varDef['displayOnly']){
+            if ($varDef['ProfilName'] === '~HTMLBox'){
+                return [
+                    'PRESENTATION' => VARIABLE_PRESENTATION_WEB_CONTENT,
+                ];
+            }
+            return array_filter([
+                'PRESENTATION' => VARIABLE_PRESENTATION_VALUE_PRESENTATION,
+                'SUFFIX'       => $suffix,
+                'OPTIONS'      => $options ? json_encode($options, JSON_THROW_ON_ERROR) : null
+            ]);
+        }
+
+        // Basis-Daten für die meisten Typen
+        $baseData = [
+            'ICON'    => $varDef['Icon'] ?? false,
+            'SUFFIX'  => $suffix,
+            'OPTIONS' => $options
         ];
 
-        foreach ($this->GetReferenceList() as $ref) {
-            $this->UnregisterReference($ref);
-        }
+        return match ($varDef['Type']) {
+            DENONIPSVarType::vtBoolean => array_filter([
+                                                           'PRESENTATION' => VARIABLE_PRESENTATION_SWITCH,
+                                                           'ICON'         => $varDef['Icon'] ?? false,
+                                                       ]),
 
-        foreach ($objectIDs as $id) {
-            if ($id !== 0) {
-                $this->RegisterReference($id);
-            }
-        }
+            DENONIPSVarType::vtInteger => array_filter(array_merge($baseData, [
+                'PRESENTATION' => VARIABLE_PRESENTATION_ENUMERATION,
+            ])),
+
+            DENONIPSVarType::vtFloat => array_filter(array_merge($baseData, [
+                'PRESENTATION' => VARIABLE_PRESENTATION_SLIDER,
+                'MIN'          => $varDef['MinValue'],
+                'MAX'          => $varDef['MaxValue'],
+                'STEP_SIZE'    => $varDef['Stepsize'],
+                'PERCENTAGE'   => $varDef['Suffix'] === '%',
+                'DIGITS'       => $varDef['Digits'],
+            ])),
+
+            default => throw new InvalidArgumentException(sprintf('Unsupported type: %s', $varDef['Type'])),
+        };
+
     }
 
-    protected function RegisterVariables(DENONIPSProfiles $DenonAVRVar, $idents, $AVRType, $manufacturername): bool
+    protected function RegisterVariables(DENONIPSProfiles $DenonAVRVar, array $idents, string $manufacturername): bool
     {
         $this->Logger_Dbg(__FUNCTION__, 'idents: ' . json_encode($idents, JSON_THROW_ON_ERROR));
 
         if (!in_array($manufacturername, [DENONIPSProfiles::ManufacturerDenon, DENONIPSProfiles::ManufacturerMarantz], true)) {
             trigger_error('ManufacturerName not set');
-
             return false;
         }
 
-        // Add/Remove according to feature activation
+        foreach ($idents as $configId => $selected) {
+            $config = $DenonAVRVar->GetVariableConfig($configId);
 
-        //Selektierte Variablen anlegen
-        foreach ($idents as $ident => $selected) {
-            $statusvariable = $DenonAVRVar->SetupVariable($ident);
-
-            //Auswahl Prüfen
-            if ($selected) {
-                switch ($statusvariable['Type']) {
-                    case DENONIPSVarType::vtString:
-                        if ($statusvariable['ProfilName'] === '~HTMLBox') {
-                            $profilname = '~HTMLBox';
-                        } else {
-                            $profilname = $manufacturername . '.' . $AVRType . '.' . $statusvariable['ProfilName'];
-                            $this->CreateProfileString($profilname, $statusvariable['Icon']);
-                        }
-
-                        $this->RegisterVariableString($statusvariable['Ident'], $statusvariable['Name'], $profilname, $statusvariable['Position']);
-
-                        if ($ident === DENON_API_Commands::DISPLAY) {
-                            $DisplayHTML = '<!--suppress HtmlRequiredLangAttribute -->
-<html><body><div id="NSARow0"></div><div id="NSARow1"></div><div id="NSARow2"></div><div id="NSARow3"></div><div id="NSARow4"></div><div id="NSARow5"></div><div id="NSARow6"></div><div id="NSARow7"></div><div id="NSARow8"></div></body></html>';
-                            SetValueString($this->GetIDForIdent(DENON_API_Commands::DISPLAY), $DisplayHTML);
-                        }
-                        break;
-
-                    case DENONIPSVarType::vtBoolean:
-                        $this->RegisterVariableBoolean($statusvariable['Ident'], $statusvariable['Name'], '~Switch', $statusvariable['Position']);
-                        break;
-
-                    case DENONIPSVarType::vtInteger:
-                        $profilname = $manufacturername . '.' . $AVRType . '.' . $statusvariable['ProfilName'];
-                        $this->CreateProfileIntegerAss(
-                            $profilname,
-                            $statusvariable['Icon'],
-                            $statusvariable['Prefix'],
-                            $statusvariable['Suffix'],
-                            $statusvariable['Stepsize'],
-                            $statusvariable['Digits'],
-                            $statusvariable['Associations']
-                        );
-
-                        $this->RegisterVariableInteger($statusvariable['Ident'], $statusvariable['Name'], $profilname, $statusvariable['Position']);
-                        break;
-
-                    case DENONIPSVarType::vtFloat:
-                        $profilname = $manufacturername . '.' . $AVRType . '.' . $statusvariable['ProfilName'];
-                        $this->CreateProfileFloat($profilname, $statusvariable['Icon'], $statusvariable['Prefix'], $statusvariable['Suffix'], $statusvariable['MinValue'], $statusvariable['MaxValue'], $statusvariable['Stepsize'], $statusvariable['Digits']);
-                        $this->Logger_Dbg(__FUNCTION__, 'Variablenprofil angelegt: ' . $profilname);
-                        $this->RegisterVariableFloat($statusvariable['Ident'], $statusvariable['Name'], $profilname, $statusvariable['Position']);
-                        break;
-
-                    default:
-                        trigger_error(__CLASS__ . '::' . __FUNCTION__ . ': invalid Type: ' . $statusvariable['Type']);
-
-                        return false;
-
-                }
-
-                if (!isset($statusvariable['displayOnly']) || !$statusvariable['displayOnly']){
-                    $this->EnableAction($statusvariable['Ident']);
-                }
-
+            if ($config === false) {
+                continue;
             }
-            // wenn nicht, selektiert löschen
-            else {
-                $this->removeVariableAction($statusvariable['Ident'], $ident);
+
+            if (!$selected) {
+                $this->removeVariable($config['Ident']);
+                continue;
+            }
+
+            // Variable registrieren basierend auf Typ
+            if (!$this->registerSingleVariable($config, $configId)) {
+                return false;
+            }
+
+            // Aktions-Handler aktivieren, wenn es keine reine Anzeige-Variable ist
+            if (empty($config['displayOnly'])) {
+                $this->EnableAction($config['Ident']);
             }
         }
 
         return true;
     }
 
-    protected function CreateNEOScripts($NEO_Parameter): void
+    private function registerSingleVariable(array $config, $configId): bool
     {
-        // alle Instanzvariablen vom Typ boolean suchen
-        $ObjectIds = IPS_GetChildrenIDs($this->InstanceID);
-        foreach ($ObjectIds as $ObjectId) {
-            // wenn es sich um eine Variable handelt und die vom Typ Boolean ist
-            $obj = IPS_GetObject($ObjectId);
-            if (($obj['ObjectType'] === 2 /*Variable*/) && IPS_GetVariable($ObjectId)['VariableType'] === DENONIPSVarType::vtBoolean) {
-                $Ident = $obj['ObjectIdent'];
-                if (array_key_exists($Ident, $NEO_Parameter)) {
-                    $this->WriteNEOScript($ObjectId, $NEO_Parameter[$Ident][0], $NEO_Parameter[$Ident][1]);
+        $presentation = $this->GetVariablePresentation($config);
+        $this->SendDebug(__FUNCTION__, sprintf('presentation: %s', json_encode($presentation, JSON_THROW_ON_ERROR)), 0);
+
+        switch ($config['Type']) {
+            case DENONIPSVarType::vtString:
+                $this->RegisterVariableString($config['Ident'], $config['Name'], $presentation, $config['Position']);
+                if ($configId === DENON_API_Commands::DISPLAY) {
+                    $this->SetValue($config['Ident'], $this->getDisplayTemplate());
                 }
-            }
+                break;
+
+            case DENONIPSVarType::vtBoolean:
+                $this->RegisterVariableBoolean($config['Ident'], $config['Name'], $presentation, $config['Position']);
+                break;
+
+            case DENONIPSVarType::vtInteger:
+                $this->RegisterVariableInteger($config['Ident'], $config['Name'], $presentation, $config['Position']);
+                break;
+
+            case DENONIPSVarType::vtFloat:
+                $this->RegisterVariableFloat($config['Ident'], $config['Name'], $presentation, $config['Position']);
+                break;
+
+            default:
+                trigger_error(__CLASS__ . '::' . __FUNCTION__ . ': invalid Type: ' . $config['Type']);
+                return false;
         }
+
+        return true;
     }
+
+    private function getDisplayTemplate(): string
+    {
+        $rows = '';
+        for ($i = 0; $i <= 8; $i++) {
+            $rows .= "<div id=\"NSARow$i\"></div>";
+        }
+
+        return "<!--suppress HtmlRequiredLangAttribute --><html><body>$rows</body></html>";
+    }
+
 
     protected function GetParent()
     {
@@ -371,84 +408,6 @@ class AVRModule extends IPSModule
         return ($instance['ConnectionID'] > 0) ? $instance['ConnectionID'] : 0; //ConnectionID
     }
 
-    private function checkProfileType($ProfileName, $VarType): void
-    {
-        $profile = IPS_GetVariableProfile($ProfileName);
-        if ($profile['ProfileType'] !== $VarType) {
-            trigger_error('Variable profile type does not match for already existing profile "' . $ProfileName . '". The existing profile has to be deleted manually.');
-        }
-    }
-
-    private function CreateProfileInteger($ProfileName, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize, $Digits): void
-    {
-        if (!IPS_VariableProfileExists($ProfileName)) {
-            IPS_CreateVariableProfile($ProfileName, 1);
-
-            $this->Logger_Inf('Variablenprofil angelegt: ' . $ProfileName);
-        } else {
-            $this->checkProfileType($ProfileName, 1); //integer
-        }
-
-        IPS_SetVariableProfileIcon($ProfileName, $Icon);
-        IPS_SetVariableProfileText($ProfileName, $Prefix, $Suffix);
-        IPS_SetVariableProfileDigits($ProfileName, $Digits); //  Nachkommastellen
-        IPS_SetVariableProfileValues($ProfileName, $MinValue, $MaxValue, $StepSize);
-    }
-
-    private function CreateProfileIntegerAss($ProfileName, $Icon, $Prefix, $Suffix, $StepSize, $Digits, $Associations): void
-    {
-        if (count($Associations) === 0) {
-            trigger_error(__FUNCTION__ . ': Associations of profil "' . $ProfileName . '" is empty');
-            $this->Logger_Err(__FUNCTION__ . ': ' .  json_encode(debug_backtrace(), JSON_THROW_ON_ERROR));
-
-            return;
-        }
-
-        $MinValue = 0;
-        $MaxValue = 0;
-
-        $this->CreateProfileInteger($ProfileName, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize, $Digits);
-
-        //zunächst werden alte Assoziationen gelöscht
-        //bool IPS_SetVariableProfileAssociation ( string $ProfilName, float $Wert, string $Name, string $Icon, integer $Farbe )
-        foreach (IPS_GetVariableProfile($ProfileName)['Associations'] as $Association) {
-            IPS_SetVariableProfileAssociation($ProfileName, $Association['Value'], '', '', -1);
-        }
-
-        //dann werden die aktuellen eingetragen
-        foreach ($Associations as $Association) {
-            IPS_SetVariableProfileAssociation($ProfileName, $Association[0], $Association[1], '', -1);
-        }
-    }
-
-    private function CreateProfileString($ProfileName, $Icon): void
-    {
-        if (!IPS_VariableProfileExists($ProfileName)) {
-            IPS_CreateVariableProfile($ProfileName, DENONIPSVarType::vtString);
-
-            $this->Logger_Inf('Variablenprofil angelegt: ' . $ProfileName);
-        } else {
-            $this->checkProfileType($ProfileName, DENONIPSVarType::vtString);
-        }
-
-        IPS_SetVariableProfileIcon($ProfileName, $Icon);
-    }
-
-    private function CreateProfileFloat($ProfileName, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize, $Digits): void
-    {
-        if (!IPS_VariableProfileExists($ProfileName)) {
-            IPS_CreateVariableProfile($ProfileName, DENONIPSVarType::vtFloat);
-
-            $this->Logger_Inf('Variablenprofil angelegt: ' . $ProfileName);
-        } else {
-            $this->checkProfileType($ProfileName, DENONIPSVarType::vtFloat);
-        }
-
-        IPS_SetVariableProfileIcon($ProfileName, $Icon);
-        IPS_SetVariableProfileText($ProfileName, $Prefix, $Suffix);
-        IPS_SetVariableProfileDigits($ProfileName, $Digits); //  Nachkommastellen
-        IPS_SetVariableProfileValues($ProfileName, $MinValue, $MaxValue, $StepSize);
-    }
 
     protected function GetAPICommandFromIdent($Ident): string
     {
@@ -513,19 +472,14 @@ class AVRModule extends IPSModule
         return false;
     }
 
-    protected function removeVariableAction($Ident, $Profile): void
+    protected function removeVariable($Ident): void
     {
         $vid = @$this->GetIDForIdent($Ident);
-        if ($vid !== false) {
+        if ($vid !== 0) {
             $Name = IPS_GetName($vid);
             $this->DisableAction($Ident);
             $this->UnregisterVariable($Ident);
             $this->Logger_Inf('Variable gelöscht - Name: ' . $Name . ', Ident: ' . $Ident . ', ObjektID: ' . $vid);
-            //delete Profile
-            if (IPS_VariableProfileExists($Profile)) {
-                IPS_DeleteVariableProfile($Profile);
-                $this->Logger_Inf('Variablenprofil gelöscht:' . $Profile);
-            }
         }
     }
 
@@ -625,32 +579,6 @@ class AVRModule extends IPSModule
             }
         }
         return $form;
-    }
-
-    protected function FormSelectionNEO(): array
-    {
-        return [
-            [
-                'type'    => 'ExpansionPanel',
-                'caption' => 'create helper scripts for toggling with NEO (Mediola)',
-                'items'   => [
-                    [
-                        'type'    => 'CheckBox',
-                        'name'    => 'NEOToggle',
-                        'caption' => 'create separate NEO toggle scripts'
-                    ],
-                    [
-                        'type'    => 'Label',
-                        'caption' => 'category for creating NEO scripts:'
-                    ],
-                    [
-                        'type'    => 'SelectCategory',
-                        'name'    => 'NEOToggleCategoryID',
-                        'caption' => 'script category'
-                    ]
-                ]
-            ]
-        ];
     }
 
     protected function FormMoreInputs(): array
@@ -765,42 +693,6 @@ class AVRModule extends IPSModule
         return null;
     }
 
-    private function WriteNEOScript($ObjectID, $FunctionName, $LogLabel): void
-    {
-        $InstanzID = IPS_GetParent($ObjectID);
-        $InstanzName = IPS_GetName($InstanzID);
-        $Name = IPS_GetName($ObjectID);
-        $KatID = $this->ReadPropertyInteger('NEOToggleCategoryID');
-        $ScriptName = $InstanzName . ' ' . $Name . '_toggle';
-        $SkriptID = @IPS_GetScriptIDByName($ScriptName, $KatID);
-
-        if (!$SkriptID) {
-            $Content
-                = '
-<?
-$status = GetValueBoolean(' . $ObjectID . '); // Status des Geräts auslesen
-if ($status == false)// Einschalten
-	{
-	' . $FunctionName . '(' . $InstanzID . ', true);
-	IPS_LogMessage( "Denon Telnet AVR" , "' . $LogLabel . ' einschalten" );
-   }
-elseif ($status == true)// Ausschalten
-	{
-	' . $FunctionName . '(' . $InstanzID . ', false);
-	IPS_LogMessage( "Denon Telnet AVR" , "' . $LogLabel . ' ausschalten" );
-	}
-
-?>';
-
-            // write Script
-            $ScriptID = IPS_CreateScript(0);
-            IPS_SetName($ScriptID, $ScriptName);
-            IPS_SetParent($ScriptID, $KatID);
-            IPS_SetScriptContent($ScriptID, $Content);
-
-        }
-    }
-
     protected function Logger_Err(string $message): void
     {
         $this->SendDebug('LOG_ERR', $message, 0);
@@ -836,10 +728,10 @@ elseif ($status == true)// Ausschalten
 class DENONIPSVarType extends stdClass
 {
     //  API Datentypen
-    public const vtBoolean = 0;
-    public const vtInteger = 1;
-    public const vtFloat = 2;
-    public const vtString = 3;
+    public const int vtBoolean = 0;
+    public const int vtInteger = 1;
+    public const int vtFloat   = 2;
+    public const int vtString = 3;
 }
 
 #[AllowDynamicProperties] class DENONIPSProfiles extends stdClass
@@ -851,198 +743,198 @@ class DENONIPSVarType extends stdClass
     private mixed $AVRType;
     private array $profiles;
 
-    public const ManufacturerDenon = 'Denon';
-    public const ManufacturerMarantz = 'Marantz';
-    public const ManufacturerNone = 'none';
+    public const string ManufacturerDenon   = 'Denon';
+    public const string ManufacturerMarantz = 'Marantz';
+    public const string ManufacturerNone    = 'none';
 
     //Profiltype
-    public const ptPower = 'Power';
-    public const ptMasterVolume = 'MasterVolume';
-    public const ptBalance = 'Balance';
+    public const string ptPower        = 'Power';
+    public const string ptMasterVolume = 'MasterVolume';
+    public const string ptBalance      = 'Balance';
 
-    public const ptChannelVolumeFL = 'ChannelVolumeFL';
-    public const ptChannelVolumeFR = 'ChannelVolumeFR';
-    public const ptChannelVolumeC = 'ChannelVolumeC';
-    public const ptChannelVolumeSW = 'ChannelVolumeSW';
-    public const ptChannelVolumeSW2 = 'ChannelVolumeSW2';
-    public const ptChannelVolumeSW3 = 'ChannelVolumeSW3';
-    public const ptChannelVolumeSW4 = 'ChannelVolumeSW4';
-    public const ptChannelVolumeSL = 'ChannelVolumeSL';
-    public const ptChannelVolumeSR = 'ChannelVolumeSR';
-    public const ptChannelVolumeSBL = 'ChannelVolumeSBL';
-    public const ptChannelVolumeSBR = 'ChannelVolumeSBR';
-    public const ptChannelVolumeSB = 'ChannelVolumeSB';
-    public const ptChannelVolumeFHL = 'ChannelVolumeFHL';
-    public const ptChannelVolumeFHR = 'ChannelVolumeFHR';
-    public const ptChannelVolumeFWL = 'ChannelVolumeFWL';
-    public const ptChannelVolumeFWR = 'ChannelVolumeFWR';
-    public const ptMainMute = 'MainMute';
-    public const ptInputSource = 'Inputsource';
-    public const ptMainZonePower = 'MainZonePower';
-    public const ptInputMode = 'InputMode';
-    public const ptDigitalInputMode = 'DigitalInputMode';
-    public const ptVideoSelect = 'VideoSelect';
-    public const ptSleep = 'Sleep';
-    public const ptSurroundMode = 'SurroundMode';
-    public const ptQuickSelect = 'QuickSelect';
-    public const ptSmartSelect = 'SmartSelect';
-    public const ptHDMIMonitor = 'HDMIMonitor';
-    public const ptASP = 'ASP';
-    public const ptResolution = 'Resolution';
-    public const ptResolutionHDMI = 'ResolutionHDMI';
-    public const ptHDMIAudioOutput = 'HDMIAudioOutput';
-    public const ptVideoProcessingMode = 'VideoProcessingMode';
-    public const ptToneCTRL = 'ToneCTRL';
-    public const ptSurroundBackMode = 'SurroundBackMode';
-    public const ptSurroundPlayMode = 'SurroundPlayMode';
-    public const ptFrontHeight = 'FrontHeight';
-    public const ptPLIIZHeightGain = 'PLIIZHeightGain';
-    public const ptSpeakerOutput = 'SpeakerOutputFront';
-    public const ptMultiEQMode = 'MultiEQMode';
-    public const ptDynamicEQ = 'DynamicEQ';
-    public const ptAudysseyLFC = 'AudysseyLFC';
-    public const ptAudysseyContainmentAmount = 'AudysseyContainmantAmount';
-    public const ptReferenceLevel = 'ReferenceLevel';
-    public const ptDiracLiveFilter = 'DiracLiveFilter';
-    public const ptDynamicVolume = 'DynamicVolume';
-    public const ptAudysseyDSX = 'AudysseyDSX';
-    public const ptStageWidth = 'StageWidth';
-    public const ptStageHeight = 'StageHeight';
-    public const ptBassLevel = 'BassLevel';
-    public const ptTrebleLevel = 'TrebleLevel';
-    public const ptLoudnessManagement = 'LoudnessManagement';
-    public const ptDynamicRangeCompression = 'DynamicRangeCompression';
-    public const ptMDAX = 'MDAX';
-    public const ptDynamicCompressor = 'DynamicCompressor';
-    public const ptCenterLevelAdjust = 'CenterLevelAdjust';
-    public const ptLFELevel = 'LFELevel';
-    public const ptLFE71Level = 'LFE71Level';
-    public const ptEffectLevel = 'EffectLevel';
-    public const ptDelay = 'Delay';
-    public const ptAFDM = 'AFDM';
-    public const ptPanorama = 'Panorama';
-    public const ptDimension = 'Dimension';
-    public const ptDialogControl = 'DialogControl';
-    public const ptCenterWidth = 'CenterWidth';
-    public const ptCenterImage = 'CenterImage';
-    public const ptCenterGain = 'CenterGain';
-    public const ptSubwoofer = 'Subwoofer';
-    public const ptRoomSize = 'RoomSize';
-    public const ptAudioDelay = 'AudioDelay';
-    public const ptAudioRestorer = 'AudioRestorer';
-    public const ptFrontSpeaker = 'FrontSpeaker';
-    public const ptContrast = 'Contrast';
-    public const ptBrightness = 'Brightness';
-    public const ptSaturation = 'Saturation';
-    public const ptChromalevel = 'Chromalevel';
-    public const ptHue = 'Hue';
-    public const ptDigitalNoiseReduction = 'DNRDirectChange';
-    public const ptPictureMode = 'PictureMode';
-    public const ptEnhancer = 'Enhancer';
-    public const ptBluetoothTransmitter = 'BluetoothTransmitter';
-    public const ptSpeakerPreset = 'SpeakerPreset';
+    public const string ptChannelVolumeFL = 'ChannelVolumeFL';
+    public const string ptChannelVolumeFR = 'ChannelVolumeFR';
+    public const string ptChannelVolumeC  = 'ChannelVolumeC';
+    public const string ptChannelVolumeSW = 'ChannelVolumeSW';
+    public const string ptChannelVolumeSW2 = 'ChannelVolumeSW2';
+    public const string ptChannelVolumeSW3 = 'ChannelVolumeSW3';
+    public const string ptChannelVolumeSW4 = 'ChannelVolumeSW4';
+    public const string ptChannelVolumeSL  = 'ChannelVolumeSL';
+    public const string ptChannelVolumeSR = 'ChannelVolumeSR';
+    public const string ptChannelVolumeSBL = 'ChannelVolumeSBL';
+    public const string ptChannelVolumeSBR = 'ChannelVolumeSBR';
+    public const string ptChannelVolumeSB  = 'ChannelVolumeSB';
+    public const string ptChannelVolumeFHL = 'ChannelVolumeFHL';
+    public const string ptChannelVolumeFHR = 'ChannelVolumeFHR';
+    public const string ptChannelVolumeFWL = 'ChannelVolumeFWL';
+    public const string ptChannelVolumeFWR = 'ChannelVolumeFWR';
+    public const string ptMainMute         = 'MainMute';
+    public const string ptInputSource = 'Inputsource';
+    public const string ptMainZonePower = 'MainZonePower';
+    public const string ptInputMode     = 'InputMode';
+    public const string ptDigitalInputMode = 'DigitalInputMode';
+    public const string ptVideoSelect      = 'VideoSelect';
+    public const string ptSleep       = 'Sleep';
+    public const string ptSurroundMode = 'SurroundMode';
+    public const string ptQuickSelect  = 'QuickSelect';
+    public const string ptSmartSelect = 'SmartSelect';
+    public const string ptHDMIMonitor = 'HDMIMonitor';
+    public const string ptASP         = 'ASP';
+    public const string ptResolution = 'Resolution';
+    public const string ptResolutionHDMI = 'ResolutionHDMI';
+    public const string ptHDMIAudioOutput = 'HDMIAudioOutput';
+    public const string ptVideoProcessingMode = 'VideoProcessingMode';
+    public const string ptToneCTRL            = 'ToneCTRL';
+    public const string ptSurroundBackMode = 'SurroundBackMode';
+    public const string ptSurroundPlayMode = 'SurroundPlayMode';
+    public const string ptFrontHeight      = 'FrontHeight';
+    public const string ptPLIIZHeightGain = 'PLIIZHeightGain';
+    public const string ptSpeakerOutput   = 'SpeakerOutputFront';
+    public const string ptMultiEQMode   = 'MultiEQMode';
+    public const string ptDynamicEQ   = 'DynamicEQ';
+    public const string ptAudysseyLFC = 'AudysseyLFC';
+    public const string ptAudysseyContainmentAmount = 'AudysseyContainmantAmount';
+    public const string ptReferenceLevel            = 'ReferenceLevel';
+    public const string ptDiracLiveFilter    = 'DiracLiveFilter';
+    public const string ptDynamicVolume   = 'DynamicVolume';
+    public const string ptAudysseyDSX   = 'AudysseyDSX';
+    public const string ptStageWidth  = 'StageWidth';
+    public const string ptStageHeight = 'StageHeight';
+    public const string ptBassLevel   = 'BassLevel';
+    public const string ptTrebleLevel = 'TrebleLevel';
+    public const string ptLoudnessManagement = 'LoudnessManagement';
+    public const string ptDynamicRangeCompression = 'DynamicRangeCompression';
+    public const string ptMDAX                    = 'MDAX';
+    public const string ptDynamicCompressor = 'DynamicCompressor';
+    public const string ptCenterLevelAdjust = 'CenterLevelAdjust';
+    public const string ptLFELevel          = 'LFELevel';
+    public const string ptLFE71Level = 'LFE71Level';
+    public const string ptEffectLevel = 'EffectLevel';
+    public const string ptDelay       = 'Delay';
+    public const string ptAFDM  = 'AFDM';
+    public const string ptPanorama = 'Panorama';
+    public const string ptDimension = 'Dimension';
+    public const string ptDialogControl = 'DialogControl';
+    public const string ptCenterWidth   = 'CenterWidth';
+    public const string ptCenterImage = 'CenterImage';
+    public const string ptCenterGain  = 'CenterGain';
+    public const string ptSubwoofer  = 'Subwoofer';
+    public const string ptRoomSize  = 'RoomSize';
+    public const string ptAudioDelay = 'AudioDelay';
+    public const string ptAudioRestorer = 'AudioRestorer';
+    public const string ptFrontSpeaker  = 'FrontSpeaker';
+    public const string ptContrast     = 'Contrast';
+    public const string ptBrightness = 'Brightness';
+    public const string ptSaturation = 'Saturation';
+    public const string ptChromalevel = 'Chromalevel';
+    public const string ptHue         = 'Hue';
+    public const string ptDigitalNoiseReduction = 'DNRDirectChange';
+    public const string ptPictureMode           = 'PictureMode';
+    public const string ptEnhancer       = 'Enhancer';
+    public const string ptBluetoothTransmitter = 'BluetoothTransmitter';
+    public const string ptSpeakerPreset        = 'SpeakerPreset';
 
-    public const ptZone2Power = 'Zone2Power';
-    public const ptZone2InputSource = 'Zone2InputSource';
-    public const ptZone2Volume = 'Zone2Volume';
-    public const ptZone2Mute = 'Zone2Mute';
-    public const ptZone2ChannelSetting = 'Zone2ChannelSetting';
-    public const ptZone2ChannelVolumeFL = 'Zone2ChannelVolumeFL';
-    public const ptZone2ChannelVolumeFR = 'Zone2ChannelVolumeFR';
-    public const ptZone2HPF = 'Zone2HPF';
-    public const ptZone2Bass = 'Zone2Bass';
-    public const ptZone2Treble = 'Zone2Treble';
-    public const ptZone2QuickSelect = 'Zone2QuickSelect';
-    public const ptZone2SmartSelect = 'Zone2SmartSelect';
-    public const ptZone2Sleep = 'Zone2Sleep';
+    public const string ptZone2Power       = 'Zone2Power';
+    public const string ptZone2InputSource = 'Zone2InputSource';
+    public const string ptZone2Volume      = 'Zone2Volume';
+    public const string ptZone2Mute   = 'Zone2Mute';
+    public const string ptZone2ChannelSetting = 'Zone2ChannelSetting';
+    public const string ptZone2ChannelVolumeFL = 'Zone2ChannelVolumeFL';
+    public const string ptZone2ChannelVolumeFR = 'Zone2ChannelVolumeFR';
+    public const string ptZone2HPF             = 'Zone2HPF';
+    public const string ptZone2Bass     = 'Zone2Bass';
+    public const string ptZone2Treble = 'Zone2Treble';
+    public const string ptZone2QuickSelect = 'Zone2QuickSelect';
+    public const string ptZone2SmartSelect = 'Zone2SmartSelect';
+    public const string ptZone2Sleep       = 'Zone2Sleep';
 
-    public const ptZone3InputSource = 'Zone3InputSource';
-    public const ptZone3Volume = 'Zone3Volume';
-    public const ptZone3Mute = 'Zone3Mute';
-    public const ptZone3ChannelSetting = 'Zone3ChannelSetting';
-    public const ptZone3ChannelVolumeFL = 'Zone3ChannelVolumeFL';
-    public const ptZone3ChannelVolumeFR = 'Zone3ChannelVolumeFR';
-    public const ptZone3HPF = 'Zone3HPF';
-    public const ptZone3Bass = 'Zone3Bass';
-    public const ptZone3Treble = 'Zone3Treble';
-    public const ptZone3QuickSelect = 'Zone3QuickSelect';
-    public const ptZone3SmartSelect = 'Zone3SmartSelect';
-    public const ptZone3Sleep = 'Zone3Sleep';
+    public const string ptZone3InputSource = 'Zone3InputSource';
+    public const string ptZone3Volume      = 'Zone3Volume';
+    public const string ptZone3Mute   = 'Zone3Mute';
+    public const string ptZone3ChannelSetting = 'Zone3ChannelSetting';
+    public const string ptZone3ChannelVolumeFL = 'Zone3ChannelVolumeFL';
+    public const string ptZone3ChannelVolumeFR = 'Zone3ChannelVolumeFR';
+    public const string ptZone3HPF             = 'Zone3HPF';
+    public const string ptZone3Bass     = 'Zone3Bass';
+    public const string ptZone3Treble = 'Zone3Treble';
+    public const string ptZone3QuickSelect = 'Zone3QuickSelect';
+    public const string ptZone3SmartSelect = 'Zone3SmartSelect';
+    public const string ptZone3Sleep       = 'Zone3Sleep';
 
-    public const ptCinemaEQ = 'CinemaEQ';
-    public const ptHTEQ = 'HTEQ';
-    public const ptDynamicRange = 'DynamicRange';
-    public const ptPreset = 'Preset';
-    public const ptZone2Name = 'Zone2Name';
-    public const ptZone3Power = 'Zone3Power';
-    public const ptZone3Name = 'Zone3Name';
-    public const ptNavigation = 'Navigation';
-    public const ptNavigationNetwork = 'NavigationNetwork';
-    public const ptSubwooferATT = 'SubwooferATT';
+    public const string ptCinemaEQ = 'CinemaEQ';
+    public const string ptHTEQ     = 'HTEQ';
+    public const string ptDynamicRange = 'DynamicRange';
+    public const string ptPreset       = 'Preset';
+    public const string ptZone2Name = 'Zone2Name';
+    public const string ptZone3Power = 'Zone3Power';
+    public const string ptZone3Name  = 'Zone3Name';
+    public const string ptNavigation = 'Navigation';
+    public const string ptNavigationNetwork = 'NavigationNetwork';
+    public const string ptSubwooferATT      = 'SubwooferATT';
     //public const ptDCOMPDirectChange = 'DCOMPDirectChange';
-    public const ptDolbyVolumeLeveler = 'DolbyVolumeLeveler';
-    public const ptDolbyVolumeModeler = 'DolbyVolumeModeler';
-    public const ptVerticalStretch = 'VerticalStretch';
-    public const ptDolbyVolume = 'DolbyVolume';
-    public const ptFriendlyName = 'FriendlyName';
-    public const ptMainZoneName = 'MainZoneName';
-    public const ptTopMenuLink = 'TopMenuLink';
-    public const ptModel = 'Model';
-    public const ptGUIMenuSourceSelect = 'GUIMenuSourceSelect';
-    public const ptGUIMenuSetup = 'GUIMenuSetup';
-    public const ptSurroundDisplay = 'SurroundDisplay';
-    public const ptDisplay = 'Display';
-    public const ptGraphicEQ = 'GraphicEQ';
-    public const ptHeadphoneEQ = 'HeadphoneEQ';
-    public const ptDimmer = 'Dimmer';
-    public const ptDialogLevelAdjust = 'DialogLevelAdjust';
-    public const ptMAINZONEAutoStandbySetting = 'MAINZONEAutoStandbySetting';
-    public const ptMAINZONEECOModeSetting = 'MAINZONEECOModeSetting';
-    public const ptCenterSpread = 'Centerspread';
-    public const ptSpeakerVirtualizer = 'SpeakerVirtualizer';
-    public const ptNeural = 'Neural';
-    public const ptAllZoneStereo = 'AllZoneStereo';
-    public const ptAutoLipSync = 'AutoLipSync';
-    public const ptBassSync = 'BassSync';
-    public const ptSubwooferLevel = 'SubwooferLevel';
-    public const ptSubwoofer2Level = 'Subwoofer2Level';
-    public const ptSubwoofer3Level = 'Subwoofer3Level';
-    public const ptSubwoofer4Level = 'Subwoofer4Level';
-    public const ptDialogEnhancer = 'DialogEnhancer';
-    public const ptAuroMatic3DPreset = 'AuroMatic3DPreset';
-    public const ptAuroMatic3DStrength = 'AuroMatic3DStrength';
-    public const ptAuro3DMode = 'Auro3DMode';
-    public const ptTopFrontLch = 'TopFrontLch';
-    public const ptTopFrontRch = 'TopFrontRch';
-    public const ptTopMiddleLch = 'TopMiddleLch';
-    public const ptTopMiddleRch = 'TopMiddleRch';
-    public const ptTopRearLch = 'TopRearLch';
-    public const ptTopRearRch = 'TopRearRch';
-    public const ptRearHeightLch = 'RearHeightLch';
-    public const ptRearHeightRch = 'RearHeightRch';
-    public const ptFrontDolbyLch = 'FrontDolbyLch';
-    public const ptFrontDolbyRch = 'FrontDolbyRch';
-    public const ptSurroundDolbyLch = 'SurroundDolbyLch';
-    public const ptSurroundDolbyRch = 'SurroundDolbyRch';
-    public const ptBackDolbyLch = 'BackDolbyLch';
-    public const ptBackDolbyRch = 'BackDolbyRch';
-    public const ptSurroundHeightLch = 'SurroundHeightLch';
-    public const ptSurroundHeightRch = 'SurroundHeightRch';
-    public const ptTopSurround = 'TopSurround';
-    public const ptCenterHeight = 'CenterHeight';
-    public const ptChannelVolumeReset = 'ChannelVolumeReset';
-    public const ptTactileTransducer = 'TactileTransducer';
-    public const ptZone2HDMIAudio = 'Zone2HDMIAudio';
-    public const ptZone2AutoStandbySetting = 'Zone2AutoStandbySetting';
-    public const ptZone3AutoStandbySetting = 'Zone3AutoStandbySetting';
+    public const string ptDolbyVolumeLeveler = 'DolbyVolumeLeveler';
+    public const string ptDolbyVolumeModeler = 'DolbyVolumeModeler';
+    public const string ptVerticalStretch    = 'VerticalStretch';
+    public const string ptDolbyVolume     = 'DolbyVolume';
+    public const string ptFriendlyName = 'FriendlyName';
+    public const string ptMainZoneName = 'MainZoneName';
+    public const string ptTopMenuLink  = 'TopMenuLink';
+    public const string ptModel       = 'Model';
+    public const string ptGUIMenuSourceSelect = 'GUIMenuSourceSelect';
+    public const string ptGUIMenuSetup        = 'GUIMenuSetup';
+    public const string ptSurroundDisplay = 'SurroundDisplay';
+    public const string ptDisplay         = 'Display';
+    public const string ptGraphicEQ = 'GraphicEQ';
+    public const string ptHeadphoneEQ = 'HeadphoneEQ';
+    public const string ptDimmer      = 'Dimmer';
+    public const string ptDialogLevelAdjust = 'DialogLevelAdjust';
+    public const string ptMAINZONEAutoStandbySetting = 'MAINZONEAutoStandbySetting';
+    public const string ptMAINZONEECOModeSetting     = 'MAINZONEECOModeSetting';
+    public const string ptCenterSpread           = 'Centerspread';
+    public const string ptSpeakerVirtualizer = 'SpeakerVirtualizer';
+    public const string ptNeural             = 'Neural';
+    public const string ptAllZoneStereo = 'AllZoneStereo';
+    public const string ptAutoLipSync   = 'AutoLipSync';
+    public const string ptBassSync    = 'BassSync';
+    public const string ptSubwooferLevel = 'SubwooferLevel';
+    public const string ptSubwoofer2Level = 'Subwoofer2Level';
+    public const string ptSubwoofer3Level = 'Subwoofer3Level';
+    public const string ptSubwoofer4Level = 'Subwoofer4Level';
+    public const string ptDialogEnhancer  = 'DialogEnhancer';
+    public const string ptAuroMatic3DPreset = 'AuroMatic3DPreset';
+    public const string ptAuroMatic3DStrength = 'AuroMatic3DStrength';
+    public const string ptAuro3DMode          = 'Auro3DMode';
+    public const string ptTopFrontLch  = 'TopFrontLch';
+    public const string ptTopFrontRch = 'TopFrontRch';
+    public const string ptTopMiddleLch = 'TopMiddleLch';
+    public const string ptTopMiddleRch = 'TopMiddleRch';
+    public const string ptTopRearLch   = 'TopRearLch';
+    public const string ptTopRearRch = 'TopRearRch';
+    public const string ptRearHeightLch = 'RearHeightLch';
+    public const string ptRearHeightRch = 'RearHeightRch';
+    public const string ptFrontDolbyLch = 'FrontDolbyLch';
+    public const string ptFrontDolbyRch = 'FrontDolbyRch';
+    public const string ptSurroundDolbyLch = 'SurroundDolbyLch';
+    public const string ptSurroundDolbyRch = 'SurroundDolbyRch';
+    public const string ptBackDolbyLch     = 'BackDolbyLch';
+    public const string ptBackDolbyRch = 'BackDolbyRch';
+    public const string ptSurroundHeightLch = 'SurroundHeightLch';
+    public const string ptSurroundHeightRch = 'SurroundHeightRch';
+    public const string ptTopSurround       = 'TopSurround';
+    public const string ptCenterHeight = 'CenterHeight';
+    public const string ptChannelVolumeReset = 'ChannelVolumeReset';
+    public const string ptTactileTransducer  = 'TactileTransducer';
+    public const string ptZone2HDMIAudio    = 'Zone2HDMIAudio';
+    public const string ptZone2AutoStandbySetting = 'Zone2AutoStandbySetting';
+    public const string ptZone3AutoStandbySetting = 'Zone3AutoStandbySetting';
 
-    public const ptTunerAnalogPreset = 'TunerAnalogPresets';
-    public const ptTunerAnalogBand   = 'TunerAnalogBand';
-    public const ptTunerAnalogMode = 'TunerAnalogMode';
+    public const string ptTunerAnalogPreset = 'TunerAnalogPresets';
+    public const string ptTunerAnalogBand   = 'TunerAnalogBand';
+    public const string ptTunerAnalogMode = 'TunerAnalogMode';
 
-    public const ptSYSMI = 'SysMI';
-    public const ptSYSDA = 'SysDA';
-    public const ptSSINFAISFSV = 'SsInfAISFSV';
+    public const string ptSYSMI = 'SysMI';
+    public const string ptSYSDA = 'SysDA';
+    public const string ptSSINFAISFSV = 'SsInfAISFSV';
 
     public static array $order = [
         //Info Display
@@ -1248,7 +1140,7 @@ class DENONIPSVarType extends stdClass
         self::ptTunerAnalogMode,
     ];
 
-    public function __construct($AVRType = null, $InputMapping = null, callable $Logger_Dbg = null)
+    public function __construct(?string $AVRType = null, ?array $InputMapping = null, ?callable $Logger_Dbg = null)
     {
         if (isset($Logger_Dbg)){
             $this->debug = true;
@@ -1259,10 +1151,10 @@ class DENONIPSVarType extends stdClass
                                             )));
         }
 
-        $assRange00to98_add05step = $this->GetAssociationOfAsciiTodB('00', '98', '80', 1, true, false);
+        $assRange00to98_add05step = $this->GetAssociationOfAsciiTodB('00', '98', '80', 0.5, true, false);
         $assRange00to98 = $this->GetAssociationOfAsciiTodB('00', '98', '80', 1, false, false);
         $assRange38to62 = $this->GetAssociationOfAsciiTodB('38', '62', '50');
-        $assRange38to62_add05step = $this->GetAssociationOfAsciiTodB('38', '62', '50', 1, true);
+        $assRange38to62_add05step = $this->GetAssociationOfAsciiTodB('38', '62', '50', 0.5, true);
         $assRange00to10_stepwide_01 = $this->GetAssociationOfAsciiTodB('00', '10', '00', 0.1, false, true, false, 0.1);
         $assRange000to200 = $this->GetAssociationOfAsciiTodB('000', '200', '000');
         $assRange000to300 = $this->GetAssociationOfAsciiTodB('000', '300', '000');
@@ -2176,7 +2068,7 @@ class DENONIPSVarType extends stdClass
             //Type Float
             //           DENONIPSProfiles::ptDimension => ["Type" => DENONIPSVarType::vtFloat, "Ident" => DENON_API_Commands::PSDIM, "Name" => "Dimension",
             //                                             "PropertyName" => "Dimension", "Profilesettings" => ["Intensity", "", " dB", 0, 6, 1, 0], "Associations" => $assRange00to06],
-            self::ptDialogControl => ['Type'                                  => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::PSDIC, 'Name' => 'DialogControl',
+            self::ptDialogControl => ['Type'                                  => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::PSDIC, 'Name' => 'Dialog Control',
                 'PropertyName'                                                => 'DialogControl', 'Profilesettings' => ['Intensity', '', ' dB', 0, 6, 1, 0], 'Associations' => $assRange00to06, ],
             self::ptMasterVolume => ['Type'                                   => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::MV, 'Name' => 'Master Volume',
                 'PropertyName'                                                => self::ptMasterVolume, 'Profilesettings' => ['Intensity', '', ' dB', -80.0, 18.0, 0.5, 1], 'Associations' => $assRange00to98_add05step,
@@ -2328,19 +2220,19 @@ class DENONIPSVarType extends stdClass
             self::ptStageWidth => ['Type'                                 => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::PSSTW, 'Name' => 'Stage Width',
                 'PropertyName'                                            => 'StageWidth', 'Profilesettings' => ['Intensity', '', ' dB', -10, 10, 1, 0], 'Associations' => $assRange40to60, ],
             self::ptAudysseyContainmentAmount => ['Type'                  => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::PSCNTAMT, 'Name' => 'Audyssey Containment Amount',
-                'PropertyName'                                            => 'AudysseyContainmentAmount', 'Profilesettings' => ['Intensity',  '', ' dB', 0, 7, 1, 0], 'Associations' => $assRange00to07, ],
+                'PropertyName'                                            => 'AudysseyContainmentAmount', 'Profilesettings' => ['Intensity',  '', '', 1, 7, 1, 0], 'Associations' => $assRange00to07, ],
             self::ptBassSync => ['Type'                                   => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::PSBSC, 'Name' => 'BassSync',
                 'PropertyName'                                            => 'BassSync', 'Profilesettings' => ['Intensity', '', ' dB', 0, 16, 1, 0], 'Associations' => $assRange00to16, ],
             self::ptSubwooferLevel => ['Type'                             => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::PSSWL, 'Name' => 'Subwoofer Level',
-                'PropertyName'                                            => 'SubwooferLevel', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 1, 0], 'Associations' => $assRange38to62, ],
+                'PropertyName'                                            => 'SubwooferLevel', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 0.5, 1], 'Associations' => $assRange38to62_add05step, ],
             self::ptSubwoofer2Level => ['Type'                            => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::PSSWL2, 'Name' => 'Subwoofer 2 Level',
-                'PropertyName'                                            => 'Subwoofer2Level', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 1, 0], 'Associations' => $assRange38to62, ],
+                'PropertyName'                                            => 'Subwoofer2Level', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 0.5, 1], 'Associations' => $assRange38to62_add05step, ],
             self::ptSubwoofer3Level => ['Type'                            => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::PSSWL3, 'Name' => 'Subwoofer 3 Level',
-                'PropertyName'                                            => 'Subwoofer3Level', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 1, 0], 'Associations' => $assRange38to62, ],
+                'PropertyName'                                            => 'Subwoofer3Level', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 0.5, 1], 'Associations' => $assRange38to62_add05step, ],
             self::ptSubwoofer4Level => ['Type'                            => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::PSSWL4, 'Name' => 'Subwoofer 4 Level',
-                'PropertyName'                                            => 'Subwoofer4Level', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 1, 0], 'Associations' => $assRange38to62, ],
+                'PropertyName'                                            => 'Subwoofer4Level', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 0.5, 1], 'Associations' => $assRange38to62_add05step, ],
             self::ptDialogLevelAdjust => ['Type'                          => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::PSDIL, 'Name' => 'Dialog Level Adjust',
-                'PropertyName'                                            => 'DialogLevelAdjust', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 1, 0], 'Associations' => $assRange38to62, ],
+                'PropertyName'                                            => 'DialogLevelAdjust', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 0.5, 1], 'Associations' => $assRange38to62_add05step, ],
             self::ptAuroMatic3DStrength => ['Type'                        => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::PSAUROST, 'Name' => 'Auromatic 3D Strength',
                 'PropertyName'                                            => 'AuroMatic3DStrength', 'Profilesettings' => ['Intensity', '', ' dB', 0, 16, 1, 0], 'Associations' => $assRange00to16, ],
             self::ptZone2Volume => ['Type'                                => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::Z2VOL, 'Name' => 'Zone 2 Volume',
@@ -2354,13 +2246,13 @@ class DENONIPSVarType extends stdClass
             self::ptZone3Sleep => ['Type'                                 => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::Z3SLP, 'Name' => 'Zone 3 Sleep',
                 'PropertyName'                                            => 'Z3Sleep', 'Profilesettings' => ['Clock', '', ' Min', 0, 120, 10, 0], 'Associations' => $assRange000to120_ptSleep, ],
             self::ptZone2ChannelVolumeFL => ['Type'                       => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::Z2CVFL, 'Name' => 'Zone 2 Channel Volume Front Left',
-                'PropertyName'                                            => 'Z2CVFL', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 1, 0], 'Associations' => $assRange38to62, ],
+                'PropertyName'                                            => 'Z2CVFL', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 0.5, 1], 'Associations' => $assRange38to62_add05step, ],
             self::ptZone2ChannelVolumeFR => ['Type'                       => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::Z2CVFR, 'Name' => 'Zone 2 Channel Volume Front Right',
-                'PropertyName'                                            => 'Z2CVFR', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 1, 0], 'Associations' => $assRange38to62, ],
+                'PropertyName'                                            => 'Z2CVFR', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 0.5, 1], 'Associations' => $assRange38to62_add05step, ],
             self::ptZone3ChannelVolumeFL => ['Type'                       => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::Z3CVFL, 'Name' => 'Zone 3 Channel Volume Front Left',
-                'PropertyName'                                            => 'Z3CVFL', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 1, 0], 'Associations' => $assRange38to62, ],
+                'PropertyName'                                            => 'Z3CVFL', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 0.5, 1], 'Associations' => $assRange38to62_add05step, ],
             self::ptZone3ChannelVolumeFR => ['Type'                       => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::Z3CVFR, 'Name' => 'Zone 3 Channel Volume Front Right',
-                'PropertyName'                                            => 'Z3CVFR', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 1, 0], 'Associations' => $assRange38to62, ],
+                'PropertyName'                                            => 'Z3CVFR', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 0.5, 1], 'Associations' => $assRange38to62_add05step, ],
             self::ptZone2Bass => ['Type'                                  => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::Z2PSBAS, 'Name' => 'Zone 2 Bass',
                 'PropertyName'                                            => 'Z2Bass', 'Profilesettings' => ['Intensity', '', ' dB', -10, 10, 1, 0], 'Associations' => $assRange40to60, ],
             self::ptZone3Bass => ['Type'                                  => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::Z3PSBAS, 'Name' => 'Zone 3 Bass',
@@ -2370,21 +2262,21 @@ class DENONIPSVarType extends stdClass
             self::ptZone3Treble => ['Type'                                => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::Z3PSTRE, 'Name' => 'Zone 3 Treble',
                 'PropertyName'                                            => 'Z3Treble', 'Profilesettings' => ['Intensity', '', ' dB', -10, 10, 1, 0], 'Associations' => $assRange40to60, ],
             self::ptSSINFAISFSV => ['Type' => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::SSINFAISFSV, 'Name' => 'Audio: Abtastrate',
-                              'PropertyName'                                        => 'SSINFAISFSV', 'Profilesettings' => ['Information', '', ' kHz', 0, 0, 0, 1], 'Associations' => [], 'displayOny' => true],
+                              'PropertyName'                                        => 'SSINFAISFSV', 'Profilesettings' => ['Information', '', ' kHz', 0, 0, 0, 1], 'Associations' => [], 'displayOnly' => true],
 
             //Type String
-            self::ptMainZoneName    => ['Type' => DENONIPSVarType::vtString, 'Ident' => 'MainZoneName', 'Name' => 'MainZone Name', 'PropertyName' => 'ZoneName', 'Profilesettings' => ['Information'], 'displayOny' => true],
-            self::ptModel           => ['Type' => DENONIPSVarType::vtString, 'Ident' => 'Model', 'Name' => 'Model', 'PropertyName' => 'Model', 'Profilesettings' => ['Information'], 'displayOny' => true],
+            self::ptMainZoneName    => ['Type' => DENONIPSVarType::vtString, 'Ident' => 'MainZoneName', 'Name' => 'MainZone Name', 'PropertyName' => 'ZoneName', 'Profilesettings' => ['Information'], 'displayOnly' => true],
+            self::ptModel           => ['Type' => DENONIPSVarType::vtString, 'Ident' => 'Model', 'Name' => 'Model', 'PropertyName' => 'Model', 'Profilesettings' => ['Information'], 'displayOnly' => true],
             self::ptSurroundDisplay => ['Type' => DENONIPSVarType::vtString, 'Ident' => DENON_API_Commands::SURROUNDDISPLAY, 'Name' => 'Surround Mode Display',
-                                        'PropertyName'                                        => 'SurroundDisplay', 'Profilesettings' => ['Information'], 'displayOny' => true ],
+                                        'PropertyName'                                        => 'SurroundDisplay', 'Profilesettings' => ['Information'], 'displayOnly' => true ],
             self::ptSYSMI => ['Type' => DENONIPSVarType::vtString, 'Ident' => DENON_API_Commands::SYSMI, 'Name' => 'Audio: Soundmodus',
-                                        'PropertyName'                                        => 'SYSMI', 'Profilesettings' => ['Information'], 'Associations' => [], 'displayOny' => true],
+                                        'PropertyName'                                        => 'SYSMI', 'Profilesettings' => ['Information'], 'Associations' => [], 'displayOnly' => true],
             self::ptSYSDA => ['Type' => DENONIPSVarType::vtString, 'Ident' => DENON_API_Commands::SYSDA, 'Name' => 'Audio: Eingangssignal',
-                                        'PropertyName'                                        => 'SYSDA', 'Profilesettings' => ['Information'], 'Associations' => [], 'displayOny' => true],
+                                        'PropertyName'                                        => 'SYSDA', 'Profilesettings' => ['Information'], 'Associations' => [], 'displayOnly' => true],
             self::ptDisplay => ['Type'                                => DENONIPSVarType::vtString, 'Ident' => DENON_API_Commands::DISPLAY, 'Name' => 'OSD Info', 'ProfilName' => '~HTMLBox', 'PropertyName' => 'Display', 'Profilesettings' => ['TV'],
-                'IndividualStatusRequest'                             => 'NSA', 'displayOny' => true],
-            self::ptZone2Name => ['Type' => DENONIPSVarType::vtString, 'Ident' => 'Zone2Name', 'Name' => 'Zone 2 Name', 'PropertyName' => self::ptZone2Name, 'Profilesettings' => ['Information'], 'displayOny' => true],
-            self::ptZone3Name => ['Type' => DENONIPSVarType::vtString, 'Ident' => 'Zone3Name', 'Name' => 'Zone 3 Name', 'PropertyName' => self::ptZone3Name, 'Profilesettings' => ['Information'], 'displayOny' => true],
+                'IndividualStatusRequest'                             => 'NSA', 'displayOnly' => true],
+            self::ptZone2Name => ['Type' => DENONIPSVarType::vtString, 'Ident' => 'Zone2Name', 'Name' => 'Zone 2 Name', 'PropertyName' => self::ptZone2Name, 'Profilesettings' => ['Information'], 'displayOnly' => true],
+            self::ptZone3Name => ['Type' => DENONIPSVarType::vtString, 'Ident' => 'Zone3Name', 'Name' => 'Zone 3 Name', 'PropertyName' => self::ptZone3Name, 'Profilesettings' => ['Information'], 'displayOnly' => true],
         ];
 
         if ($AVRType !== null) {
@@ -2652,7 +2544,7 @@ class DENONIPSVarType extends stdClass
 
     }
 
-    public function GetInputVarMapping($Zone)
+    public function GetInputVarMapping($Zone): false|array
     {
         if ($Zone === 0) {
             $associations = $this->profiles[self::ptInputSource]['Associations'];
@@ -2680,21 +2572,21 @@ class DENONIPSVarType extends stdClass
         return $ret;
     }
 
-    public function SetupVariable($ident)
+    public function GetVariableConfig($configId): false|array
     {
         if ($this->debug){
-            call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'Setup Variable with ident ' . $ident);
+            call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'Get variable config for id ' . $configId);
         }
 
-        if (!array_key_exists($ident, $this->profiles)) {
-            trigger_error('unknown ident: ' . $ident);
+        if (!array_key_exists($configId, $this->profiles)) {
+            trigger_error('unknown ident: ' . $configId);
 
             return false;
         }
 
-        $profile = $this->profiles[$ident];
+        $profile = $this->profiles[$configId];
         if (!isset($profile['Type'])) {
-            trigger_error(__CLASS__ . '::' . __FUNCTION__ . ': Type not set in profile "' . $ident . '"');
+            trigger_error(__CLASS__ . '::' . __FUNCTION__ . ': Type not set in profile "' . $configId . '"');
 
             return false;
         }
@@ -2702,11 +2594,12 @@ class DENONIPSVarType extends stdClass
         switch ($profile['Type']) {
             case DENONIPSVarType::vtBoolean:
                 $ret = ['Name'     => $profile['Name'],
-                    'Ident'        => $profile['Ident'],
-                    'Type'         => $profile['Type'],
-                    'PropertyName' => $profile['PropertyName'],
-                    'ProfilName'   => '~Switch',
-                    'Position'     => $this->getpos($ident),
+                        'Ident'        => $profile['Ident'],
+                        'Type'         => $profile['Type'],
+                        'PropertyName' => $profile['PropertyName'],
+                        'ProfilName'   => '~Switch',
+                        'Position'     => $this->getpos($configId),
+                        'displayOnly'  => $profile['displayOnly'] ?? false
                 ];
                 break;
 
@@ -2719,7 +2612,7 @@ class DENONIPSVarType extends stdClass
                     'Ident'        => $profile['Ident'],
                     'Type'         => $profile['Type'],
                     'PropertyName' => $profile['PropertyName'],
-                    'ProfilName'   => $ident,
+                    'ProfilName'   => $configId,
                     'Icon'         => $profilesettings[0],
                     'Prefix'       => $profilesettings[1],
                     'Suffix'       => $profilesettings[2],
@@ -2728,20 +2621,22 @@ class DENONIPSVarType extends stdClass
                     'Stepsize'     => $profilesettings[5],
                     'Digits'       => $profilesettings[6],
                     'Associations' => $profile['Associations'],
-                    'Position'     => $this->getpos($ident),
+                    'Position'     => $this->getpos($configId),
+                    'displayOnly'  => $profile['displayOnly'] ?? false
                 ];
                 break;
 
             case DENONIPSVarType::vtString:
-                $profilename=$profile['ProfilName'] ?? $ident;
+                $profilename=$profile['ProfilName'] ?? $configId;
                 $ret        = [
                     'Name'         => $profile['Name'],
                     'Ident'        => $profile['Ident'],
                     'Type'         => $profile['Type'],
                     'PropertyName' => $profile['PropertyName'],
                     'ProfilName'   => $profilename,
-                    'Position'     => $this->getpos($ident),
+                    'Position'     => $this->getpos($configId),
                     'Icon'         => $profile['Profilesettings'][0],
+                    'displayOnly'  => $profile['displayOnly'] ?? false
                 ];
                 break;
 
@@ -2755,32 +2650,34 @@ class DENONIPSVarType extends stdClass
         return $ret;
     }
 
-    public function GetVarMapping(): array
+    public function GetVariableProfileMapping(): array
     {
         $ret = [];
 
         foreach ($this->profiles as $profile) {
-            if (isset($profile['Associations'])) {
-                $ValueMapping = [];
-                foreach ($profile['Associations'] as $association) {
-                    switch ($profile['Type']) {
-                        case DENONIPSVarType::vtBoolean:
-                            $ValueMapping[$association[1]] = $association[0];
-                            break;
-                        case DENONIPSVarType::vtInteger:
-                            $ValueMapping[$association[2]] = $association[0];
-                            break;
-                        case DENONIPSVarType::vtFloat:
-                            $ValueMapping[$association[0]] = $association[1];
-                            break;
-                        case DENONIPSVarType::vtString:
-                            break;
-                        default:
-                            trigger_error(__FUNCTION__ . ': unexpected type: ' . $profile['Type']);
-                    }
-                }
-                $ret[$profile['Ident']] = ['VarType' => $profile['Type'], 'ValueMapping' => $ValueMapping];
+            if (!isset($profile['Associations'])) {
+                continue;
             }
+
+            $ValueMapping = [];
+            foreach ($profile['Associations'] as $association) {
+                try {
+                    match ($profile['Type']) {
+                        DENONIPSVarType::vtBoolean => $ValueMapping[$association[1]] = $association[0],
+                        DENONIPSVarType::vtInteger => $ValueMapping[$association[2]] = $association[0],
+                        DENONIPSVarType::vtFloat   => $ValueMapping[$association[0]] = $association[1],
+                        DENONIPSVarType::vtString  => null, // Strings benötigen oft kein Mapping
+                        default                    => throw new UnexpectedValueException('Unexpected type: ' . $profile['Type'])
+                    };
+                } catch (UnhandledMatchError|UnexpectedValueException $e) {
+                    trigger_error(__FUNCTION__ . ': ' . $e->getMessage());
+                }
+            }
+
+            $ret[$profile['Ident']] = [
+                'VarType'      => $profile['Type'],
+                'ValueMapping' => $ValueMapping
+            ];
         }
 
         return $ret;
@@ -2888,53 +2785,88 @@ class DENONIPSVarType extends stdClass
         return true;
     }
 
+    /**
+     * Ermittelt den API-Subcommand für einen gegebenen Wert basierend auf dem Profil-Ident.
+     *
+     * Diese Methode sucht zuerst das passende Profil anhand von $Ident. Anschließend durchsucht
+     * sie die Assoziationsliste dieses Profils, um den zum Wert ($Value) passenden
+     * Befehl (Subcommand) zu finden.
+     *
+     * @param string $Ident Der Ident des Profils (z.B. "PW", "MV", "SI").
+     * @param mixed  $Value Der Wert, nach dem gesucht werden soll (Typ abhängig vom Profil: bool, int, float).
+     *
+     * @return string|null Der gefundene Subcommand als String oder null, wenn nichts gefunden wurde.
+     */
     public function GetSubCommandOfValue(string $Ident, $Value): ?string
     {
-        $ret = null;
+        // 1. Profil suchen
+        $selectedProfile = null;
         foreach ($this->profiles as $profile) {
-            if (($profile['Ident'] === $Ident) && isset($profile['Associations'])) {
-                if ($this->debug){
-                    call_user_func($this->Logger_Dbg, __FUNCTION__, 'Profile "' . $Ident . '" found: ' . json_encode($profile, JSON_THROW_ON_ERROR));
-                }
-                foreach ($profile['Associations'] as $item) {
-                    switch ($profile['Type']) {
-                        case DENONIPSVarType::vtBoolean:
-                            if ($item[0] === $Value) {
-                                $ret = $item[1];
-                            }
-                            break;
-                        case DENONIPSVarType::vtInteger:
-                            if ($item[0] === $Value) {
-                                $ret = $item[2];
-                            }
-                            break;
-                        case DENONIPSVarType::vtFloat:
-                            if (round($item[1], 1) === round($Value, 1)) { //Float Werte mit Nachkommastellen müssen zum Vergleich gerundet werden!
-                                $ret = $item[0];
-                            }
-                            break;
-                        default:
-                            trigger_error(__FUNCTION__ . ': unknown type: ' . $profile['Type']);
-                    }
-                    if ($ret !== null) {
-                        break;
-                    }
-                }
-                if ($ret === null) {
-                    trigger_error('no association found. Ident: ' . $Ident . ', Value: ' . $Value);
-                    return null;
-                }
-
+            if ($profile['Ident'] === $Ident) {
+                $selectedProfile = $profile;
                 break;
             }
         }
 
-        if ($ret === null) {
+        // Guard Clause: Kein Profil gefunden
+        if ($selectedProfile === null || !isset($selectedProfile['Associations'])) {
             trigger_error('no profile found. Ident: ' . $Ident . ', Value: ' . $Value);
             return null;
         }
 
-        return (string) $ret;
+        // 2. Debugging
+        if ($this->debug) {
+            call_user_func($this->Logger_Dbg, __FUNCTION__, 'Profile "' . $Ident . '" found: ' . json_encode($selectedProfile, JSON_THROW_ON_ERROR));
+        }
+
+        // 3. Wert im Profil suchen
+        foreach ($selectedProfile['Associations'] as $item) {
+            $foundSubCommand = $this->matchValueInAssociation($selectedProfile['Type'], $item, $Value);
+
+            if ($foundSubCommand !== null) {
+                return (string)$foundSubCommand;
+            }
+        }
+
+        // Nichts gefunden
+        trigger_error('no association found. Ident: ' . $Ident . ', Value: ' . $Value);
+        return null;
+    }
+
+    /**
+     * Hilfsmethode um die komplexe Switch-Logik und Magic-Numbers zu isolieren
+     */
+    private function matchValueInAssociation(int $type, array $item, $Value): ?string
+    {
+        switch ($type) {
+            case DENONIPSVarType::vtBoolean:
+                // Boolean: Vergleich Index 0, Return Index 1
+                if ($item[0] === $Value) {
+                    return $item[1];
+                }
+                break;
+
+            case DENONIPSVarType::vtInteger:
+                // Integer: Vergleich Index 0, Return Index 2
+                if ($item[0] === $Value) {
+                    return $item[2];
+                }
+                break;
+
+            case DENONIPSVarType::vtFloat:
+                // Float: Vergleich Index 1 (gerundet), Return Index 0
+                // Achtung: Floats mit Nachkommastellen müssen zum Vergleich gerundet werden!
+                if (round($item[1], 1) === round($Value, 1)) {
+                    return $item[0];
+                }
+                break;
+
+            default:
+                // Optional: Fehler nur einmal loggen oder hier werfen,
+                // aktuell wird er im Loop oben ignoriert, was okay ist.
+                break;
+        }
+        return null;
     }
 
     public function GetSubCommandOfValueName(string $Ident, string $ValueName): ?string
@@ -2943,7 +2875,7 @@ class DENONIPSVarType extends stdClass
         foreach ($this->profiles as $profile) {
             if (($profile['Ident'] === $Ident) && isset($profile['Associations'])) {
                 foreach ($profile['Associations'] as $item) {
-                    if ($profile['Type'] == DENONIPSVarType::vtInteger) {
+                    if ($profile['Type'] === DENONIPSVarType::vtInteger) {
                         if (strtoupper($item[1]) === strtoupper($ValueName)) {
                             $ret = $item[2];
                         }
@@ -2969,7 +2901,7 @@ class DENONIPSVarType extends stdClass
         return (string) $ret;
     }
 
-    private function getpos($profilename)
+    private function getpos($profilename): false|int
     {
         $pos = array_search($profilename, static::$order, true);
         if ($pos === false) {
@@ -3007,47 +2939,71 @@ class DENONIPSVarType extends stdClass
         return $value_mapping;
     }
 
-    private function GetAssociationOfAsciiTodB($ascii_from, $ascii_to, $ascii_of_0, $db_stepsize = 1, $add_05step = false, $leading_blank = true, $invertValue = false, $scalefactor_to_db = 1): array
-    {
-        if (($db_stepsize <= 0) || ($scalefactor_to_db <= 0)) {
-            trigger_error('StepSize and ScaleFactor must be greater than 0');
-
-            return [];
+    /**
+     * Erzeugt eine Assoziationsliste für IP-Symcon Profil-Mappings zwischen ASCII-Protokollwerten und dB-Werten.
+     *
+     * @param string $asciiStart       Startwert des ASCII-Bereichs (z.B. '00')
+     * @param string $asciiEnd         Endwert des ASCII-Bereichs (z.B. '98')
+     * @param string $asciiReference   ASCII-Wert, der 0 dB entspricht (Referenzpunkt)
+     * @param float  $dbStep           Schrittweite in dB (Standard: 1.0)
+     * @param bool   $includeHalfSteps Ob zusätzlich 0.5er Zwischenschritte (z.B. '495' für 49.5) erzeugt werden sollen
+     * @param bool   $useLeadingBlank  Ob ein führendes Leerzeichen im Label (für das Protokoll) nötig ist
+     * @param bool   $invertDbValue    Ob der dB-Wert für die Anzeige invertiert werden soll (z. B. LFE-Level)
+     * @param float  $scaleFactor      Skalierungsfaktor zur Umrechnung von ASCII-Differenz in dB
+     *
+     * @return array Generierte Liste von [Protokoll-String, dB-Float] Paaren
+     * @throws \InvalidArgumentException
+     * @throws \InvalidArgumentException
+     */
+    private function GetAssociationOfAsciiTodB(
+        string $asciiStart,
+        string $asciiEnd,
+        string $asciiReference,
+        float $dbStep = 1.0,
+        bool $includeHalfSteps = false,
+        bool $useLeadingBlank = true,
+        bool $invertDbValue = false,
+        float $scaleFactor = 1.0
+    ): array {
+        if ($dbStep <= 0 || $scaleFactor <= 0) {
+            throw new InvalidArgumentException('StepSize and ScaleFactor must be greater than 0');
         }
 
-        $db = 0 - (int) $ascii_of_0 + (int) $ascii_from;
-        $db_to = ((int) $ascii_to - (int) $ascii_of_0) * $scalefactor_to_db;
+        $startInt = (int)$asciiStart;
+        $endInt   = (int)$asciiEnd;
+        $refInt   = (int)$asciiReference;
 
-        $value_mapping = [];
+        $dbRangeStart = ($startInt - $refInt) * $scaleFactor;
+        $dbRangeEnd   = ($endInt - $refInt) * $scaleFactor;
 
-        if (!$invertValue) {
-            $faktor = 1;
-        } else {
-            $faktor = -1;
-        }
+        $sign = $invertDbValue ? -1 : 1;
+        $prefix = $useLeadingBlank ? ' ' : '';
+        $padLength = strlen($asciiEnd);
 
-        if ($leading_blank) {
-            $prefix = ' ';
-        } else {
-            $prefix = '';
-        }
+        $associations = [];
+        $epsilon = 0.0001;
 
-        while ($db <= $db_to) {
-            $ascii = (int) ($ascii_of_0 + $db / $scalefactor_to_db);
-            $pad_length = strlen($ascii_to);
-            $ascii = str_pad((string) $ascii, $pad_length, '0', STR_PAD_LEFT);
+        for ($currentDb = $dbRangeStart; $currentDb <= $dbRangeEnd + $epsilon; $currentDb += $dbStep) {
+            $currentAscii = $refInt + ($currentDb / $scaleFactor);
 
-            $value_mapping[] = [$prefix . $ascii, $db * $faktor];
+            $asciiFloor = floor($currentAscii + $epsilon);
+            $isHalfStep = abs($currentAscii - $asciiFloor - 0.5) < $epsilon;
 
-            if ($add_05step && ($db < $db_to)) {
-                $value_mapping[] = [$prefix . $ascii . '5', ($db + 0.5) * $faktor];
+            if ($includeHalfSteps && $isHalfStep) {
+                $baseVal = (int)$asciiFloor;
+                $suffix = '5';
+            } else {
+                $baseVal = (int)round($currentAscii);
+                $suffix = '';
             }
 
-            $db+=$db_stepsize;
+            $protocolString = $prefix . str_pad((string)$baseVal, $padLength, '0', STR_PAD_LEFT) . $suffix;
+            $associations[] = [$protocolString, $currentDb * $sign];
         }
 
-        return $value_mapping;
+        return $associations;
     }
+
 }
 
 class DENON_StatusHTML extends stdClass
@@ -3055,7 +3011,7 @@ class DENON_StatusHTML extends stdClass
     private bool $debug = false; //wird im Constructor gesetzt
     private $Logger_Dbg;
 
-    public function __construct(callable $Logger_Dbg = null)
+    public function __construct(?callable $Logger_Dbg = null)
     {
         if (isset($Logger_Dbg)){
             $this->debug = true;
@@ -3075,7 +3031,7 @@ class DENON_StatusHTML extends stdClass
             $DenonAVRVar = new DENONIPSProfiles($AVRType, $InputMapping);
         }
 
-        $VarMappings = $DenonAVRVar->GetVarMapping();
+        $VarMappings = $DenonAVRVar->GetVariableProfileMapping();
         $DenonAVRVar->SetInputSources(
             $ip,
             0,
@@ -3513,318 +3469,318 @@ class DENON_StatusHTML extends stdClass
 
 class DENON_HTTP_Interface extends stdClass
 {
-    public const NoHTTPInterface = '';
-    public const MainForm_old = '/goform/formMainZone_MainZoneXml.xml';
-    public const MainForm = '/goform/formMainZone_MainZoneXmlStatus.xml';
+    public const string NoHTTPInterface = '';
+    public const string MainForm_old    = '/goform/formMainZone_MainZoneXml.xml';
+    public const string MainForm     = '/goform/formMainZone_MainZoneXmlStatus.xml';
 }
 
 class DENON_API_Commands extends stdClass
 {
     //MAIN Zone
-    public const PW = 'PW'; // Power
-    public const MV = 'MV'; // Master Volume
-    public const BL = 'BL'; // Balance
+    public const string PW = 'PW'; // Power
+    public const string MV = 'MV'; // Master Volume
+    public const string BL = 'BL'; // Balance
     //CV
-    public const CVFL = 'CVFL'; // Channel Volume Front Left
-    public const CVFR = 'CVFR'; // Channel Volume Front Right
-    public const CVC = 'CVC'; // Channel Volume Center
-    public const CVSW = 'CVSW'; // Channel Volume Subwoofer
-    public const CVSW2 = 'CVSW2'; // Channel Volume Subwoofer2
-    public const CVSW3 = 'CVSW3'; // Channel Volume Subwoofer3
-    public const CVSW4 = 'CVSW4'; // Channel Volume Subwoofer4
-    public const CVSL = 'CVSL'; // Channel Volume Surround Left
-    public const CVSR = 'CVSR'; // Channel Volume Surround Right
-    public const CVSBL = 'CVSBL'; // Channel Volume Surround Back Left
-    public const CVSBR = 'CVSBR'; // Channel Volume Surround Back Right
-    public const CVSB = 'CVSB'; // Channel Volume Surround Back
-    public const CVFHL = 'CVFHL'; // Channel Volume Front Height Left
-    public const CVFHR = 'CVFHR'; // Channel Volume Front Height Right
-    public const CVFWL = 'CVFWL'; // Channel Volume Front Wide Left
-    public const CVFWR = 'CVFWR'; // Channel Volume Front Wide Right
-    public const MU = 'MU'; // Volume Mute
-    public const SI = 'SI'; // Select Input
-    public const ZM = 'ZM'; // Main Zone
-    public const SD = 'SD'; // Select Auto/HDMI/Digital/Analog
-    public const DC = 'DC'; // Digital Input Mode Select Auto/PCM/DTS
-    public const SV = 'SV'; // Video Select
-    public const SLP = 'SLP'; // Main Zone Sleep Timer
-    public const MS = 'MS'; // Select Surround Mode
-    public const SP = 'SP'; // Speaker Preset
-    public const MN = 'MN'; // System
-    public const MSQUICK = 'MSQUICK'; // Quick Select Mode Select (Denon)
-    public const MSQUICKMEMORY = 'MEMORY'; // Quick Select Mode Memory
-    public const MSSMART = 'MSSMART'; // Smart Select Mode Select (Marantz)
+    public const string CVFL  = 'CVFL'; // Channel Volume Front Left
+    public const string CVFR  = 'CVFR'; // Channel Volume Front Right
+    public const string CVC   = 'CVC'; // Channel Volume Center
+    public const string CVSW  = 'CVSW'; // Channel Volume Subwoofer
+    public const string CVSW2 = 'CVSW2'; // Channel Volume Subwoofer2
+    public const string CVSW3 = 'CVSW3'; // Channel Volume Subwoofer3
+    public const string CVSW4 = 'CVSW4'; // Channel Volume Subwoofer4
+    public const string CVSL  = 'CVSL'; // Channel Volume Surround Left
+    public const string CVSR  = 'CVSR'; // Channel Volume Surround Right
+    public const string CVSBL = 'CVSBL'; // Channel Volume Surround Back Left
+    public const string CVSBR = 'CVSBR'; // Channel Volume Surround Back Right
+    public const string CVSB  = 'CVSB'; // Channel Volume Surround Back
+    public const string CVFHL = 'CVFHL'; // Channel Volume Front Height Left
+    public const string CVFHR = 'CVFHR'; // Channel Volume Front Height Right
+    public const string CVFWL = 'CVFWL'; // Channel Volume Front Wide Left
+    public const string CVFWR = 'CVFWR'; // Channel Volume Front Wide Right
+    public const string MU    = 'MU'; // Volume Mute
+    public const string SI    = 'SI'; // Select Input
+    public const string ZM    = 'ZM'; // Main Zone
+    public const string SD    = 'SD'; // Select Auto/HDMI/Digital/Analog
+    public const string DC    = 'DC'; // Digital Input Mode Select Auto/PCM/DTS
+    public const string SV    = 'SV'; // Video Select
+    public const string SLP   = 'SLP'; // Main Zone Sleep Timer
+    public const string MS    = 'MS'; // Select Surround Mode
+    public const string SP    = 'SP'; // Speaker Preset
+    public const string MN    = 'MN'; // System
+    public const string MSQUICK = 'MSQUICK'; // Quick Select Mode Select (Denon)
+    public const string MSQUICKMEMORY = 'MEMORY'; // Quick Select Mode Memory
+    public const string MSSMART       = 'MSSMART'; // Smart Select Mode Select (Marantz)
 
     //MU
-    public const MUON = 'ON'; // Volume Mute ON
-    public const MUOFF = 'OFF'; // Volume Mute Off
+    public const string MUON  = 'ON'; // Volume Mute ON
+    public const string MUOFF = 'OFF'; // Volume Mute Off
 
     //VS
-    public const VS = 'VS'; // Video Setting
-    public const VSASP = 'VSASP'; // ASP
-    public const VSSC = 'VSSC'; // Set Resolution
+    public const string VS    = 'VS'; // Video Setting
+    public const string VSASP = 'VSASP'; // ASP
+    public const string VSSC  = 'VSSC'; // Set Resolution
 
-    public const VSSCH = 'VSSCH'; // Set Resolution HDMI
-    public const VSAUDIO = 'VSAUDIO'; // Set HDMI Audio Output
-    public const VSMONI = 'VSMONI'; // Set HDMI Monitor
-    public const VSVPM = 'VSVPM'; // Set Video Processing Mode
-    public const VSVST = 'VSVST'; // Set Vertical Stretch
+    public const string VSSCH   = 'VSSCH'; // Set Resolution HDMI
+    public const string VSAUDIO = 'VSAUDIO'; // Set HDMI Audio Output
+    public const string VSMONI  = 'VSMONI'; // Set HDMI Monitor
+    public const string VSVPM   = 'VSVPM'; // Set Video Processing Mode
+    public const string VSVST   = 'VSVST'; // Set Vertical Stretch
     //PS
-    public const PS = 'PS'; // Parameter Setting
-    public const PSATT = 'PSATT'; // SW ATT
-    public const PSTONECTRL = 'PSTONE_CTRL'; // Tone Control !da Ident nur Buchstaben und Zahlen enthalten darf, wurde das Blank ersetzt
-    public const PSSB = 'PSSB'; // Surround Back SP Mode
-    public const PSCINEMAEQ = 'PSCINEMA_EQ'; // Cinema EQ
-    public const PSHTEQ = 'PSHT_EQ'; // Cinema EQ
-    public const PSMODE = 'PSMODE'; // Mode Music
-    public const PSDOLVOL = 'PSDOLVOL'; // Dolby Volume direct change
-    public const PSVOLLEV = 'PSVOLLEV'; // Dolby Volume Leveler direct change
-    public const PSVOLMOD = 'PSVOLMOD'; // Dolby Volume Modeler direct change
-    public const PSFH = 'PSFH'; // FRONT HEIGHT
-    public const PSPHG = 'PSPHG'; // PL2z HEIGHT GAIN direct change
-    public const PSSP = 'PSSP'; // Speaker Output set
-    public const PSREFLEV = 'PSREFLEV'; // Dynamic EQ Reference Level
-    public const PSMULTEQ = 'PSMULTEQ'; // MultEQ XT 32 mode direct change
-    public const PSDYNEQ = 'PSDYNEQ'; // Dynamic EQ
-    public const PSLFC = 'PSLFC'; // Audyssey LFC
-    public const PSDYNVOL = 'PSDYNVOL'; // Dynamic Volume
-    public const PSDSX = 'PSDSX'; // Audyssey DSX Change
-    public const PSSTW = 'PSSTW'; // STAGE WIDTH
-    public const PSCNTAMT = 'PSCNTAMT'; // Audyssey Containment Amount
-    public const PSSTH = 'PSSTH'; // STAGE HEIGHT
-    public const PSBAS = 'PSBAS'; // BASS
-    public const PSTRE = 'PSTRE'; // TREBLE
-    public const PSLOM = 'PSLOM'; // Loudness Management
-    public const PSDRC = 'PSDRC'; // DRC direct change
-    public const PSMDAX = 'PSMDAX'; // M-DAX
-    public const PSDCO = 'PSDCO'; // D.COMP direct change
-    public const PSCLV = 'PSCLV'; // Center Level Volume
-    public const PSLFE = 'PSLFE'; // LFE
-    public const PSLFL = 'PSLFL'; // LFF
-    public const PSEFF = 'PSEFF'; // EFFECT direct change	Level
-    public const PSDELAY = 'PSDELAY'; // Audio DELAY
-    public const PSDEL = 'PSDEL'; // DELAY
-    public const PSAFD = 'PSAFD'; // Auto Flag Detect Mode
-    public const PSPAN = 'PSPAN'; // PANORAMA
-    public const PSDIM = 'PSDIM'; // DIMENSION
-    public const PSCEN = 'PSCEN'; // CENTER WIDTH
-    public const PSCEI = 'PSCEI'; // CENTER IMAGE
-    public const PSCEG = 'PSCEG'; // CENTER GAIN
-    public const PSDIC = 'PSDIC'; // DIALOG CONTROL
-    public const PSRSTR = 'PSRSTR'; //Audio Restorer
-    public const PSFRONT = 'PSFRONT'; //Front Speaker
-    public const PSRSZ = 'PSRSZ'; //Room Size
-    public const PSSWR = 'PSSWR'; //Subwoofer
+    public const string PS         = 'PS'; // Parameter Setting
+    public const string PSATT      = 'PSATT'; // SW ATT
+    public const string PSTONECTRL = 'PSTONE_CTRL'; // Tone Control !da Ident nur Buchstaben und Zahlen enthalten darf, wurde das Blank ersetzt
+    public const string PSSB       = 'PSSB'; // Surround Back SP Mode
+    public const string PSCINEMAEQ = 'PSCINEMA_EQ'; // Cinema EQ
+    public const string PSHTEQ     = 'PSHT_EQ'; // Cinema EQ
+    public const string PSMODE     = 'PSMODE'; // Mode Music
+    public const string PSDOLVOL   = 'PSDOLVOL'; // Dolby Volume direct change
+    public const string PSVOLLEV   = 'PSVOLLEV'; // Dolby Volume Leveler direct change
+    public const string PSVOLMOD   = 'PSVOLMOD'; // Dolby Volume Modeler direct change
+    public const string PSFH       = 'PSFH'; // FRONT HEIGHT
+    public const string PSPHG      = 'PSPHG'; // PL2z HEIGHT GAIN direct change
+    public const string PSSP       = 'PSSP'; // Speaker Output set
+    public const string PSREFLEV   = 'PSREFLEV'; // Dynamic EQ Reference Level
+    public const string PSMULTEQ   = 'PSMULTEQ'; // MultEQ XT 32 mode direct change
+    public const string PSDYNEQ  = 'PSDYNEQ'; // Dynamic EQ
+    public const string PSLFC    = 'PSLFC'; // Audyssey LFC
+    public const string PSDYNVOL = 'PSDYNVOL'; // Dynamic Volume
+    public const string PSDSX    = 'PSDSX'; // Audyssey DSX Change
+    public const string PSSTW    = 'PSSTW'; // STAGE WIDTH
+    public const string PSCNTAMT = 'PSCNTAMT'; // Audyssey Containment Amount
+    public const string PSSTH    = 'PSSTH'; // STAGE HEIGHT
+    public const string PSBAS    = 'PSBAS'; // BASS
+    public const string PSTRE    = 'PSTRE'; // TREBLE
+    public const string PSLOM    = 'PSLOM'; // Loudness Management
+    public const string PSDRC    = 'PSDRC'; // DRC direct change
+    public const string PSMDAX   = 'PSMDAX'; // M-DAX
+    public const string PSDCO    = 'PSDCO'; // D.COMP direct change
+    public const string PSCLV    = 'PSCLV'; // Center Level Volume
+    public const string PSLFE    = 'PSLFE'; // LFE
+    public const string PSLFL    = 'PSLFL'; // LFF
+    public const string PSEFF  = 'PSEFF'; // EFFECT direct change	Level
+    public const string PSDELAY = 'PSDELAY'; // Audio DELAY
+    public const string PSDEL   = 'PSDEL'; // DELAY
+    public const string PSAFD   = 'PSAFD'; // Auto Flag Detect Mode
+    public const string PSPAN   = 'PSPAN'; // PANORAMA
+    public const string PSDIM   = 'PSDIM'; // DIMENSION
+    public const string PSCEN   = 'PSCEN'; // CENTER WIDTH
+    public const string PSCEI   = 'PSCEI'; // CENTER IMAGE
+    public const string PSCEG   = 'PSCEG'; // CENTER GAIN
+    public const string PSDIC   = 'PSDIC'; // DIALOG CONTROL
+    public const string PSRSTR  = 'PSRSTR'; //Audio Restorer
+    public const string PSFRONT = 'PSFRONT'; //Front Speaker
+    public const string PSRSZ   = 'PSRSZ'; //Room Size
+    public const string PSSWR   = 'PSSWR'; //Subwoofer
 
-    public const BTTX = 'BTTX'; //Bluetooth Transmitter
-    public const SPPR = 'SPPR'; //Speaker Preset
+    public const string BTTX = 'BTTX'; //Bluetooth Transmitter
+    public const string SPPR = 'SPPR'; //Speaker Preset
 
     //PV
-    public const PV = 'PV'; // Picture Mode
-    public const PVPICT = 'PVPICT'; //Picture Mode beim Senden
-    public const PVPICTOFF = 'OFF'; // Picture Mode Off
-    public const PVPICTSTD = 'STD'; // Picture Mode Standard
-    public const PVPICTMOV = 'MOVIE'; // Picture Mode Movie
-    public const PVPICTVVD = 'VVD'; // Picture Mode Vivid
-    public const PVPICTSTM = 'STM'; // Picture Mode Stream
-    public const PVPICTCTM = 'CTM'; // Picture Mode Custom
-    public const PVPICTDAY = 'DAY'; // Picture Mode ISF Day
-    public const PVPICTNGT = 'NGT'; // Picture Mode ISF Night
+    public const string PV        = 'PV'; // Picture Mode
+    public const string PVPICT    = 'PVPICT'; //Picture Mode beim Senden
+    public const string PVPICTOFF = 'OFF'; // Picture Mode Off
+    public const string PVPICTSTD = 'STD'; // Picture Mode Standard
+    public const string PVPICTMOV = 'MOVIE'; // Picture Mode Movie
+    public const string PVPICTVVD = 'VVD'; // Picture Mode Vivid
+    public const string PVPICTSTM = 'STM'; // Picture Mode Stream
+    public const string PVPICTCTM = 'CTM'; // Picture Mode Custom
+    public const string PVPICTDAY = 'DAY'; // Picture Mode ISF Day
+    public const string PVPICTNGT = 'NGT'; // Picture Mode ISF Night
 
-    public const PVCN = 'PVCN'; // Contrast
-    public const PVBR = 'PVBR'; // Brightness
-    public const PVST = 'PVST'; // Saturation
-    public const PVCM = 'PVCM'; // Chroma
-    public const PVHUE = 'PVHUE'; // Hue
-    public const PVENH = 'PVENH'; // Enhancer
+    public const string PVCN  = 'PVCN'; // Contrast
+    public const string PVBR  = 'PVBR'; // Brightness
+    public const string PVST  = 'PVST'; // Saturation
+    public const string PVCM  = 'PVCM'; // Chroma
+    public const string PVHUE = 'PVHUE'; // Hue
+    public const string PVENH = 'PVENH'; // Enhancer
 
-    public const PVDNR = 'PVDNR'; // Digital Noise Reduction direct change
-    public const PVDNROFF = ' OFF'; // Digital Noise Reduction Off
-    public const PVDNRLOW = ' LOW'; // Digital Noise Reduction Low
-    public const PVDNRMID = ' MID'; // Digital Noise Reduction Middle
-    public const PVDNRHI = ' HI'; // Digital Noise Reduction High
+    public const string PVDNR    = 'PVDNR'; // Digital Noise Reduction direct change
+    public const string PVDNROFF = ' OFF'; // Digital Noise Reduction Off
+    public const string PVDNRLOW = ' LOW'; // Digital Noise Reduction Low
+    public const string PVDNRMID = ' MID'; // Digital Noise Reduction Middle
+    public const string PVDNRHI  = ' HI'; // Digital Noise Reduction High
 
     // Speaker Setup
-    public const SSSPC = 'SSSPC';
-    public const SSSPCCEN = 'SSSPCCEN'; // Setup Center
-    public const SSSPCFRO = 'SSSPCFRO'; // Setup Front
-    public const SSSPCSWF = 'SSSPCSWF'; // Setup Subwoofer
-    public const NON = ' NON'; // none Subwoofer
-    public const SPONE = ' 1SP'; // Subwoofer 1
-    public const SPTWO = ' 2SP'; // Subwoofer 2
-    public const SMA = ' SMA'; // small
-    public const LAR = ' LAR'; // large
+    public const string SSSPC    = 'SSSPC';
+    public const string SSSPCCEN = 'SSSPCCEN'; // Setup Center
+    public const string SSSPCFRO = 'SSSPCFRO'; // Setup Front
+    public const string SSSPCSWF = 'SSSPCSWF'; // Setup Subwoofer
+    public const string NON      = ' NON'; // none Subwoofer
+    public const string SPONE    = ' 1SP'; // Subwoofer 1
+    public const string SPTWO    = ' 2SP'; // Subwoofer 2
+    public const string SMA      = ' SMA'; // small
+    public const string LAR      = ' LAR'; // large
 
-    public const SR = ' ?'; //Status Request
+    public const string SR = ' ?'; //Status Request
 
     //Zone 2
-    public const Z2 = 'Z2'; // Zone 2
-    public const Z2ON = 'ON'; // Zone 2 On
-    public const Z2OFF = 'OFF'; // Zone 2 Off
-    public const Z2POWER = 'Z2POWER'; // Zone 2 Power Z2 beim Senden
-    public const Z2INPUT = 'Z2INPUT'; // Zone 2 Input Z2 beim Senden
-    public const Z2VOL = 'Z2VOL'; // Zone 2 Volume Z2 beim Senden
-    public const Z2MU = 'Z2MU'; // Zone 2 Mute
-    public const Z2CS = 'Z2CS'; // Zone 2 Channel Setting
-    public const Z2CSST = 'ST'; // Zone 2 Channel Setting Stereo
-    public const Z2CSMONO = 'MONO'; // Zone 2 Channel Setting Mono
-    public const Z2CVFL = 'Z2CVFL'; // Zone 2 Channel Volume FL
-    public const Z2CVFR = 'Z2CVFR'; // Zone 2 Channel Volume FR
-    public const Z2HPF = 'Z2HPF'; // Zone 2 HPF
-    public const Z2HDA = 'Z2HDA'; // (nur) Zone 2 HDA
-    public const Z2HDATHR = ' THR'; // (nur) Zone 2 HDA
-    public const Z2HDAPCM = ' PCM'; // (nur) Zone 2 HDA
-    public const Z2PSBAS = 'Z2PSBAS'; // Zone 2 Parameter Bass
-    public const Z2PSTRE = 'Z2PSTRE'; // Zone 2 Parameter Treble
-    public const Z2SLP = 'Z2SLP'; // Zone 2 Sleep Timer
-    public const Z2QUICK = 'Z2QUICK'; // Zone 2 Quick
-    public const Z2SMART = 'Z2SMART'; // Zone 2 Smart
+    public const string Z2       = 'Z2'; // Zone 2
+    public const string Z2ON     = 'ON'; // Zone 2 On
+    public const string Z2OFF    = 'OFF'; // Zone 2 Off
+    public const string Z2POWER  = 'Z2POWER'; // Zone 2 Power Z2 beim Senden
+    public const string Z2INPUT  = 'Z2INPUT'; // Zone 2 Input Z2 beim Senden
+    public const string Z2VOL    = 'Z2VOL'; // Zone 2 Volume Z2 beim Senden
+    public const string Z2MU     = 'Z2MU'; // Zone 2 Mute
+    public const string Z2CS     = 'Z2CS'; // Zone 2 Channel Setting
+    public const string Z2CSST   = 'ST'; // Zone 2 Channel Setting Stereo
+    public const string Z2CSMONO = 'MONO'; // Zone 2 Channel Setting Mono
+    public const string Z2CVFL   = 'Z2CVFL'; // Zone 2 Channel Volume FL
+    public const string Z2CVFR   = 'Z2CVFR'; // Zone 2 Channel Volume FR
+    public const string Z2HPF    = 'Z2HPF'; // Zone 2 HPF
+    public const string Z2HDA    = 'Z2HDA'; // (nur) Zone 2 HDA
+    public const string Z2HDATHR = ' THR'; // (nur) Zone 2 HDA
+    public const string Z2HDAPCM = ' PCM'; // (nur) Zone 2 HDA
+    public const string Z2PSBAS  = 'Z2PSBAS'; // Zone 2 Parameter Bass
+    public const string Z2PSTRE  = 'Z2PSTRE'; // Zone 2 Parameter Treble
+    public const string Z2SLP    = 'Z2SLP'; // Zone 2 Sleep Timer
+    public const string Z2QUICK  = 'Z2QUICK'; // Zone 2 Quick
+    public const string Z2SMART  = 'Z2SMART'; // Zone 2 Smart
 
     //Zone 3
-    public const Z3 = 'Z3'; // Zone 3
-    public const Z3ON = 'ON'; // Zone 3 On
-    public const Z3OFF = 'OFF'; // Zone 3 Off
-    public const Z3POWER = 'Z3POWER'; // Zone 3 Power Z3 beim Senden
-    public const Z3INPUT = 'Z3INPUT'; // Zone 3 Input Z3 beim Senden
-    public const Z3VOL = 'Z3VOL'; // Zone 3 Volume Z3 beim Senden
-    public const Z3MU = 'Z3MU'; // Zone 3 Mute
-    public const Z3CS = 'Z3CS'; // Zone 3 Channel Setting
-    public const Z3CSST = 'ST'; // Zone 3 Channel Setting Stereo
-    public const Z3CSMONO = 'MONO'; // Zone 3 Channel Setting Mono
-    public const Z3CVFL = 'Z3CVFL'; // Zone 3 Channel Volume FL
-    public const Z3CVFR = 'Z3CVFR'; // Zone 3 Channel Volume FR
-    public const Z3HPF = 'Z3HPF'; // Zone 3 HPF
-    public const Z3PSBAS = 'Z3PSBAS'; // Zone 3 Parameter Bass
-    public const Z3PSTRE = 'Z3PSTRE'; // Zone 3 Parameter Treble
-    public const Z3SLP = 'Z3SLP'; // Zone 3 Sleep Timer
-    public const Z3QUICK = 'Z3QUICK'; // Zone 3 Quick
-    public const Z3SMART = 'Z3SMART'; // Zone 3 Smart
+    public const string Z3       = 'Z3'; // Zone 3
+    public const string Z3ON     = 'ON'; // Zone 3 On
+    public const string Z3OFF    = 'OFF'; // Zone 3 Off
+    public const string Z3POWER  = 'Z3POWER'; // Zone 3 Power Z3 beim Senden
+    public const string Z3INPUT  = 'Z3INPUT'; // Zone 3 Input Z3 beim Senden
+    public const string Z3VOL    = 'Z3VOL'; // Zone 3 Volume Z3 beim Senden
+    public const string Z3MU     = 'Z3MU'; // Zone 3 Mute
+    public const string Z3CS     = 'Z3CS'; // Zone 3 Channel Setting
+    public const string Z3CSST   = 'ST'; // Zone 3 Channel Setting Stereo
+    public const string Z3CSMONO = 'MONO'; // Zone 3 Channel Setting Mono
+    public const string Z3CVFL   = 'Z3CVFL'; // Zone 3 Channel Volume FL
+    public const string Z3CVFR   = 'Z3CVFR'; // Zone 3 Channel Volume FR
+    public const string Z3HPF    = 'Z3HPF'; // Zone 3 HPF
+    public const string Z3PSBAS  = 'Z3PSBAS'; // Zone 3 Parameter Bass
+    public const string Z3PSTRE  = 'Z3PSTRE'; // Zone 3 Parameter Treble
+    public const string Z3SLP    = 'Z3SLP'; // Zone 3 Sleep Timer
+    public const string Z3QUICK  = 'Z3QUICK'; // Zone 3 Quick
+    public const string Z3SMART  = 'Z3SMART'; // Zone 3 Smart
 
-    public const NS = 'NS'; // Network Audio
-    public const SY = 'SY'; // Remote Lock
-    public const TR = 'TR'; // Trigger
-    public const UG = 'UG'; // Upgrade ID Display
+    public const string NS = 'NS'; // Network Audio
+    public const string SY = 'SY'; // Remote Lock
+    public const string TR = 'TR'; // Trigger
+    public const string UG = 'UG'; // Upgrade ID Display
 
     //Analog Tuner
-    public const TF = 'TF'; // Tuner Frequency
+    public const string TF = 'TF'; // Tuner Frequency
 
-    public const TPAN = 'TPAN'; // Tuner Preset (analog)
-    public const TPANUP = 'UP'; //TUNER PRESET CH UP
-    public const TPANDOWN = 'DOWN'; //TUNER PRESET CH DOWN
+    public const string TPAN     = 'TPAN'; // Tuner Preset (analog)
+    public const string TPANUP   = 'UP'; //TUNER PRESET CH UP
+    public const string TPANDOWN = 'DOWN'; //TUNER PRESET CH DOWN
 
-    public const TMAN_BAND = 'TMAN'; // Tuner Mode (analog) Band
-    public const TMANAM = 'AM'; // Tuner Band AM (Band)
-    public const TMANFM = 'FM'; // Tuner Band FM (Band)
-    public const TMANDAB = 'DAB'; // Tuner Band DAB (Band)
+    public const string TMAN_BAND = 'TMAN'; // Tuner Mode (analog) Band
+    public const string TMANAM    = 'AM'; // Tuner Band AM (Band)
+    public const string TMANFM    = 'FM'; // Tuner Band FM (Band)
+    public const string TMANDAB   = 'DAB'; // Tuner Band DAB (Band)
 
-    public const TMAN_MODE = 'TM'; // Tuner Mode (analog) Mode
-    public const TMANAUTO = 'ANAUTO'; // Tuner Mode Auto
-    public const TMANMANUAL = 'ANMANUAL'; // Tuner Mode Manual
+    public const string TMAN_MODE  = 'TM'; // Tuner Mode (analog) Mode
+    public const string TMANAUTO   = 'ANAUTO'; // Tuner Mode Auto
+    public const string TMANMANUAL = 'ANMANUAL'; // Tuner Mode Manual
 
     //Network Audio
-    public const NSB = 'NSB'; //Direct Preset CH Play 00-55,00=A1,01=A2,B1=08,G8=55
+    public const string NSB = 'NSB'; //Direct Preset CH Play 00-55,00=A1,01=A2,B1=08,G8=55
 
     // Display Network Audio Navigation
-    public const NSUP = '90'; // Network Audio Cursor Up Control
-    public const NSDOWN = '91'; // Network Audio Cursor Down Control
-    public const NSLEFT = '92'; // Network Audio Cursor Left Control
-    public const NSRIGHT = '93'; // Network Audio Cursor Right Control
-    public const NSENTER = '94'; // Network Audio Cursor Enter Control
-    public const NSPLAY = '9A'; // Network Audio Play
-    public const NSPAUSE = '9B'; // Network Audio Pause
-    public const NSSTOP = '9C'; // Network Audio Stop
-    public const NSSKIPPLUS = '9D'; // Network Audio Skip +
-    public const NSSKIPMINUS = '9E'; // Network Audio Skip -
-    public const NSREPEATONE = '9H'; // Network Audio Repeat One
-    public const NSREPEATALL = '9I'; // Network Audio Repeat All
-    public const NSREPEATOFF = '9J'; // Network Audio Repeat Off
-    public const NSRANDOMON = '9K'; // Network Audio Random On
-    public const NSRANDOMOFF = '9M'; // Network Audio Random Off
-    public const NSTOGGLE = '9W'; // Network Audio Toggle Switch
-    public const NSPAGENEXT = '9X'; // Network Audio Page Next
-    public const NSPAGEPREV = '9Y'; // Network Audio Page Previous
+    public const string NSUP        = '90'; // Network Audio Cursor Up Control
+    public const string NSDOWN      = '91'; // Network Audio Cursor Down Control
+    public const string NSLEFT      = '92'; // Network Audio Cursor Left Control
+    public const string NSRIGHT     = '93'; // Network Audio Cursor Right Control
+    public const string NSENTER     = '94'; // Network Audio Cursor Enter Control
+    public const string NSPLAY      = '9A'; // Network Audio Play
+    public const string NSPAUSE     = '9B'; // Network Audio Pause
+    public const string NSSTOP      = '9C'; // Network Audio Stop
+    public const string NSSKIPPLUS  = '9D'; // Network Audio Skip +
+    public const string NSSKIPMINUS = '9E'; // Network Audio Skip -
+    public const string NSREPEATONE = '9H'; // Network Audio Repeat One
+    public const string NSREPEATALL = '9I'; // Network Audio Repeat All
+    public const string NSREPEATOFF = '9J'; // Network Audio Repeat Off
+    public const string NSRANDOMON  = '9K'; // Network Audio Random On
+    public const string NSRANDOMOFF = '9M'; // Network Audio Random Off
+    public const string NSTOGGLE    = '9W'; // Network Audio Toggle Switch
+    public const string NSPAGENEXT  = '9X'; // Network Audio Page Next
+    public const string NSPAGEPREV  = '9Y'; // Network Audio Page Previous
 
     //Display
-    public const DISPLAY = 'Display'; // Display zur Anzeige
-    public const NSA = 'NSA'; // Network Audio Extended
-    public const NSA0 = 'NSA0'; // Network Audio Extended Line 0
-    public const NSA1 = 'NSA1'; // Network Audio Extended Line 1
-    public const NSA2 = 'NSA2'; // Network Audio Extended Line 2
-    public const NSA3 = 'NSA3'; // Network Audio Extended Line 3
-    public const NSA4 = 'NSA4'; // Network Audio Extended Line 4
-    public const NSA5 = 'NSA5'; // Network Audio Extended Line 5
-    public const NSA6 = 'NSA6'; // Network Audio Extended Line 6
-    public const NSA7 = 'NSA7'; // Network Audio Extended Line 7
-    public const NSA8 = 'NSA8'; // Network Audio Extended Line 8
+    public const string DISPLAY = 'Display'; // Display zur Anzeige
+    public const string NSA     = 'NSA'; // Network Audio Extended
+    public const string NSA0    = 'NSA0'; // Network Audio Extended Line 0
+    public const string NSA1    = 'NSA1'; // Network Audio Extended Line 1
+    public const string NSA2    = 'NSA2'; // Network Audio Extended Line 2
+    public const string NSA3    = 'NSA3'; // Network Audio Extended Line 3
+    public const string NSA4    = 'NSA4'; // Network Audio Extended Line 4
+    public const string NSA5    = 'NSA5'; // Network Audio Extended Line 5
+    public const string NSA6    = 'NSA6'; // Network Audio Extended Line 6
+    public const string NSA7    = 'NSA7'; // Network Audio Extended Line 7
+    public const string NSA8    = 'NSA8'; // Network Audio Extended Line 8
 
-    public const NSE = 'NSE'; // Network Audio Onscreen Display Information
-    public const NSE0 = 'NSE0'; // Network Audio Onscreen Display Information Line 0
-    public const NSE1 = 'NSE1'; // Network Audio Onscreen Display Information Line 1
-    public const NSE2 = 'NSE2'; // Network Audio Onscreen Display Information Line 2
-    public const NSE3 = 'NSE3'; // Network Audio Onscreen Display Information Line 3
-    public const NSE4 = 'NSE4'; // Network Audio Onscreen Display Information Line 4
-    public const NSE5 = 'NSE5'; // Network Audio Onscreen Display Information Line 5
-    public const NSE6 = 'NSE6'; // Network Audio Onscreen Display Information Line 6
-    public const NSE7 = 'NSE7'; // Network Audio Onscreen Display Information Line 7
-    public const NSE8 = 'NSE8'; // Network Audio Onscreen Display Information Line 8
-    public const NSE9 = 'NSE9'; // Network Audio Onscreen Display Information Line 9
+    public const string NSE  = 'NSE'; // Network Audio Onscreen Display Information
+    public const string NSE0 = 'NSE0'; // Network Audio Onscreen Display Information Line 0
+    public const string NSE1 = 'NSE1'; // Network Audio Onscreen Display Information Line 1
+    public const string NSE2 = 'NSE2'; // Network Audio Onscreen Display Information Line 2
+    public const string NSE3 = 'NSE3'; // Network Audio Onscreen Display Information Line 3
+    public const string NSE4 = 'NSE4'; // Network Audio Onscreen Display Information Line 4
+    public const string NSE5 = 'NSE5'; // Network Audio Onscreen Display Information Line 5
+    public const string NSE6 = 'NSE6'; // Network Audio Onscreen Display Information Line 6
+    public const string NSE7 = 'NSE7'; // Network Audio Onscreen Display Information Line 7
+    public const string NSE8 = 'NSE8'; // Network Audio Onscreen Display Information Line 8
+    public const string NSE9 = 'NSE9'; // Network Audio Onscreen Display Information Line 9
 
     //SUB Commands
 
     //PW
-    public const PWON = 'ON'; // Power On
-    public const PWSTANDBY = 'STANDBY'; // Power Standby
-    public const PWOFF = 'OFF'; // Power OFF - beim X1200 im XML beobachtet
+    public const string PWON      = 'ON'; // Power On
+    public const string PWSTANDBY = 'STANDBY'; // Power Standby
+    public const string PWOFF     = 'OFF'; // Power OFF - beim X1200 im XML beobachtet
 
     //MV
-    public const MVUP = 'UP'; // Master Volume Up
-    public const MVDOWN = 'DOWN'; // Master Volume Down
+    public const string MVUP   = 'UP'; // Master Volume Up
+    public const string MVDOWN = 'DOWN'; // Master Volume Down
 
     //SI + SV
-    public const IS_PHONO = 'PHONO'; // Select Input Source Phono
-    public const IS_CD     = 'CD'; // Select Input Source CD
-    public const IS_TUNER   = 'TUNER'; // Select Input Source Tuner
-    public const IS_FM      = 'FM'; // Select Input Source FM
-    public const IS_DAB     = 'DAB'; // Select Input Source DAB
-    public const IS_DVD     = 'DVD'; // Select Input Source DVD
-    public const IS_HDP     = 'HDP'; // Select Input Source HDP
-    public const IS_BD      = 'BD'; // Select Input Source BD
-    public const IS_BT      = 'BT'; // Select Input Source Blutooth
-    public const IS_MPLAY   = 'MPLAY'; // Select Input Source Mediaplayer
-    public const IS_TV      = 'TV'; // Select Input Source TV
-    public const IS_TV_CBL  = 'TV/CBL'; // Select Input Source TV/CBL
-    public const IS_SAT_CBL = 'SAT/CBL'; // Select Input Source Sat/CBL
-    public const IS_SAT   = 'SAT'; // Select Input Source Sat
-    public const IS_VCR    = 'VCR'; // Select Input Source VCR
-    public const IS_DVR    = 'DVR'; // Select Input Source DVR
-    public const IS_GAME   = 'GAME'; // Select Input Source Game
-    public const IS_GAME1   = 'GAME1'; // Select Input Source Game1
-    public const IS_GAME2  = 'GAME2'; // Select Input Source Game2
-    public const IS_8K     = '8K'; // Select Input Source 8K
-    public const IS_AUX    = 'AUX'; // Select Input Source AUX
-    public const IS_AUX1   = 'AUX1'; // Select Input Source AUX1
-    public const IS_AUX2   = 'AUX2'; // Select Input Source AUX2
-    public const IS_VAUX   = 'V.AUX'; // Select Input Source V.AUX
-    public const IS_DOCK   = 'DOCK'; // Select Input Source Dock
-    public const IS_IPOD      = 'IPOD'; // Select Input Source iPOD
-    public const IS_USB       = 'USB'; // Select Input Source USB
-    public const IS_AUXA      = 'AUXA'; // Select Input Source AUXA
-    public const IS_AUXB      = 'AUXB'; // Select Input Source AUXB
-    public const IS_AUXC      = 'AUXC'; // Select Input Source AUXC
-    public const IS_AUXD      = 'AUXD'; // Select Input Source AUXD
-    public const IS_NETUSB    = 'NET/USB'; // Select Input Source NET/USB
-    public const IS_NET       = 'NET'; // Select Input Source NET
-    public const IS_LASTFM    = 'LASTFM'; // Select Input Source LastFM
-    public const IS_FLICKR    = 'FLICKR'; // Select Input Source Flickr
-    public const IS_FAVORITES = 'FAVORITES'; // Select Input Source Favorites
-    public const IS_IRADIO    = 'IRADIO'; // Select Input Source Internet Radio
-    public const IS_SERVER    = 'SERVER'; // Select Input Source Server
-    public const IS_NAPSTER   = 'NAPSTER'; // Select Input Source Napster
-    public const IS_USB_IPOD  = 'USB/IPOD'; // Select Input USB/IPOD
-    public const IS_MXPORT    = 'MXPORT'; // Select Input MXPORT
-    public const IS_SOURCE    = 'SOURCE'; // Select Input Source of Main Zone
-    public const IS_ON        = 'ON'; // Select Input Source On
-    public const IS_OFF       = 'OFF'; // Select Input Source Off
+    public const string IS_PHONO = 'PHONO'; // Select Input Source Phono
+    public const string IS_CD    = 'CD'; // Select Input Source CD
+    public const string IS_TUNER = 'TUNER'; // Select Input Source Tuner
+    public const string IS_FM    = 'FM'; // Select Input Source FM
+    public const string IS_DAB   = 'DAB'; // Select Input Source DAB
+    public const string IS_DVD   = 'DVD'; // Select Input Source DVD
+    public const string IS_HDP   = 'HDP'; // Select Input Source HDP
+    public const string IS_BD    = 'BD'; // Select Input Source BD
+    public const string IS_BT    = 'BT'; // Select Input Source Blutooth
+    public const string IS_MPLAY = 'MPLAY'; // Select Input Source Mediaplayer
+    public const string IS_TV    = 'TV'; // Select Input Source TV
+    public const string IS_TV_CBL = 'TV/CBL'; // Select Input Source TV/CBL
+    public const string IS_SAT_CBL = 'SAT/CBL'; // Select Input Source Sat/CBL
+    public const string IS_SAT     = 'SAT'; // Select Input Source Sat
+    public const string IS_VCR     = 'VCR'; // Select Input Source VCR
+    public const string IS_DVR     = 'DVR'; // Select Input Source DVR
+    public const string IS_GAME    = 'GAME'; // Select Input Source Game
+    public const string IS_GAME1   = 'GAME1'; // Select Input Source Game1
+    public const string IS_GAME2   = 'GAME2'; // Select Input Source Game2
+    public const string IS_8K      = '8K'; // Select Input Source 8K
+    public const string IS_AUX     = 'AUX'; // Select Input Source AUX
+    public const string IS_AUX1    = 'AUX1'; // Select Input Source AUX1
+    public const string IS_AUX2    = 'AUX2'; // Select Input Source AUX2
+    public const string IS_VAUX  = 'V.AUX'; // Select Input Source V.AUX
+    public const string IS_DOCK  = 'DOCK'; // Select Input Source Dock
+    public const string IS_IPOD  = 'IPOD'; // Select Input Source iPOD
+    public const string IS_USB   = 'USB'; // Select Input Source USB
+    public const string IS_AUXA  = 'AUXA'; // Select Input Source AUXA
+    public const string IS_AUXB  = 'AUXB'; // Select Input Source AUXB
+    public const string IS_AUXC = 'AUXC'; // Select Input Source AUXC
+    public const string IS_AUXD = 'AUXD'; // Select Input Source AUXD
+    public const string IS_NETUSB = 'NET/USB'; // Select Input Source NET/USB
+    public const string IS_NET    = 'NET'; // Select Input Source NET
+    public const string IS_LASTFM = 'LASTFM'; // Select Input Source LastFM
+    public const string IS_FLICKR = 'FLICKR'; // Select Input Source Flickr
+    public const string IS_FAVORITES = 'FAVORITES'; // Select Input Source Favorites
+    public const string IS_IRADIO    = 'IRADIO'; // Select Input Source Internet Radio
+    public const string IS_SERVER    = 'SERVER'; // Select Input Source Server
+    public const string IS_NAPSTER   = 'NAPSTER'; // Select Input Source Napster
+    public const string IS_USB_IPOD  = 'USB/IPOD'; // Select Input USB/IPOD
+    public const string IS_MXPORT    = 'MXPORT'; // Select Input MXPORT
+    public const string IS_SOURCE    = 'SOURCE'; // Select Input Source of Main Zone
+    public const string IS_ON        = 'ON'; // Select Input Source On
+    public const string IS_OFF       = 'OFF'; // Select Input Source Off
 
     public static array $SIMapping        = ['CBL/SAT'      => self::IS_SAT_CBL,
                                              'MediaPlayer'  => self::IS_MPLAY,
@@ -3886,663 +3842,663 @@ class DENON_API_Commands extends stdClass
     ];
 
     //ZM Mainzone
-    public const ZMOFF = 'OFF'; // Power Off
-    public const ZMON = 'ON'; // Power On
+    public const string ZMOFF = 'OFF'; // Power Off
+    public const string ZMON  = 'ON'; // Power On
 
     //SD
-    public const SDAUTO = 'AUTO'; // Auto Mode
-    public const SDHDMI = 'HDMI'; // HDMI Mode
-    public const SDDIGITAL = 'DIGITAL'; // Digital Mode
-    public const SDANALOG = 'ANALOG'; // Analog Mode
-    public const SDEXTIN = 'EXT.IN'; // Ext.In Mode
-    public const SD71IN = '7.1IN'; // 7.1 In Mode
-    public const SDNO = 'NO'; // no Input
-    public const SDARC = 'ARC'; // ARC (nur im Event)
-    public const SDEARC = 'EARC'; // EARC (nur im Event)
+    public const string SDAUTO    = 'AUTO'; // Auto Mode
+    public const string SDHDMI    = 'HDMI'; // HDMI Mode
+    public const string SDDIGITAL = 'DIGITAL'; // Digital Mode
+    public const string SDANALOG  = 'ANALOG'; // Analog Mode
+    public const string SDEXTIN   = 'EXT.IN'; // Ext.In Mode
+    public const string SD71IN    = '7.1IN'; // 7.1 In Mode
+    public const string SDNO      = 'NO'; // no Input
+    public const string SDARC     = 'ARC'; // ARC (nur im Event)
+    public const string SDEARC    = 'EARC'; // EARC (nur im Event)
 
     //DC Digital Input
-    public const DCAUTO = 'AUTO'; // Auto Mode
-    public const DCPCM = 'PCM'; // PCM Mode
-    public const DCDTS = 'DTS'; // DTS Mode
+    public const string DCAUTO = 'AUTO'; // Auto Mode
+    public const string DCPCM  = 'PCM'; // PCM Mode
+    public const string DCDTS  = 'DTS'; // DTS Mode
 
     //MS Surround Mode
-    public const MSDIRECT = 'DIRECT'; // Direct Mode
-    public const MSPUREDIRECT = 'PURE DIRECT'; // Pure Direct Mode
-    public const MSSTEREO = 'STEREO'; // Stereo Mode
-    public const MSSTANDARD = 'STANDARD'; // Standard Mode
-    public const MSDOLBYDIGITAL = 'DOLBY DIGITAL'; // Dolby Digital Mode
-    public const MSDTSSURROUND = 'DTS SURROUND'; // DTS Surround Mode
-    public const MSMCHSTEREO = 'MCH STEREO'; // Multi Channel Stereo Mode
-    public const MS7CHSTEREO = '7CH STEREO'; // 7 Channel Stereo Mode
-    public const MSWIDESCREEN = 'WIDE SCREEN'; // Wide Screen Mode
-    public const MSSUPERSTADIUM = 'SUPER STADIUM'; // Super Stadium Mode
-    public const MSROCKARENA = 'ROCK ARENA'; // Rock Arena Mode
-    public const MSJAZZCLUB = 'JAZZ CLUB'; // Jazz Club Mode
-    public const MSCLASSICCONCERT = 'CLASSIC CONCERT'; // Classic Concert Mode
-    public const MSMONOMOVIE = 'MONO MOVIE'; // Mono Movie Mode
-    public const MSMATRIX = 'MATRIX'; // Matrix Mode
-    public const MSVIDEOGAME = 'VIDEO GAME'; // Video Game Mode
-    public const MSVIRTUAL = 'VIRTUAL'; // Virtual Mode
-    public const MSMOVIE = 'MOVIE'; // Movie
-    public const MSMUSIC = 'MUSIC'; // Music
-    public const MSGAME = 'GAME'; // Game
-    public const MSAUTO = 'AUTO'; // Auto
-    public const MSNEURAL = 'NEURAL'; // Neural
-    public const MSAURO3D = 'AURO3D'; //Auro 3D
+    public const string MSDIRECT       = 'DIRECT'; // Direct Mode
+    public const string MSPUREDIRECT   = 'PURE DIRECT'; // Pure Direct Mode
+    public const string MSSTEREO       = 'STEREO'; // Stereo Mode
+    public const string MSSTANDARD     = 'STANDARD'; // Standard Mode
+    public const string MSDOLBYDIGITAL = 'DOLBY DIGITAL'; // Dolby Digital Mode
+    public const string MSDTSSURROUND  = 'DTS SURROUND'; // DTS Surround Mode
+    public const string MSMCHSTEREO    = 'MCH STEREO'; // Multi Channel Stereo Mode
+    public const string MS7CHSTEREO    = '7CH STEREO'; // 7 Channel Stereo Mode
+    public const string MSWIDESCREEN   = 'WIDE SCREEN'; // Wide Screen Mode
+    public const string MSSUPERSTADIUM = 'SUPER STADIUM'; // Super Stadium Mode
+    public const string MSROCKARENA    = 'ROCK ARENA'; // Rock Arena Mode
+    public const string MSJAZZCLUB     = 'JAZZ CLUB'; // Jazz Club Mode
+    public const string MSCLASSICCONCERT = 'CLASSIC CONCERT'; // Classic Concert Mode
+    public const string MSMONOMOVIE      = 'MONO MOVIE'; // Mono Movie Mode
+    public const string MSMATRIX         = 'MATRIX'; // Matrix Mode
+    public const string MSVIDEOGAME      = 'VIDEO GAME'; // Video Game Mode
+    public const string MSVIRTUAL        = 'VIRTUAL'; // Virtual Mode
+    public const string MSMOVIE          = 'MOVIE'; // Movie
+    public const string MSMUSIC          = 'MUSIC'; // Music
+    public const string MSGAME           = 'GAME'; // Game
+    public const string MSAUTO           = 'AUTO'; // Auto
+    public const string MSNEURAL         = 'NEURAL'; // Neural
+    public const string MSAURO3D         = 'AURO3D'; //Auro 3D
  //   public const AURO3D = 'AURO3D'; //Auro 3D
-    public const MSAURO2DSURR = 'AURO2DSURR'; //Auro 2D
+    public const string MSAURO2DSURR = 'AURO2DSURR'; //Auro 2D
 
-    public const MSLEFT = 'LEFT'; // Change to previous Surround Mode
-    public const MSRIGHT = 'RIGHT'; // Change to next Surround Mode
+    public const string MSLEFT  = 'LEFT'; // Change to previous Surround Mode
+    public const string MSRIGHT = 'RIGHT'; // Change to next Surround Mode
     //Quick Select Mode
-    public const MSQUICK0 = '0'; // Quick Select 0 Mode Select
-    public const MSQUICK1 = '1'; // Quick Select 1 Mode Select
-    public const MSQUICK2 = '2'; // Quick Select 2 Mode Select
-    public const MSQUICK3 = '3'; // Quick Select 3 Mode Select
-    public const MSQUICK4 = '4'; // Quick Select 4 Mode Select
-    public const MSQUICK5 = '5'; // Quick Select 5 Mode Select
+    public const string MSQUICK0 = '0'; // Quick Select 0 Mode Select
+    public const string MSQUICK1 = '1'; // Quick Select 1 Mode Select
+    public const string MSQUICK2 = '2'; // Quick Select 2 Mode Select
+    public const string MSQUICK3 = '3'; // Quick Select 3 Mode Select
+    public const string MSQUICK4 = '4'; // Quick Select 4 Mode Select
+    public const string MSQUICK5 = '5'; // Quick Select 5 Mode Select
 
     //MSQUICKMEMORY
-    public const MSQUICK1MEMORY = '1 MEMORY'; // Quick Select 1 Mode Memory
-    public const MSQUICK2MEMORY = '2 MEMORY'; // Quick Select 2 Mode Memory
-    public const MSQUICK3MEMORY = '3 MEMORY'; // Quick Select 3 Mode Memory
-    public const MSQUICK4MEMORY = '4 MEMORY'; // Quick Select 4 Mode Memory
-    public const MSQUICK5MEMORY = '5 MEMORY'; // Quick Select 5 Mode Memory
-    public const MSQUICKSTATE = 'QUICK ?'; // QUICK ? Return MSQUICK Status
+    public const string MSQUICK1MEMORY = '1 MEMORY'; // Quick Select 1 Mode Memory
+    public const string MSQUICK2MEMORY = '2 MEMORY'; // Quick Select 2 Mode Memory
+    public const string MSQUICK3MEMORY = '3 MEMORY'; // Quick Select 3 Mode Memory
+    public const string MSQUICK4MEMORY = '4 MEMORY'; // Quick Select 4 Mode Memory
+    public const string MSQUICK5MEMORY = '5 MEMORY'; // Quick Select 5 Mode Memory
+    public const string MSQUICKSTATE   = 'QUICK ?'; // QUICK ? Return MSQUICK Status
 
     //Smart Select Mode
-    public const MSSMART0 = '0'; // Smart Select 0 Mode Select
-    public const MSSMART1 = '1'; // Smart Select 1 Mode Select
-    public const MSSMART2 = '2'; // Smart Select 2 Mode Select
-    public const MSSMART3 = '3'; // Smart Select 3 Mode Select
-    public const MSSMART4 = '4'; // Smart Select 4 Mode Select
-    public const MSSMART5 = '5'; // Smart Select 5 Mode Select
+    public const string MSSMART0 = '0'; // Smart Select 0 Mode Select
+    public const string MSSMART1 = '1'; // Smart Select 1 Mode Select
+    public const string MSSMART2 = '2'; // Smart Select 2 Mode Select
+    public const string MSSMART3 = '3'; // Smart Select 3 Mode Select
+    public const string MSSMART4 = '4'; // Smart Select 4 Mode Select
+    public const string MSSMART5 = '5'; // Smart Select 5 Mode Select
 
     //VS
     //VSMONI Set HDMI Monitor
-    public const VSMONIAUTO = 'AUTO'; // 1
-    public const VSMONI1 = '1'; // 1
-    public const VSMONI2 = '2'; // 2
+    public const string VSMONIAUTO = 'AUTO'; // 1
+    public const string VSMONI1    = '1'; // 1
+    public const string VSMONI2    = '2'; // 2
 
     //VSASP
-    public const ASPNRM = 'NRM'; // Set Normal Mode
-    public const ASPFUL = 'FUL'; // Set Full Mode
-    public const ASP = ' ?'; // ASP? Return VSASP Status
+    public const string ASPNRM = 'NRM'; // Set Normal Mode
+    public const string ASPFUL = 'FUL'; // Set Full Mode
+    public const string ASP    = ' ?'; // ASP? Return VSASP Status
 
     //VSSC Set Resolution
-    public const SC48P = '48P'; // Set Resolution to 480p/576p
-    public const SC10I = '10I'; // Set Resolution to 1080i
-    public const SC72P = '72P'; // Set Resolution to 720p
-    public const SC10P = '10P'; // Set Resolution to 1080p
-    public const SC10P24 = '10P24'; // Set Resolution to 1080p:24Hz
-    public const SC4K = '4K'; // Set Resolution to 4K
-    public const SC4KF = '4KF'; // Set Resolution to 4K (60/50)
-    public const SC8K = '8K'; // Set Resolution to 8K
-    public const SCAUTO = 'AUTO'; // Set Resolution to Auto
-    public const SC = ' ?'; // SC? Return VSSC Status
+    public const string SC48P   = '48P'; // Set Resolution to 480p/576p
+    public const string SC10I   = '10I'; // Set Resolution to 1080i
+    public const string SC72P   = '72P'; // Set Resolution to 720p
+    public const string SC10P   = '10P'; // Set Resolution to 1080p
+    public const string SC10P24 = '10P24'; // Set Resolution to 1080p:24Hz
+    public const string SC4K    = '4K'; // Set Resolution to 4K
+    public const string SC4KF   = '4KF'; // Set Resolution to 4K (60/50)
+    public const string SC8K    = '8K'; // Set Resolution to 8K
+    public const string SCAUTO  = 'AUTO'; // Set Resolution to Auto
+    public const string SC      = ' ?'; // SC? Return VSSC Status
 
     //VSSCH Set Resolution HDMI
-    public const SCH48P = '48P'; // Set Resolution to 480p/576p HDMI
-    public const SCH10I = '10I'; // Set Resolution to 1080i HDMI
-    public const SCH72P = '72P'; // Set Resolution to 720p HDMI
-    public const SCH10P = '10P'; // Set Resolution to 1080p HDMI
-    public const SCH10P24 = '10P24'; // Set Resolution to 1080p:24Hz HDMI
-    public const SCH4K = '4K'; // Set Resolution to 4K
-    public const SCH4KF = '4KF'; // Set Resolution to 4K (60/50)
-    public const SCH8K = '8K'; // Set Resolution to 8K
-    public const SCHAUTO = 'AUTO'; // Set HDMI Upcaler to Auto
-    public const SCHOFF = 'OFF'; // Set HDMI Upscale to Off
-    public const SCH = ' ?'; // SCH? Return VSSCH Status(HDMI)
+    public const string SCH48P   = '48P'; // Set Resolution to 480p/576p HDMI
+    public const string SCH10I   = '10I'; // Set Resolution to 1080i HDMI
+    public const string SCH72P   = '72P'; // Set Resolution to 720p HDMI
+    public const string SCH10P   = '10P'; // Set Resolution to 1080p HDMI
+    public const string SCH10P24 = '10P24'; // Set Resolution to 1080p:24Hz HDMI
+    public const string SCH4K    = '4K'; // Set Resolution to 4K
+    public const string SCH4KF   = '4KF'; // Set Resolution to 4K (60/50)
+    public const string SCH8K    = '8K'; // Set Resolution to 8K
+    public const string SCHAUTO  = 'AUTO'; // Set HDMI Upcaler to Auto
+    public const string SCHOFF   = 'OFF'; // Set HDMI Upscale to Off
+    public const string SCH      = ' ?'; // SCH? Return VSSCH Status(HDMI)
 
     //VSAUDIO Set HDMI Audio Output
-    public const AUDIOAMP = ' AMP'; // Set HDMI Audio Output to AMP
-    public const AUDIOTV = ' TV'; // Set HDMI Audio Output to TV
-    public const AUDIO = ' ?'; // AUDIO? Return VSAUDIO Status
+    public const string AUDIOAMP = ' AMP'; // Set HDMI Audio Output to AMP
+    public const string AUDIOTV  = ' TV'; // Set HDMI Audio Output to TV
+    public const string AUDIO    = ' ?'; // AUDIO? Return VSAUDIO Status
 
     //VSVPM Set Video Processing Mode
-    public const VPMAUTO = 'AUTO'; // Set Video Processing Mode to Auto
-    public const VPGAME = 'GAME'; // Set Video Processing Mode to Game
-    public const VPMOVI = 'MOVI'; // Set Video Processing Mode to Movie
-    public const VPMBYP = 'MBYP'; // Set Video Processing Mode to Bypass
-    public const VPM = ' ?'; // VPM? Return VSVPM Status
+    public const string VPMAUTO = 'AUTO'; // Set Video Processing Mode to Auto
+    public const string VPGAME  = 'GAME'; // Set Video Processing Mode to Game
+    public const string VPMOVI  = 'MOVI'; // Set Video Processing Mode to Movie
+    public const string VPMBYP  = 'MBYP'; // Set Video Processing Mode to Bypass
+    public const string VPM     = ' ?'; // VPM? Return VSVPM Status
 
     //VSVST Set Vertical Stretch
-    public const VSTON = ' ON'; // Set Vertical Stretch On
-    public const VSTOFF = ' OFF'; // Set Vertical Stretch Off
-    public const VST = ' ?'; // VST? Return VSVST Status
+    public const string VSTON  = ' ON'; // Set Vertical Stretch On
+    public const string VSTOFF = ' OFF'; // Set Vertical Stretch Off
+    public const string VST    = ' ?'; // VST? Return VSVST Status
 
     //PS Parameter
     //PSTONE Tone Control
-    public const TONECTRL = 'PSTONE CTRL'; // Tone Control On
-    public const PSTONECTRLON = ' ON'; // Tone Control On
-    public const PSTONECTRLOFF = ' OFF'; // Tone Control Off
-    public const PSTONECTRLSTATE = ' ?'; // TONE CTRL ? Return PSTONE CONTROL Status
+    public const string TONECTRL        = 'PSTONE CTRL'; // Tone Control On
+    public const string PSTONECTRLON    = ' ON'; // Tone Control On
+    public const string PSTONECTRLOFF   = ' OFF'; // Tone Control Off
+    public const string PSTONECTRLSTATE = ' ?'; // TONE CTRL ? Return PSTONE CONTROL Status
 
     //PSSB Surround Back SP Mode
-    public const SBMTRXON = ':MTRX ON'; // Surround Back SP Mode Matrix
-    public const SBPL2XCINEMA = ':PL2X CINEMA'; // Surround Back SP Mode	PL2X Cinema
-    public const SBPL2XMUSIC = ':PL2X MUSIC'; // Surround Back SP Mode	PL2X Music
-    public const SBON = ':ON'; // Surround Back SP Mode on
-    public const SBOFF = ':OFF'; // Surround Back SP Mode off
+    public const string SBMTRXON     = ':MTRX ON'; // Surround Back SP Mode Matrix
+    public const string SBPL2XCINEMA = ':PL2X CINEMA'; // Surround Back SP Mode	PL2X Cinema
+    public const string SBPL2XMUSIC  = ':PL2X MUSIC'; // Surround Back SP Mode	PL2X Music
+    public const string SBON         = ':ON'; // Surround Back SP Mode on
+    public const string SBOFF        = ':OFF'; // Surround Back SP Mode off
 
     //PSCINEMAEQ Cinema EQ
-    public const CINEMAEQCOMMAND = 'PSCINEMA EQ'; // Cinema EQ
-    public const CINEMAEQON = '.ON'; // Cinema EQ on
-    public const CINEMAEQOFF = '.OFF'; // Cinema EQ off
-    public const CINEMAEQ = '. ?'; // Return PSCINEMA EQ.Status
+    public const string CINEMAEQCOMMAND = 'PSCINEMA EQ'; // Cinema EQ
+    public const string CINEMAEQON      = '.ON'; // Cinema EQ on
+    public const string CINEMAEQOFF     = '.OFF'; // Cinema EQ off
+    public const string CINEMAEQ        = '. ?'; // Return PSCINEMA EQ.Status
 
     //PSHTEQ HT EQ
-    public const HTEQCOMMAND = 'PSHTEQ'; // HT EQ
-    public const HTEQON = ' ON'; // HT EQ on
-    public const HTEQOFF = ' OFF'; // HT EQ off
-    public const HTEQ = ' ?'; // Return HT EQ.Status
+    public const string HTEQCOMMAND = 'PSHTEQ'; // HT EQ
+    public const string HTEQON      = ' ON'; // HT EQ on
+    public const string HTEQOFF     = ' OFF'; // HT EQ off
+    public const string HTEQ        = ' ?'; // Return HT EQ.Status
 
     //PSMODE Mode Music
-    public const MODEMUSIC = ':MUSIC'; // Mode Music CINEMA / MUSIC / GAME / PL mode change
-    public const MODECINEMA = ':CINEMA'; // This parameter can change DOLBY PL2,PL2x,NEO:6 mode.
-    public const MODEGAME = ':GAME'; // SB=ON：PL2x mode / SB=OFF：PL2 mode GAME can change DOLBY PL2 & PL2x mode PSMODE:PRO LOGIC
-    public const MODEPROLOGIC = ':PRO LOGIC'; // PL can change ONLY DOLBY PL2 mode
-    public const MODESTATE = ': ?'; // Return PSMODE: Status
+    public const string MODEMUSIC    = ':MUSIC'; // Mode Music CINEMA / MUSIC / GAME / PL mode change
+    public const string MODECINEMA   = ':CINEMA'; // This parameter can change DOLBY PL2,PL2x,NEO:6 mode.
+    public const string MODEGAME     = ':GAME'; // SB=ON：PL2x mode / SB=OFF：PL2 mode GAME can change DOLBY PL2 & PL2x mode PSMODE:PRO LOGIC
+    public const string MODEPROLOGIC = ':PRO LOGIC'; // PL can change ONLY DOLBY PL2 mode
+    public const string MODESTATE    = ': ?'; // Return PSMODE: Status
 
     //PSDOLVOL Dolby Volume direct change
-    public const DOLVOLON = ' ON'; // Dolby Volume direct change on
-    public const DOLVOLOFF = ' OFF'; // Dolby Volume direct change off
-    public const DOLVOL = ': ?'; // Return PSDOLVOL Status
+    public const string DOLVOLON  = ' ON'; // Dolby Volume direct change on
+    public const string DOLVOLOFF = ' OFF'; // Dolby Volume direct change off
+    public const string DOLVOL    = ': ?'; // Return PSDOLVOL Status
 
     //PSVOLLEV Dolby Volume Leveler direct change
-    public const VOLLEVLOW = ' LOW'; // Dolby Volume Leveler direct change Low
-    public const VOLLEVMID = ' MID'; // Dolby Volume Leveler direct change Middle
-    public const VOLLEVHI = ' HI'; // Dolby Volume Leveler direct change High
-    public const VOLLEV = ': ?'; // Return PSVOLLEV Status
+    public const string VOLLEVLOW = ' LOW'; // Dolby Volume Leveler direct change Low
+    public const string VOLLEVMID = ' MID'; // Dolby Volume Leveler direct change Middle
+    public const string VOLLEVHI  = ' HI'; // Dolby Volume Leveler direct change High
+    public const string VOLLEV    = ': ?'; // Return PSVOLLEV Status
 
     // PSVOLMOD Dolby Volume Modeler direct change
-    public const VOLMODHLF = ' HLF'; // Dolby Volume Modeler direct change half
-    public const VOLMODFUL = ' FUL'; // Dolby Volume Modeler direct change full
-    public const VOLMODOFF = ' OFF'; // Dolby Volume Modeler direct change off
-    public const VOLMOD = ': ?'; // Return PSVOLMOD Status
+    public const string VOLMODHLF = ' HLF'; // Dolby Volume Modeler direct change half
+    public const string VOLMODFUL = ' FUL'; // Dolby Volume Modeler direct change full
+    public const string VOLMODOFF = ' OFF'; // Dolby Volume Modeler direct change off
+    public const string VOLMOD    = ': ?'; // Return PSVOLMOD Status
 
     //PSFH Front Height
-    public const PSFHON = ':ON'; // FRONT HEIGHT ON
-    public const PSFHOFF = ':OFF'; // FRONT HEIGHT OFF
-    public const PSFHSTATE = ': ?'; // Return PSFH: Status
+    public const string PSFHON    = ':ON'; // FRONT HEIGHT ON
+    public const string PSFHOFF   = ':OFF'; // FRONT HEIGHT OFF
+    public const string PSFHSTATE = ': ?'; // Return PSFH: Status
 
     //PSPHG PL2z Height Gain direct change
-    public const PHGLOW = ' LOW'; // PL2z HEIGHT GAIN direct change low
-    public const PHGMID = ' MID'; // PL2z HEIGHT GAIN direct change middle
-    public const PHGHI = ' HI'; // PL2z HEIGHT GAIN direct change high
-    public const PHGSTATE = ' ?'; // Return PSPHG Status
+    public const string PHGLOW   = ' LOW'; // PL2z HEIGHT GAIN direct change low
+    public const string PHGMID   = ' MID'; // PL2z HEIGHT GAIN direct change middle
+    public const string PHGHI    = ' HI'; // PL2z HEIGHT GAIN direct change high
+    public const string PHGSTATE = ' ?'; // Return PSPHG Status
 
     //PSSP Speaker Output set
-    public const SPFH = ':FH'; // Speaker Output set FH
-    public const SPFW = ':FW'; // Speaker Output set FW
-    public const SPSB = ':SB'; // Speaker Output set SB
-    public const SPHW = ':HW'; // Speaker Output set HW
-    public const SPBH = ':BH'; // Speaker Output set BH
-    public const SPBW = ':BW'; // Speaker Output set BW
-    public const SPFL = ':FL'; // Speaker Output set FL
-    public const SPHF = ':HF'; // Speaker Output set HF
-    public const SPFR = ':FR'; // Speaker Output set FR
-    public const SPOFF = ':OFF'; // Speaker Output set off
-    public const SPSTATE = ' ?'; // Return PSSP: Status
+    public const string SPFH    = ':FH'; // Speaker Output set FH
+    public const string SPFW    = ':FW'; // Speaker Output set FW
+    public const string SPSB    = ':SB'; // Speaker Output set SB
+    public const string SPHW    = ':HW'; // Speaker Output set HW
+    public const string SPBH    = ':BH'; // Speaker Output set BH
+    public const string SPBW    = ':BW'; // Speaker Output set BW
+    public const string SPFL    = ':FL'; // Speaker Output set FL
+    public const string SPHF    = ':HF'; // Speaker Output set HF
+    public const string SPFR    = ':FR'; // Speaker Output set FR
+    public const string SPOFF   = ':OFF'; // Speaker Output set off
+    public const string SPSTATE = ' ?'; // Return PSSP: Status
 
     // MulEQ XT 32 mode direct change
-    public const MULTEQAUDYSSEY = ':AUDYSSEY'; // MultEQ XT 32 mode direct change MULTEQ:AUDYSSEY
-    public const MULTEQBYPLR = ':BYP.LR'; // MultEQ XT 32 mode direct change MULTEQ:BYP.LR
-    public const MULTEQFLAT = ':FLAT'; // MultEQ XT 32 mode direct change MULTEQ:FLAT
-    public const MULTEQMANUAL = ':MANUAL'; // MultEQ XT 32 mode direct change MULTEQ:MANUAL
-    public const MULTEQOFF = ':OFF'; // MultEQ XT 32 mode direct change MULTEQ:OFF
-    public const MULTEQ = ': ?'; // Return PSMULTEQ: Status
+    public const string MULTEQAUDYSSEY = ':AUDYSSEY'; // MultEQ XT 32 mode direct change MULTEQ:AUDYSSEY
+    public const string MULTEQBYPLR    = ':BYP.LR'; // MultEQ XT 32 mode direct change MULTEQ:BYP.LR
+    public const string MULTEQFLAT     = ':FLAT'; // MultEQ XT 32 mode direct change MULTEQ:FLAT
+    public const string MULTEQMANUAL   = ':MANUAL'; // MultEQ XT 32 mode direct change MULTEQ:MANUAL
+    public const string MULTEQOFF      = ':OFF'; // MultEQ XT 32 mode direct change MULTEQ:OFF
+    public const string MULTEQ         = ': ?'; // Return PSMULTEQ: Status
 
     //PSDYNEQ Dynamic EQ
-    public const DYNEQON = ' ON'; // Dynamic EQ = ON
-    public const DYNEQOFF = ' OFF'; // Dynamic EQ = OFF
-    public const DYNEQ = ' ?'; // Return PSDYNEQ Status
+    public const string DYNEQON  = ' ON'; // Dynamic EQ = ON
+    public const string DYNEQOFF = ' OFF'; // Dynamic EQ = OFF
+    public const string DYNEQ    = ' ?'; // Return PSDYNEQ Status
 
     //PSLFC Audyssey LFC
-    public const LFCON = ' ON'; // Audyssey LFC = ON
-    public const LFCOFF = ' OFF'; // Audyssey LFC = OFF
-    public const LFC = ' ?'; // Return Audyssey LFC Status
+    public const string LFCON  = ' ON'; // Audyssey LFC = ON
+    public const string LFCOFF = ' OFF'; // Audyssey LFC = OFF
+    public const string LFC    = ' ?'; // Return Audyssey LFC Status
 
     //PSGEQ Graphic EQ
-    public const GEQON = ' ON'; // Graphic EQ = ON
-    public const GEQOFF = ' OFF'; // Graphic EQ = OFF
-    public const GEQ = ' ?'; // Return Graphic EQ Status
+    public const string GEQON  = ' ON'; // Graphic EQ = ON
+    public const string GEQOFF = ' OFF'; // Graphic EQ = OFF
+    public const string GEQ    = ' ?'; // Return Graphic EQ Status
 
     //PSREFLEV Reference Level Offset
-    public const REFLEV0 = ' 0'; // Reference Level Offset=0dB
-    public const REFLEV5 = ' 5'; // Reference Level Offset=5dB
-    public const REFLEV10 = ' 10'; // Reference Level Offset=10dB
-    public const REFLEV15 = ' 15'; // Reference Level Offset=15dB
-    public const REFLEV = ' ?'; // Return PSREFLEV Status
+    public const string REFLEV0  = ' 0'; // Reference Level Offset=0dB
+    public const string REFLEV5  = ' 5'; // Reference Level Offset=5dB
+    public const string REFLEV10 = ' 10'; // Reference Level Offset=10dB
+    public const string REFLEV15 = ' 15'; // Reference Level Offset=15dB
+    public const string REFLEV   = ' ?'; // Return PSREFLEV Status
 
     //PSREFLEV Reference Level Offset
-    public const DIRAC1 = ' 1'; // Filter Slot 1
-    public const DIRAC2 = ' 2'; // Filter Slot 2
-    public const DIRAC3 = ' 3'; // Filter Slot 3
-    public const DIRACOFF = ' OFF'; // Filter Off
+    public const string DIRAC1   = ' 1'; // Filter Slot 1
+    public const string DIRAC2   = ' 2'; // Filter Slot 2
+    public const string DIRAC3   = ' 3'; // Filter Slot 3
+    public const string DIRACOFF = ' OFF'; // Filter Off
 
 
     //PSDYNVOL (old version)
-    public const DYNVOLNGT = ' NGT'; // Dynamic Volume = Midnight
-    public const DYNVOLEVE = ' EVE'; // Dynamic Volume = Evening
-    public const DYNVOLDAY = ' DAY'; // Dynamic Volume = Day
-    public const DYNVOL = ' ?'; // Return PSDYNVOL Status
+    public const string DYNVOLNGT = ' NGT'; // Dynamic Volume = Midnight
+    public const string DYNVOLEVE = ' EVE'; // Dynamic Volume = Evening
+    public const string DYNVOLDAY = ' DAY'; // Dynamic Volume = Day
+    public const string DYNVOL    = ' ?'; // Return PSDYNVOL Status
     //PSDYNVOL
-    public const DYNVOLHEV = ' HEV'; // Dynamic Volume = Heavy
-    public const DYNVOLMED = ' MED'; // Dynamic Volume = Medium
-    public const DYNVOLLIT = ' LIT'; // Dynamic Volume = Light
-    public const DYNVOLOFF = ' OFF'; // Dynamic Volume = Off
-    public const DYNVOLON = ' ON'; // Dynamic Volume = Off
+    public const string DYNVOLHEV = ' HEV'; // Dynamic Volume = Heavy
+    public const string DYNVOLMED = ' MED'; // Dynamic Volume = Medium
+    public const string DYNVOLLIT = ' LIT'; // Dynamic Volume = Light
+    public const string DYNVOLOFF = ' OFF'; // Dynamic Volume = Off
+    public const string DYNVOLON  = ' ON'; // Dynamic Volume = Off
 
     //PSDSX Audyssey DSX ON
-    public const PSDSXONHW = ' ONHW'; // Audyssey DSX ON(Height/Wide)
-    public const PSDSXONH = ' ONH'; // Audyssey DSX ON(Height)
-    public const PSDSXONW = ' ONW'; // Audyssey DSX ON(Wide)
-    public const PSDSXOFF = ' OFF'; // Audyssey DSX OFF
-    public const PSDSXSTATUS = ' ?'; // Return PSDSX Status
+    public const string PSDSXONHW   = ' ONHW'; // Audyssey DSX ON(Height/Wide)
+    public const string PSDSXONH    = ' ONH'; // Audyssey DSX ON(Height)
+    public const string PSDSXONW    = ' ONW'; // Audyssey DSX ON(Wide)
+    public const string PSDSXOFF    = ' OFF'; // Audyssey DSX OFF
+    public const string PSDSXSTATUS = ' ?'; // Return PSDSX Status
 
     //PSSTW Stage Width
-    public const STWUP = ' UP'; // STAGE WIDTH UP
-    public const STWDOWN = ' DOWN'; // STAGE WIDTH DOWN
-    public const STW = ' '; // STAGE WIDTH ** ---AVR-4311 can be operated from -10 to +10
+    public const string STWUP   = ' UP'; // STAGE WIDTH UP
+    public const string STWDOWN = ' DOWN'; // STAGE WIDTH DOWN
+    public const string STW     = ' '; // STAGE WIDTH ** ---AVR-4311 can be operated from -10 to +10
 
     //PSSTH Stage Height
-    public const STHUP = ' UP'; // STAGE HEIGHT UP
-    public const STHDOWN = ' DOWN'; // STAGE HEIGHT DOWN
-    public const STH = ' '; // STAGE HEIGHT ** ---AVR-4311 can be operated from -10 to +10
+    public const string STHUP   = ' UP'; // STAGE HEIGHT UP
+    public const string STHDOWN = ' DOWN'; // STAGE HEIGHT DOWN
+    public const string STH     = ' '; // STAGE HEIGHT ** ---AVR-4311 can be operated from -10 to +10
 
     //PSBAS Bass
-    public const BASUP = ' UP'; // BASS UP
-    public const BASDOWN = ' DOWN'; // BASS DOWN
-    public const BAS = ' '; // BASS ** ---AVR-4311 can be operated from -6 to +6
+    public const string BASUP   = ' UP'; // BASS UP
+    public const string BASDOWN = ' DOWN'; // BASS DOWN
+    public const string BAS     = ' '; // BASS ** ---AVR-4311 can be operated from -6 to +6
 
     //PSTRE Treble
-    public const TREUP = ' UP'; // TREBLE UP
-    public const TREDOWN = ' DOWN'; // TREBLE DOWN
-    public const TRE = ' '; // TREBLE ** ---AVR-4311 can be operated from -6 to +6
+    public const string TREUP   = ' UP'; // TREBLE UP
+    public const string TREDOWN = ' DOWN'; // TREBLE DOWN
+    public const string TRE     = ' '; // TREBLE ** ---AVR-4311 can be operated from -6 to +6
 
     //PSDRC DRC direct change
-    public const DRCAUTO = ' AUTO'; // DRC direct change
-    public const DRCLOW = ' LOW'; // DRC Low
-    public const DRCMID = ' MID'; // DRC Middle
-    public const DRCHI = ' HI'; // DRC High
-    public const DRCOFF = ' OFF'; // DRC off
-    public const DRC = ' ?'; // Return PSDRC Status
+    public const string DRCAUTO = ' AUTO'; // DRC direct change
+    public const string DRCLOW  = ' LOW'; // DRC Low
+    public const string DRCMID  = ' MID'; // DRC Middle
+    public const string DRCHI   = ' HI'; // DRC High
+    public const string DRCOFF  = ' OFF'; // DRC off
+    public const string DRC     = ' ?'; // Return PSDRC Status
 
     //PSMDAX MDAX direct change
-    public const MDAXLOW = ' LOW'; // DRC Low
-    public const MDAXMID = ' MID'; // DRC Middle
-    public const MDAXHI = ' HI'; // DRC High
-    public const MDAXOFF = ' OFF'; // DRC off
-    public const MDAX = ' ?'; // Return PSDRC Status
+    public const string MDAXLOW = ' LOW'; // DRC Low
+    public const string MDAXMID = ' MID'; // DRC Middle
+    public const string MDAXHI  = ' HI'; // DRC High
+    public const string MDAXOFF = ' OFF'; // DRC off
+    public const string MDAX    = ' ?'; // Return PSDRC Status
 
     //PSDCO D.Comp direct change
-    public const DCOOFF = ' OFF'; // D.COMP direct change
-    public const DCOLOW = ' LOW'; // D.COMP Low
-    public const DCOMID = ' MID'; // D.COMP Middle
-    public const DCOHIGH = ' HIGH'; // D.COMP High
-    public const DCO = ' ?'; // Return PSDCO Status
+    public const string DCOOFF  = ' OFF'; // D.COMP direct change
+    public const string DCOLOW  = ' LOW'; // D.COMP Low
+    public const string DCOMID  = ' MID'; // D.COMP Middle
+    public const string DCOHIGH = ' HIGH'; // D.COMP High
+    public const string DCO     = ' ?'; // Return PSDCO Status
 
     //PSLFE LFE
-    public const LFEDOWN = ' DOWN'; // LFE DOWN
-    public const LFEUP = ' UP'; // LFE UP
-    public const LFE = ' '; // LFE ** ---AVR-4311 can be operated from 0 to -10
+    public const string LFEDOWN = ' DOWN'; // LFE DOWN
+    public const string LFEUP   = ' UP'; // LFE UP
+    public const string LFE     = ' '; // LFE ** ---AVR-4311 can be operated from 0 to -10
 
     //PSEFF Effect direct change
-    public const PSEFFON = ' ON'; // EFFECT ON direct change
-    public const PSEFFOFF = ' OFF'; // EFFECT OFF direct change
+    public const string PSEFFON  = ' ON'; // EFFECT ON direct change
+    public const string PSEFFOFF = ' OFF'; // EFFECT OFF direct change
 
-    public const PSEFFUP = ' UP'; // EFFECT UP direct change
-    public const PSEFFDOWN = ' DOWN'; // EFFECT DOWN direct change
-    public const PSEFFSTATUS = ' ?'; // EFFECT ** ---AVR-4311 can be operated from 1 to 15
+    public const string PSEFFUP     = ' UP'; // EFFECT UP direct change
+    public const string PSEFFDOWN   = ' DOWN'; // EFFECT DOWN direct change
+    public const string PSEFFSTATUS = ' ?'; // EFFECT ** ---AVR-4311 can be operated from 1 to 15
 
     //PSDELAY Delay
-    public const PSDELAYUP = ' UP'; // DELAY UP
-    public const PSDELAYDOWN = ' DOWN'; // DELAY DOWN
-    public const PSDELAYVAL = ' '; // DELAY ** ---AVR-4311 can be operated from 0 to 300
+    public const string PSDELAYUP   = ' UP'; // DELAY UP
+    public const string PSDELAYDOWN = ' DOWN'; // DELAY DOWN
+    public const string PSDELAYVAL  = ' '; // DELAY ** ---AVR-4311 can be operated from 0 to 300
 
     //PSAFD Auto Flag Detection Mode
-    public const AFDON = ' ON'; // AFDM ON
-    public const AFDOFF = ' OFF'; // AFDM OFF
-    public const AFD = ' '; // Return PSAFD Status
+    public const string AFDON  = ' ON'; // AFDM ON
+    public const string AFDOFF = ' OFF'; // AFDM OFF
+    public const string AFD    = ' '; // Return PSAFD Status
 
     //PSPAN Panorama
-    public const PANON = ' ON'; // PANORAMA ON
-    public const PANOFF = ' OFF'; // PANORAMA OFF
-    public const PAN = ' ?'; // Return PSPAN Status
+    public const string PANON  = ' ON'; // PANORAMA ON
+    public const string PANOFF = ' OFF'; // PANORAMA OFF
+    public const string PAN    = ' ?'; // Return PSPAN Status
 
     //PSDIM Dimension
-    public const PSDIMUP = ' UP'; // DIMENSION UP
-    public const PSDIMDOWN = ' DOWN'; // DIMENSION DOWN
-    public const PSDIMSET = ' '; // ---AVR-4311 can be operated from 0 to 6
+    public const string PSDIMUP   = ' UP'; // DIMENSION UP
+    public const string PSDIMDOWN = ' DOWN'; // DIMENSION DOWN
+    public const string PSDIMSET  = ' '; // ---AVR-4311 can be operated from 0 to 6
 
     //PSCEN Center Width
-    public const CENUP = 'CEN UP'; // CENTER WIDTH UP
-    public const CENDOWN = 'CEN DOWN'; // CENTER WIDTH DOWN
-    public const CEN = 'CEN '; // ---AVR-4311 can be operated from 0 to 7
+    public const string CENUP   = 'CEN UP'; // CENTER WIDTH UP
+    public const string CENDOWN = 'CEN DOWN'; // CENTER WIDTH DOWN
+    public const string CEN     = 'CEN '; // ---AVR-4311 can be operated from 0 to 7
 
     //PSCEI Center Image
-    public const CEIUP = 'CEI UP'; // CENTER IMAGE UP
-    public const CEIDOWN = 'CEI DOWN'; // CENTER IMAGE DOWN
-    public const CEI = 'CEI '; // ---AVR-4311 can be operated from 0 to 7
+    public const string CEIUP   = 'CEI UP'; // CENTER IMAGE UP
+    public const string CEIDOWN = 'CEI DOWN'; // CENTER IMAGE DOWN
+    public const string CEI     = 'CEI '; // ---AVR-4311 can be operated from 0 to 7
 
     //PSRSZ Room Size
-    public const RSZN = ' N';
-    public const RSZS = ' S';
-    public const RSZMS = ' MS';
-    public const RSZM = ' M';
-    public const RSZML = ' ML';
-    public const RSZL = ' L';
+    public const string RSZN = ' N';
+    public const string RSZS = ' S';
+    public const string RSZMS = ' MS';
+    public const string RSZM  = ' M';
+    public const string RSZML = ' ML';
+    public const string RSZL  = ' L';
 
     //PSSW ATT
-    public const ATTON = 'ATT ON'; // SW ATT ON
-    public const ATTOFF = 'ATT OFF'; // SW ATT OFF
-    public const ATT = 'ATT ?'; // Return PSATT Status
+    public const string ATTON  = 'ATT ON'; // SW ATT ON
+    public const string ATTOFF = 'ATT OFF'; // SW ATT OFF
+    public const string ATT    = 'ATT ?'; // Return PSATT Status
 
     //PSSWR
-    public const PSSWRON = ' ON'; // SW ATT ON
-    public const PSSWROFF = ' OFF'; // SW ATT OFF
-    public const SWR = ' ?'; // Return PSATT Status
+    public const string PSSWRON  = ' ON'; // SW ATT ON
+    public const string PSSWROFF = ' OFF'; // SW ATT OFF
+    public const string SWR      = ' ?'; // Return PSATT Status
 
     //PSLOM
-    public const PSLOMON = ' ON'; // SW ATT ON
-    public const PSLOMOFF = ' OFF'; // SW ATT OFF
-    public const LOM = ' ?'; // Return PSATT Status
+    public const string PSLOMON  = ' ON'; // SW ATT ON
+    public const string PSLOMOFF = ' OFF'; // SW ATT OFF
+    public const string LOM      = ' ?'; // Return PSATT Status
 
     //Audio Restorer - neue Kommandos bei neueren(?) Modellen
-    public const PSRSTROFF = ' OFF'; //Audio Restorer Off
+    public const string PSRSTROFF = ' OFF'; //Audio Restorer Off
     //public const PSRSTRMODE1 = ' MODE1'; //Audio Restorer 64
     //public const PSRSTRMODE2 = ' MODE2'; //Audio Restorer 96
     //public const PSRSTRMODE3 = ' MODE3'; //Audio Restorer HQ
-    public const PSRSTRMODE1 = ' HI'; //Audio Restorer 64
-    public const PSRSTRMODE2 = ' MID'; //Audio Restorer 96
-    public const PSRSTRMODE3 = ' LOW'; //Audio Restorer HQ
+    public const string PSRSTRMODE1 = ' HI'; //Audio Restorer 64
+    public const string PSRSTRMODE2 = ' MID'; //Audio Restorer 96
+    public const string PSRSTRMODE3 = ' LOW'; //Audio Restorer HQ
 
     //Front Speaker
-    public const PSFRONTSPA = ' SPA'; //Speaker A
-    public const PSFRONTSPB = ' SPB'; //Speaker B
-    public const PSFRONTSPAB = ' A+B'; //Speaker A+B
+    public const string PSFRONTSPA  = ' SPA'; //Speaker A
+    public const string PSFRONTSPB  = ' SPB'; //Speaker B
+    public const string PSFRONTSPAB = ' A+B'; //Speaker A+B
 
     //Cursor Menu
-    public const MNCUP = 'CUP'; // Cursor Up
-    public const MNCDN = 'CDN'; // Cursor Down
-    public const MNCRT = 'CRT'; // Cursor Right
-    public const MNCLT = 'CLT'; // Cursor Left
-    public const MNENT = 'ENT'; // Cursor Enter
-    public const MNRTN = 'RTN'; // Cursor Return
+    public const string MNCUP = 'CUP'; // Cursor Up
+    public const string MNCDN = 'CDN'; // Cursor Down
+    public const string MNCRT = 'CRT'; // Cursor Right
+    public const string MNCLT = 'CLT'; // Cursor Left
+    public const string MNENT = 'ENT'; // Cursor Enter
+    public const string MNRTN = 'RTN'; // Cursor Return
 
     //GUI Menu (Setup Menu)
-    public const MNMEN = 'MNMEN'; // GUI Menu
-    public const MNMENON = ' ON'; // GUI Menu On
-    public const MNMENOFF = ' OFF'; // GUI Menu Off
+    public const string MNMEN    = 'MNMEN'; // GUI Menu
+    public const string MNMENON  = ' ON'; // GUI Menu On
+    public const string MNMENOFF = ' OFF'; // GUI Menu Off
 
     //GUI Source Select Menu
-    public const MNSRC = 'MNSRC'; // Source Select Menu
-    public const MNSRCON = ' ON'; // Source Select Menu On
-    public const MNSRCOFF = ' OFF'; // Source Select Menu Off
+    public const string MNSRC    = 'MNSRC'; // Source Select Menu
+    public const string MNSRCON  = ' ON'; // Source Select Menu On
+    public const string MNSRCOFF = ' OFF'; // Source Select Menu Off
 
     // Surround Modes Response
 
     // Surround Modes Varmapping
 
     //Dolby Digital
-    public const DOLBYPROLOGIC = 'DOLBY PRO LOGIC'; // DOLBY PRO LOGIC
-    public const DOLBYPL2C = 'DOLBY PL2 C'; // DOLBY PL2 C
-    public const DOLBYPL2M = 'DOLBY PL2 M'; // DOLBY PL2 M
-    public const DOLBYPL2G = 'DOLBY PL2 G'; // DOLBY PL2 G
-    public const DOLBYPLIIMV = 'DOLBY PLII MV';
-    public const DOLBYPLIIMS = 'DOLBY PLII MS';
-    public const DOLBYPLIIGM = 'DOLBY PLII GM';
-    public const DOLBYPL2XC = 'DOLBY PL2X C'; // DOLBY PL2X C
-    public const DOLBYPL2XM = 'DOLBY PL2X M'; // DOLBY PL2X M
-    public const DOLBYPL2XG = 'DOLBY PL2X G'; // DOLBY PL2X G
-    public const DOLBYPL2ZH = 'DOLBY PL2Z H'; // DOLBY PL2Z H
-    public const DOLBYPL2XH = 'DOLBY PL2X H'; // DOLBY PL2X H
-    public const DOLBYDEX = 'DOLBY D EX'; // DOLBY D EX
-    public const DOLBYDPL2XC = 'DOLBY D+PL2X C';
-    public const DOLBYDPL2XM = 'DOLBY D+PL2X M';
-    public const DOLBYDPL2ZH = 'DOLBY D+PL2Z H';
-    public const DOLBYAUDIODDDSUR = 'DOLBY AUDIO-DD+DSUR';
-    public const PLDSX = 'PL DSX'; // PL DSX
-    public const PL2CDSX = 'PL2 C DSX'; // PL2 C DSX
-    public const PL2MDSX = 'PL2 M DSX'; // PL2 M DSX
-    public const PL2GDSX = 'PL2 G DSX'; // PL2 G DSX
-    public const PL2XCDSX = 'PL2X C DSX'; // PL2X C DSX
-    public const PL2XMDSX = 'PL2X M DSX'; // PL2X M DSX
-    public const PL2XGDSX = 'PL2X G DSX'; // PL2X G DSX
-    public const DOLBYDPLUSPL2XC = 'DOLBY D+ +PL2X C'; // DOLBY D+ +PL2X C
-    public const DOLBYDPLUSPL2XM = 'DOLBY D+ +PL2X M'; // DOLBY D+ +PL2X M
-    public const DOLBYDPLUSPL2XH = 'DOLBY D+ +PL2X H'; // DOLBY D+ +PL2X H
-    public const DOLBYHDPL2XC = 'DOLBY HD+PL2X C'; // DOLBY HD+PL2X C
-    public const DOLBYHDPL2XM = 'DOLBY HD+PL2X M'; // DOLBY HD+PL2X M
-    public const DOLBYHDPL2XH = 'DOLBY HD+PL2X H'; // DOLBY HD+PL2X H
-    public const MULTICNIN = 'MULTI CH IN'; // MULTI CH IN
-    public const MCHINPL2XC = 'M CH IN+PL2X C'; // M CH IN+PL2X C
-    public const MCHINPL2XM = 'M CH IN+PL2X M'; // M CH IN+PL2X M
-    public const MCHINPL2ZH = 'M CH IN+PL2Z H';
-    public const MCHINDSUR = 'M CH IN+DSUR';
-    public const MCHINNEURALX = 'M CH IN+NEURAL:X'; // M CH IN+NEURAL:X
+    public const string DOLBYPROLOGIC = 'DOLBY PRO LOGIC'; // DOLBY PRO LOGIC
+    public const string DOLBYPL2C     = 'DOLBY PL2 C'; // DOLBY PL2 C
+    public const string DOLBYPL2M     = 'DOLBY PL2 M'; // DOLBY PL2 M
+    public const string DOLBYPL2G     = 'DOLBY PL2 G'; // DOLBY PL2 G
+    public const string DOLBYPLIIMV   = 'DOLBY PLII MV';
+    public const string DOLBYPLIIMS   = 'DOLBY PLII MS';
+    public const string DOLBYPLIIGM   = 'DOLBY PLII GM';
+    public const string DOLBYPL2XC    = 'DOLBY PL2X C'; // DOLBY PL2X C
+    public const string DOLBYPL2XM    = 'DOLBY PL2X M'; // DOLBY PL2X M
+    public const string DOLBYPL2XG    = 'DOLBY PL2X G'; // DOLBY PL2X G
+    public const string DOLBYPL2ZH    = 'DOLBY PL2Z H'; // DOLBY PL2Z H
+    public const string DOLBYPL2XH  = 'DOLBY PL2X H'; // DOLBY PL2X H
+    public const string DOLBYDEX    = 'DOLBY D EX'; // DOLBY D EX
+    public const string DOLBYDPL2XC = 'DOLBY D+PL2X C';
+    public const string DOLBYDPL2XM      = 'DOLBY D+PL2X M';
+    public const string DOLBYDPL2ZH      = 'DOLBY D+PL2Z H';
+    public const string DOLBYAUDIODDDSUR = 'DOLBY AUDIO-DD+DSUR';
+    public const string PLDSX            = 'PL DSX'; // PL DSX
+    public const string PL2CDSX          = 'PL2 C DSX'; // PL2 C DSX
+    public const string PL2MDSX          = 'PL2 M DSX'; // PL2 M DSX
+    public const string PL2GDSX          = 'PL2 G DSX'; // PL2 G DSX
+    public const string PL2XCDSX         = 'PL2X C DSX'; // PL2X C DSX
+    public const string PL2XMDSX         = 'PL2X M DSX'; // PL2X M DSX
+    public const string PL2XGDSX        = 'PL2X G DSX'; // PL2X G DSX
+    public const string DOLBYDPLUSPL2XC = 'DOLBY D+ +PL2X C'; // DOLBY D+ +PL2X C
+    public const string DOLBYDPLUSPL2XM = 'DOLBY D+ +PL2X M'; // DOLBY D+ +PL2X M
+    public const string DOLBYDPLUSPL2XH = 'DOLBY D+ +PL2X H'; // DOLBY D+ +PL2X H
+    public const string DOLBYHDPL2XC    = 'DOLBY HD+PL2X C'; // DOLBY HD+PL2X C
+    public const string DOLBYHDPL2XM    = 'DOLBY HD+PL2X M'; // DOLBY HD+PL2X M
+    public const string DOLBYHDPL2XH    = 'DOLBY HD+PL2X H'; // DOLBY HD+PL2X H
+    public const string MULTICNIN       = 'MULTI CH IN'; // MULTI CH IN
+    public const string MCHINPL2XC      = 'M CH IN+PL2X C'; // M CH IN+PL2X C
+    public const string MCHINPL2XM      = 'M CH IN+PL2X M'; // M CH IN+PL2X M
+    public const string MCHINPL2ZH      = 'M CH IN+PL2Z H';
+    public const string MCHINDSUR       = 'M CH IN+DSUR';
+    public const string MCHINNEURALX    = 'M CH IN+NEURAL:X'; // M CH IN+NEURAL:X
 
-    public const DOLBYDPLUS = 'DOLBY D+'; // DOLBY D+
-    public const DOLBYDPLUSEX = 'DOLBY D+ +EX'; // DOLBY D+ +EX
-    public const DOLBYTRUEHD = 'DOLBY TRUEHD'; // DOLBY TRUEHD
-    public const DOLBYHD = 'DOLBY HD'; // DOLBY HD
-    public const DOLBYHDEX = 'DOLBY HD+EX'; // DOLBY HD+EX
-    public const DOLBYPL2H = 'DOLBY PL2 H'; // MSDOLBY PL2 H
+    public const string DOLBYDPLUS   = 'DOLBY D+'; // DOLBY D+
+    public const string DOLBYDPLUSEX = 'DOLBY D+ +EX'; // DOLBY D+ +EX
+    public const string DOLBYTRUEHD  = 'DOLBY TRUEHD'; // DOLBY TRUEHD
+    public const string DOLBYHD      = 'DOLBY HD'; // DOLBY HD
+    public const string DOLBYHDEX    = 'DOLBY HD+EX'; // DOLBY HD+EX
+    public const string DOLBYPL2H    = 'DOLBY PL2 H'; // MSDOLBY PL2 H
 
-    public const DOLBYSURROUND  = 'DOLBY SURROUND'; // MSDOLBY SURROUND
-    public const DOLBYAUDIODSUR = 'DOLBY AUDIO-DSUR';
-    public const DOLBYATMOS     = 'DOLBY ATMOS'; // MSDOLBY ATMOS
-    public const DOLBYAUDIODD   = 'DOLBY AUDIO-DD';
-    public const DOLBYDIGITAL   = 'DOLBY DIGITAL'; // MSDOLBY DIGITAL
-    public const DOLBYDDS       = 'DOLBY D+DS'; // MSDOLBY D+DS
-    public const MPEG2AAC       = 'MPEG2 AAC'; // MSMPEG2 AAC
-    public const MPEG4AAC       = 'MPEG4 AAC'; // MSMPEG4 AAC
-    public const MPEGH          = 'MPEG-H'; // MSMPEG4 AAC
-    public const AACDOLBYEX     = 'AAC+DOLBY EX'; // MSAAC+DOLBY EX
-    public const AACPL2XC       = 'AAC+PL2X C'; // MSAAC+PL2X C
-    public const AACPL2XM       = 'AAC+PL2X M'; // MSAAC+PL2X M
-    public const AACPL2ZH       = 'AAC+PL2Z H';
-    public const AACDSUR        = 'AAC+DSUR';
-    public const AACDS          = 'AAC+DS'; // MSAAC+DS
-    public const AACNEOXC       = 'AAC+NEO:X C'; // MSAAC+NEO:X C
-    public const AACNEOXM       = 'AAC+NEO:X M'; // MSAAC+NEO:X M
-    public const AACNEOXG       = 'AAC+NEO:X G'; // MSAAC+NEO:X G
+    public const string DOLBYSURROUND  = 'DOLBY SURROUND'; // MSDOLBY SURROUND
+    public const string DOLBYAUDIODSUR = 'DOLBY AUDIO-DSUR';
+    public const string DOLBYATMOS     = 'DOLBY ATMOS'; // MSDOLBY ATMOS
+    public const string DOLBYAUDIODD   = 'DOLBY AUDIO-DD';
+    public const string DOLBYDIGITAL   = 'DOLBY DIGITAL'; // MSDOLBY DIGITAL
+    public const string DOLBYDDS       = 'DOLBY D+DS'; // MSDOLBY D+DS
+    public const string MPEG2AAC       = 'MPEG2 AAC'; // MSMPEG2 AAC
+    public const string MPEG4AAC       = 'MPEG4 AAC'; // MSMPEG4 AAC
+    public const string MPEGH          = 'MPEG-H'; // MSMPEG4 AAC
+    public const string AACDOLBYEX     = 'AAC+DOLBY EX'; // MSAAC+DOLBY EX
+    public const string AACPL2XC       = 'AAC+PL2X C'; // MSAAC+PL2X C
+    public const string AACPL2XM     = 'AAC+PL2X M'; // MSAAC+PL2X M
+    public const string AACPL2ZH     = 'AAC+PL2Z H';
+    public const string AACDSUR      = 'AAC+DSUR';
+    public const string AACDS        = 'AAC+DS'; // MSAAC+DS
+    public const string AACNEOXC   = 'AAC+NEO:X C'; // MSAAC+NEO:X C
+    public const string AACNEOXM   = 'AAC+NEO:X M'; // MSAAC+NEO:X M
+    public const string AACNEOXG   = 'AAC+NEO:X G'; // MSAAC+NEO:X G
 
     //DTS Surround
-    public const DTSNEO6C = 'DTS NEO:6 C'; // DTS NEO:6 C
-    public const DTSNEO6M = 'DTS NEO:6 M'; // DTS NEO:6 M
-    public const DTSNEOXC = 'DTS NEO:X C'; // DTS NEO:X C
-    public const DTSNEOXM = 'DTS NEO:X M'; // DTS NEO:X M
-    public const DTSNEOXG = 'DTS NEO:X G'; // DTS NEO:X G
-    public const NEURALX = 'NEURAL:X'; // NEURAL:X
-    public const VIRTUALX = 'VIRTUAL:X'; // VIRTUAL:X
-    public const DTSESDSCRT61 = 'DTS ES DSCRT6.1'; // DTS ES DSCRT6.1
-    public const DTSESMTRX61 = 'DTS ES MTRX6.1'; // DTS ES MTRX6.1
-    public const DTSPL2XC = 'DTS+PL2X C'; // DTS+PL2X C
-    public const DTSPL2XM = 'DTS+PL2X M'; // DTS+PL2X M
-    public const DTSPL2ZH = 'DTS+PL2Z H'; // DTS+PL2Z H
-    public const DTSDSUR = 'DTS+DSUR';
-    public const DTSDS = 'DTS+DS'; // DTS+DS
-    public const DTSPLUSNEO6 = 'DTS+NEO:6'; // DTS+NEO:6
-    public const DTSPLUSNEOXC = 'DTS+NEO:X C'; // DTS PLUS NEO:X C
-    public const DTSPLUSNEOXM = 'DTS+NEO:X M'; // DTS PLUS NEO:X M
-    public const DTSPLUSNEOXG = 'DTS+NEO:X G'; // DTS PLUS NEO:X G
-    public const DTSPLUSNEURALX = 'DTS+NEURAL:X'; // DTS+NEURAL:X
-    public const DTS9624 = 'DTS96/24'; // DTS96/24
-    public const DTS96ESMTRX = 'DTS96 ES MTRX'; // DTS96 ES MTRX
-    public const DTSHDPL2XC = 'DTS HD+PL2X C'; // DTS HD+PL2X C
-    public const DTSHDPL2XM = 'DTS HD+PL2X M'; // DTS HD+PL2X M
-    public const DTSHDPL2ZH = 'DTS HD+PL2Z H'; // DTS HD+PL2Z H
-    public const DTSHDDSUR = 'DTS HD+DSUR';
-    public const DTSHDDS = 'DTS HD+DS'; // DTS HD+DS
-    public const NEO6CDSX = 'NEO:6 C DSX'; // NEO:6 C DSX
-    public const NEO6MDSX = 'NEO:6 M DSX'; // NEO:6 M DSX
-    public const DTSHD = 'DTS HD'; // DTS HD
-    public const DTSHDMSTR = 'DTS HD MSTR'; // DTS HD MSTR
-    public const DTSHDNEO6 = 'DTS HD+NEO:6'; // DTS HD+NEO:6
-    public const DTSES8CHDSCRT = 'DTS ES 8CH DSCRT'; // DTS ES 8CH DSCRT
-    public const DTSEXPRESS = 'DTS EXPRESS'; // DTS EXPRESS
-    public const DOLBYDNEOXC = 'DOLBY D+NEO:X C'; // MSDOLBY D+NEO:X C
-    public const DOLBYDNEOXM = 'DOLBY D+NEO:X M'; // MSDOLBY D+NEO:X M
-    public const DOLBYDNEOXG = 'DOLBY D+NEO:X G'; // MSDOLBY D+NEO:X G
-    public const DOLBYAUDIODDPLUSNEURALX = 'DOLBY AUDIO-DD+NEURAL:X';
-    public const DOLBYAUDIODDPLUS = 'DOLBY AUDIO-DD+';
-    public const DOLBYDNEURALX = 'DOLBY D+NEURAL:X'; // MSDOLBY D+NEURAL:X
-    public const MCHINDS = 'M CH IN+DS'; // MSM CH IN+DS
-    public const MCHINNEOXC = 'M CH IN+NEO:X C'; // MSM CH IN+NEO:X C
-    public const MCHINNEOXM = 'M CH IN+NEO:X M'; // MSM CH IN+NEO:X M
-    public const MCHINNEOXG = 'M CH IN+NEO:X G'; // MSM CH IN+NEO:G C
-    public const DOLBYDPLUSDS = 'DOLBY D+ +DS'; // MSDOLBY D+ +DS
-    public const DOLBYAUDIODDPLUSDSUR = 'DOLBY AUDIO-DD+ +DSUR';
-    public const DOLBYDPLUSNEOXC = 'DOLBY D+ +NEO:X C'; // MSDOLBY D+ +NEO:X C
-    public const DOLBYDPLUSNEOXM = 'DOLBY D+ +NEO:X M'; // MSDOLBY D+ +NEO:X M
-    public const DOLBYDPLUSNEOXG = 'DOLBY D+ +NEO:X G'; // MSDOLBY D+ +NEO:X G
-    public const DOLBYAUDIODDPLUSPLUSNEURALX = 'DOLBY AUDIO-DD+ +NEURAL:X';
-    public const DOLBYAUDIOTRUEHD = 'DOLBY AUDIO-TRUEHD';
-    public const DOLBYDPLUSNEURALX = 'DOLBY D+ +NEURAL:X'; // MSDOLBY D+ +NEURAL:X
-    public const DOLBYHDDS = 'DOLBY HD+DS'; // MSDOLBY HD+DS
-    public const DOLBYAUDIOTRUEHDDSUR = 'DOLBY AUDIO-TRUEHD+DSUR';
-    public const DOLBYAUDIOTRUEHDNEURALX = 'DOLBY AUDIO-TRUEHD+NEURAL:X';
-    public const DOLBYHDNEOXC = 'DOLBY HD+NEO:X C'; // MSDOLBY HD+NEO:X C
-    public const DOLBYHDNEOXM = 'DOLBY HD+NEO:X M'; // MSDOLBY HD+NEO:X M
-    public const DOLBYHDNEOXG = 'DOLBY HD+NEO:X G'; // MSDOLBY HD+NEO:X G
-    public const DOLBYHDNEURALX = 'DOLBY HD+NEURAL:X'; // MSDOLBY HD+NEURAL:X
-    public const DTSHDNEOXC = 'DTS HD+NEO:X C'; // MSDTS HD+NEO:X C
-    public const DTSHDNEOXM = 'DTS HD+NEO:X M'; // MSDTS HD+NEO:X M
-    public const DTSHDNEOXG = 'DTS HD+NEO:X G'; // MSDTS HD+NEO:X G
+    public const string DTSNEO6C     = 'DTS NEO:6 C'; // DTS NEO:6 C
+    public const string DTSNEO6M     = 'DTS NEO:6 M'; // DTS NEO:6 M
+    public const string DTSNEOXC     = 'DTS NEO:X C'; // DTS NEO:X C
+    public const string DTSNEOXM     = 'DTS NEO:X M'; // DTS NEO:X M
+    public const string DTSNEOXG     = 'DTS NEO:X G'; // DTS NEO:X G
+    public const string NEURALX      = 'NEURAL:X'; // NEURAL:X
+    public const string VIRTUALX     = 'VIRTUAL:X'; // VIRTUAL:X
+    public const string DTSESDSCRT61 = 'DTS ES DSCRT6.1'; // DTS ES DSCRT6.1
+    public const string DTSESMTRX61  = 'DTS ES MTRX6.1'; // DTS ES MTRX6.1
+    public const string DTSPL2XC     = 'DTS+PL2X C'; // DTS+PL2X C
+    public const string DTSPL2XM     = 'DTS+PL2X M'; // DTS+PL2X M
+    public const string DTSPL2ZH     = 'DTS+PL2Z H'; // DTS+PL2Z H
+    public const string DTSDSUR      = 'DTS+DSUR';
+    public const string DTSDS        = 'DTS+DS'; // DTS+DS
+    public const string DTSPLUSNEO6  = 'DTS+NEO:6'; // DTS+NEO:6
+    public const string DTSPLUSNEOXC = 'DTS+NEO:X C'; // DTS PLUS NEO:X C
+    public const string DTSPLUSNEOXM = 'DTS+NEO:X M'; // DTS PLUS NEO:X M
+    public const string DTSPLUSNEOXG = 'DTS+NEO:X G'; // DTS PLUS NEO:X G
+    public const string DTSPLUSNEURALX = 'DTS+NEURAL:X'; // DTS+NEURAL:X
+    public const string DTS9624        = 'DTS96/24'; // DTS96/24
+    public const string DTS96ESMTRX    = 'DTS96 ES MTRX'; // DTS96 ES MTRX
+    public const string DTSHDPL2XC     = 'DTS HD+PL2X C'; // DTS HD+PL2X C
+    public const string DTSHDPL2XM     = 'DTS HD+PL2X M'; // DTS HD+PL2X M
+    public const string DTSHDPL2ZH     = 'DTS HD+PL2Z H'; // DTS HD+PL2Z H
+    public const string DTSHDDSUR      = 'DTS HD+DSUR';
+    public const string DTSHDDS        = 'DTS HD+DS'; // DTS HD+DS
+    public const string NEO6CDSX       = 'NEO:6 C DSX'; // NEO:6 C DSX
+    public const string NEO6MDSX       = 'NEO:6 M DSX'; // NEO:6 M DSX
+    public const string DTSHD          = 'DTS HD'; // DTS HD
+    public const string DTSHDMSTR   = 'DTS HD MSTR'; // DTS HD MSTR
+    public const string DTSHDNEO6   = 'DTS HD+NEO:6'; // DTS HD+NEO:6
+    public const string DTSES8CHDSCRT = 'DTS ES 8CH DSCRT'; // DTS ES 8CH DSCRT
+    public const string DTSEXPRESS    = 'DTS EXPRESS'; // DTS EXPRESS
+    public const string DOLBYDNEOXC   = 'DOLBY D+NEO:X C'; // MSDOLBY D+NEO:X C
+    public const string DOLBYDNEOXM   = 'DOLBY D+NEO:X M'; // MSDOLBY D+NEO:X M
+    public const string DOLBYDNEOXG   = 'DOLBY D+NEO:X G'; // MSDOLBY D+NEO:X G
+    public const string DOLBYAUDIODDPLUSNEURALX = 'DOLBY AUDIO-DD+NEURAL:X';
+    public const string DOLBYAUDIODDPLUS        = 'DOLBY AUDIO-DD+';
+    public const string DOLBYDNEURALX           = 'DOLBY D+NEURAL:X'; // MSDOLBY D+NEURAL:X
+    public const string MCHINDS                 = 'M CH IN+DS'; // MSM CH IN+DS
+    public const string MCHINNEOXC              = 'M CH IN+NEO:X C'; // MSM CH IN+NEO:X C
+    public const string MCHINNEOXM              = 'M CH IN+NEO:X M'; // MSM CH IN+NEO:X M
+    public const string MCHINNEOXG              = 'M CH IN+NEO:X G'; // MSM CH IN+NEO:G C
+    public const string DOLBYDPLUSDS            = 'DOLBY D+ +DS'; // MSDOLBY D+ +DS
+    public const string DOLBYAUDIODDPLUSDSUR    = 'DOLBY AUDIO-DD+ +DSUR';
+    public const string DOLBYDPLUSNEOXC         = 'DOLBY D+ +NEO:X C'; // MSDOLBY D+ +NEO:X C
+    public const string DOLBYDPLUSNEOXM             = 'DOLBY D+ +NEO:X M'; // MSDOLBY D+ +NEO:X M
+    public const string DOLBYDPLUSNEOXG             = 'DOLBY D+ +NEO:X G'; // MSDOLBY D+ +NEO:X G
+    public const string DOLBYAUDIODDPLUSPLUSNEURALX = 'DOLBY AUDIO-DD+ +NEURAL:X';
+    public const string DOLBYAUDIOTRUEHD            = 'DOLBY AUDIO-TRUEHD';
+    public const string DOLBYDPLUSNEURALX           = 'DOLBY D+ +NEURAL:X'; // MSDOLBY D+ +NEURAL:X
+    public const string DOLBYHDDS                   = 'DOLBY HD+DS'; // MSDOLBY HD+DS
+    public const string DOLBYAUDIOTRUEHDDSUR        = 'DOLBY AUDIO-TRUEHD+DSUR';
+    public const string DOLBYAUDIOTRUEHDNEURALX     = 'DOLBY AUDIO-TRUEHD+NEURAL:X';
+    public const string DOLBYHDNEOXC                = 'DOLBY HD+NEO:X C'; // MSDOLBY HD+NEO:X C
+    public const string DOLBYHDNEOXM                = 'DOLBY HD+NEO:X M'; // MSDOLBY HD+NEO:X M
+    public const string DOLBYHDNEOXG                = 'DOLBY HD+NEO:X G'; // MSDOLBY HD+NEO:X G
+    public const string DOLBYHDNEURALX              = 'DOLBY HD+NEURAL:X'; // MSDOLBY HD+NEURAL:X
+    public const string DTSHDNEOXC              = 'DTS HD+NEO:X C'; // MSDTS HD+NEO:X C
+    public const string DTSHDNEOXM              = 'DTS HD+NEO:X M'; // MSDTS HD+NEO:X M
+    public const string DTSHDNEOXG              = 'DTS HD+NEO:X G'; // MSDTS HD+NEO:X G
 
-    public const DSDDIRECT = 'DSD DIRECT'; // DSD DIRECT
-    public const DSDPUREDIRECT = 'DSD PURE DIRECT'; // DSD PURE DIRECT
+    public const string DSDDIRECT     = 'DSD DIRECT'; // DSD DIRECT
+    public const string DSDPUREDIRECT = 'DSD PURE DIRECT'; // DSD PURE DIRECT
 
-    public const MCHINDOLBYEX = 'M CH IN+DOLBY EX'; // M CH IN+DOLBY EX
-    public const MULTICHIN71 = 'MULTI CH IN 7.1'; // MULTI CH IN 7.1
+    public const string MCHINDOLBYEX = 'M CH IN+DOLBY EX'; // M CH IN+DOLBY EX
+    public const string MULTICHIN71  = 'MULTI CH IN 7.1'; // MULTI CH IN 7.1
 
-    public const AUDYSSEYDSX = 'AUDYSSEY DSX'; // AUDYSSEY DSX
+    public const string AUDYSSEYDSX = 'AUDYSSEY DSX'; // AUDYSSEY DSX
 
-    public const SURROUNDDISPLAY = 'SurroundDisplay'; // Nur DisplayIdent
-    public const SYSMI = 'SYSMI'; // Nur DisplayIdent
-    public const SYSDA = 'SYSDA'; // Nur DisplayIdent
-    public const SSINFAISFSV = 'SSINFAISFSV'; // Nur DisplayIdent
-    public const SSINFAISSIG = 'SSINFAISSIG'; // Nur DisplayIdent
+    public const string SURROUNDDISPLAY = 'SurroundDisplay'; // Nur DisplayIdent
+    public const string SYSMI           = 'SYSMI'; // Nur DisplayIdent
+    public const string SYSDA           = 'SYSDA'; // Nur DisplayIdent
+    public const string SSINFAISFSV     = 'SSINFAISFSV'; // Nur DisplayIdent
+    public const string SSINFAISSIG     = 'SSINFAISSIG'; // Nur DisplayIdent
 
-    public const BTTXON = ' ON';
-    public const BTTXOFF = ' OFF';
-    public const BTTXSP = ' SP';
-    public const BTTXBT = ' BT';
+    public const string BTTXON  = ' ON';
+    public const string BTTXOFF = ' OFF';
+    public const string BTTXSP  = ' SP';
+    public const string BTTXBT = ' BT';
 
-    public const SPPR_1 = ' 1';
-    public const SPPR_2 = ' 2';
+    public const string SPPR_1 = ' 1';
+    public const string SPPR_2 = ' 2';
 
     // All Zone Stereo
-    public const MNZST = 'MNZST';
-    public const MNZSTON = ' ON';
-    public const MNZSTOFF = ' OFF';
+    public const string MNZST   = 'MNZST';
+    public const string MNZSTON = ' ON';
+    public const string MNZSTOFF = ' OFF';
 
-    public const PSGEQ = 'PSGEQ'; // Graphic EQ
-    public const PSGEQON = ' ON'; // Graphic EQ On
-    public const PSGEQOFF = ' OFF'; // Graphic EQ Off
+    public const string PSGEQ    = 'PSGEQ'; // Graphic EQ
+    public const string PSGEQON  = ' ON'; // Graphic EQ On
+    public const string PSGEQOFF = ' OFF'; // Graphic EQ Off
 
-    public const PSHEQ = 'PSHEQ'; // Headphone EQ
-    public const PSHEQON = ' ON'; // Headphone EQ On
-    public const PSHEQOFF = ' OFF'; // Headphone EQ Off
+    public const string PSHEQ    = 'PSHEQ'; // Headphone EQ
+    public const string PSHEQON  = ' ON'; // Headphone EQ On
+    public const string PSHEQOFF = ' OFF'; // Headphone EQ Off
 
-    public const PSSWL = 'PSSWL'; // Subwoofer Level
-    public const PSSWL2 = 'PSSWL2'; // Subwoofer2 Level
-    public const PSSWL3 = 'PSSWL3'; // Subwoofer3 Level
-    public const PSSWL4 = 'PSSWL4'; // Subwoofer4 Level
-    public const PSSWLON = ' ON'; // Subwoofer Level On
-    public const PSSWLOFF = ' OFF'; // Subwoofer Level Off
+    public const string PSSWL    = 'PSSWL'; // Subwoofer Level
+    public const string PSSWL2   = 'PSSWL2'; // Subwoofer2 Level
+    public const string PSSWL3   = 'PSSWL3'; // Subwoofer3 Level
+    public const string PSSWL4   = 'PSSWL4'; // Subwoofer4 Level
+    public const string PSSWLON  = ' ON'; // Subwoofer Level On
+    public const string PSSWLOFF = ' OFF'; // Subwoofer Level Off
 
-    public const PSDIL = 'PSDIL'; // Dialog Level Adjust
-    public const PSDILON = ' ON'; // Dialog Level Adjust On
-    public const PSDILOFF = ' OFF'; // Dialog Level Adjust Off
+    public const string PSDIL    = 'PSDIL'; // Dialog Level Adjust
+    public const string PSDILON  = ' ON'; // Dialog Level Adjust On
+    public const string PSDILOFF = ' OFF'; // Dialog Level Adjust Off
 
-    public const STBY = 'STBY'; // Mainzone Auto Standby
-    public const STBY15M = '15M'; // Mainzone Auto Standby 15 Minuten
-    public const STBY30M = '30M'; // Mainzone Auto Standby 30 Minuten
-    public const STBY60M = '60M'; // Mainzone Auto Standby 60 Minuten
-    public const STBYOFF = 'OFF'; // Mainzone Auto Standby Off
-    public const Z2STBY = 'Z2STBY'; // Zone 2 Auto Standby
-    public const Z2STBY2H = '2H'; // Zone 2 Auto Standby 2h
-    public const Z2STBY4H = '4H'; // Zone 2 Auto Standby 4h
-    public const Z2STBY8H = '8H'; // Zone 2 Auto Standby 8h
-    public const Z2STBYOFF = 'OFF'; // Zone 2 Auto Standby Off
-    public const Z3STBY = 'Z3STBY'; // Zone 3 Auto Standby
-    public const Z3STBY2H = '2H'; // Zone 3 Auto Standby 2H
-    public const Z3STBY4H = '4H'; // Zone 3 Auto Standby 4h
-    public const Z3STBY8H = '8H'; // Zone 3 Auto Standby 8h
-    public const Z3STBYOFF = 'OFF'; // Zone 3 Auto Standby Off
-    public const ECO = 'ECO'; // ECO Mode
-    public const ECOON = 'ON'; // ECO Mode On
-    public const ECOAUTO = 'AUTO'; // ECO Mode Auto
-    public const ECOOFF = 'OFF'; // ECO Mode Off
-    public const DIM = 'DIM'; // Dimmer
-    public const DIMBRI = ' BRI'; // Bright
-    public const DIMDIM = ' DIM'; // DIM
-    public const DIMDAR = ' DAR'; // Dark
-    public const DIMOFF = ' OFF'; // Dimmer off
+    public const string STBY      = 'STBY'; // Mainzone Auto Standby
+    public const string STBY15M   = '15M'; // Mainzone Auto Standby 15 Minuten
+    public const string STBY30M   = '30M'; // Mainzone Auto Standby 30 Minuten
+    public const string STBY60M   = '60M'; // Mainzone Auto Standby 60 Minuten
+    public const string STBYOFF   = 'OFF'; // Mainzone Auto Standby Off
+    public const string Z2STBY    = 'Z2STBY'; // Zone 2 Auto Standby
+    public const string Z2STBY2H  = '2H'; // Zone 2 Auto Standby 2h
+    public const string Z2STBY4H  = '4H'; // Zone 2 Auto Standby 4h
+    public const string Z2STBY8H  = '8H'; // Zone 2 Auto Standby 8h
+    public const string Z2STBYOFF = 'OFF'; // Zone 2 Auto Standby Off
+    public const string Z3STBY    = 'Z3STBY'; // Zone 3 Auto Standby
+    public const string Z3STBY2H  = '2H'; // Zone 3 Auto Standby 2H
+    public const string Z3STBY4H  = '4H'; // Zone 3 Auto Standby 4h
+    public const string Z3STBY8H  = '8H'; // Zone 3 Auto Standby 8h
+    public const string Z3STBYOFF = 'OFF'; // Zone 3 Auto Standby Off
+    public const string ECO       = 'ECO'; // ECO Mode
+    public const string ECOON     = 'ON'; // ECO Mode On
+    public const string ECOAUTO   = 'AUTO'; // ECO Mode Auto
+    public const string ECOOFF    = 'OFF'; // ECO Mode Off
+    public const string DIM       = 'DIM'; // Dimmer
+    public const string DIMBRI    = ' BRI'; // Bright
+    public const string DIMDIM    = ' DIM'; // DIM
+    public const string DIMDAR    = ' DAR'; // Dark
+    public const string DIMOFF    = ' OFF'; // Dimmer off
 
-    public const SSHOSALS = 'SSHOSALS'; //Auto Lip Sync
-    public const SSHOSALSON = ' ON'; //Auto Lip Sync On
-    public const SSHOSALSOFF = ' OFF'; //Auto Lip Sync Off
+    public const string SSHOSALS    = 'SSHOSALS'; //Auto Lip Sync
+    public const string SSHOSALSON  = ' ON'; //Auto Lip Sync On
+    public const string SSHOSALSOFF = ' OFF'; //Auto Lip Sync Off
 
-    public const PSCES = 'PSCES'; // Center Spread
-    public const PSCESON = ' ON'; // Center Spread On
-    public const PSCESOFF = ' OFF'; // Center Spread Off
+    public const string PSCES    = 'PSCES'; // Center Spread
+    public const string PSCESON  = ' ON'; // Center Spread On
+    public const string PSCESOFF = ' OFF'; // Center Spread Off
 
-    public const PSSPV = 'PSSPV'; // Speaker Virtualizer
-    public const PSSPVON = ' ON'; // Speaker Virtualizer On
-    public const PSSPVOFF = ' OFF'; // Speaker Virtualizer Off
+    public const string PSSPV    = 'PSSPV'; // Speaker Virtualizer
+    public const string PSSPVON  = ' ON'; // Speaker Virtualizer On
+    public const string PSSPVOFF = ' OFF'; // Speaker Virtualizer Off
 
-    public const PSNEURAL = 'PSNEURAL'; // Center Spread
-    public const PSNEURALON = ' ON'; // Center Spread On
-    public const PSNEURALOFF = ' OFF'; // Center Spread Off
+    public const string PSNEURAL    = 'PSNEURAL'; // Center Spread
+    public const string PSNEURALON  = ' ON'; // Center Spread On
+    public const string PSNEURALOFF = ' OFF'; // Center Spread Off
 
-    public const PSBSC = 'PSBSC'; // Bass Sync
+    public const string PSBSC = 'PSBSC'; // Bass Sync
 
-    public const PSDEH = 'PSDEH'; // Dialog Enhancer
-    public const PSDEHOFF = ' OFF'; // Dialog Enhancer Off
-    public const PSDEHMED = ' MED'; // Dialog Enhancer Medium
-    public const PSDEHLOW = ' LOW'; // Dialog Enhancer Low
-    public const PSDEHHIGH = ' HIGH'; // Dialog Enhancer High
+    public const string PSDEH     = 'PSDEH'; // Dialog Enhancer
+    public const string PSDEHOFF  = ' OFF'; // Dialog Enhancer Off
+    public const string PSDEHMED  = ' MED'; // Dialog Enhancer Medium
+    public const string PSDEHLOW  = ' LOW'; // Dialog Enhancer Low
+    public const string PSDEHHIGH = ' HIGH'; // Dialog Enhancer High
 
-    public const PSAUROST = 'PSAUROST'; // Auro Matic 3D Strength
-    public const PSAUROSTUP = ' UP'; // Auro Matic 3D Strength Up
-    public const PSAUROSTDOWN = ' DOWN'; // Auro Matic 3D Strength Down
+    public const string PSAUROST     = 'PSAUROST'; // Auro Matic 3D Strength
+    public const string PSAUROSTUP   = ' UP'; // Auro Matic 3D Strength Up
+    public const string PSAUROSTDOWN = ' DOWN'; // Auro Matic 3D Strength Down
 
-    public const PSAUROPR = 'PSAUROPR'; // Auro Matic 3D Present
-    public const PSAUROPRSMA = ' SMA'; // Auro Matic 3D Present Small
-    public const PSAUROPRMED = ' MED'; // Auro Matic 3D Present Medium
-    public const PSAUROPRLAR = ' LAR'; // Auro Matic 3D Present Large
-    public const PSAUROPRSPE = ' SPE'; // Auro Matic 3D Present SPE
+    public const string PSAUROPR    = 'PSAUROPR'; // Auro Matic 3D Present
+    public const string PSAUROPRSMA = ' SMA'; // Auro Matic 3D Present Small
+    public const string PSAUROPRMED = ' MED'; // Auro Matic 3D Present Medium
+    public const string PSAUROPRLAR = ' LAR'; // Auro Matic 3D Present Large
+    public const string PSAUROPRSPE = ' SPE'; // Auro Matic 3D Present SPE
 
-    public const PSAUROMODE = 'PSAUROMODE'; // Auro 3D Mode
-    public const PSAUROMODEDRCT = ' DRCTSMA'; // Auro 3D Mode Direct
-    public const PSAUROMODEEXP = ' EXP'; // Auro 3D Mode Channel Expansion
+    public const string PSAUROMODE     = 'PSAUROMODE'; // Auro 3D Mode
+    public const string PSAUROMODEDRCT = ' DRCTSMA'; // Auro 3D Mode Direct
+    public const string PSAUROMODEEXP  = ' EXP'; // Auro 3D Mode Channel Expansion
 
-    public const PSDIRAC = 'PSDIRAC'; //Dirac Live Filter
-    public const CVSHL = 'CVSHL'; // Surround Height Left
-    public const CVSHR = 'CVSHR'; // Surround Height Right
-    public const CVTS = 'CVTS'; // Top Surround
-    public const CVCH = 'CVCH'; // Center Height
-    public const CVZRL = 'CVZRL'; // Reset Channel Volume Status
+    public const string PSDIRAC = 'PSDIRAC'; //Dirac Live Filter
+    public const string CVSHL   = 'CVSHL'; // Surround Height Left
+    public const string CVSHR   = 'CVSHR'; // Surround Height Right
+    public const string CVTS    = 'CVTS'; // Top Surround
+    public const string CVCH    = 'CVCH'; // Center Height
+    public const string CVZRL   = 'CVZRL'; // Reset Channel Volume Status
 
-    public const CVTFL = 'CVTFL'; // Top Front Left
-    public const CVTFR = 'CVTFR'; // Top Front Right
-    public const CVTML = 'CVTML'; // Top Middle Left
-    public const CVTMR = 'CVTMR'; // Top Middle Right
-    public const CVTRL = 'CVTRL'; // Top Rear Left
-    public const CVTRR = 'CVTRR'; // Top Rear Right
-    public const CVRHL = 'CVRHL'; // Rear Height Left
-    public const CVRHR = 'CVRHR'; // Rear Height Right
-    public const CVFDL = 'CVFDL'; // Front Dolby Left
-    public const CVFDR = 'CVFDR'; // Front Dolby Right
-    public const CVSDL = 'CVSDL'; // Surround Dolby Left
-    public const CVSDR = 'CVSDR'; // Surround Dolby Right
-    public const CVBDL = 'CVBDL'; // Back Dolby Left
-    public const CVBDR = 'CVBDR'; // Back Dolby Right
-    public const CVTTR = 'CVTTR'; // Tactile Transducer
+    public const string CVTFL = 'CVTFL'; // Top Front Left
+    public const string CVTFR = 'CVTFR'; // Top Front Right
+    public const string CVTML = 'CVTML'; // Top Middle Left
+    public const string CVTMR = 'CVTMR'; // Top Middle Right
+    public const string CVTRL = 'CVTRL'; // Top Rear Left
+    public const string CVTRR = 'CVTRR'; // Top Rear Right
+    public const string CVRHL = 'CVRHL'; // Rear Height Left
+    public const string CVRHR = 'CVRHR'; // Rear Height Right
+    public const string CVFDL = 'CVFDL'; // Front Dolby Left
+    public const string CVFDR = 'CVFDR'; // Front Dolby Right
+    public const string CVSDL = 'CVSDL'; // Surround Dolby Left
+    public const string CVSDR = 'CVSDR'; // Surround Dolby Right
+    public const string CVBDL = 'CVBDL'; // Back Dolby Left
+    public const string CVBDR = 'CVBDR'; // Back Dolby Right
+    public const string CVTTR = 'CVTTR'; // Tactile Transducer
 }
 
 class DenonAVRCP_API_Data extends stdClass
@@ -4830,7 +4786,7 @@ class DenonAVRCP_API_Data extends stdClass
         $SurroundDisplay = '';
 
         //Response einzeln auswerten
-        $VarMapping = (new DENONIPSProfiles($this->AVRType, $InputMapping))->GetVarMapping();
+        $VarMapping = new DENONIPSProfiles($this->AVRType, $InputMapping)->GetVariableProfileMapping();
 
 
         if ($VarMapping === false) {

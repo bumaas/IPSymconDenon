@@ -9,5 +9,6 @@
     "parentRequirements": [],
     "childRequirements": ["{E73CE1D0-6670-4607-ACA1-30469558D2F7}"],
     "implemented": ["{B403182C-3506-466C-B8D5-842D9237BF02}"],
-    "prefix": "DAVRIO"
+    "prefix": "DAVRIO",
+    "url": "https://github.com/bumaas/IPSymconDenon/blob/master/README.md"
 }

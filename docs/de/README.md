@@ -19,10 +19,10 @@ Modul für IP-Symcon ab Version 5.1. Ermöglicht die Kommunikation mit einem Den
 
 ## 1. Funktionsumfang
 
-Mit dem Modul lassen sich Befehle an einen Denon Receiver oder Marantz Receier absenden und die Statusrückmeldung in IP-Symcon empfangen. Es gibt zwei unterschiedliche Module die benutzt werden können.
+Mit dem Modul lassen sich Befehle an einen Denon Receiver oder Marantz Receiver absenden und die Statusrückmeldung in IP-Symcon empfangen. Es gibt zwei unterschiedliche Module die benutzt werden können.
 Ein Modul nutzt als Kommunikation Port 23 über das Denon AVR Control Protocol. Das zweite Modul nutzt zur Kommunikation HTTP.
 Der Denon AVR kann jeweils nur einen einzige Verbindung auf Port 23 aufbauen. Daher kann, wenn dieses Modul benutzt wird, kein weiterer Client mehr den Denon AVR auf diese Weise über Port 23 steuern.
-Der Vorteil ist jedoch, dass sämtliche dokumentierte Befehle an den Denon AVR geschickt und auch eine Rückmeldung in IP-Symcon dafür empfangen werden kann. Die zweite Möglichkeit ist das Denon HTTP Modul zu benutzten.
+Der Vorteil ist jedoch, dass sämtliche dokumentierte Befehle an den Denon AVR geschickt und auch eine Rückmeldung in IP-Symcon dafür empfangen werden kann. Die zweite Möglichkeit ist das Denon HTTP Modul zu benutzen.
 Abhängig vom Baujahr des Receivers sind aber nicht für alle Befehle auch eine Rückmeldung verfügbar. Auch mit dem HTTP Modul können aber alle dokumentierten Befehle an den Receiver geschickt werden. Es können auch mehrere Clients über HTTP
 Befehle an den Denon Receiver verschicken und Rückmeldung erhalten.
 
@@ -34,7 +34,7 @@ Befehle an den Denon Receiver verschicken und Rückmeldung erhalten.
 
  - Bei dem Modul (Telnet Port 23) sind für die dokumentierten Befehle auch eine Statusrückmeldung verfügbar. Es kann nur ein Client auf Port 23 verbunden sein. 
  - Zur Zeit sind nicht für alle Receivertypen alle Befehle hinterlegt, diese werden nach und nach bei Bedarf ergänzt.
- - Bei dem Modul (HTTP) sind abhänig vom Receivertyp und Baujahr eine unterschiedliche Anzahl an Statusrückmeldungen verfügbar. Es können mehrere Clients dem Denon über HTTP Befehle senden und Status erhalten. 
+ - Bei dem Modul (HTTP) sind abhängig vom Receivertyp und Baujahr eine unterschiedliche Anzahl an Statusrückmeldungen verfügbar. Es können mehrere Clients dem Denon über HTTP Befehle senden und Status erhalten. 
 
 ### Unterstützte Modelle:  
 
@@ -183,19 +183,19 @@ Die IP Adresse des Denon AVR ist einzutragen und bei Öffnen ist ein Haken zu se
 
 ### Denon AV Receiver Telnet Control:  
 
-| Eigenschaft | Typ     | Standardwert | Funktion                                                              |
-| :---------: | :-----: | :----------: | :-------------------------------------------------------------------: |
-| Type        | int     |              | Typ des Denon AVR                                                     |
-| Zone        | int     |              | Zone des Denon AVR                                                    |
-| Befehl      | bool    |              | aktivieren / deaktivieren um den jeweiligen Befehl zu nutzten         |
+| Eigenschaft | Typ     | Standardwert |                               Funktion                               |
+| :---------: | :-----: | :----------: |:--------------------------------------------------------------------:|
+| Type        | int     |              |                          Typ des Denon AVR                           |
+| Zone        | int     |              |                          Zone des Denon AVR                          |
+| Befehl      | bool    |              |     aktivieren / deaktivieren um den jeweiligen Befehl zu nutzen     |
 
 ### Denon AV Receiver HTTP Control:  
 
-| Eigenschaft | Typ     | Standardwert | Funktion                                                              |
-| :---------: | :-----: | :----------: | :-------------------------------------------------------------------: |
-| Type        | int     |              | Typ des Denon AVR                                                     |
-| Zone        | int     |              | Zone des Denon AVR                                                    |
-| Befehl      | bool    |              | aktivieren / deaktivieren um den jeweiligen Befehl zu nutzten         |
+| Eigenschaft | Typ     | Standardwert |                               Funktion                               |
+| :---------: | :-----: | :----------: |:--------------------------------------------------------------------:|
+| Type        | int     |              |                          Typ des Denon AVR                           |
+| Zone        | int     |              |                          Zone des Denon AVR                          |
+| Befehl      | bool    |              |     aktivieren / deaktivieren um den jeweiligen Befehl zu nutzen     |
 
 
 ## 6. Anhang
@@ -491,10 +491,6 @@ DAVRT_ChannelVolumeTS(int $InstanceID, float $Value)
 
 Channel Volume Top Surround
 Parameter Range float $Value -12 to 12, Step 0.5
-
-```php
-DAVRT_ChannelVolumeZRL(int $InstanceID, float $Value)
-```
 
 ```php
 DAVRT_ChannelVolumeTFL(int $InstanceID, float $Value)

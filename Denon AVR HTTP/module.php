@@ -6,27 +6,18 @@ require_once __DIR__ . '/../DenonClass.php';  // diverse Klassen
 
 class DenonAVRHTTP extends AVRModule
 {
-    public static $NEO_Parameter = ['PW'      => ['DAVRH_Power', 'Power'],
-        'ZM'                                  => ['DAVRH_MainZonePower', 'MainZonePower'],
-        'MU'                                  => ['DAVRH_MainMute', 'Mute'],
-        'Z2POWER'                             => ['DAVRH_Zone2Power', 'Zone2Power'],
-        'Z3POWER'                             => ['DAVRH_Zone3Power', 'Zone3Power'],
-        'Z2MU'                                => ['DAVRH_Zone2Mute', 'Zone 2 Mute'],
-        'Z3MU'                                => ['DAVRH_Zone3Mute', 'Zone 3 Mute'],
-    ];
-
-    public function Create()
+    public function Create(): void
     {
         //Never delete this line!
         parent::Create();
 
         // 1. Verfügbarer DenonSplitter wird verbunden oder neu erzeugt, wenn nicht vorhanden.
-        $this->ConnectParent('{0C62027E-7CD7-4DF8-890B-B0FEE37857D4}');
+        //$this->ConnectParent('{0C62027E-7CD7-4DF8-890B-B0FEE37857D4}');
 
         $this->RegisterProperties();
     }
 
-    public function ApplyChanges()
+    public function ApplyChanges(): void
     {
         //Never delete this line!
         parent::ApplyChanges();
@@ -104,12 +95,8 @@ class DenonAVRHTTP extends AVRModule
             }
         }
 
-        $this->RegisterVariables($DenonAVRVar, $idents, $AVRType, $manufacturername);
+        $this->RegisterVariables_OLD($DenonAVRVar, $idents, $AVRType, $manufacturername);
 
-        // NEO Skripte anlegen
-        if ($this->ReadPropertyBoolean('NEOToggle')) {
-            $this->CreateNEOScripts(static::$NEO_Parameter);
-        }
     }
 
     //Data Transfer
@@ -123,7 +110,7 @@ class DenonAVRHTTP extends AVRModule
      * Die folgenden Funktionen stehen automatisch zur Verfügung, wenn das Modul über die "Module Control" eingefügt wurden.
      * Die Funktionen werden, mit dem selbst eingerichteten Prefix, in PHP und JSON-RPC wiefolgt zur Verfügung gestellt:.
      */
-    public function RequestAction($Ident, $Value)
+    public function RequestAction($Ident, $Value): void
     {
 
         //Input übergeben
@@ -143,11 +130,8 @@ class DenonAVRHTTP extends AVRModule
         } catch (Exception $ex) {
             trigger_error($ex->getMessage(), $ex->getCode());
             echo $ex->getMessage();
-
-            return false;
         }
 
-        return true;
     }
 
     //Denon Commands
@@ -222,7 +206,7 @@ class DenonAVRHTTP extends AVRModule
      *
      * @return string
      */
-    public function GetConfigurationForm()
+    public function GetConfigurationForm(): string
     {
         // return current form
         return json_encode([
@@ -315,10 +299,6 @@ class DenonAVRHTTP extends AVRModule
                     $form,
                     $this->FormMainzone($AVRType)
                 );
-                $form = array_merge_recursive(
-                    $form,
-                    $this->FormSelectionNEO()
-                );
             }
             else{
                 $form = array_merge_recursive(
@@ -332,10 +312,6 @@ class DenonAVRHTTP extends AVRModule
                 $form = array_merge_recursive(
                     $form,
                     $this->FormZone($zone, $AVRType)
-                );
-                $form = array_merge_recursive(
-                    $form,
-                    $this->FormSelectionNEO()
                 );
             }
         }

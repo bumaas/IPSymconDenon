@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../DenonClass.php';  // diverse Klassen
 
-class DenonDiscovery extends IPSModule
+class DenonDiscovery extends IPSModuleStrict
 {
 
     /**
@@ -36,8 +36,8 @@ class DenonDiscovery extends IPSModule
         //we will wait until the kernel is ready
         $this->RegisterMessage(0, IPS_KERNELMESSAGE);
 
-        $this->SetBuffer(self::BUFFER_DEVICES, json_encode([]));
-        $this->SetBuffer(self::BUFFER_SEARCHACTIVE, json_encode(false));
+        $this->SetBuffer(self::BUFFER_DEVICES, json_encode([], JSON_THROW_ON_ERROR));
+        $this->SetBuffer(self::BUFFER_SEARCHACTIVE, json_encode(false, JSON_THROW_ON_ERROR));
 
     }
 
@@ -63,14 +63,13 @@ class DenonDiscovery extends IPSModule
         }
     }
 
-    public function RequestAction($Ident, $Value): bool
+    public function RequestAction(string $Ident, mixed $Value): void
     {
         $this->SendDebug(__FUNCTION__, sprintf('Ident: %s, Value: %s', $Ident, $Value), 0);
 
         if ($Ident === 'loadDevices') {
             $this->loadDevices();
         }
-        return true;
     }
 
     /**
@@ -142,10 +141,10 @@ class DenonDiscovery extends IPSModule
             ];
         }
 
-        $configurationValuesEncoded = json_encode($configurationValues);
+        $configurationValuesEncoded = json_encode($configurationValues, JSON_THROW_ON_ERROR);
         $this->SendDebug(__FUNCTION__, '$configurationValues: ' . $configurationValuesEncoded, 0);
 
-        $this->SetBuffer(self::BUFFER_SEARCHACTIVE, json_encode(false));
+        $this->SetBuffer(self::BUFFER_SEARCHACTIVE, json_encode(false, JSON_THROW_ON_ERROR));
         $this->SendDebug(__FUNCTION__, 'SearchActive deactivated', 0);
 
         $this->SetBuffer(self::BUFFER_DEVICES, $configurationValuesEncoded);
@@ -201,18 +200,6 @@ class DenonDiscovery extends IPSModule
         return $device_info;
     }
 
-    private function parseHeader(string $Data): array
-    {
-        $Lines = explode("\r\n", $Data);
-        array_shift($Lines);
-        array_pop($Lines);
-        $Header = [];
-        foreach ($Lines as $Line) {
-            $line_array                                         = explode(':', $Line);
-            $Header[strtoupper(trim(array_shift($line_array)))] = trim(implode(':', $line_array));
-        }
-        return $Header;
-    }
 
     private function GetDeviceInfoFromLocation(string $location): array
     {
@@ -261,8 +248,8 @@ class DenonDiscovery extends IPSModule
         $this->SendDebug(__FUNCTION__, 'SearchActive: ' . $this->GetBuffer(self::BUFFER_SEARCHACTIVE), 0);
 
         // Do not start a new search, if a search is currently active
-        if (!json_decode($this->GetBuffer(self::BUFFER_SEARCHACTIVE))) {
-            $this->SetBuffer(self::BUFFER_SEARCHACTIVE, json_encode(true));
+        if (!json_decode($this->GetBuffer(self::BUFFER_SEARCHACTIVE), false, 512, JSON_THROW_ON_ERROR)) {
+            $this->SetBuffer(self::BUFFER_SEARCHACTIVE, json_encode(true, JSON_THROW_ON_ERROR));
 
             // Start device search in a timer, not prolonging the execution of GetConfigurationForm
             $this->SendDebug(__FUNCTION__, 'RegisterOnceTimer', 0);
@@ -287,7 +274,7 @@ class DenonDiscovery extends IPSModule
      */
     private function formActions(): array
     {
-        $devices = json_decode($this->GetBuffer(self::BUFFER_DEVICES));
+        $devices = json_decode($this->GetBuffer(self::BUFFER_DEVICES), false, 512, JSON_THROW_ON_ERROR);
 
         return [
             [
