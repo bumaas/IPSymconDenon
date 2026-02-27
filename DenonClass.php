@@ -176,7 +176,7 @@ class AVRModule extends IPSModuleStrict
             $Ident = str_replace(' ', '_', $Ident);
             $VarID = @$this->GetIDForIdent($Ident);
 
-            if ($VarID <= 0) {
+            if ($VarID === false) {
                 $this->Logger_Dbg(__FUNCTION__, $this->InstanceID . ': Info: Keine Variable mit dem Ident "' . $Ident . '" gefunden.');
                 continue;
             }
@@ -474,8 +474,7 @@ class AVRModule extends IPSModuleStrict
 
     protected function removeVariable($Ident): void
     {
-        $vid = @$this->GetIDForIdent($Ident);
-        if ($vid !== 0) {
+        if ($vid = @$this->GetIDForIdent($Ident)) {
             $Name = IPS_GetName($vid);
             $this->DisableAction($Ident);
             $this->UnregisterVariable($Ident);
