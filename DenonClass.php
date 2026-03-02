@@ -503,7 +503,16 @@ class AVRModule extends IPSModuleStrict
     //IP des AVR aus der IO Instanz
     protected function GetIPParent()
     {
-        $io_instance =  IPS_GetInstance($this->GetParent())['ConnectionID'];
+        $parentId = $this->GetParent();
+        if ($parentId <= 0 || !@IPS_InstanceExists($parentId)) {
+            return false;
+        }
+
+        $io_instance = IPS_GetInstance($parentId)['ConnectionID'];
+        if ($io_instance <= 0 || !@IPS_InstanceExists($io_instance)) {
+            return false;
+        }
+
         $IP = IPS_GetProperty($io_instance, 'Host');
         if (!filter_var($IP, FILTER_VALIDATE_IP) === false) {
             return $IP;
