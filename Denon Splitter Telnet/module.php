@@ -12,16 +12,26 @@ class DenonSplitterTelnet extends IPSModuleStrict
         //Never delete this line!
         parent::Create();
 
-        //These lines are parsed on Symcon Startup or Instance creation
-        //You cannot use variables here. Just static values.
+    }
 
-        // ClientSocket benötigt
-        //$this->RequireParent('{3CFF0FD9-E306-41DB-9B5A-9D06D38576C3}'); //Client socket
+    public function ApplyChanges(): void
+    {
+        //Never delete this line!
+        parent::ApplyChanges();
 
         //we will set the instance status when the parent status changes
         if($this->GetParent() > 0)
         {
             $this->RegisterMessage($this->GetParent(), IM_CHANGESTATUS);
+        }
+
+        $this->RegisterVariableString('InputMapping', 'Input Mapping', '', 1);
+        $this->RegisterVariableString('AVRType', 'AVRType', '', 2);
+
+        if ($this->HasActiveParent()) {
+            $this->SetStatus(IS_ACTIVE);
+        } else {
+            $this->SetStatus(IS_INACTIVE);
         }
     }
 
@@ -34,22 +44,6 @@ class DenonSplitterTelnet extends IPSModuleStrict
         } else {
             $this->Logger_Err('Unexpected Message: ' . $Message);
             trigger_error('Unexpected Message: ' . $Message);
-        }
-    }
-
-    public function ApplyChanges(): void
-    {
-        //Never delete this line!
-        parent::ApplyChanges();
-
-        $this->RegisterVariableString('InputMapping', 'Input Mapping', '', 1);
-        $this->RegisterVariableString('AVRType', 'AVRType', '', 2);
-
-        if ($this->HasActiveParent()) {
-            //Instanz aktiv
-            $this->SetStatus(IS_ACTIVE);
-        } else {
-            $this->SetStatus(IS_INACTIVE);
         }
     }
 
