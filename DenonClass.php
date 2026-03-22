@@ -256,71 +256,180 @@ class AVRModule extends IPSModuleStrict
 
     protected function GetVariablePresentation(array $varDef): array|string
     {
-
         $suffix = match ($varDef['Suffix'] ?? '') {
             '%' => self::ZERO_WIDTH_SPACE . '%',
             '' => '',
             default => ' ' . $varDef['Suffix']
         };
 
-        $options = null;
-        if (!empty($varDef['Associations'])) {
-            $formattedOptions = [];
-            foreach ($varDef['Associations'] as $value) {
-                $formattedOptions[] = [
-                    'Value'      => $value[0],
-                    'Caption'    => $value[1],
-                    'IconActive' => false,
-                    'IconValue'  => '',
-                    'ColorActive'=> false,
-                    'ColorValue' => -1,
-                ];
-            }
-            $options = json_encode($formattedOptions, JSON_THROW_ON_ERROR);
-        }
+        $associations = $varDef['Associations'] ?? [];
+        $enumOptions = $this->buildEnumerationOptions($associations);
+        $valueOptions = $this->buildValuePresentationOptions($associations);
+        $intervals = $this->buildValuePresentationIntervals($associations);
 
-        if ($varDef['displayOnly']){
-            if ($varDef['ProfilName'] === '~HTMLBox'){
+        if ($varDef['displayOnly']) {
+            if ($varDef['ProfilName'] === '~HTMLBox') {
                 return [
                     'PRESENTATION' => VARIABLE_PRESENTATION_WEB_CONTENT,
                 ];
             }
-            return array_filter([
+
+            $presentation = [
                 'PRESENTATION' => VARIABLE_PRESENTATION_VALUE_PRESENTATION,
+                'ICON'         => $varDef['Icon'] ?? false,
                 'SUFFIX'       => $suffix,
-                'OPTIONS'      => $options ? json_encode($options, JSON_THROW_ON_ERROR) : null
-            ]);
+            ];
+
+            if (in_array($varDef['Type'], [DENONIPSVarType::vtBoolean, DENONIPSVarType::vtString], true) && $valueOptions !== null) {
+                $presentation['OPTIONS'] = $valueOptions;
+            }
+
+            if (in_array($varDef['Type'], [DENONIPSVarType::vtInteger, DENONIPSVarType::vtFloat], true) && $intervals !== null) {
+                $presentation['INTERVALS'] = $intervals;
+                $presentation['INTERVALS_ACTIVE'] = true;
+            }
+
+            return $presentation;
         }
 
-        // Basis-Daten für die meisten Typen
-        $baseData = [
-            'ICON'    => $varDef['Icon'] ?? false,
-            'SUFFIX'  => $suffix,
-            'OPTIONS' => $options
-        ];
-
         return match ($varDef['Type']) {
-            DENONIPSVarType::vtBoolean => array_filter([
-                                                           'PRESENTATION' => VARIABLE_PRESENTATION_SWITCH,
-                                                           'ICON'         => $varDef['Icon'] ?? false,
-                                                       ]),
+            DENONIPSVarType::vtBoolean => [
+                'PRESENTATION' => VARIABLE_PRESENTATION_SWITCH,
+                'ICON'         => $varDef['Icon'] ?? false,
+            ],
 
-            DENONIPSVarType::vtInteger => array_filter(array_merge($baseData, [
+            DENONIPSVarType::vtInteger => array_filter([
                 'PRESENTATION' => VARIABLE_PRESENTATION_ENUMERATION,
-            ])),
+                'ICON'         => $varDef['Icon'] ?? false,
+                'SUFFIX'       => $suffix,
+                'OPTIONS'      => $enumOptions,
+            ], static fn ($value) => $value !== null),
 
-            DENONIPSVarType::vtFloat => array_filter(array_merge($baseData, [
+            DENONIPSVarType::vtFloat => [
                 'PRESENTATION' => VARIABLE_PRESENTATION_SLIDER,
+                'ICON'         => $varDef['Icon'] ?? false,
+                'SUFFIX'       => $suffix,
                 'MIN'          => $varDef['MinValue'],
                 'MAX'          => $varDef['MaxValue'],
                 'STEP_SIZE'    => $varDef['Stepsize'],
                 'PERCENTAGE'   => $varDef['Suffix'] === '%',
                 'DIGITS'       => $varDef['Digits'],
-            ])),
+            ],
 
             default => throw new InvalidArgumentException(sprintf('Unsupported type: %s', $varDef['Type'])),
         };
+    }
 
+    private function buildEnumerationOptions(array $associations): ?string
+    {
+        if (count($associations) === 0) {
+            return null;
+        }
+
+        $options = [];
+        foreach ($associations as $association) {
+            if (!array_key_exists(0, $association)) {
+                continue;
+            }
+
+            $value     = $association[0];
+            $caption   = (string)($association[1] ?? $value);
+            $options[] = [
+                'Value'      => $value,
+                'Caption'    => $caption,
+                'IconActive' => false,
+                'IconValue'  => '',
+                'Color'      => -1,
+            ];
+        }
+
+        if (count($options) === 0) {
+            return null;
+        }
+
+        return json_encode($options, JSON_THROW_ON_ERROR);
+    }
+
+    private function buildValuePresentationOptions(array $associations): ?string
+    {
+        if (count($associations) === 0) {
+            return null;
+        }
+
+        $options = [];
+        foreach ($associations as $association) {
+            if (!array_key_exists(0, $association)) {
+                continue;
+            }
+
+            $value = $association[0];
+            $caption = (string)($association[1] ?? $value);
+            $options[] = [
+                'Value'       => $value,
+                'Caption'     => $caption,
+                'IconActive'  => false,
+                'IconValue'   => '',
+                'ColorActive' => false,
+                'ColorValue'  => -1,
+            ];
+        }
+
+        if (count($options) === 0) {
+            return null;
+        }
+
+        return json_encode($options, JSON_THROW_ON_ERROR);
+    }
+
+    private function buildValuePresentationIntervals(array $associations): ?string
+    {
+        if (count($associations) === 0) {
+            return null;
+        }
+
+        $intervals = [];
+        foreach ($associations as $association) {
+            if (!array_key_exists(0, $association)) {
+                continue;
+            }
+
+            $value = $this->normalizeNumericValue($association[0]);
+            if ($value === null) {
+                continue;
+            }
+
+            $intervals[] = [
+                'From'        => $value,
+                'To'          => $value,
+                'IconActive'  => false,
+                'Icon'        => '',
+                'ColorActive' => false,
+                'Color'       => -1,
+            ];
+        }
+
+        if (count($intervals) === 0) {
+            return null;
+        }
+
+        return json_encode($intervals, JSON_THROW_ON_ERROR);
+    }
+
+    private function normalizeNumericValue(mixed $value): int|float|null
+    {
+        if (is_int($value) || is_float($value)) {
+            return $value;
+        }
+
+        if (!is_string($value) || !is_numeric($value)) {
+            return null;
+        }
+
+        if (str_contains($value, '.') || str_contains($value, ',')) {
+            return (float) str_replace(',', '.', $value);
+        }
+
+        return (int) $value;
     }
 
     protected function RegisterVariables(DENONIPSProfiles $DenonAVRVar, array $idents, string $manufacturername): bool
