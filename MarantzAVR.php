@@ -803,6 +803,8 @@ class Marantz_CINEMA_70s extends Marantz_NR1711
 
     public static int    $internalID             = 113;
 
+    public static array  $AvrInfos      = [DENON_API_Commands::SYSMI, DENON_API_Commands::SYSDA, DENON_API_Commands::SSINFAISFSV];
+
     public static array  $CV_Commands            = [
         DENON_API_Commands::MV,
         DENON_API_Commands::CVFL,
