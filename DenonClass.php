@@ -174,6 +174,10 @@ class AVRModule extends IPSModuleStrict
 
         foreach ($datavalues as $Ident => $Values) {
             $Ident = str_replace(' ', '_', $Ident);
+            if ($Ident === 'PW'){
+                $debugID = @$this->GetIDForIdent($Ident);
+                IPS_LogMessage(sprintf('TEST %s', $this->InstanceID), sprintf('Ident: %s, GetIDForIdent => %s', $Ident, var_export($debugID, true)));
+            }
             $VarID = @$this->GetIDForIdent($Ident);
 
             if ($VarID === false) {
