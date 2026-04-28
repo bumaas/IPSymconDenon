@@ -192,6 +192,7 @@ class AVRModule extends IPSModuleStrict
                         $this->Logger_Dbg(__FUNCTION__, sprintf('DEBUG PW: Found variable with similar Ident: "%s" (ID: %d)', $c_ident, $childID));
                     }
                 }
+                $this->Logger_Dbg(__FUNCTION__, sprintf('DEBUG PW: Value of $VarID just before IF: %s', var_export($VarID, true)));
             }
 
             if ($VarID === false) {
