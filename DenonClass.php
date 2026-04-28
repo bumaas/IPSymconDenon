@@ -177,58 +177,8 @@ class AVRModule extends IPSModuleStrict
 
             $VarID = @$this->GetIDForIdent($Ident);
 
-            if ($Ident === 'PW') {
-                $this->Logger_Dbg(__FUNCTION__, sprintf('DEBUG PW: Ident: "%s" (Len: %d)', $Ident, strlen($Ident)));
-                $this->Logger_Dbg(__FUNCTION__, sprintf('DEBUG PW: GetIDForIdent result: %s (Type: %s)', var_export($VarID, true), gettype($VarID)));
-                
-                $VarID_direct = @IPS_GetObjectIDByIdent($Ident, $this->InstanceID);
-                $this->Logger_Dbg(__FUNCTION__, sprintf('DEBUG PW: IPS_GetObjectIDByIdent(Ident, %d) result: %s', $this->InstanceID, var_export($VarID_direct, true)));
-                
-                $children = @IPS_GetChildrenIDs($this->InstanceID);
-                foreach ($children as $childID) {
-                    $child_obj = @IPS_GetObject($childID);
-                    $c_ident = $child_obj['ObjectIdent'] ?? '';
-                    if (strtoupper($c_ident) === 'PW') {
-                        $this->Logger_Dbg(__FUNCTION__, sprintf('DEBUG PW: Found variable with similar Ident: "%s" (ID: %d)', $c_ident, $childID));
-                    }
-                }
-                $this->Logger_Dbg(__FUNCTION__, sprintf('DEBUG PW: Value of $VarID just before IF: %s', var_export($VarID, true)));
-            }
-
             if ($VarID === false) {
-                $this->Logger_Dbg(__FUNCTION__, sprintf('%s: Info: Keine Variable mit dem Ident %s gefunden (GetIDForIdent === false).', $this->InstanceID, $Ident));
-                continue;
-            }
-
-            if ($VarID === 0) {
-                $this->Logger_Dbg(__FUNCTION__, sprintf('%s: Info: Keine Variable mit dem Ident %s gefunden (GetIDForIdent === 0).', $this->InstanceID, $Ident));
-                continue;
-            }
-
-            if ($VarID === NULL) {
-                $this->Logger_Dbg(__FUNCTION__, sprintf('%s: Info: Keine Variable mit dem Ident %s gefunden (GetIDForIdent === NULL).', $this->InstanceID, $Ident));
-                continue;
-            }
-
-            $VarID = @IPS_GetObjectIDByIdent($Ident, $this->InstanceID);
-
-            if ($VarID === false) {
-                $this->Logger_Dbg(__FUNCTION__, sprintf('%s: Info: Keine Variable mit dem Ident %s gefunden (IPS_GetObjectIDByIdent === false).', $this->InstanceID, $Ident));
-                continue;
-            }
-
-            if ($VarID === 0) {
-                $this->Logger_Dbg(__FUNCTION__, sprintf('%s: Info: Keine Variable mit dem Ident %s gefunden (IPS_GetObjectIDByIdent === 0).', $this->InstanceID, $Ident));
-                continue;
-            }
-
-            if ($VarID === NULL) {
-                $this->Logger_Dbg(__FUNCTION__, sprintf('%s: Info: Keine Variable mit dem Ident %s gefunden (IPS_GetObjectIDByIdent === NULL).', $this->InstanceID, $Ident));
-                continue;
-            }
-
-            if (!IPS_VariableExists($VarID)) {
-                $this->Logger_Dbg(__FUNCTION__, sprintf('%s: Info: Keine Variable mit der ID %s gefunden (!IPS_VariableExists).', $this->InstanceID, $VarID));
+                $this->Logger_Dbg(__FUNCTION__, $this->InstanceID . ': Info: Keine Variable mit dem Ident "' . $Ident . '" gefunden.');
                 continue;
             }
 
@@ -242,10 +192,7 @@ class AVRModule extends IPSModuleStrict
             }
 
             // Setzen des Wertes
-            if (!@$this->SetValue($Ident, $value)){
-                 $this->Logger_Dbg(__FUNCTION__, sprintf('%s: Info: Keine Variable mit dem Ident %s gefunden (!SetValue).', $this->InstanceID, $Ident));
-                continue;
-            }
+            $this->SetValue($Ident, $value);
 
             // Logging vorbereiten
             $logValue = ($VarType === DENONIPSVarType::vtBoolean) ? (int)$value : $value;
