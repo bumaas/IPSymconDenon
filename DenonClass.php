@@ -179,10 +179,11 @@ class AVRModule extends IPSModuleStrict
 
             if ($Ident === 'PW') {
                 ob_start();
-                var_dump($this->GetIDForIdent($Ident));
+                var_dump($VarID);
+                $VarID = $this->GetIDForIdent($Ident);
+                var_dump($VarID);
                 $output = ob_get_clean();
                 $this->Logger_Dbg(__FUNCTION__, sprintf('%s: Output: %s', $this->InstanceID, $output));
-                $this->SendDebug("TEST", $output, 0);
             }
 
             if ($VarID === false) {
