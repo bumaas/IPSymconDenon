@@ -177,6 +177,14 @@ class AVRModule extends IPSModuleStrict
 
             $VarID = @$this->GetIDForIdent($Ident);
 
+            if ($Ident === 'PW') {
+                ob_start();
+                var_dump($this->GetIDForIdent($Ident));
+                $output = ob_get_clean();
+                $this->Logger_Dbg(__FUNCTION__, sprintf('%s: Output: %s', $this->InstanceID, $output));
+                $this->SendDebug("TEST", $output, 0);
+            }
+
             if ($VarID === false) {
                 $this->Logger_Dbg(__FUNCTION__, sprintf('%s: Info: Keine Variable mit dem Ident %s gefunden (GetIDForIdent === false).', $this->InstanceID, $Ident));
                 continue;
