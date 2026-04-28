@@ -178,12 +178,12 @@ class AVRModule extends IPSModuleStrict
             $VarID = @$this->GetIDForIdent($Ident);
 
             if ($Ident === 'PW') {
-                ob_start();
-                var_dump($VarID);
-                $VarID = $this->GetIDForIdent($Ident);
-                var_dump($VarID);
-                $output = ob_get_clean();
-                $this->Logger_Dbg(__FUNCTION__, sprintf('%s: Output: %s', $this->InstanceID, $output));
+                $this->Logger_Dbg(__FUNCTION__, sprintf('DEBUG PW: GetIDForIdent result: %s', var_export($VarID, true)));
+                $VarID_direct = @IPS_GetObjectIDByIdent($Ident, $this->InstanceID);
+                $this->Logger_Dbg(__FUNCTION__, sprintf('DEBUG PW: IPS_GetObjectIDByIdent direct: %s', var_export($VarID_direct, true)));
+                
+                $obj_info = @IPS_GetObject($this->InstanceID);
+                $this->Logger_Dbg(__FUNCTION__, sprintf('DEBUG PW: Instance Name: %s, Children: %d', $obj_info['ObjectName'], count($obj_info['ChildrenIDs'])));
             }
 
             if ($VarID === false) {
