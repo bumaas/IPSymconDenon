@@ -777,42 +777,6 @@
         },
         {
             "type": "ExpansionPanel",
-            "caption": "Video Processing",
-            "items": [
-                {
-                    "type": "CheckBox",
-                    "name": "PictureMode",
-                    "caption": "Picture Mode (PVPICT)"
-                },
-                {
-                    "type": "CheckBox",
-                    "name": "Contrast",
-                    "caption": "Contrast (PVCN)"
-                },
-                {
-                    "type": "CheckBox",
-                    "name": "Brightness",
-                    "caption": "Brightness (PVBR)"
-                },
-                {
-                    "type": "CheckBox",
-                    "name": "Saturation",
-                    "caption": "Saturation (PVST)"
-                },
-                {
-                    "type": "CheckBox",
-                    "name": "DNRDirectChange",
-                    "caption": "Digital Noise Reduction (PVDNR)"
-                },
-                {
-                    "type": "CheckBox",
-                    "name": "Enhancer",
-                    "caption": "Enhancer (PVENH)"
-                }
-            ]
-        },
-        {
-            "type": "ExpansionPanel",
             "caption": "Tuner Control",
             "items": [
                 {

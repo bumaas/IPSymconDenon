@@ -803,6 +803,18 @@ class Marantz_CINEMA_70s extends Marantz_NR1711
 
     public static int    $internalID             = 113;
 
+    // laut FY23-Spec keine Zone 3 und kein Video-Processing
+    public static array $Zone_Commands = [
+        DENON_API_Commands::Z2POWER,
+        DENON_API_Commands::Z2INPUT,
+        DENON_API_Commands::Z2VOL,
+        DENON_API_Commands::Z2MU,
+        DENON_API_Commands::Z2STBY,
+        DENON_API_Commands::Z2CVFL, DENON_API_Commands::Z2CVFR,
+        DENON_API_Commands::Z2SLP,
+    ];
+    public static array $PV_Commands   = [];
+
     public static array  $AvrInfos      = [DENON_API_Commands::SYSMI, DENON_API_Commands::SYSDA, DENON_API_Commands::SSINFAISFSV];
 
     public static array  $CV_Commands            = [
@@ -1483,6 +1495,18 @@ class Marantz_CINEMA_60 extends Marantz_SR5015
     public static string $Name           = 'Marantz-CINEMA60';
 
     public static int    $internalID     = 114;
+
+    // laut FY23-Spec keine Zone 3 und kein Video-Processing
+    public static array $Zone_Commands = [
+        DENON_API_Commands::Z2POWER,
+        DENON_API_Commands::Z2INPUT,
+        DENON_API_Commands::Z2VOL,
+        DENON_API_Commands::Z2MU,
+        DENON_API_Commands::Z2STBY,
+        DENON_API_Commands::Z2CVFL, DENON_API_Commands::Z2CVFR,
+        DENON_API_Commands::Z2SLP,
+    ];
+    public static array $PV_Commands   = [];
 
     public static array  $CV_Commands            = [
         DENON_API_Commands::MV,
@@ -2385,6 +2409,21 @@ class Marantz_CINEMA_50 extends Marantz_SR6015
 
     public static int    $internalID             = 115;
 
+    // laut FY23-Spec keine Zone 3 und kein Video-Processing
+    public static array $Zone_Commands = [
+        DENON_API_Commands::Z2POWER,
+        DENON_API_Commands::Z2INPUT,
+        DENON_API_Commands::Z2VOL,
+        DENON_API_Commands::Z2MU,
+        DENON_API_Commands::Z2STBY,
+        DENON_API_Commands::Z2CS,
+        DENON_API_Commands::Z2CVFL, DENON_API_Commands::Z2CVFR,
+        DENON_API_Commands::Z2HPF,
+        DENON_API_Commands::Z2PSBAS, DENON_API_Commands::Z2PSTRE,
+        DENON_API_Commands::Z2SLP,
+    ];
+    public static array $PV_Commands   = [];
+
     public static array  $SI_SubCommands         = [
         DENON_API_Commands::IS_PHONO,
         DENON_API_Commands::IS_CD,
@@ -3217,6 +3256,9 @@ class Marantz_CINEMA_40 extends Marantz_SR7015
     public static string $Name                   = 'Marantz-CINEMA40';
 
     public static int    $internalID             = 116;
+
+    // laut FY23-Spec kein Video-Processing mehr (Zone 3 bleibt: laut Spec vorhanden)
+    public static array $PV_Commands = [];
 
     public static array  $SI_SubCommands         = [
         DENON_API_Commands::IS_PHONO,

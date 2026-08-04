@@ -72,23 +72,23 @@
         "errors": []
     },
     "AVR-X2400H": {
-        "sha256": "1dbabc935cb01ce799afabf9e8e280d5d8bfc04a67e016993bc5d704b3194eec",
+        "sha256": "2697393acb01461aeefc26c1d4bbd80fb66401ddfe32d88835c3d61f8748f91c",
         "errors": []
     },
     "AVR-X2500H": {
-        "sha256": "f6eeddf19e5d23edee31fb260921d56899a65ffe89215fe2d3ed573856bf183c",
+        "sha256": "accabcd205265422327ff36ab3f5e574b59d892e5d098c168f4290cfee539754",
         "errors": []
     },
     "AVR-X2600H": {
-        "sha256": "f5978b8efda00b1069bd261cf1349562bf8ee07445ab35fe13fd9f761e9fd7a6",
+        "sha256": "d4259f0b42e2570c6385329fc82d878e79cba4c0cc41277a9a2fa7fc9a70a45b",
         "errors": []
     },
     "AVR-X2700H": {
-        "sha256": "438c755b7047496820c115bc815f61532e509b26166064d52be2c7e1f89d83ad",
+        "sha256": "1bf0b92f2e245d237b8aa165b15fd641b8c5692eb2a3672455fde5af64aca3cd",
         "errors": []
     },
     "AVR-X2800H": {
-        "sha256": "0e423b7aba5e5e868b541de091e9708ee475e18b5b90462797c2ec291bd3f850",
+        "sha256": "0526e04ad97efb3e175822b3ec561dc95641cdb6078077dca9686e8f0c58c7f6",
         "errors": []
     },
     "AVR-X3000": {
@@ -96,19 +96,19 @@
         "errors": []
     },
     "AVR-X3400H": {
-        "sha256": "150e720d8462931dbbfeda5faef2eb5dbd85a0e83d5e74d81ca93005ee8436fc",
+        "sha256": "70d88062041a930f048b7b4edbf39b9829a70efb3914e181b4997371a1c12961",
         "errors": []
     },
     "AVR-X3500H": {
-        "sha256": "140da28a7f656ebd4bc4763a6c7967e65856fb5d809fcbc936e007a0a62f7992",
+        "sha256": "eeee0ad740d6eee1339939e09b756312a55cdcc92efd7a01ee655e859a7fd62f",
         "errors": []
     },
     "AVR-X3700H": {
-        "sha256": "e27515b9437d3a640bfccd2c11d94fff85a8a7c625180f34f57f74718c480fcd",
+        "sha256": "4035c140febc560bf74740943b01f0390576b4b5adc6111f69ffc38f57b1f0a2",
         "errors": []
     },
     "AVR-X3800H": {
-        "sha256": "5bb5e1fbee5bdc4aaebaa13a24b490325381b7698eea68548a27735f223e8310",
+        "sha256": "8c19b27b7ef465fbefd96fbb9ac78f40c382b5532dcbe775c3ece1c8957ad958",
         "errors": []
     },
     "AVR-X4000": {
@@ -140,7 +140,7 @@
         "errors": []
     },
     "AVR-X4800H": {
-        "sha256": "103da1037763dc0e330f0b5a7adc44b695fdba71ea82a9f497faad806375d8d8",
+        "sha256": "bbee805e8765f121c3183fdf3ecd1ce234b49a62b48198e137143f3dea8edeb5",
         "errors": []
     },
     "AVR-X5200W": {
@@ -184,11 +184,11 @@
         "errors": []
     },
     "AVR-S960H": {
-        "sha256": "3dde65d55bb7384c2b70024fe4eccf1d4f8a305eaba2cf8a5374c3fae86e6ad3",
+        "sha256": "e578fd14838eca540a665bbb00da68034fe0609141dcc10ddcd67d7311a06cb5",
         "errors": []
     },
     "AVR-S970H": {
-        "sha256": "684db185dd8444f4a54a9b6f74da5c13f034c4d0e0d3c03f5530a03b5ccca7b9",
+        "sha256": "a8e3ddaaed0ed3d930637094699309e61ab0c31452233a4da9e54dd042bd0a24",
         "errors": []
     },
     "DRA-N5": {
@@ -252,7 +252,7 @@
         "errors": []
     },
     "Marantz-CINEMA70s": {
-        "sha256": "1924e488be11327ae22904440cb439db52edb4dce4afeb5f12310fba84dca216",
+        "sha256": "5dc876fe3b145f88a492091562241f53fe8a85d6e1fd69e561f2f09e7919bc69",
         "errors": []
     },
     "Marantz-STEREO70s": {
@@ -296,7 +296,7 @@
         "errors": []
     },
     "Marantz-CINEMA60": {
-        "sha256": "9a7d64b34fd74282948ea77bcd58adaf28e483294d12dabbc15ceaf42382bd80",
+        "sha256": "46304ecee08e3ce5e9ab035ca1e6321070b2e521721ec955d1ba130a3d7a64c6",
         "errors": []
     },
     "Marantz-SR6005": {
@@ -340,7 +340,7 @@
         "errors": []
     },
     "Marantz-CINEMA50": {
-        "sha256": "73c1a09210610b488c9bebf4b75b08225210874434b3b10e9b4361cd09c7cd83",
+        "sha256": "83414aab2d745fc862af9a4e875f477aa0aee41440975bde95df5aaf313c66c0",
         "errors": []
     },
     "Marantz-SR7005": {
@@ -380,7 +380,7 @@
         "errors": []
     },
     "Marantz-CINEMA40": {
-        "sha256": "ffcc85fc76b4d64c7a1b31e5ea0b155461f706d9a3becd1487b07a4b9dff2cc1",
+        "sha256": "8079a653bda24b48d7278ac91da0f28b39afdb16fdf470971de488da64982a80",
         "errors": []
     },
     "Marantz-SR8015": {

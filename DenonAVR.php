@@ -859,6 +859,20 @@ class Denon_AVR_X2400H extends Denon_AVR_X2300W
     public static string $Name         = 'AVR-X2400H';
     public static int    $internalID   = 34;
     public static string $httpMainZone = DENON_HTTP_Interface::NoHTTPInterface;
+
+    // laut Protokoll-Spec (X2400H und Nachfolger bis X2800H/S9x0H) keine Zone 3
+    public static array $Zone_Commands = [
+        'Model', DENON_API_Commands::PW,
+        'Zone2Name',
+        DENON_API_Commands::Z2INPUT,
+        DENON_API_Commands::Z2VOL,
+        DENON_API_Commands::Z2POWER,
+        DENON_API_Commands::Z2MU,
+        DENON_API_Commands::Z2CVFL, DENON_API_Commands::Z2CVFR,
+        DENON_API_Commands::Z2QUICK,
+        DENON_API_Commands::Z2SLP,
+        DENON_API_Commands::Z2STBY,
+    ];
     public static array  $InfoFunctions          = [];
     public static array  $SystemControl_Commands = [
         DENON_API_Commands::MN,
@@ -1045,6 +1059,9 @@ class Denon_AVR_X2800H extends Denon_AVR_X2700H
     public static string $Name        = 'AVR-X2800H';
 
     public static int $internalID = 207;
+
+    // laut FY23-Spec kein Video-Processing mehr (gilt auch für AVR-S970H)
+    public static array $PV_Commands = [];
 
     public static array $SI_SubCommands = [
         DENON_API_Commands::IS_PHONO,
@@ -1648,19 +1665,20 @@ class Denon_AVR_X3400H extends Denon_AVR_X3000
         DENON_API_Commands::SCH10P24, DENON_API_Commands::SCH4K, DENON_API_Commands::SCH4KF, DENON_API_Commands::SCHAUTO,
         DENON_API_Commands::SCHOFF
     ];
+    // laut Protokoll-Spec (X3400H/X3500H/FY21/FY23) hat die X34xx-X38xx-Reihe keine Zone 3
     public static array $Zone_Commands          = [
         'Model', DENON_API_Commands::PW,
-        'Zone2Name', 'Zone3Name',
-        DENON_API_Commands::Z2INPUT, DENON_API_Commands::Z3INPUT,
-        DENON_API_Commands::Z2VOL, DENON_API_Commands::Z3VOL,
-        DENON_API_Commands::Z2POWER, DENON_API_Commands::Z3POWER,
-        DENON_API_Commands::Z2MU, DENON_API_Commands::Z3MU,
-        DENON_API_Commands::Z2CS, DENON_API_Commands::Z3CS,
-        DENON_API_Commands::Z2CVFL, DENON_API_Commands::Z3CVFL, DENON_API_Commands::Z2CVFR, DENON_API_Commands::Z3CVFR,
-        DENON_API_Commands::Z2HPF, DENON_API_Commands::Z3HPF,
-        DENON_API_Commands::Z2QUICK, DENON_API_Commands::Z3QUICK,
-        DENON_API_Commands::Z2PSBAS, DENON_API_Commands::Z3PSBAS, DENON_API_Commands::Z2PSTRE, DENON_API_Commands::Z3PSTRE,
-        DENON_API_Commands::Z2SLP, DENON_API_Commands::Z3SLP,
+        'Zone2Name',
+        DENON_API_Commands::Z2INPUT,
+        DENON_API_Commands::Z2VOL,
+        DENON_API_Commands::Z2POWER,
+        DENON_API_Commands::Z2MU,
+        DENON_API_Commands::Z2CS,
+        DENON_API_Commands::Z2CVFL, DENON_API_Commands::Z2CVFR,
+        DENON_API_Commands::Z2HPF,
+        DENON_API_Commands::Z2QUICK,
+        DENON_API_Commands::Z2PSBAS, DENON_API_Commands::Z2PSTRE,
+        DENON_API_Commands::Z2SLP,
         DENON_API_Commands::Z2HDA,
     ];
 }
@@ -1808,6 +1826,9 @@ class Denon_AVR_X3800H extends Denon_AVR_X3700H
     // see Denon FY23-CY2022_AVR_PROTOCOL_V02.xlsx
     public static string $Name       = 'AVR-X3800H';
     public static int    $internalID = 208;
+
+    // laut FY23-Spec kein Video-Processing mehr
+    public static array $PV_Commands = [];
 
     public static array $CV_Commands = [
         DENON_API_Commands::MV,
@@ -2401,6 +2422,9 @@ class Denon_AVR_X4800H extends Denon_AVR_X4700H
     // see Denon FY23-CY2022_AVR_PROTOCOL_V02.xlsx
     public static string $Name       = 'AVR-X4800H';
     public static int    $internalID = 209;
+
+    // laut FY23-Spec kein Video-Processing mehr
+    public static array $PV_Commands = [];
 
     public static array $SI_SubCommands = [
         DENON_API_Commands::IS_PHONO,

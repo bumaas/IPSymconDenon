@@ -81,12 +81,13 @@ Composite-Strings sind über locale.json nicht übersetzbar.
   `WriteDebugInformationToLogfile` ist dort per Formular unerreichbar (Telnet hat sie).
 - Keine Aufräum-Routine für verwaiste Alt-Profile aus Bestandsinstallationen
   (vor der Presentations-Umstellung angelegt).
-- Befunde des Spec-Checks (tests/spec_check.php, Stand 2026-08): Modul führt
-  für etliche Modelle Zone-3-/PV-Video-Kommandos, die laut Spec nicht
-  unterstützt werden; umgekehrt fehlen u. a. VSMONI-Direktwahl, PSIMAX-Gruppe,
-  PSDIRAC (X3800H/X4800H per V03-Spec), Trigger-Steuerung (TR1/TR2),
-  DIM-Direktwahl, SYREMOTE/SYPANEL-Lock. Capability-Fixes wären eigene
-  Builds mit Golden-Diffs und Produktivwirkung — nur nach Abstimmung.
+- Befunde des Spec-Checks (tests/spec_check.php, Stand 2026-08): Die
+  Zone-3-/PV-Video-Bereinigung („Paket 1") ist seit **2.28 build 84** umgesetzt
+  (16 Modelle, Overrides an den Ketten-Köpfen X2400H/X3400H bzw. je
+  CINEMA-Klasse). Noch offen („Paket 2/3"): fehlende Kommandos ergänzen
+  (VSMONI-Direktwahl, PSIMAX-Gruppe, PSDIRAC per V03-Spec für X3800H/X4800H,
+  Trigger TR1/TR2, DIM-Direktwahl, SYREMOTE/SYPANEL-Lock) sowie neue Modelle
+  (CINEMA 30, AV 10, Denon-S-Serie, X3300W, A1H, A110).
 
 ## Support-Kontext
 
