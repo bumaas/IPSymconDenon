@@ -1613,7 +1613,7 @@ class DenonAVRTelnet extends AVRModule
             $form = [
                 [
                     'type'    => 'Button',
-                    'caption' => 'Status initialisieren',
+                    'caption' => 'Initialize status',
                     'onClick' => 'DAVRT_GetStates($id);'
                 ],
                 [

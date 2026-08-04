@@ -51,7 +51,12 @@
 			"Please Select":"Bitte auswählen",
 			"Expert Parameters": "Experten Einstellungen",
 			"Port": "Port",
-			"Debug information are written additionally to standard logfile": "Debug Informationen werden ergänzend in das Standard Log File geschrieben"
+			"Debug information are written additionally to standard logfile": "Debug Informationen werden ergänzend in das Standard Log File geschrieben",
+			"Initialize status": "Status initialisieren",
+			"Server": "Server",
+			"Napster": "Napster",
+			"LastFM": "LastFM",
+			"Flickr": "Flickr"
 		}
 	}
 }

@@ -1,6 +1,7 @@
 {
   "translations": {
     "de": {
+      "ID": "ID",
       "name": "Name",
       "host": "IP Adresse",
       "model": "Modell",

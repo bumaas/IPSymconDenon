@@ -44,7 +44,15 @@
 			"select a manufacturer.":"Bitte einen Hersteller auswählen.",
 			"configure AVR splitter.":"AVR Splitter konfigurieren.",
 			"Zone Settings:": "Zonen Einstellungen",
-			"Main Zone Settings:": "Hauptzone Einstellungen:"
+			"Main Zone Settings:": "Hauptzone Einstellungen:",
+			"Power On": "Einschalten",
+			"Power Off": "Ausschalten",
+			"Server": "Server",
+			"Napster": "Napster",
+			"LastFM": "LastFM",
+			"Flickr": "Flickr",
+			"Expert Parameters": "Experten Einstellungen",
+			"Debug information are written additionally to standard logfile": "Debug Informationen werden ergänzend in das Standard Log File geschrieben"
 
 		}
 	}
