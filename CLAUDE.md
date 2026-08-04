@@ -66,15 +66,27 @@ Composite-Strings sind über locale.json nicht übersetzbar.
     seither per `registration_http.json` mit abgesichert). Die Goldens spiegeln
     das korrigierte Verhalten.
 
+- `tests/spec_check.php` — **Spec-Konformitäts-Check** gegen die Hersteller-
+  Protokoll-Excels (lokal unter `X:\Denon_Marantz` bzw. Env `DENON_SPEC_DIR`,
+  nicht committet; ohne Pfad sauberer Skip). Aufruf:
+  `C:\php\php -d extension=zip tests/spec_check.php [--model <Name>] [--details]`.
+  Informativer Report (Exit 0): Richtung A Modul→Spec (OK / laut Spec nicht
+  unterstützt / keine Spec-Zeile), Richtung B Spec→Modul (fehlende Kommandos).
+  Wertebereiche und die alten binären `.xls` (Marantz FY16–FY21) werden nicht
+  geprüft.
+
 ## Bekannte offene Punkte (bewusst zurückgestellt)
 
 - `Denon AVR HTTP` bindet `FormExpertParameters()` nicht ein — die Property
   `WriteDebugInformationToLogfile` ist dort per Formular unerreichbar (Telnet hat sie).
 - Keine Aufräum-Routine für verwaiste Alt-Profile aus Bestandsinstallationen
   (vor der Presentations-Umstellung angelegt).
-- Spec-Konformitäts-Check gegen die Hersteller-Protokoll-Excels unter
-  `X:\Denon_Marantz` (u. a. `Marantz_FY23-CY2022_AV_CINEMA_PROTOCOL_V04.xlsx`)
-  steht noch aus — Skript soll lokal lesen, Excels nicht committen.
+- Befunde des Spec-Checks (tests/spec_check.php, Stand 2026-08): Modul führt
+  für etliche Modelle Zone-3-/PV-Video-Kommandos, die laut Spec nicht
+  unterstützt werden; umgekehrt fehlen u. a. VSMONI-Direktwahl, PSIMAX-Gruppe,
+  PSDIRAC (X3800H/X4800H per V03-Spec), Trigger-Steuerung (TR1/TR2),
+  DIM-Direktwahl, SYREMOTE/SYPANEL-Lock. Capability-Fixes wären eigene
+  Builds mit Golden-Diffs und Produktivwirkung — nur nach Abstimmung.
 
 ## Support-Kontext
 
