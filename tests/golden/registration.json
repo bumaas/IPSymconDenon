@@ -1,0 +1,457 @@
+{
+    "X3800H_main": {
+        "recorded": [
+            [
+                "RegisterVariableBoolean",
+                "PW",
+                "Power",
+                {
+                    "PRESENTATION": "{60AE6B26-B3E2-BDB1-A3A1-BE232940664B}",
+                    "ICON": false
+                },
+                60
+            ],
+            [
+                "EnableAction",
+                "PW"
+            ],
+            [
+                "RegisterVariableBoolean",
+                "ZM",
+                "MainZone Power",
+                {
+                    "PRESENTATION": "{60AE6B26-B3E2-BDB1-A3A1-BE232940664B}",
+                    "ICON": false
+                },
+                70
+            ],
+            [
+                "EnableAction",
+                "ZM"
+            ],
+            [
+                "RegisterVariableBoolean",
+                "MU",
+                "Main Mute",
+                {
+                    "PRESENTATION": "{60AE6B26-B3E2-BDB1-A3A1-BE232940664B}",
+                    "ICON": false
+                },
+                80
+            ],
+            [
+                "EnableAction",
+                "MU"
+            ],
+            [
+                "RegisterVariableInteger",
+                "SI",
+                "Input Source",
+                {
+                    "PRESENTATION": "{52D9E126-D7D2-2CBB-5E62-4CF7BA7C5D82}",
+                    "ICON": "Database",
+                    "SUFFIX": ""
+                },
+                120
+            ],
+            [
+                "EnableAction",
+                "SI"
+            ],
+            [
+                "RegisterVariableInteger",
+                "MS",
+                "Surround Mode",
+                {
+                    "PRESENTATION": "{52D9E126-D7D2-2CBB-5E62-4CF7BA7C5D82}",
+                    "ICON": "Melody",
+                    "SUFFIX": "",
+                    "OPTIONS": "[{\"Value\":0,\"Caption\":\"Movie\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":1,\"Caption\":\"Music\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":2,\"Caption\":\"Game\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":3,\"Caption\":\"Direct\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":4,\"Caption\":\"Pure Direct\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":5,\"Caption\":\"Stereo\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":6,\"Caption\":\"Standard\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":7,\"Caption\":\"Dolby Surround\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":8,\"Caption\":\"DTS Surround\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":9,\"Caption\":\"Auro 3D\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":10,\"Caption\":\"Auro 2D\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":12,\"Caption\":\"Multi Ch Stereo\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":15,\"Caption\":\"Rock Arena\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":16,\"Caption\":\"Jazz Club\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":18,\"Caption\":\"Mono Movie\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":19,\"Caption\":\"Matrix\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":20,\"Caption\":\"Video Game\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":21,\"Caption\":\"Virtual\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1}]"
+                },
+                180
+            ],
+            [
+                "EnableAction",
+                "MS"
+            ],
+            [
+                "RegisterVariableFloat",
+                "MV",
+                "Master Volume",
+                {
+                    "PRESENTATION": "{6B9CAEEC-5958-C223-30F7-BD36569FC57A}",
+                    "ICON": "Intensity",
+                    "SUFFIX": "  dB",
+                    "MIN": -80,
+                    "MAX": 18,
+                    "STEP_SIZE": 0.5,
+                    "PERCENTAGE": false,
+                    "DIGITS": 1
+                },
+                250
+            ],
+            [
+                "EnableAction",
+                "MV"
+            ]
+        ],
+        "errors": []
+    },
+    "X3800H_zone2": {
+        "recorded": [
+            [
+                "RegisterVariableBoolean",
+                "PW",
+                "Power",
+                {
+                    "PRESENTATION": "{60AE6B26-B3E2-BDB1-A3A1-BE232940664B}",
+                    "ICON": false
+                },
+                60
+            ],
+            [
+                "EnableAction",
+                "PW"
+            ],
+            [
+                "RegisterVariableString",
+                "Zone2Name",
+                "Zone 2 Name",
+                {
+                    "PRESENTATION": "{3319437D-7CDE-699D-750A-3C6A3841FA75}",
+                    "ICON": "Information",
+                    "SUFFIX": ""
+                },
+                1450
+            ],
+            [
+                "RegisterVariableBoolean",
+                "Z2POWER",
+                "Zone 2 Power",
+                {
+                    "PRESENTATION": "{60AE6B26-B3E2-BDB1-A3A1-BE232940664B}",
+                    "ICON": false
+                },
+                1460
+            ],
+            [
+                "EnableAction",
+                "Z2POWER"
+            ],
+            [
+                "RegisterVariableBoolean",
+                "Z2MU",
+                "Zone 2 Mute",
+                {
+                    "PRESENTATION": "{60AE6B26-B3E2-BDB1-A3A1-BE232940664B}",
+                    "ICON": false
+                },
+                1470
+            ],
+            [
+                "EnableAction",
+                "Z2MU"
+            ],
+            [
+                "RegisterVariableFloat",
+                "Z2VOL",
+                "Zone 2 Volume",
+                {
+                    "PRESENTATION": "{6B9CAEEC-5958-C223-30F7-BD36569FC57A}",
+                    "ICON": "Intensity",
+                    "SUFFIX": "  dB",
+                    "MIN": -80,
+                    "MAX": 18,
+                    "STEP_SIZE": 1,
+                    "PERCENTAGE": false,
+                    "DIGITS": 0
+                },
+                1480
+            ],
+            [
+                "EnableAction",
+                "Z2VOL"
+            ],
+            [
+                "RegisterVariableInteger",
+                "Z2INPUT",
+                "Zone 2 Input Source",
+                {
+                    "PRESENTATION": "{52D9E126-D7D2-2CBB-5E62-4CF7BA7C5D82}",
+                    "ICON": "Database",
+                    "SUFFIX": ""
+                },
+                1490
+            ],
+            [
+                "EnableAction",
+                "Z2INPUT"
+            ]
+        ],
+        "errors": []
+    },
+    "X3000_main": {
+        "recorded": [
+            [
+                "RegisterVariableBoolean",
+                "PW",
+                "Power",
+                {
+                    "PRESENTATION": "{60AE6B26-B3E2-BDB1-A3A1-BE232940664B}",
+                    "ICON": false
+                },
+                60
+            ],
+            [
+                "EnableAction",
+                "PW"
+            ],
+            [
+                "RegisterVariableBoolean",
+                "ZM",
+                "MainZone Power",
+                {
+                    "PRESENTATION": "{60AE6B26-B3E2-BDB1-A3A1-BE232940664B}",
+                    "ICON": false
+                },
+                70
+            ],
+            [
+                "EnableAction",
+                "ZM"
+            ],
+            [
+                "RegisterVariableBoolean",
+                "MU",
+                "Main Mute",
+                {
+                    "PRESENTATION": "{60AE6B26-B3E2-BDB1-A3A1-BE232940664B}",
+                    "ICON": false
+                },
+                80
+            ],
+            [
+                "EnableAction",
+                "MU"
+            ],
+            [
+                "RegisterVariableInteger",
+                "SI",
+                "Input Source",
+                {
+                    "PRESENTATION": "{52D9E126-D7D2-2CBB-5E62-4CF7BA7C5D82}",
+                    "ICON": "Database",
+                    "SUFFIX": ""
+                },
+                120
+            ],
+            [
+                "EnableAction",
+                "SI"
+            ],
+            [
+                "RegisterVariableInteger",
+                "MS",
+                "Surround Mode",
+                {
+                    "PRESENTATION": "{52D9E126-D7D2-2CBB-5E62-4CF7BA7C5D82}",
+                    "ICON": "Melody",
+                    "SUFFIX": "",
+                    "OPTIONS": "[{\"Value\":0,\"Caption\":\"Movie\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":1,\"Caption\":\"Music\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":2,\"Caption\":\"Game\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":3,\"Caption\":\"Direct\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":4,\"Caption\":\"Pure Direct\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":5,\"Caption\":\"Stereo\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":6,\"Caption\":\"Standard\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":7,\"Caption\":\"Dolby Surround\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":8,\"Caption\":\"DTS Surround\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":12,\"Caption\":\"Multi Ch Stereo\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":15,\"Caption\":\"Rock Arena\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":16,\"Caption\":\"Jazz Club\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":18,\"Caption\":\"Mono Movie\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":19,\"Caption\":\"Matrix\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":20,\"Caption\":\"Video Game\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":21,\"Caption\":\"Virtual\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1}]"
+                },
+                180
+            ],
+            [
+                "EnableAction",
+                "MS"
+            ],
+            [
+                "RegisterVariableFloat",
+                "MV",
+                "Master Volume",
+                {
+                    "PRESENTATION": "{6B9CAEEC-5958-C223-30F7-BD36569FC57A}",
+                    "ICON": "Intensity",
+                    "SUFFIX": "  dB",
+                    "MIN": -80,
+                    "MAX": 18,
+                    "STEP_SIZE": 0.5,
+                    "PERCENTAGE": false,
+                    "DIGITS": 1
+                },
+                250
+            ],
+            [
+                "EnableAction",
+                "MV"
+            ]
+        ],
+        "errors": []
+    },
+    "SR6015_main": {
+        "recorded": [
+            [
+                "RegisterVariableBoolean",
+                "PW",
+                "Power",
+                {
+                    "PRESENTATION": "{60AE6B26-B3E2-BDB1-A3A1-BE232940664B}",
+                    "ICON": false
+                },
+                60
+            ],
+            [
+                "EnableAction",
+                "PW"
+            ],
+            [
+                "RegisterVariableBoolean",
+                "ZM",
+                "MainZone Power",
+                {
+                    "PRESENTATION": "{60AE6B26-B3E2-BDB1-A3A1-BE232940664B}",
+                    "ICON": false
+                },
+                70
+            ],
+            [
+                "EnableAction",
+                "ZM"
+            ],
+            [
+                "RegisterVariableBoolean",
+                "MU",
+                "Main Mute",
+                {
+                    "PRESENTATION": "{60AE6B26-B3E2-BDB1-A3A1-BE232940664B}",
+                    "ICON": false
+                },
+                80
+            ],
+            [
+                "EnableAction",
+                "MU"
+            ],
+            [
+                "RegisterVariableInteger",
+                "SI",
+                "Input Source",
+                {
+                    "PRESENTATION": "{52D9E126-D7D2-2CBB-5E62-4CF7BA7C5D82}",
+                    "ICON": "Database",
+                    "SUFFIX": ""
+                },
+                120
+            ],
+            [
+                "EnableAction",
+                "SI"
+            ],
+            [
+                "RegisterVariableInteger",
+                "MS",
+                "Surround Mode",
+                {
+                    "PRESENTATION": "{52D9E126-D7D2-2CBB-5E62-4CF7BA7C5D82}",
+                    "ICON": "Melody",
+                    "SUFFIX": "",
+                    "OPTIONS": "[{\"Value\":0,\"Caption\":\"Movie\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":1,\"Caption\":\"Music\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":2,\"Caption\":\"Game\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":3,\"Caption\":\"Direct\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":4,\"Caption\":\"Pure Direct\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":5,\"Caption\":\"Stereo\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":7,\"Caption\":\"Dolby Surround\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":8,\"Caption\":\"DTS Surround\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":12,\"Caption\":\"Multi Ch Stereo\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":21,\"Caption\":\"Virtual\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1}]"
+                },
+                180
+            ],
+            [
+                "EnableAction",
+                "MS"
+            ],
+            [
+                "RegisterVariableFloat",
+                "MV",
+                "Master Volume",
+                {
+                    "PRESENTATION": "{6B9CAEEC-5958-C223-30F7-BD36569FC57A}",
+                    "ICON": "Intensity",
+                    "SUFFIX": "  dB",
+                    "MIN": -80,
+                    "MAX": 18,
+                    "STEP_SIZE": 0.5,
+                    "PERCENTAGE": false,
+                    "DIGITS": 1
+                },
+                250
+            ],
+            [
+                "EnableAction",
+                "MV"
+            ]
+        ],
+        "errors": []
+    },
+    "DRA-N5_main": {
+        "recorded": [
+            [
+                "RegisterVariableBoolean",
+                "PW",
+                "Power",
+                {
+                    "PRESENTATION": "{60AE6B26-B3E2-BDB1-A3A1-BE232940664B}",
+                    "ICON": false
+                },
+                60
+            ],
+            [
+                "EnableAction",
+                "PW"
+            ],
+            [
+                "RegisterVariableBoolean",
+                "MU",
+                "Main Mute",
+                {
+                    "PRESENTATION": "{60AE6B26-B3E2-BDB1-A3A1-BE232940664B}",
+                    "ICON": false
+                },
+                80
+            ],
+            [
+                "EnableAction",
+                "MU"
+            ],
+            [
+                "RegisterVariableInteger",
+                "SI",
+                "Input Source",
+                {
+                    "PRESENTATION": "{52D9E126-D7D2-2CBB-5E62-4CF7BA7C5D82}",
+                    "ICON": "Database",
+                    "SUFFIX": ""
+                },
+                120
+            ],
+            [
+                "EnableAction",
+                "SI"
+            ],
+            [
+                "RegisterVariableFloat",
+                "MV",
+                "Master Volume",
+                {
+                    "PRESENTATION": "{6B9CAEEC-5958-C223-30F7-BD36569FC57A}",
+                    "ICON": "Intensity",
+                    "SUFFIX": "",
+                    "MIN": 0,
+                    "MAX": 60,
+                    "STEP_SIZE": 1,
+                    "PERCENTAGE": false,
+                    "DIGITS": 0
+                },
+                250
+            ],
+            [
+                "EnableAction",
+                "MV"
+            ]
+        ],
+        "errors": []
+    }
+}

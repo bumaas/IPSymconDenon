@@ -1,0 +1,961 @@
+{
+    "elements": [
+        {
+            "type": "Label",
+            "caption": "AV Receiver Control Telnet"
+        },
+        {
+            "type": "Label",
+            "caption": "Telnet control is working with a only a single client connection (IP-Symcon), more remote commands available compared to HTTP."
+        },
+        {
+            "type": "Label",
+            "caption": "Please select a manufacturer and push the \"Apply Changes\" button"
+        },
+        {
+            "type": "Select",
+            "name": "manufacturer",
+            "caption": "manufacturer",
+            "options": [
+                {
+                    "label": "Please Select",
+                    "value": 0
+                },
+                {
+                    "label": "Denon",
+                    "value": 1
+                },
+                {
+                    "label": "Marantz",
+                    "value": 2
+                }
+            ]
+        },
+        {
+            "type": "Label",
+            "caption": "Please select an AVR type and push the \"Apply Changes\" button"
+        },
+        {
+            "type": "Select",
+            "name": "AVRTypeDenon",
+            "caption": "Type AVR Denon",
+            "options": [
+                {
+                    "value": 50,
+                    "caption": "select AVR Type"
+                },
+                {
+                    "value": 3,
+                    "caption": "AVR-3808A"
+                },
+                {
+                    "value": 32,
+                    "caption": "AVR-3310"
+                },
+                {
+                    "value": 33,
+                    "caption": "AVR-3311"
+                },
+                {
+                    "value": 1,
+                    "caption": "AVR-3312"
+                },
+                {
+                    "value": 2,
+                    "caption": "AVR-3313"
+                },
+                {
+                    "value": 5,
+                    "caption": "AVR-4310"
+                },
+                {
+                    "value": 6,
+                    "caption": "AVR-4311"
+                },
+                {
+                    "value": 49,
+                    "caption": "AVR-4810"
+                },
+                {
+                    "value": 8,
+                    "caption": "AVR-X1100W"
+                },
+                {
+                    "value": 9,
+                    "caption": "AVR-X1200W"
+                },
+                {
+                    "value": 31,
+                    "caption": "AVR-X1300W"
+                },
+                {
+                    "value": 37,
+                    "caption": "AVR-X1400H"
+                },
+                {
+                    "value": 42,
+                    "caption": "AVR-X1500H"
+                },
+                {
+                    "value": 47,
+                    "caption": "AVR-X1600H"
+                },
+                {
+                    "value": 10,
+                    "caption": "AVR-X2000"
+                },
+                {
+                    "value": 11,
+                    "caption": "AVR-X2100W"
+                },
+                {
+                    "value": 12,
+                    "caption": "AVR-X2200W"
+                },
+                {
+                    "value": 29,
+                    "caption": "AVR-X2300W"
+                },
+                {
+                    "value": 34,
+                    "caption": "AVR-X2400H"
+                },
+                {
+                    "value": 43,
+                    "caption": "AVR-X2500H"
+                },
+                {
+                    "value": 48,
+                    "caption": "AVR-X2600H"
+                },
+                {
+                    "value": 202,
+                    "caption": "AVR-X2700H"
+                },
+                {
+                    "value": 207,
+                    "caption": "AVR-X2800H"
+                },
+                {
+                    "value": 13,
+                    "caption": "AVR-X3000"
+                },
+                {
+                    "value": 36,
+                    "caption": "AVR-X3400H"
+                },
+                {
+                    "value": 44,
+                    "caption": "AVR-X3500H"
+                },
+                {
+                    "value": 203,
+                    "caption": "AVR-X3700H"
+                },
+                {
+                    "value": 208,
+                    "caption": "AVR-X3800H"
+                },
+                {
+                    "value": 16,
+                    "caption": "AVR-X4000"
+                },
+                {
+                    "value": 17,
+                    "caption": "AVR-X4100W"
+                },
+                {
+                    "value": 18,
+                    "caption": "AVR-X4200W"
+                },
+                {
+                    "value": 27,
+                    "caption": "AVR-X4300H"
+                },
+                {
+                    "value": 38,
+                    "caption": "AVR-X4400H"
+                },
+                {
+                    "value": 45,
+                    "caption": "AVR-X4500H"
+                },
+                {
+                    "value": 204,
+                    "caption": "AVR-X4700H"
+                },
+                {
+                    "value": 209,
+                    "caption": "AVR-X4800H"
+                },
+                {
+                    "value": 19,
+                    "caption": "AVR-X5200W"
+                },
+                {
+                    "value": 20,
+                    "caption": "AVR-X6200W"
+                },
+                {
+                    "value": 35,
+                    "caption": "AVR-X6300H"
+                },
+                {
+                    "value": 26,
+                    "caption": "AVR-X6400H"
+                },
+                {
+                    "value": 46,
+                    "caption": "AVR-X6500H"
+                },
+                {
+                    "value": 205,
+                    "caption": "AVR-X6700H"
+                },
+                {
+                    "value": 21,
+                    "caption": "AVR-X7200W"
+                },
+                {
+                    "value": 22,
+                    "caption": "AVR-X7200WA"
+                },
+                {
+                    "value": 39,
+                    "caption": "AVC-X8500H"
+                },
+                {
+                    "value": 200,
+                    "caption": "AVR-S750H"
+                },
+                {
+                    "value": 201,
+                    "caption": "AVR-S960H"
+                },
+                {
+                    "value": 206,
+                    "caption": "AVR-S970H"
+                },
+                {
+                    "value": 40,
+                    "caption": "DRA-N5"
+                },
+                {
+                    "value": 41,
+                    "caption": "RCD-N8"
+                }
+            ]
+        },
+        {
+            "type": "Label",
+            "caption": "Please select an AVR zone and push the \"Apply Changes\" button"
+        },
+        {
+            "type": "Select",
+            "name": "Zone",
+            "caption": "AVR Zone",
+            "options": [
+                {
+                    "label": "Main Zone",
+                    "value": 0
+                },
+                {
+                    "label": "Zone 2",
+                    "value": 1
+                },
+                {
+                    "label": "Zone 3",
+                    "value": 2
+                },
+                {
+                    "label": "select zone",
+                    "value": 6
+                }
+            ]
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "AVR Infos",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "SYSMI",
+                    "caption": "Audio: Soundmodus (SYSMI)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "SYSDA",
+                    "caption": "Audio: Eingangssignal (SYSDA)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "SSINFAISFSV",
+                    "caption": "Audio: Abtastrate (SSINFAISFSV)"
+                }
+            ]
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "Power Settings",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "Power",
+                    "caption": "Power (PW)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "MainZonePower",
+                    "caption": "MainZone Power (ZM)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "MainMute",
+                    "caption": "Main Mute (MU)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "Sleep",
+                    "caption": "Sleep (SLP)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "MAINZONEAutoStandbySetting",
+                    "caption": "Mainzone Auto Standby (STBY)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "MAINZONEECOModeSetting",
+                    "caption": "Mainzone ECO Mode (ECO)"
+                }
+            ]
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "Input Settings",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "InputSource",
+                    "caption": "Input Source (SI)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "QuickSelect",
+                    "caption": "Quick Select (MSQUICK)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "DigitalInputMode",
+                    "caption": "Audio Decode Mode (DC)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "InputMode",
+                    "caption": "Audio Input Mode (SD)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "VideoSelect",
+                    "caption": "Video Select (SV)"
+                }
+            ]
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "Surround Mode",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "SurroundMode",
+                    "caption": "Surround Mode (MS)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "SurroundDisplay",
+                    "caption": "Surround Mode Display (SurroundDisplay)"
+                }
+            ]
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "Channel Volumes",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "MasterVolume",
+                    "caption": "Master Volume (MV)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "FL",
+                    "caption": "Channel Volume Front Left (CVFL)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "FR",
+                    "caption": "Channel Volume Front Right (CVFR)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "C",
+                    "caption": "Channel Volume Center (CVC)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "SW",
+                    "caption": "Channel Volume Subwoofer (CVSW)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "SW2",
+                    "caption": "Channel Volume Subwoofer 2 (CVSW2)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "SW3",
+                    "caption": "Channel Volume Subwoofer 3 (CVSW3)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "SW4",
+                    "caption": "Channel Volume Subwoofer 4 (CVSW4)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "SL",
+                    "caption": "Channel Volume Surround Left (CVSL)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "SR",
+                    "caption": "Channel Volume Surround Right (CVSR)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "SBL",
+                    "caption": "Channel Volume Surround Back Left (CVSBL)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "SBR",
+                    "caption": "Channel Volume Surround Back Right (CVSBR)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "SB",
+                    "caption": "Channel Volume Surround Back (CVSB)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "FHL",
+                    "caption": "Channel Volume Front Height Left (CVFHL)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "FHR",
+                    "caption": "Channel Volume Front Height Right (CVFHR)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "TopFrontLch",
+                    "caption": "Channel Volume Top Front Left (CVTFL)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "TopFrontRch",
+                    "caption": "Channel Volume Top Front Right (CVTFR)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "TopMiddleLch",
+                    "caption": "Channel Volume Top Middle Left (CVTML)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "TopMiddleRch",
+                    "caption": "Channel Volume Top Middle Right (CVTMR)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "TopRearLch",
+                    "caption": "Channel Volume Top Rear Left (CVTRL)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "TopRearRch",
+                    "caption": "Channel Volume Top Rear Right (CVTRR)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "RearHeightLch",
+                    "caption": "Channel Volume Rear Height Left (CVRHL)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "RearHeightRch",
+                    "caption": "Channel Volume Rear Height Right (CVRHR)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "FrontDolbyLch",
+                    "caption": "Channel Volume Front Dolby Left (CVFDL)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "FrontDolbyRch",
+                    "caption": "Channel Volume Front Dolby Right (CVFDR)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "SurroundDolbyLch",
+                    "caption": "Channel Volume Surround Dolby Left (CVSDL)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "SurroundDolbyRch",
+                    "caption": "Channel Volume Surround Dolby Right (CVSDR)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "BackDolbyLch",
+                    "caption": "Channel Volume Back Dolby Left (CVBDL)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "BackDolbyRch",
+                    "caption": "Channel Volume Back Dolby Right (CVBDR)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "SurroundHeightLch",
+                    "caption": "Surround Height Left (CVSHL)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "SurroundHeightRch",
+                    "caption": "Surround Height Right (CVSHR)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "TopSurround",
+                    "caption": "Top Surround (CVTS)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "CenterHeight",
+                    "caption": "Center Height (CVCH)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "ChannelVolumeReset",
+                    "caption": "Channel Volume Reset (CVZRL)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "TactileTransducer",
+                    "caption": "Tactile Transducer (CVTTR)"
+                }
+            ]
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "Sound Processing",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "FrontSpeaker",
+                    "caption": "Speaker A/B (PSFRONT)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "Subwoofer",
+                    "caption": "Subwoofer (PSSWR)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "ToneCTRL",
+                    "caption": "Tone CTRL (PSTONE_CTRL)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "BassLevel",
+                    "caption": "Bass Level (PSBAS)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "TrebleLevel",
+                    "caption": "Treble Level (PSTRE)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "LoudnessManagement",
+                    "caption": "Loudness Management (PSLOM)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "BassSync",
+                    "caption": "BassSync (PSBSC)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "DialogEnhancer",
+                    "caption": "Dialog Enhancer (PSDEH)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "SubwooferLevel",
+                    "caption": "Subwoofer Level (PSSWL)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "Subwoofer2Level",
+                    "caption": "Subwoofer 2 Level (PSSWL2)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "Subwoofer3Level",
+                    "caption": "Subwoofer 3 Level (PSSWL3)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "Subwoofer4Level",
+                    "caption": "Subwoofer 4 Level (PSSWL4)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "CenterLevelAdjust",
+                    "caption": "Center Level Adjust (PSCLV)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "LFELevel",
+                    "caption": "LFE Level (PSLFE)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "CenterSpread",
+                    "caption": "Center Spread (PSCES)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "DialogControl",
+                    "caption": "Dialog Control (PSDIC)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "Neural",
+                    "caption": "Neural:X (PSNEURAL)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "SpeakerVirtualizer",
+                    "caption": "Speaker Virtualizer (PSSPV)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "SurroundPlayMode",
+                    "caption": "Surround Play Mode (PSMODE)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "CinemaEQ",
+                    "caption": "Cinema EQ (PSCINEMA_EQ)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "MultiEQMode",
+                    "caption": "Multi EQ Mode (PSMULTEQ)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "DynamicEQ",
+                    "caption": "Dynamic EQ (PSDYNEQ)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "ReferenceLevel",
+                    "caption": "Reference Level (PSREFLEV)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "DynamicVolume",
+                    "caption": "Dynamic Volume (PSDYNVOL)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "AudysseyLFC",
+                    "caption": "Audyssey LFC (PSLFC)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "AudysseyContainmentAmount",
+                    "caption": "Audyssey Containment Amount (PSCNTAMT)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "GraphicEQ",
+                    "caption": "Graphic EQ (PSGEQ)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "HeadphoneEQ",
+                    "caption": "Headphone EQ (PSHEQ)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "DynamicRange",
+                    "caption": "Dynamic Range Compression (PSDRC)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "AudioDelay",
+                    "caption": "Audio Delay (PSDELAY)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "AuroMatic3DPreset",
+                    "caption": "Auro-Matic 3D Preset (PSAUROPR)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "AuroMatic3DStrength",
+                    "caption": "Auromatic 3D Strength (PSAUROST)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "Auro3DMode",
+                    "caption": "Auro 3D Mode (PSAUROMODE)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "EffectLevel",
+                    "caption": "Effect Level (PSEFF)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "RoomSize",
+                    "caption": "Room Size (PSRSZ)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "Delay",
+                    "caption": "Delay (PSDEL)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "AudioRestorer",
+                    "caption": "Audio Restorer (PSRSTR)"
+                }
+            ]
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "Video Settings",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "ResolutionHDMI",
+                    "caption": "Resolution HDMI (VSSCH)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "VideoProcessingMode",
+                    "caption": "Video Processing Mode (VSVPM)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "HDMIAudioOutput",
+                    "caption": "HDMI Audio Output (VSAUDIO)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "ASP",
+                    "caption": "ASP (VSASP)"
+                }
+            ]
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "Video Processing",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "PictureMode",
+                    "caption": "Picture Mode (PVPICT)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "Contrast",
+                    "caption": "Contrast (PVCN)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "Brightness",
+                    "caption": "Brightness (PVBR)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "Saturation",
+                    "caption": "Saturation (PVST)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "DNRDirectChange",
+                    "caption": "Digital Noise Reduction (PVDNR)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "Enhancer",
+                    "caption": "Enhancer (PVENH)"
+                }
+            ]
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "Tuner Control",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "TunerPreset",
+                    "caption": "Tuner Preset (TPAN)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "TunerBand",
+                    "caption": "Tuner Band (TMAN)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "TunerMode",
+                    "caption": "Tuner Mode (TM)"
+                }
+            ]
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "System Control",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "BluetoothTransmitter",
+                    "caption": "Bluetooth Transmitter (BTTX)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "SpeakerPreset",
+                    "caption": "Speaker Preset (SPPR)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "GUIMenu",
+                    "caption": "GUI Setup Menu (MNMEN)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "Navigation",
+                    "caption": "Navigation Setup Menu (MN)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "AllZoneStereo",
+                    "caption": "All Zone Stereo (MNZST)"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "Dimmer",
+                    "caption": "Dimmer (DIM)"
+                }
+            ]
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "more inputs",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "FAVORITES",
+                    "caption": "favorites"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "IRADIO",
+                    "caption": "internet radio"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "SERVER",
+                    "caption": "Server"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "NAPSTER",
+                    "caption": "Napster"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "LASTFM",
+                    "caption": "LastFM"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "FLICKR",
+                    "caption": "Flickr"
+                }
+            ]
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "Expert Parameters",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "WriteDebugInformationToLogfile",
+                    "caption": "Debug information are written additionally to standard logfile"
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "type": "Button",
+            "caption": "Initialize status",
+            "onClick": "DAVRT_GetStates($id);"
+        },
+        {
+            "type": "TestCenter"
+        }
+    ],
+    "status": [
+        {
+            "code": 204,
+            "icon": "error",
+            "caption": "IP address is not valid."
+        },
+        {
+            "code": 210,
+            "icon": "error",
+            "caption": "select a manufacturer."
+        },
+        {
+            "code": 211,
+            "icon": "error",
+            "caption": "select category for import."
+        },
+        {
+            "code": 212,
+            "icon": "error",
+            "caption": "please select an AVR Zone."
+        },
+        {
+            "code": 213,
+            "icon": "error",
+            "caption": "please select a Denon AVR type."
+        },
+        {
+            "code": 214,
+            "icon": "error",
+            "caption": "please select a Marantz AVR type."
+        }
+    ]
+}

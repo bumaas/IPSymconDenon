@@ -43,6 +43,25 @@ statische form.json.
 `$caption . ' (' . $command . ')'` (`AVRModule::getTypeItem()`) bleiben englisch —
 Composite-Strings sind über locale.json nicht übersetzbar.
 
+## Tests
+
+- `tests/check_locale.php` — Übersetzungs-Vollständigkeit (siehe „Texte pflegen").
+- `tests/golden_regression.php` — **Golden-File-Regressionstest** (läuft ohne Kernel/
+  Netz über `tests/symcon_stubs.php`): friert Capabilities aller 107 Modelle,
+  Profilkatalog, Presentations, Variablen-Registrierung, alle ~150 Telnet-Wrapper-
+  Buffer und die Konfigurationsformulare als `tests/golden/*.json` ein.
+  - Prüfen: `C:\php\php tests/golden_regression.php` (auch in der CI).
+  - `--update` **nur** nach bewusst gewollter Verhaltensänderung ausführen und die
+    Golden-Diffs im Commit reviewen — nie um einen roten Test „wegzudrücken".
+  - `--dump <Modell>` schreibt Voll-Dumps nach `tests/dump/` (gitignored) zum
+    Diff-Debugging bei reinen sha256-Abweichungen.
+  - Die Golden Files **frieren bekannte Altfehler bewusst ein** (Fixes ändern die
+    Goldens sichtbar): `ChannelVolumeFDR` sendet `CVFL`, `ChannelVolumeSDL` sendet
+    `CVFDR`, `ToneCTRL`-Ident-Mismatch (`PSTONE CTRL` vs. `PSTONE_CTRL`),
+    `DENONIPSProfiles::$order` enthält 2 Duplikate (Positionsverschiebung),
+    `Denon AVR HTTP/module.php` ruft nicht existentes `RegisterVariables_OLD()`
+    (Fatal bei ApplyChanges des HTTP-Moduls).
+
 ## Bekannte offene Punkte (bewusst zurückgestellt)
 
 - `Denon AVR HTTP` bindet `FormExpertParameters()` nicht ein — die Property

@@ -56,3 +56,6 @@ Temporary Items
 # ===============
 CLAUDE.local.md
 .claude/settings.local.json
+
+# Test-Voll-Dumps (per tests/golden_regression.php --dump erzeugt)
+tests/dump/

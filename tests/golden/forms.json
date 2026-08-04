@@ -1,0 +1,27 @@
+{
+    "X3800H_main": {
+        "length": 13097,
+        "sha256": "7107183b6206a9f2c6c7a19fa4c26103ab6b43c6b66cbf840d4adf5f73ca0abf",
+        "errors": []
+    },
+    "X3800H_zone2": {
+        "length": 5173,
+        "sha256": "1e0d2b9ee3ef29c574c970952aab86d223bfd5885b23ad38d31e5390426906c5",
+        "errors": []
+    },
+    "X3000_main": {
+        "length": 10186,
+        "sha256": "1661baa7cbb2580ddda00655c7bb16031bbdabbf7970ce0fe0f112647f3157e5",
+        "errors": []
+    },
+    "SR6015_main": {
+        "length": 12616,
+        "sha256": "87814c353e615fee97008f4c908fd479b7370b90ca9e958698a8af0f0233b5e1",
+        "errors": []
+    },
+    "DRA-N5_main": {
+        "length": 5195,
+        "sha256": "815addca2e2a1509966c111312156ca3a3cd10eb97152c2d38e284e1aa6d43e3",
+        "errors": []
+    }
+}

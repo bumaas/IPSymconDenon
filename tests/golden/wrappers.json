@@ -1,0 +1,3741 @@
+{
+    "ASP": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"VSASP\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: VSASP, Value: ON"
+            ]
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"VSASP\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: VSASP, Value: Auto"
+            ]
+        }
+    ],
+    "AllZoneStereo": [
+        {
+            "args": [
+                true
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MNZST ON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                false
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MNZST OFF\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "AudioDelay": [
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSDELAY 000\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                15
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSDELAY 015\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "AudioRestorer": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSRSTR\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSRSTR, Value: ON"
+            ]
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSRSTR\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSRSTR, Value: Auto"
+            ]
+        }
+    ],
+    "AudysseyDSX": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSDSX\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSDSX, Value: ON"
+            ]
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSDSX\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSDSX, Value: Auto"
+            ]
+        }
+    ],
+    "AutoFlagDetectMode": [
+        {
+            "args": [
+                true
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSAFD ON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                false
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSAFD OFF\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "BassLevel": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSBAS\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: PSBAS, Value: -10.5"
+            ]
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSBAS 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "Brightness": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PVBR\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: PVBR, Value: -10.5"
+            ]
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PVBR 00\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "CenterImage": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSCEI\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: PSCEI, Value: -10.5"
+            ]
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSCEI 00\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "CenterWidth": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSCEN\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: PSCEN, Value: -10.5"
+            ]
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSCEN 00\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeBDL": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVBDL 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVBDL 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeBDR": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVBDR 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVBDR 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeC": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVC 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVC 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeCH": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVCH 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVCH 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeFDL": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFDL 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFDL 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeFDR": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFL 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFL 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeFHL": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFHL 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFHL 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeFHR": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFHR 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFHR 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeFL": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFL 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFL 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeFR": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFR 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFR 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeFWL": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFWL 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFWL 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeFWR": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFWR 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFWR 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeRHL": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVRHL 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVRHL 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeRHR": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVRHR 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVRHR 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeSB": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSB 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSB 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeSBL": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSBL 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSBL 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeSBR": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSBR 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSBR 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeSDL": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFDR 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFDR 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeSDR": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSDR 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSDR 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeSHL": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSHL 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSHL 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeSHR": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSHR 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSHR 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeSL": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSL 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSL 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeSR": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSR 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSR 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeSW": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSW 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSW 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeSW2": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSW2 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSW2 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeSW3": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSW3 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSW3 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeSW4": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSW4 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSW4 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeTFL": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVTFL 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVTFL 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeTFR": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVTFR 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVTFR 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeTML": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVTML 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVTML 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeTMR": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVTMR 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVTMR 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeTRL": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVTRL 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVTRL 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeTRR": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVTRR 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVTRR 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeTS": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVTS 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVTS 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChannelVolumeZRL": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVZRL\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ChromaLevel": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PVCM\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: PVCM, Value: -10.5"
+            ]
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PVCM 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "CinemaEQ": [
+        {
+            "args": [
+                true
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSCINEMA EQ\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no profile found. Ident: PSCINEMA EQ, Value: 1"
+            ]
+        },
+        {
+            "args": [
+                false
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSCINEMA EQ\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no profile found. Ident: PSCINEMA EQ, Value: "
+            ]
+        }
+    ],
+    "Contrast": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PVCN\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: PVCN, Value: -10.5"
+            ]
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PVCN 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "CursorDown": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MNCDN\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "CursorLeft": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MNCLT\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "CursorReturn": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MNRTN\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "CursorRight": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MNCRT\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "CursorUp": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MNCUP\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "DigitalInputMode": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"DC\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: DC, Value: ON"
+            ]
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"DCAUTO\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "DigitalNoiseReduction": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PVDNR\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PVDNR, Value: ON"
+            ]
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PVDNR\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PVDNR, Value: Auto"
+            ]
+        }
+    ],
+    "Dimension": [
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSDIM 00\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                15
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSDIM\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: PSDIM, Value: 15"
+            ]
+        }
+    ],
+    "DolbyVolume": [
+        {
+            "args": [
+                true
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSDOLVOL ON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                false
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSDOLVOL OFF\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "DolbyVolumeLeveler": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSVOLLEV\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSVOLLEV, Value: ON"
+            ]
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSVOLLEV\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSVOLLEV, Value: Auto"
+            ]
+        }
+    ],
+    "DolbyVolumeModeler": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSVOLMOD\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSVOLMOD, Value: ON"
+            ]
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSVOLMOD\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSVOLMOD, Value: Auto"
+            ]
+        }
+    ],
+    "DynamicCompressor": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSDCO\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSDCO, Value: ON"
+            ]
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSDCO\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSDCO, Value: Auto"
+            ]
+        }
+    ],
+    "DynamicEQ": [
+        {
+            "args": [
+                true
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSDYNEQ ON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                false
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSDYNEQ OFF\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "DynamicRangeCompression": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSDRC\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSDRC, Value: ON"
+            ]
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSDRC AUTO\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "DynamicVolume": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSDYNVOL\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSDYNVOL, Value: ON"
+            ]
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSDYNVOL\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSDYNVOL, Value: Auto"
+            ]
+        }
+    ],
+    "EffectLevel": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSEFF\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: PSEFF, Value: -10.5"
+            ]
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSEFF 00\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "Enhancer": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PVENH\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: PVENH, Value: -10.5"
+            ]
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PVENH 00\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "Enter": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MNENT\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "FrontHeight": [
+        {
+            "args": [
+                true
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSFH:ON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                false
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSFH:OFF\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "GUIMenu": [
+        {
+            "args": [
+                true
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MNMEN ON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                false
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MNMEN OFF\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "GUISourceSelectMenu": [
+        {
+            "args": [
+                true
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MNSRC ON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                false
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MNSRC OFF\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "GetStates": [
+        {
+            "args": [],
+            "events": [],
+            "errors": []
+        }
+    ],
+    "HDMIAudioOutput": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"VSAUDIO\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: VSAUDIO, Value: ON"
+            ]
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"VSAUDIO\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: VSAUDIO, Value: Auto"
+            ]
+        }
+    ],
+    "HDMIMonitor": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"VSMONI\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: VSMONI, Value: ON"
+            ]
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"VSMONIAUTO\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "Hue": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PVHUE\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: PVHUE, Value: -10.5"
+            ]
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PVHUE 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "Input": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"SION\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"SIAuto\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "LFELevel": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSLFE\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: PSLFE, Value: -10.5"
+            ]
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSLFE 00\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "MainMute": [
+        {
+            "args": [
+                true
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MUON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                false
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MUOFF\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "MainZonePower": [
+        {
+            "args": [
+                true
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"ZMON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                false
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"ZMOFF\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "MainzoneAutoStandbySetting": [
+        {
+            "args": [
+                0
+            ],
+            "return": true,
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"STBYOFF\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                15
+            ],
+            "return": true,
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"STBY15M\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "MainzoneEcoModeSetting": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"ECOON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"ECOAUTO\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "MasterVolume": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MVON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MVAuto\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "MasterVolumeFix": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MV695\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MV80\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "MasterVolumePercent": [
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MV00\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                15
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MV145\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "MasterVolumeStep": [
+        {
+            "args": [
+                "ON",
+                -10.5
+            ],
+            "events": [
+                [
+                    "LogMessage",
+                    "MasterVolumeStep: Schrittweite muss zwischen 1 und 40 liegen",
+                    10205
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                "Auto",
+                0
+            ],
+            "events": [
+                [
+                    "LogMessage",
+                    "MasterVolumeStep: Schrittweite muss zwischen 1 und 40 liegen",
+                    10205
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "MultiEQMode": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSMULTEQ\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSMULTEQ, Value: ON"
+            ]
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSMULTEQ\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSMULTEQ, Value: Auto"
+            ]
+        }
+    ],
+    "NACursorDown": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"91\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "NACursorLeft": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"92\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "NACursorRight": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"93\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "NACursorUp": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"90\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "NAEnter": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"94\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "NAPageNext": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"9X\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "NAPagePrevious": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"9Y\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "NAPause": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"9B\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "NAPlay": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"9A\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "NARandomOff": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"9M\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "NARandomOn": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"9K\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "NARepeatAll": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"9I\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "NARepeatOff": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"9J\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "NARepeatOne": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"9H\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "NASkipMinus": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"9E\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "NASkipPlus": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"9D\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "NAStop": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"9C\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "NSADisplay": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"NSA\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "NSEDisplay": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"NSE\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "PLIIZHeightGain": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSPHG\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSPHG, Value: ON"
+            ]
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSPHG\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSPHG, Value: Auto"
+            ]
+        }
+    ],
+    "Panorama": [
+        {
+            "args": [
+                true
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSPAN ON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                false
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSPAN OFF\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ParameterSettings": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSAuto\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "Power": [
+        {
+            "args": [
+                true
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PWON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                false
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PWSTANDBY\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "RecSelect": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\" ?ON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\" ?Auto\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ReferenceLevel": [
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSREFLEV 0\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                15
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSREFLEV 15\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "Resolution": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"VSSC\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: VSSC, Value: ON"
+            ]
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"VSSCAUTO\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "ResolutionHDMI": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"VSSCH\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: VSSCH, Value: ON"
+            ]
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"VSSCHAUTO\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "RoomSize": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSRSZ\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSRSZ, Value: ON"
+            ]
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSRSZ\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSRSZ, Value: Auto"
+            ]
+        }
+    ],
+    "SLEEP": [
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"SLPOFF\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                15
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"SLP\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: SLP, Value: 15"
+            ]
+        }
+    ],
+    "SelectDecodeMode": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"SD\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: SD, Value: ON"
+            ]
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"SDAUTO\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "SelectPresetNetworkAudio": [
+        {
+            "args": [
+                true
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MNSRC ON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                false
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MNSRC OFF\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "SendCommand": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"ON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Auto\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "SpeakerCenterLarge": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"SSSPCCEN LAR\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "SpeakerCenterSmall": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"SSSPCCEN SMA\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "SpeakerFrontLarge": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"SSSPCFRO LAR\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "SpeakerFrontSmall": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"SSSPCFRO SMA\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "SpeakerOutputFront": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSSP\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSSP, Value: ON"
+            ]
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSSP\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSSP, Value: Auto"
+            ]
+        }
+    ],
+    "StageHeight": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSSTH\\r\"}"
+                ]
+            ],
+            "errors": [
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "no subcommand found. Ident: PSSTH, Value: -10.5"
+            ]
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSSTH\\r\"}"
+                ]
+            ],
+            "errors": [
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "no subcommand found. Ident: PSSTH, Value: 0"
+            ]
+        }
+    ],
+    "StageWidth": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSSTW\\r\"}"
+                ]
+            ],
+            "errors": [
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "no subcommand found. Ident: PSSTW, Value: -10.5"
+            ]
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSSTW\\r\"}"
+                ]
+            ],
+            "errors": [
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "GetSubCommandOfValueName: unknown type: 2",
+                "no subcommand found. Ident: PSSTW, Value: 0"
+            ]
+        }
+    ],
+    "Subwoofer": [
+        {
+            "args": [
+                true
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSSWR ON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                false
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSSWR OFF\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "SubwooferATT": [
+        {
+            "args": [
+                true
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSATT ON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                false
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSATT OFF\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "SubwooferOutputOff": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"SSSPCSWF NON\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "SubwooferOutputOne": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"SSSPCSWF 1SP\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "SubwooferOutputTwo": [
+        {
+            "args": [],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"SSSPCSWF 2SP\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "SurroundBackMode": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSSB:ON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSSB\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSSB, Value: Auto"
+            ]
+        }
+    ],
+    "SurroundMode": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MSON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MSAuto\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "SurroundPlayMode": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSMODE\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSMODE, Value: ON"
+            ]
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSMODE\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: PSMODE, Value: Auto"
+            ]
+        }
+    ],
+    "ToneCTRL": [
+        {
+            "args": [
+                true
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSTONE CTRL\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no profile found. Ident: PSTONE CTRL, Value: 1"
+            ]
+        },
+        {
+            "args": [
+                false
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSTONE CTRL\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no profile found. Ident: PSTONE CTRL, Value: "
+            ]
+        }
+    ],
+    "TrebleLevel": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSTRE\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: PSTRE, Value: -10.5"
+            ]
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSTRE 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "VerticalStretch": [
+        {
+            "args": [
+                true
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"VSVST ON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                false
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"VSVST OFF\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "VideoProcessingMode": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"VSVPM\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: VSVPM, Value: ON"
+            ]
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"VSVPMAUTO\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "VideoSelect": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"SVON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"SVAuto\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "Z2_Volume": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z2ON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z2Auto\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "Z3_Volume": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z3ON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z3Auto\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "Zone2ChannelSetting": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z2CS\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: Z2CS, Value: ON"
+            ]
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z2CS\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: Z2CS, Value: Auto"
+            ]
+        }
+    ],
+    "Zone2ChannelVolumeFL": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z2CVFL 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z2CVFL 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "Zone2ChannelVolumeFR": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z2CVFR 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z2CVFR 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "Zone2InputSource": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z2ON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z2Auto\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "Zone2Mute": [
+        {
+            "args": [
+                true
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z2MUON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                false
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z2MUOFF\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "Zone2Power": [
+        {
+            "args": [
+                true
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z2ON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                false
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z2OFF\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "Zone2QuickSelect": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z2QUICKON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z2QUICKAuto\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "Zone2VolumeFix": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z2\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: Z2VOL, Value: -10.5"
+            ]
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z280\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "Zone3ChannelSetting": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z3CS\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: Z3CS, Value: ON"
+            ]
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z3CS\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no subcommand found. Ident: Z3CS, Value: Auto"
+            ]
+        }
+    ],
+    "Zone3ChannelVolumeFL": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z3CVFL 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z3CVFL 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "Zone3ChannelVolumeFR": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z3CVFR 395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z3CVFR 50\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "Zone3InputSource": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z3ON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z3Auto\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "Zone3Mute": [
+        {
+            "args": [
+                true
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z3MUON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                false
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z3MUOFF\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "Zone3Power": [
+        {
+            "args": [
+                true
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z3ON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                false
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z3OFF\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "Zone3QuickSelect": [
+        {
+            "args": [
+                "ON"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z3QUICKON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                "Auto"
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z3QUICKAuto\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ],
+    "Zone3VolumeFix": [
+        {
+            "args": [
+                -10.5
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z3\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: Z3VOL, Value: -10.5"
+            ]
+        },
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z380\\r\"}"
+                ]
+            ],
+            "errors": []
+        }
+    ]
+}
