@@ -532,6 +532,23 @@ class AVRModule extends IPSModuleStrict
         return $APICommand;
     }
 
+    /**
+     * Kanonisches Befehlsmuster: Subcommand aus dem Profilkatalog nachschlagen
+     * und (Sende-Praefix . Subcommand) an den Splitter schicken.
+     * $sendPrefix nur setzen, wenn er vom Lookup-Ident abweicht (z. B. Z2POWER -> Z2).
+     */
+    protected function sendMappedValue(string $lookupIdent, bool|int|float $value, ?string $sendPrefix = null): void
+    {
+        $subCommand = new DENONIPSProfiles()->GetSubCommandOfValue($lookupIdent, $value);
+        $this->SendCommand(($sendPrefix ?? $lookupIdent) . $subCommand);
+    }
+
+    protected function sendMappedValueName(string $lookupIdent, string $valueName, ?string $sendPrefix = null): void
+    {
+        $subCommand = new DENONIPSProfiles()->GetSubCommandOfValueName($lookupIdent, $valueName);
+        $this->SendCommand(($sendPrefix ?? $lookupIdent) . $subCommand);
+    }
+
     protected function GetManufacturerName(): string
     {
         $manufacturer = $this->ReadPropertyInteger('manufacturer');

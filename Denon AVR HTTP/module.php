@@ -97,7 +97,7 @@ class DenonAVRHTTP extends AVRModule
     }
 
     //Data Transfer
-    private function SendCommand(string $payload)
+    protected function SendCommand(string $payload): void
     {
         $this->SendDebug('Send Command HTTP:', $payload, 0);
         $this->SendDataToParent(json_encode(['DataID' => '{DB1DDFAD-0DE9-47CF-B8E8-FB7E7425BF90}', 'Buffer' => $payload])); //Denon Splitter HTTP
@@ -132,63 +132,56 @@ class DenonAVRHTTP extends AVRModule
 
     //Denon Commands
     //Power
-    public function Power(bool $Value)
+    public function Power(bool $Value): void
     { // false (Standby) oder true (On)
-        $SubCommand = (new DENONIPSProfiles())->GetSubCommandOfValue(DENON_API_Commands::PW, $Value);
-        $this->SendCommand(DENON_API_Commands::PW . $SubCommand);
+        $this->sendMappedValue(DENON_API_Commands::PW, $Value);
     }
 
     //Mainzone Power
-    public function MainZonePower(bool $Value)
+    public function MainZonePower(bool $Value): void
     { // MainZone true (On) or false (Off)
-        $SubCommand = (new DENONIPSProfiles())->GetSubCommandOfValue(DENON_API_Commands::ZM, $Value);
-        $this->SendCommand(DENON_API_Commands::ZM . $SubCommand);
+        $this->sendMappedValue(DENON_API_Commands::ZM, $Value);
     }
 
     //Zone 2 Power
-    public function Zone2Power(bool $Value)
+    public function Zone2Power(bool $Value): void
     { // Zone2 Power  true (On) or false (Off)
-        $SubCommand = (new DENONIPSProfiles())->GetSubCommandOfValue(DENON_API_Commands::Z2POWER, $Value);
-        $this->SendCommand(DENON_API_Commands::Z2 . $SubCommand);
+        $this->sendMappedValue(DENON_API_Commands::Z2POWER, $Value, DENON_API_Commands::Z2);
     }
 
     //Zone 3 Power
-    public function Zone3Power(bool $Value)
+    public function Zone3Power(bool $Value): void
     { // Zone3 Power  true (On) or false (Off)
-        $SubCommand = (new DENONIPSProfiles())->GetSubCommandOfValue(DENON_API_Commands::Z3POWER, $Value);
-        $this->SendCommand(DENON_API_Commands::Z3 . $SubCommand);
+        $this->sendMappedValue(DENON_API_Commands::Z3POWER, $Value, DENON_API_Commands::Z3);
     }
 
     //Master Volume Up/Down
-    public function MasterVolume(string $Subcommand)
+    public function MasterVolume(string $Subcommand): void
     { // "UP" or "DOWN"
         $payload = DENON_API_Commands::MV . $Subcommand;
         $this->SendCommand($payload);
     }
 
     //Main Mute
-    public function MainMute(bool $Value)
+    public function MainMute(bool $Value): void
     { // false (Off) oder true (On)
-        $SubCommand = (new DENONIPSProfiles())->GetSubCommandOfValue(DENON_API_Commands::MU, $Value);
-        $this->SendCommand(DENON_API_Commands::MU . $SubCommand);
+        $this->sendMappedValue(DENON_API_Commands::MU, $Value);
     }
 
     //Zone2 Mute
-    public function Zone2Mute(bool $Value)
+    public function Zone2Mute(bool $Value): void
     { // Zone2 Mute  true (On) or false (Off)
-        $SubCommand = (new DENONIPSProfiles())->GetSubCommandOfValue(DENON_API_Commands::Z2MU, $Value);
-        $this->SendCommand(DENON_API_Commands::Z2MU . $SubCommand);
+        $this->sendMappedValue(DENON_API_Commands::Z2MU, $Value);
     }
 
     //Zone3 Mute
-    public function Zone3Mute(bool $Value)
+    public function Zone3Mute(bool $Value): void
     { // Zone3 Mute  true (On) or false (Off)
-        $SubCommand = (new DENONIPSProfiles())->GetSubCommandOfValue(DENON_API_Commands::Z3MU, $Value);
-        $this->SendCommand(DENON_API_Commands::Z3MU . $SubCommand);
+        $this->sendMappedValue(DENON_API_Commands::Z3MU, $Value);
     }
 
     //Send HTTP Command
-    public function SendHTTPCommand(string $Command)
+    public function SendHTTPCommand(string $Command): void
     { // Beliebiges Command
         $this->SendCommand($Command);
     }
