@@ -3,14 +3,14 @@
 declare(strict_types=1);
 
 /**
- * Minimaler IP-Symcon-Kernel-Stub fuer die Golden-File-Regressionstests.
+ * Minimaler IP-Symcon-Kernel-Stub für die Golden-File-Regressionstests.
  *
  * Die Konstantenwerte entsprechen dem offiziellen SDK (PhpStorm-Stub symcon.php).
  * Die Basisklasse IPSModuleStrict zeichnet alle relevanten Kernel-Aufrufe in
  * $recorded auf und beantwortet ReadProperty* aus den per RegisterProperty*
  * hinterlegten Defaults - damit entspricht eine frisch erzeugte Instanz exakt
- * dem Auslieferungszustand. Tests koennen einzelne Properties per
- * setPropertyForTest() ueberschreiben.
+ * dem Auslieferungszustand. Tests können einzelne Properties per
+ * setPropertyForTest() überschreiben.
  */
 
 const IPS_KERNELMESSAGE = 10100;

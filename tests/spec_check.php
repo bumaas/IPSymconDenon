@@ -3,23 +3,23 @@
 declare(strict_types=1);
 
 /**
- * Spec-Konformitaets-Check gegen die Hersteller-Protokoll-Excels.
+ * Spec-Konformitäts-Check gegen die Hersteller-Protokoll-Excels.
  *
  * Liest die xlsx-Protokolldateien (lokal unter DENON_SPEC_DIR bzw.
  * X:\Denon_Marantz - sie werden NICHT committet) und vergleicht je Modell:
  *
  *  Richtung A (Modul -> Spec): jeder Kommando-Ident aus den Capability-
- *    Bereichen des Modells - OK / LAUT SPEC NICHT UNTERSTUETZT / KEINE SPEC-ZEILE.
- *  Richtung B (Spec -> Modul): im Protokoll als unterstuetzt markierte
+ *    Bereichen des Modells - OK / LAUT SPEC NICHT UNTERSTÜTZT / KEINE SPEC-ZEILE.
+ *  Richtung B (Spec -> Modul): im Protokoll als unterstützt markierte
  *    Kommandos, die kein Capability-Ident des Modells abdeckt.
  *
  * Hinweise:
- *  - Wertebereiche (z. B. MV 00-98) werden nicht geprueft.
- *  - Richtung B vergleicht gegen die Capabilities (was das Modul fuer das
+ *  - Wertebereiche (z. B. MV 00-98) werden nicht geprüft.
+ *  - Richtung B vergleicht gegen die Capabilities (was das Modul für das
  *    Modell als Variablen/Formulare anbietet); die generischen Wrapper
- *    (DAVRT_*) sind unabhaengig davon aufrufbar.
- *  - Die alten binaeren .xls-Protokolle (FY16-FY21 Marantz u. a.) koennen
- *    ohne Fremdbibliothek nicht gelesen werden und bleiben ungeprueft.
+ *    (DAVRT_*) sind unabhängig davon aufrufbar.
+ *  - Die alten binären .xls-Protokolle (FY16-FY21 Marantz u. a.) können
+ *    ohne Fremdbibliothek nicht gelesen werden und bleiben ungeprüft.
  *
  * Aufruf: C:\php\php -d extension=zip tests/spec_check.php [--model <Name>] [--details]
  * Exit-Code: 0 (informativer Report, kein CI-Gate); 1 nur bei Umgebungsfehlern.
@@ -34,7 +34,7 @@ if (!class_exists('ZipArchive')) {
 
 $specDir = getenv('DENON_SPEC_DIR') ?: 'X:/Denon_Marantz';
 if (!is_dir($specDir)) {
-    echo "Spec-Verzeichnis $specDir nicht vorhanden - uebersprungen.\n";
+    echo "Spec-Verzeichnis $specDir nicht vorhanden - übersprungen.\n";
     exit(0);
 }
 
@@ -135,10 +135,10 @@ function colIndex(string $letters): int
  * Findet Kopfzeile + Spaltenrollen. Zwei bekannte Layouts:
  *  A (Marantz/Denon FY23): Kopfzeile mit 'COMMAND' + 'Command example',
  *    Modellnamen in derselben Zeile (eine Spalte je Modell).
- *  B (aeltere Denon-Dateien): Kopfzeile mit 'COMMAND' + 'example',
- *    Modellnamen in der Zeile darueber, Regionen-Teilspalten (NA/EU/...) je Modell.
+ *  B (ältere Denon-Dateien): Kopfzeile mit 'COMMAND' + 'example',
+ *    Modellnamen in der Zeile darüber, Regionen-Teilspalten (NA/EU/...) je Modell.
  *
- * Rueckgabe: ['header' => Zeilennr, 'cmd' => Spalte, 'param' => Spalte,
+ * Rückgabe: ['header' => Zeilennr, 'cmd' => Spalte, 'param' => Spalte,
  * 'example' => Spalte, 'models' => list<['name' =>, 'cols' => list<Spalte>]>]
  */
 function findHeader(array $rows): ?array
@@ -185,7 +185,7 @@ function findHeader(array $rows): ?array
             continue;
         }
 
-        // Layout B: Modellnamen in der Zeile darueber, Spans bis zum naechsten Namen
+        // Layout B: Modellnamen in der Zeile darüber, Spans bis zum nächsten Namen
         if ($i === 0) {
             continue;
         }
@@ -250,7 +250,7 @@ function mapSpecModel(string $specName, array $moduleNorms): ?string
 
 // ---- Vergleich -------------------------------------------------------------
 
-// Wire-Praefix wie AVRModule::GetAPICommandFromIdent()
+// Wire-Präfix wie AVRModule::GetAPICommandFromIdent()
 function wirePrefix(string $ident): string
 {
     return match (true) {
@@ -290,7 +290,7 @@ $unmatchedSpecs = [];
 foreach ($files as $file) {
     $zip = new ZipArchive();
     if ($zip->open($file) !== true) {
-        echo basename($file), ": nicht lesbar - uebersprungen\n";
+        echo basename($file), ": nicht lesbar - übersprungen\n";
         continue;
     }
     $shared = readSharedStrings($zip);
@@ -312,7 +312,7 @@ foreach ($files as $file) {
     $zip->close();
 
     if ($header === null) {
-        echo basename($file), ": kein Command-Sheet erkannt - uebersprungen\n";
+        echo basename($file), ": kein Command-Sheet erkannt - übersprungen\n";
         continue;
     }
 
@@ -400,7 +400,7 @@ foreach ($files as $file) {
             }
         }
 
-        // Richtung B: unterstuetzte Spec-Kommandos ohne Modul-Abdeckung
+        // Richtung B: unterstützte Spec-Kommandos ohne Modul-Abdeckung
         $missingGroups = [];
         foreach ($entries as $e) {
             if (($e['marks'][$mi] ?? false) !== true) {
@@ -439,11 +439,11 @@ foreach ($files as $file) {
 foreach ($summary as $s) {
     echo "==== {$s['model']}  (Spec: {$s['spec']}, Datei: {$s['file']}) ====\n";
     echo 'Modul-Kommandos: OK=', count($s['ok']),
-        ', LAUT SPEC NICHT UNTERSTUETZT=', count($s['unsupported']),
+        ', LAUT SPEC NICHT UNTERSTÜTZT=', count($s['unsupported']),
         ', KEINE SPEC-ZEILE=', count($s['noRow']),
         ' | Spec-Kommandos ohne Modul-Abdeckung: ', count($s['missing']), "\n";
     if ($s['unsupported'] !== []) {
-        echo "  LAUT SPEC NICHT UNTERSTUETZT: ", implode(', ', $s['unsupported']), "\n";
+        echo "  LAUT SPEC NICHT UNTERSTÜTZT: ", implode(', ', $s['unsupported']), "\n";
     }
     if ($s['noRow'] !== []) {
         echo "  KEINE SPEC-ZEILE (Namensabweichung/Nicht-Wire-Ident): ", implode(', ', $s['noRow']), "\n";
@@ -461,5 +461,5 @@ foreach ($summary as $s) {
 }
 
 echo "Spec-Modelle ohne Modul-Pendant: ", ($unmatchedSpecs === [] ? '-' : implode('; ', array_unique($unmatchedSpecs))), "\n";
-echo "Nicht geprueft (binaeres .xls): ", ($skippedXls === [] ? '-' : implode(', ', array_map('basename', $skippedXls))), "\n";
-echo "\nHinweis: Report ist informativ (Exit 0); Wertebereiche werden nicht geprueft.\n";
+echo "Nicht geprüft (binäres .xls): ", ($skippedXls === [] ? '-' : implode(', ', array_map('basename', $skippedXls))), "\n";
+echo "\nHinweis: Report ist informativ (Exit 0); Wertebereiche werden nicht geprüft.\n";

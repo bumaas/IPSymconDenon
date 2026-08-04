@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Golden-File-Regressionstest fuer die Denon/Marantz-Kernlogik.
+ * Golden-File-Regressionstest für die Denon/Marantz-Kernlogik.
  *
  * Friert das Ist-Verhalten (inkl. bekannter Altfehler) als Golden Files unter
  * tests/golden/ ein und vergleicht jede erneute Erzeugung strukturell dagegen.
@@ -11,18 +11,18 @@ declare(strict_types=1);
  *   models        - Capabilities aller AVR-Modelle (Digest je Modell)
  *   profiles      - Profilkatalog + Profil-Mapping je Modell (Digest)
  *   presentations - Presentation-Arrays aller Profile je Modell (Digest,
- *                   Voll-Dump fuer Referenzmodelle)
+ *                   Voll-Dump für Referenzmodelle)
  *   registration  - aufgezeichnete Variablen-Registrierung je (Modell, Zone)
  *   wrappers      - gesendete Buffer aller Telnet-Befehlsmethoden
  *   forms         - GetConfigurationForm je (Modell, Zone) (Digest + 1 Voll-Dump)
  *
  * trigger_error-Meldungen werden je Snapshot mit eingefroren (Fehlerkanal).
- * Laeuft ohne IP-Symcon-Kernel und ohne Netzwerk (tests/symcon_stubs.php).
+ * Läuft ohne IP-Symcon-Kernel und ohne Netzwerk (tests/symcon_stubs.php).
  *
- * Aufruf: php tests/golden_regression.php            (pruefen)
+ * Aufruf: php tests/golden_regression.php            (prüfen)
  *         php tests/golden_regression.php --update   (Golden Files neu schreiben)
  *         php tests/golden_regression.php --dump <Modell> (Voll-Dumps nach tests/dump/)
- * Exit-Code 1 bei Abweichungen (fuer die CI), sonst 0.
+ * Exit-Code 1 bei Abweichungen (für die CI), sonst 0.
  */
 
 error_reporting(E_ALL & ~E_DEPRECATED);
@@ -47,7 +47,7 @@ require_once $root . '/Denon AVR HTTP/module.php';
 $GLOBALS['capturedErrors'] = [];
 set_error_handler(static function (int $errno, string $errstr): bool {
     if (!(error_reporting() & $errno)) {
-        return false; // per @ unterdrueckt
+        return false; // per @ unterdrückt
     }
     $GLOBALS['capturedErrors'][] = $errstr;
     return true;
@@ -102,7 +102,7 @@ class HttpHarness extends DenonAVRHTTP
     }
 
     // ohne Parent-/IO-Instanz liefert SetInstanceStatus() immer false und der
-    // Registrierungspfad wuerde nie erreicht - im Test als gueltig annehmen
+    // Registrierungspfad würde nie erreicht - im Test als gültig annehmen
     protected function SetInstanceStatus(): bool
     {
         return true;
@@ -221,7 +221,7 @@ function buildFiles(): array
     }
     $files['registration.json'] = $registration;
 
-    // registration_http: dito fuer das HTTP-Modul (ValidateConfiguration ohne Parameter)
+    // registration_http: dito für das HTTP-Modul (ValidateConfiguration ohne Parameter)
     $registrationHttp = [];
     foreach ([COMBOS[0], COMBOS[2]] as $combo) {
         $harness = newHarness(HttpHarness::class, $combo);
@@ -238,7 +238,7 @@ function buildFiles(): array
     }
     $files['registration_http.json'] = $registrationHttp;
 
-    // wrappers: alle oeffentlichen Telnet-Befehlsmethoden mit Beispielwerten
+    // wrappers: alle öffentlichen Telnet-Befehlsmethoden mit Beispielwerten
     $samples  = [
         'bool'   => [true, false],
         'int'    => [0, 15],
@@ -267,7 +267,7 @@ function buildFiles(): array
             $paramTypes[] = $type->getName();
         }
         if ($paramTypes === null) {
-            $wrappers[$method->getName()] = 'uebersprungen: nicht unterstuetzte Parametertypen';
+            $wrappers[$method->getName()] = 'übersprungen: nicht unterstützte Parametertypen';
             continue;
         }
         $invocations = [];
@@ -293,7 +293,7 @@ function buildFiles(): array
     }
     $files['wrappers.json'] = $wrappers;
 
-    // requestaction: Kern + Nachfuehr-Requests je Ident (Telnet und HTTP)
+    // requestaction: Kern + Nachführ-Requests je Ident (Telnet und HTTP)
     $raCases = [
         ['PW', true], ['MU', false], ['MV', -40.5], ['PSDYNEQ', true],
         ['PSVOLLEV', true], ['PSSP', 'FRO'], ['PSFH', true], ['PSDIM', 2],
@@ -341,7 +341,7 @@ function buildFiles(): array
 $files = buildFiles();
 
 // JSON-Roundtrip-Normalisierung: json_encode macht z. B. aus float -80.0 die
-// JSON-Zahl -80, die beim Einlesen der Golden-Datei als int zurueckkommt.
+// JSON-Zahl -80, die beim Einlesen der Golden-Datei als int zurückkommt.
 // Vergleich und Schreiben arbeiten deshalb einheitlich auf dekodierten Werten.
 $files = json_decode(canonical($files), true, 512, JSON_THROW_ON_ERROR);
 
@@ -385,7 +385,7 @@ foreach ($files as $name => $actual) {
     }
     $golden = json_decode(file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
     if ($golden === $actual) {
-        echo 'OK (' . count($actual) . " Eintraege)\n\n";
+        echo 'OK (' . count($actual) . " Einträge)\n\n";
         continue;
     }
     $fail = true;
@@ -412,4 +412,4 @@ if ($fail) {
     exit(1);
 }
 
-echo "OK: Alle Bereiche unveraendert.\n";
+echo "OK: Alle Bereiche unverändert.\n";

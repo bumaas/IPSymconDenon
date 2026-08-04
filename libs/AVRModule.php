@@ -556,25 +556,25 @@ class AVRModule extends IPSModuleStrict
         }
     }
 
-    // vom Modul zu ueberschreiben: InputMapping vom jeweiligen Splitter holen
+    // vom Modul zu überschreiben: InputMapping vom jeweiligen Splitter holen
     protected function getSplitterInputVarMapping(): array
     {
         return [];
     }
 
-    // Hook nach dem Senden (z. B. Status-Nachfuehrung im Telnet-Modul)
+    // Hook nach dem Senden (z. B. Status-Nachführung im Telnet-Modul)
     protected function afterRequestAction(string $APICommand): void
     {
     }
 
-    // Ident gehoert zu einer Nebenzone (Z2/Z3/Zone2/Zone3-Praefix)?
+    // Ident gehört zu einer Nebenzone (Z2/Z3/Zone2/Zone3-Präfix)?
     protected function isZoneSpecificIdent(string $ident): bool
     {
         return in_array(substr($ident, 0, 2), ['Z2', 'Z3'], true)
                || in_array(substr($ident, 0, 5), ['Zone2', 'Zone3'], true);
     }
 
-    // Ident gehoert zur uebergebenen Zonennummer (2 oder 3)?
+    // Ident gehört zur übergebenen Zonennummer (2 oder 3)?
     protected function identMatchesZone(string $ident, int $zoneNumber): bool
     {
         return str_starts_with($ident, 'Z' . $zoneNumber)
@@ -583,7 +583,7 @@ class AVRModule extends IPSModuleStrict
 
     /**
      * Kanonisches Befehlsmuster: Subcommand aus dem Profilkatalog nachschlagen
-     * und (Sende-Praefix . Subcommand) an den Splitter schicken.
+     * und (Sende-Präfix . Subcommand) an den Splitter schicken.
      * $sendPrefix nur setzen, wenn er vom Lookup-Ident abweicht (z. B. Z2POWER -> Z2).
      */
     protected function sendMappedValue(string $lookupIdent, bool|int|float $value, ?string $sendPrefix = null): void

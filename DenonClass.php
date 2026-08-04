@@ -5,10 +5,10 @@ declare(strict_types=1);
 /**
  * Aggregator der Denon/Marantz-Klassenbibliothek.
  *
- * Die Klassen liegen einzeln unter libs/; diese Datei laedt alles in der
- * urspruenglichen Deklarationsreihenfolge. Die Module binden weiterhin nur
+ * Die Klassen liegen einzeln unter libs/; diese Datei lädt alles in der
+ * ursprünglichen Deklarationsreihenfolge. Die Module binden weiterhin nur
  * DenonClass.php ein. Statische Initialisierer (z. B. DENON_API_Commands-
- * Referenzen in den Modellklassen) werden von PHP lazy aufgeloest - es genuegt,
+ * Referenzen in den Modellklassen) werden von PHP lazy aufgelöst - es genügt,
  * dass am Ende alles geladen ist; an der Reihenfolge nichts "reparieren".
  */
 
