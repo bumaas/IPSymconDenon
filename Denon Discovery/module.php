@@ -193,10 +193,6 @@ class DenonDiscovery extends IPSModuleStrict
         $devices     = YC_SearchDevices($ssdp_id, self::DISCOVERY_SEARCHTARGET);
         $device_info = $this->receiveDevicesInfo($devices);
 
-        // zum Test wird der Eintrag verdoppelt und eine abweichende IP eingesetzt
-        //$denon_info[]=$denon_info[0];
-        //$denon_info[1]['host']='192.168.178.34';
-
         return $device_info;
     }
 

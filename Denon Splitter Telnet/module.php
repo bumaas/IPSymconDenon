@@ -247,7 +247,7 @@ class DenonSplitterTelnet extends IPSModuleStrict
 
         // Empfangene Daten von der Device-Instanz
         $data = json_decode($JSONString, false, 512, JSON_THROW_ON_ERROR);
-        $this->SendDebug('Command Out:', print_r($data->Buffer, true), 0);
+        $this->SendDebug('Command Out:', $data->Buffer, 0);
 
         $this->Logger_Dbg(__FUNCTION__, 'send data: ' . $data->Buffer);
 
@@ -259,8 +259,7 @@ class DenonSplitterTelnet extends IPSModuleStrict
                 ); //TX GUID
 
         } catch (Exception $ex) {
-            echo $ex->getMessage();
-            echo ' in ' . $ex->getFile() . ' line: ' . $ex->getLine() . '.';
+            $this->Logger_Err($ex->getMessage() . ' in ' . $ex->getFile() . ' line: ' . $ex->getLine() . '.');
 
             return '';
         }

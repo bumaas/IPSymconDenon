@@ -11,9 +11,6 @@ class DenonAVRTelnet extends AVRModule
         //Never delete this line!
         parent::Create();
 
-        // 1. Verfügbarer DenonSplitter wird verbunden oder neu erzeugt, wenn nicht vorhanden.
-        //$this->ConnectParent('{9AE3087F-DC25-4ADB-AB46-AD7455E71032}');
-
         $this->RegisterProperties();
 
         //we will wait until the kernel is ready
@@ -124,12 +121,7 @@ class DenonAVRTelnet extends AVRModule
             ];
 
             foreach ($CommandAreas as $commandArea) {
-                if ($this->testAllProperties) {
-                    $commandArea_max = $commandArea . '_max';
-                    $Caps            = AVR::$$commandArea_max;
-                } else {
-                    $Caps = $AVRCaps[$commandArea];
-                }
+                $Caps = $AVRCaps[$commandArea];
                 foreach ($profiles as $key => $profile) {
                     if (in_array($profile['Ident'], $Caps, true)) {
                         $idents[$key] = $this->ReadPropertyBoolean($profile['PropertyName']);
@@ -286,9 +278,7 @@ class DenonAVRTelnet extends AVRModule
                 $this->SendRequest($APICommand, true);
             }
         } catch (Exception $ex) {
-            trigger_error($ex->getMessage() . ', Code: ' . $ex->getCode());
-            echo $ex->getMessage();
-
+            $this->Logger_Err($ex->getMessage() . ', Code: ' . $ex->getCode());
         }
     }
 
@@ -307,7 +297,7 @@ class DenonAVRTelnet extends AVRModule
     public function SendCommand(string $payload): void
     {
         $sendcommand = $payload . chr(13);
-        $this->SendDebug('Send Command Telnet:', print_r($sendcommand, true), 0);
+        $this->SendDebug('Send Command Telnet:', $sendcommand, 0);
         $this->SendDataToParent(json_encode(['DataID' => '{01A68655-DDAF-4F79-9F35-65878A86F344}', 'Buffer' => $sendcommand], JSON_THROW_ON_ERROR)
         ); //Denon AVR Telnet Interface GUI
     }
@@ -390,9 +380,7 @@ class DenonAVRTelnet extends AVRModule
     : void
     {
         if ($step < 1 || $step > 40) {
-            $message = 'Schrittweite muss zwischen 1 und 40 liegen';
-            echo $message;
-            $this->SendDebug('Fehlerhafter Eingabewert:', $message, 0);
+            $this->Logger_Err(__FUNCTION__ . ': Schrittweite muss zwischen 1 und 40 liegen');
 
             return;
         }
@@ -1563,12 +1551,7 @@ class DenonAVRTelnet extends AVRModule
         $form = [];
         if ($Zone === 0) {
             foreach ($profiles as $profile) {
-                if ($this->testAllProperties) {
-                    $commandArea_max = $commandArea . '_max';
-                    $Caps            = AVR::$$commandArea_max;
-                } else {
-                    $Caps = $AVRCaps[$commandArea];
-                }
+                $Caps = $AVRCaps[$commandArea];
                 $item = $this->getTypeItem('CheckBox', $profile['Ident'], $profile['PropertyName'], $profile['Name'], $Caps);
                 if ($item) {
                     $form[] = $item;

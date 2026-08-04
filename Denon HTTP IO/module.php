@@ -86,8 +86,11 @@ class DenonAVRIOHTTP extends IPSModuleStrict
             $this->SendDebug('Command Out', json_encode($command), 0);
             $this->SendCommand($command);
         } catch (Exception $ex) {
-            echo $ex->getMessage();
-            echo ' in ' . $ex->getFile() . ' line: ' . $ex->getLine() . '.';
+            $this->SendDebug(__FUNCTION__, $ex->getMessage(), 0);
+            $this->LogMessage(
+                'Denon AVR I/O: ' . $ex->getMessage() . ' in ' . $ex->getFile() . ' line: ' . $ex->getLine() . '.',
+                KL_ERROR
+            );
         }
         return '';
     }
@@ -118,14 +121,14 @@ class DenonAVRIOHTTP extends IPSModuleStrict
             }
             $this->unlock('HTTPGetState');
 
-            //return $data;
-            return 0; // keine Ahnung, was hier passieren soll todo
+            return 0;
         }
 
-        echo "Can not send to parent \n";
+        $this->SendDebug('Denon HTTP I/O:', 'Can not send to parent', 0);
+        $this->LogMessage('Denon AVR I/O: Can not send to parent', KL_ERROR);
         $this->unlock('HTTPGetState');
 
-        return 0; //keine Ahnung, welchen Status die Instanz liefern sollte todo
+        return 0;
     }
 
     private function SendJSON($data)
@@ -137,8 +140,6 @@ class DenonAVRIOHTTP extends IPSModuleStrict
     private function SendCommand(string $command)
     {
         $ip = $this->ReadPropertyString('Host');
-        //Ins URL Format bringen
-        //$command = urlencode ($command);
 
         //Semaphore setzen
         if ($this->lock('HTTPCommandSend')) {
@@ -158,11 +159,9 @@ class DenonAVRIOHTTP extends IPSModuleStrict
             }
             $this->unlock('HTTPCommandSend');
         } else {
-            echo "Can not send to parent \n";
             $this->SendDebug('Denon HTTP I/O:', 'Can not send to AVR', 0);
             $this->LogMessage('Denon AVR I/O: ' . 'Can not send to parent', KL_ERROR);
             $this->unlock('HTTPCommandSend');
-            //throw new Exception("Can not send to parent",E_USER_NOTICE);
         }
 
         IPS_Sleep(1000); //von 400 auf 1000 erhöht, da manche AVR (z.B. 3312) nicht schnell genug sind
@@ -178,7 +177,6 @@ class DenonAVRIOHTTP extends IPSModuleStrict
             }
             $this->unlock('HTTPCommandSend');
         } else {
-            echo "Can not get response \n";
             $this->SendDebug('Denon HTTP I/O:', 'Can not get response', 0);
             $this->LogMessage('Denon AVR I/O: ' . 'Can not get response', KL_ERROR);
             $this->unlock('HTTPCommandSend');

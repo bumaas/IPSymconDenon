@@ -6,18 +6,6 @@ require_once __DIR__ . '/../DenonClass.php';  // diverse Klassen
 
 class DenonSplitterHTTP extends IPSModuleStrict
 {
-    protected bool $debug = false;
-
-    public function __construct($InstanceID)
-    {
-        parent::__construct($InstanceID);
-
-        if (file_exists(IPS_GetLogDir() . 'denondebug.txt')) {
-            $this->debug = true;
-        }
-    }
-
-
     public function ApplyChanges(): void
     {
         //Never delete this line!
@@ -86,7 +74,7 @@ class DenonSplitterHTTP extends IPSModuleStrict
         // Empfangene Daten von der Device-Instanz
         $data     = json_decode($JSONString, false, 512, JSON_THROW_ON_ERROR);
         $datasend = $data->Buffer;
-        $this->SendDebug('Command Out', print_r($datasend, true), 0);
+        $this->SendDebug('Command Out', json_encode($datasend, JSON_THROW_ON_ERROR), 0);
 
         // Weiterleiten zur I/O Instanz
         return $this->SendDataToParent(

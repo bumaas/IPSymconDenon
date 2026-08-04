@@ -27,8 +27,6 @@ class AVRModule extends IPSModuleStrict
         DENONIPSProfiles::ptZone3InputSource,
     ];
 
-    protected bool $testAllProperties = false;
-
     private const int STATUS_INST_IP_IS_INVALID                = 204; //IP-Adresse ist ungültig
     private const int STATUS_INST_NO_MANUFACTURER_SELECTED     = 210;
     private const int STATUS_INST_NO_ZONE_SELECTED             = 212;
@@ -269,7 +267,7 @@ class AVRModule extends IPSModuleStrict
         $intervals = $this->buildValuePresentationIntervals($associations);
 
         if ($varDef['displayOnly']) {
-            if ($varDef['ProfilName'] === '~HTMLBox') {
+            if (($varDef['ProfilName'] ?? '') === '~HTMLBox') {
                 return [
                     'PRESENTATION' => VARIABLE_PRESENTATION_WEB_CONTENT,
                 ];
@@ -2715,7 +2713,6 @@ class DENONIPSVarType extends stdClass
                         'Ident'        => $profile['Ident'],
                         'Type'         => $profile['Type'],
                         'PropertyName' => $profile['PropertyName'],
-                        'ProfilName'   => '~Switch',
                         'Position'     => $this->getpos($configId),
                         'displayOnly'  => $profile['displayOnly'] ?? false
                 ];
@@ -3181,38 +3178,23 @@ class DENON_StatusHTML extends stdClass
                 call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'http (MainZone): ' . $http);
             }
             $xmlMainZone = @new SimpleXMLElement(file_get_contents($http));
-            if ($xmlMainZone) {
-                $DataMain = $this->MainZoneXml($xmlMainZone, $DataMain, $VarMappings, $Inputs);
-            } else {
-                exit('Datei ' . $xmlMainZone . ' konnte nicht geöffnet werden.');
-            }
+            $DataMain    = $this->MainZoneXml($xmlMainZone, $DataMain, $VarMappings, $Inputs);
         } catch (Exception $e) {
-            echo $e->getMessage();
-            //echo "bad xml";
+            IPS_LogMessage(__CLASS__, __FUNCTION__ . ': ' . $e->getMessage());
         }
 
         try {
             $xmlNetAudioStatus = @new SimpleXMLElement(file_get_contents('http://' . $ip . '/goform/formMainZone_NetAudioStatusXml.xml'));
-            if ($xmlNetAudioStatus) {
-                $DataMain = $this->NetAudioStatusXml($xmlNetAudioStatus, $DataMain);
-            } else {
-                exit('Datei ' . $xmlNetAudioStatus . ' konnte nicht geöffnet werden.');
-            }
+            $DataMain          = $this->NetAudioStatusXml($xmlNetAudioStatus, $DataMain);
         } catch (Exception $e) {
-            echo $e->getMessage();
-            //echo "bad xml";
+            IPS_LogMessage(__CLASS__, __FUNCTION__ . ': ' . $e->getMessage());
         }
 
         try {
             $xmlDeviceinfo = @new SimpleXMLElement(file_get_contents('http://' . $ip . '/goform/formMainZone_Deviceinfo.xml'));
-            if ($xmlDeviceinfo) {
-                $DataMain = $this->Deviceinfo($xmlDeviceinfo, $DataMain);
-            } else {
-                exit('Datei ' . $xmlDeviceinfo . ' konnte nicht geöffnet werden.');
-            }
+            $DataMain      = $this->Deviceinfo($xmlDeviceinfo, $DataMain);
         } catch (Exception $e) {
-            echo $e->getMessage();
-            //echo "bad xml";
+            IPS_LogMessage(__CLASS__, __FUNCTION__ . ': ' . $e->getMessage());
         }
 
         // Zone 2
@@ -3220,15 +3202,10 @@ class DENON_StatusHTML extends stdClass
         $DataZ2 = [];
 
         try {
-            $xml = @new SimpleXMLElement(file_get_contents('http://' . $ip . '/goform/formMainZone_MainZoneXml.xml?_=&ZoneName=ZONE2'));
-            if ($xml) {
-                $DataZ2 = $this->StateZone2($xml, $DataZ2, $InputMapping);
-            } else {
-                exit('Datei ' . $xml . ' konnte nicht geöffnet werden.');
-            }
+            $xml    = @new SimpleXMLElement(file_get_contents('http://' . $ip . '/goform/formMainZone_MainZoneXml.xml?_=&ZoneName=ZONE2'));
+            $DataZ2 = $this->StateZone2($xml, $DataZ2, $InputMapping);
         } catch (Exception $e) {
-            echo $e->getMessage();
-            //echo "bad xml";
+            IPS_LogMessage(__CLASS__, __FUNCTION__ . ': ' . $e->getMessage());
         }
 
         // Zone 3
@@ -3236,30 +3213,20 @@ class DENON_StatusHTML extends stdClass
         $DataZ3 = [];
 
         try {
-            $xml = @new SimpleXMLElement(file_get_contents('http://' . $ip . '/goform/formMainZone_MainZoneXml.xml?_=&ZoneName=ZONE3'));
-            if ($xml) {
-                $DataZ3 = $this->StateZone3($xml, $DataZ3, $InputMapping);
-            } else {
-                exit('Datei ' . $xml . ' konnte nicht geöffnet werden.');
-            }
+            $xml    = @new SimpleXMLElement(file_get_contents('http://' . $ip . '/goform/formMainZone_MainZoneXml.xml?_=&ZoneName=ZONE3'));
+            $DataZ3 = $this->StateZone3($xml, $DataZ3, $InputMapping);
         } catch (Exception $e) {
-            echo $e->getMessage();
-            //echo "bad xml";
+            IPS_LogMessage(__CLASS__, __FUNCTION__ . ': ' . $e->getMessage());
         }
 
         //Model
         try {
             $xmlDeviceSearch = @new SimpleXMLElement(file_get_contents('http://' . $ip . '/goform/formiPhoneAppDeviceSearch.xml'));
-            if ($xmlDeviceSearch) {
-                $DataMain = $this->DeviceSearch($xmlDeviceSearch, $DataMain);
-                $DataZ2 = $this->DeviceSearch($xmlDeviceSearch, $DataZ2);
-                $DataZ3 = $this->DeviceSearch($xmlDeviceSearch, $DataZ3);
-            } else {
-                exit('Datei ' . $xmlDeviceSearch . ' konnte nicht geöffnet werden.');
-            }
+            $DataMain        = $this->DeviceSearch($xmlDeviceSearch, $DataMain);
+            $DataZ2          = $this->DeviceSearch($xmlDeviceSearch, $DataZ2);
+            $DataZ3          = $this->DeviceSearch($xmlDeviceSearch, $DataZ3);
         } catch (Exception $e) {
-            echo $e->getMessage();
-            //echo "bad xml";
+            IPS_LogMessage(__CLASS__, __FUNCTION__ . ': ' . $e->getMessage());
         }
 
         $datasend = [

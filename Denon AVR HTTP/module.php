@@ -11,9 +11,6 @@ class DenonAVRHTTP extends AVRModule
         //Never delete this line!
         parent::Create();
 
-        // 1. Verfügbarer DenonSplitter wird verbunden oder neu erzeugt, wenn nicht vorhanden.
-        //$this->ConnectParent('{0C62027E-7CD7-4DF8-890B-B0FEE37857D4}');
-
         $this->RegisterProperties();
     }
 
@@ -128,8 +125,7 @@ class DenonAVRHTTP extends AVRModule
         try {
             $this->SendCommand($APICommand . $APISubCommand);
         } catch (Exception $ex) {
-            trigger_error($ex->getMessage(), $ex->getCode());
-            echo $ex->getMessage();
+            $this->Logger_Err($ex->getMessage());
         }
 
     }
@@ -438,32 +434,21 @@ class DenonAVRHTTP extends AVRModule
      */
     private function FormActions()
     {
-        $manufacturername = $this->GetManufacturerName();
-        $form = [
-        ];
-        if ($manufacturername === 'none') {
-            $form = array_merge_recursive(
-                $form,
-                []
-            );
-        } else {
-
-            $form = array_merge_recursive(
-                $form,
-                [
-                    [
-                        'type'    => 'Button',
-                        'caption' => 'Power On',
-                        'onClick' => 'DAVRH_Power($id, true);'
-                    ],
-                    [
-                        'type'    => 'Button',
-                        'caption' => 'Power Off',
-                        'onClick' => 'DAVRH_Power($id, false);'
-                    ]
-                ]
-            );
+        if ($this->GetManufacturerName() === 'none') {
+            return [];
         }
-        return $form;
+
+        return [
+            [
+                'type'    => 'Button',
+                'caption' => 'Power On',
+                'onClick' => 'DAVRH_Power($id, true);'
+            ],
+            [
+                'type'    => 'Button',
+                'caption' => 'Power Off',
+                'onClick' => 'DAVRH_Power($id, false);'
+            ]
+        ];
     }
 }
