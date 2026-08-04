@@ -59,3 +59,6 @@ CLAUDE.local.md
 
 # Test-Voll-Dumps (per tests/golden_regression.php --dump erzeugt)
 tests/dump/
+
+# Git-Bash-Crashdumps
+*.stackdump
