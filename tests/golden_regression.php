@@ -40,6 +40,7 @@ $dumpDir   = __DIR__ . '/dump';
 require_once __DIR__ . '/symcon_stubs.php';
 require_once $root . '/DenonClass.php';
 require_once $root . '/Denon AVR Telnet/module.php';
+require_once $root . '/Denon AVR HTTP/module.php';
 
 // trigger_error-Meldungen einsammeln statt ausgeben (auch E_USER_ERROR darf
 // nicht abbrechen - der Fehlerkanal ist Teil des eingefrorenen Verhaltens)
@@ -93,6 +94,21 @@ class TelnetHarness extends DenonAVRTelnet
     }
 }
 
+class HttpHarness extends DenonAVRHTTP
+{
+    protected function GetInputsAVR(DENONIPSProfiles $DenonAVRVar): array
+    {
+        return ['Inputs' => [], 'InputMapping' => []];
+    }
+
+    // ohne Parent-/IO-Instanz liefert SetInstanceStatus() immer false und der
+    // Registrierungspfad wuerde nie erreicht - im Test als gueltig annehmen
+    protected function SetInstanceStatus(): bool
+    {
+        return true;
+    }
+}
+
 // Referenzmodelle/-kombinationen (Namen sind Keys von AVRs::getAllAVRs());
 // Voll-Dumps weiterer Modelle bei Bedarf per --dump <Modell>
 const PRESENTATION_FULL_MODELS = ['AVR-X3800H'];
@@ -110,9 +126,9 @@ function manufacturerName(int $manufacturer): string
     return $manufacturer === 2 ? DENONIPSProfiles::ManufacturerMarantz : DENONIPSProfiles::ManufacturerDenon;
 }
 
-function newTelnetHarness(array $combo): TelnetHarness
+function newHarness(string $class, array $combo): IPSModuleStrict
 {
-    $harness = new TelnetHarness(0);
+    $harness = new $class(0);
     $harness->Create();
     $caps = AVRs::getAllAVRs()[$combo['model']];
     $harness->setPropertyForTest('manufacturer', $combo['manufacturer']);
@@ -188,15 +204,39 @@ function buildFiles(): array
     }
     $files['presentations.json'] = $presentations;
 
-    // registration: aufgezeichnete Variablen-Registrierung je Kombination
+    // registration: aufgezeichnete Variablen-Registrierung je Kombination (Telnet)
     $registration = [];
     foreach (COMBOS as $combo) {
-        $harness = newTelnetHarness($combo);
-        $method  = new ReflectionMethod(DenonAVRTelnet::class, 'ValidateConfiguration');
-        $method->invoke($harness, manufacturerName($combo['manufacturer']), $combo['model']);
-        $registration[$combo['label']] = ['recorded' => $harness->recorded, 'errors' => takeErrors()];
+        $harness = newHarness(TelnetHarness::class, $combo);
+        $entry   = [];
+        try {
+            $method = new ReflectionMethod(DenonAVRTelnet::class, 'ValidateConfiguration');
+            $method->invoke($harness, manufacturerName($combo['manufacturer']), $combo['model']);
+        } catch (Throwable $e) {
+            $entry['exception'] = get_class($e) . ': ' . $e->getMessage();
+        }
+        $entry['recorded'] = $harness->recorded;
+        $entry['errors']   = takeErrors();
+        $registration[$combo['label']] = $entry;
     }
     $files['registration.json'] = $registration;
+
+    // registration_http: dito fuer das HTTP-Modul (ValidateConfiguration ohne Parameter)
+    $registrationHttp = [];
+    foreach ([COMBOS[0], COMBOS[2]] as $combo) {
+        $harness = newHarness(HttpHarness::class, $combo);
+        $entry   = [];
+        try {
+            $method = new ReflectionMethod(DenonAVRHTTP::class, 'ValidateConfiguration');
+            $method->invoke($harness);
+        } catch (Throwable $e) {
+            $entry['exception'] = get_class($e) . ': ' . $e->getMessage();
+        }
+        $entry['recorded'] = $harness->recorded;
+        $entry['errors']   = takeErrors();
+        $registrationHttp[$combo['label']] = $entry;
+    }
+    $files['registration_http.json'] = $registrationHttp;
 
     // wrappers: alle oeffentlichen Telnet-Befehlsmethoden mit Beispielwerten
     $samples  = [
@@ -256,7 +296,7 @@ function buildFiles(): array
     // forms: GetConfigurationForm je Kombination
     $forms = [];
     foreach (COMBOS as $combo) {
-        $harness = newTelnetHarness($combo);
+        $harness = newHarness(TelnetHarness::class, $combo);
         $json    = $harness->GetConfigurationForm();
         $forms[$combo['label']] = ['length' => strlen($json), 'sha256' => hash('sha256', $json), 'errors' => takeErrors()];
         if ($combo['label'] === FORMS_FULL_LABEL) {

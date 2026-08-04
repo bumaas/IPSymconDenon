@@ -9921,7 +9921,7 @@
             "Ident": "PSFH",
             "Type": 0,
             "PropertyName": "FrontHeight",
-            "Position": 660,
+            "Position": 650,
             "displayOnly": false
         },
         "presentation": {
@@ -9935,7 +9935,7 @@
             "Ident": "PSSWR",
             "Type": 0,
             "PropertyName": "Subwoofer",
-            "Position": 670,
+            "Position": 660,
             "displayOnly": false
         },
         "presentation": {
@@ -9949,7 +9949,7 @@
             "Ident": "PSTONE_CTRL",
             "Type": 0,
             "PropertyName": "ToneCTRL",
-            "Position": 680,
+            "Position": 670,
             "displayOnly": false
         },
         "presentation": {
@@ -10025,7 +10025,7 @@
                     6
                 ]
             ],
-            "Position": 690,
+            "Position": 680,
             "displayOnly": false
         },
         "presentation": {
@@ -10107,7 +10107,7 @@
                     6
                 ]
             ],
-            "Position": 700,
+            "Position": 690,
             "displayOnly": false
         },
         "presentation": {
@@ -10127,7 +10127,7 @@
             "Ident": "PSLOM",
             "Type": 0,
             "PropertyName": "LoudnessManagement",
-            "Position": 710,
+            "Position": 700,
             "displayOnly": false
         },
         "presentation": {
@@ -10219,7 +10219,7 @@
                     16
                 ]
             ],
-            "Position": 720,
+            "Position": 710,
             "displayOnly": false
         },
         "presentation": {
@@ -10269,7 +10269,7 @@
                     " HIGH"
                 ]
             ],
-            "Position": 730,
+            "Position": 720,
             "displayOnly": false
         },
         "presentation": {
@@ -10491,7 +10491,7 @@
                     12
                 ]
             ],
-            "Position": 740,
+            "Position": 730,
             "displayOnly": false
         },
         "presentation": {
@@ -10717,7 +10717,7 @@
                     12
                 ]
             ],
-            "Position": 750,
+            "Position": 740,
             "displayOnly": false
         },
         "presentation": {
@@ -10943,7 +10943,7 @@
                     12
                 ]
             ],
-            "Position": 760,
+            "Position": 750,
             "displayOnly": false
         },
         "presentation": {
@@ -11169,7 +11169,7 @@
                     12
                 ]
             ],
-            "Position": 770,
+            "Position": 760,
             "displayOnly": false
         },
         "presentation": {
@@ -11395,7 +11395,7 @@
                     12
                 ]
             ],
-            "Position": 780,
+            "Position": 770,
             "displayOnly": false
         },
         "presentation": {
@@ -11525,7 +11525,7 @@
                     12
                 ]
             ],
-            "Position": 800,
+            "Position": 780,
             "displayOnly": false
         },
         "presentation": {
@@ -11599,7 +11599,7 @@
                     -10
                 ]
             ],
-            "Position": 810,
+            "Position": 790,
             "displayOnly": false
         },
         "presentation": {
@@ -11693,7 +11693,7 @@
                     -15
                 ]
             ],
-            "Position": 820,
+            "Position": 800,
             "displayOnly": false
         },
         "presentation": {
@@ -11713,7 +11713,7 @@
             "Ident": "PSPAN",
             "Type": 0,
             "PropertyName": "Panorama",
-            "Position": 830,
+            "Position": 810,
             "displayOnly": false
         },
         "presentation": {
@@ -11772,7 +11772,7 @@
                     " 06"
                 ]
             ],
-            "Position": 840,
+            "Position": 820,
             "displayOnly": false
         },
         "presentation": {
@@ -11830,7 +11830,7 @@
                     7
                 ]
             ],
-            "Position": 850,
+            "Position": 830,
             "displayOnly": false
         },
         "presentation": {
@@ -11850,7 +11850,7 @@
             "Ident": "PSCES",
             "Type": 0,
             "PropertyName": "CenterSpread",
-            "Position": 860,
+            "Position": 840,
             "displayOnly": false
         },
         "presentation": {
@@ -11918,7 +11918,7 @@
                     0.9999999999999999
                 ]
             ],
-            "Position": 870,
+            "Position": 850,
             "displayOnly": false
         },
         "presentation": {
@@ -11992,7 +11992,7 @@
                     0.9999999999999999
                 ]
             ],
-            "Position": 880,
+            "Position": 860,
             "displayOnly": false
         },
         "presentation": {
@@ -12050,7 +12050,7 @@
                     6
                 ]
             ],
-            "Position": 890,
+            "Position": 870,
             "displayOnly": false
         },
         "presentation": {
@@ -12070,7 +12070,7 @@
             "Ident": "PSNEURAL",
             "Type": 0,
             "PropertyName": "Neural",
-            "Position": 900,
+            "Position": 880,
             "displayOnly": false
         },
         "presentation": {
@@ -12084,7 +12084,7 @@
             "Ident": "PSSPV",
             "Type": 0,
             "PropertyName": "SpeakerVirtualizer",
-            "Position": 910,
+            "Position": 890,
             "displayOnly": false
         },
         "presentation": {
@@ -12128,7 +12128,7 @@
                     ":PRO LOGIC"
                 ]
             ],
-            "Position": 920,
+            "Position": 900,
             "displayOnly": false
         },
         "presentation": {
@@ -12169,7 +12169,7 @@
                     " HI"
                 ]
             ],
-            "Position": 930,
+            "Position": 910,
             "displayOnly": false
         },
         "presentation": {
@@ -12215,7 +12215,7 @@
                     " ONHW"
                 ]
             ],
-            "Position": 940,
+            "Position": 920,
             "displayOnly": false
         },
         "presentation": {
@@ -12325,7 +12325,7 @@
                     10
                 ]
             ],
-            "Position": 950,
+            "Position": 930,
             "displayOnly": false
         },
         "presentation": {
@@ -12439,7 +12439,7 @@
                     10
                 ]
             ],
-            "Position": 960,
+            "Position": 940,
             "displayOnly": false
         },
         "presentation": {
@@ -12459,7 +12459,7 @@
             "Ident": "PSCINEMA_EQ",
             "Type": 0,
             "PropertyName": "CinemaEQ",
-            "Position": 970,
+            "Position": 950,
             "displayOnly": false
         },
         "presentation": {
@@ -12473,7 +12473,7 @@
             "Ident": "PSHT_EQ",
             "Type": 0,
             "PropertyName": "HTEQ",
-            "Position": 980,
+            "Position": 960,
             "displayOnly": false
         },
         "presentation": {
@@ -12522,7 +12522,7 @@
                     ":MANUAL"
                 ]
             ],
-            "Position": 990,
+            "Position": 970,
             "displayOnly": false
         },
         "presentation": {
@@ -12538,7 +12538,7 @@
             "Ident": "PSDYNEQ",
             "Type": 0,
             "PropertyName": "DynamicEQ",
-            "Position": 1000,
+            "Position": 980,
             "displayOnly": false
         },
         "presentation": {
@@ -12582,7 +12582,7 @@
                     " 15"
                 ]
             ],
-            "Position": 1010,
+            "Position": 990,
             "displayOnly": false
         },
         "presentation": {
@@ -12628,7 +12628,7 @@
                     " 3"
                 ]
             ],
-            "Position": 1020,
+            "Position": 1000,
             "displayOnly": false
         },
         "presentation": {
@@ -12674,7 +12674,7 @@
                     " HEV"
                 ]
             ],
-            "Position": 1030,
+            "Position": 1010,
             "displayOnly": false
         },
         "presentation": {
@@ -12690,7 +12690,7 @@
             "Ident": "PSLFC",
             "Type": 0,
             "PropertyName": "AudysseyLFC",
-            "Position": 1040,
+            "Position": 1020,
             "displayOnly": false
         },
         "presentation": {
@@ -12746,7 +12746,7 @@
                     7
                 ]
             ],
-            "Position": 1050,
+            "Position": 1030,
             "displayOnly": false
         },
         "presentation": {
@@ -12766,7 +12766,7 @@
             "Ident": "PSGEQ",
             "Type": 0,
             "PropertyName": "GraphicEQ",
-            "Position": 1060,
+            "Position": 1040,
             "displayOnly": false
         },
         "presentation": {
@@ -12780,7 +12780,7 @@
             "Ident": "PSHEQ",
             "Type": 0,
             "PropertyName": "HeadphoneEQ",
-            "Position": 1070,
+            "Position": 1050,
             "displayOnly": false
         },
         "presentation": {
@@ -12829,7 +12829,7 @@
                     " HI"
                 ]
             ],
-            "Position": 1080,
+            "Position": 1060,
             "displayOnly": false
         },
         "presentation": {
@@ -12875,7 +12875,7 @@
                     " HIGH"
                 ]
             ],
-            "Position": 1090,
+            "Position": 1070,
             "displayOnly": false
         },
         "presentation": {
@@ -12921,7 +12921,7 @@
                     " HI"
                 ]
             ],
-            "Position": 1100,
+            "Position": 1080,
             "displayOnly": false
         },
         "presentation": {
@@ -13751,7 +13751,7 @@
                     200
                 ]
             ],
-            "Position": 1110,
+            "Position": 1090,
             "displayOnly": false
         },
         "presentation": {
@@ -13801,7 +13801,7 @@
                     " SPE"
                 ]
             ],
-            "Position": 1120,
+            "Position": 1100,
             "displayOnly": false
         },
         "presentation": {
@@ -13895,7 +13895,7 @@
                     16
                 ]
             ],
-            "Position": 1130,
+            "Position": 1110,
             "displayOnly": false
         },
         "presentation": {
@@ -13940,7 +13940,7 @@
                     " LAR"
                 ]
             ],
-            "Position": 1140,
+            "Position": 1120,
             "displayOnly": false
         },
         "presentation": {
@@ -14030,7 +14030,7 @@
                     15
                 ]
             ],
-            "Position": 1150,
+            "Position": 1130,
             "displayOnly": false
         },
         "presentation": {
@@ -14050,7 +14050,7 @@
             "Ident": "PSAFD",
             "Type": 0,
             "PropertyName": "AFDM",
-            "Position": 1160,
+            "Position": 1140,
             "displayOnly": false
         },
         "presentation": {
@@ -14104,7 +14104,7 @@
                     " L"
                 ]
             ],
-            "Position": 1170,
+            "Position": 1150,
             "displayOnly": false
         },
         "presentation": {
@@ -14155,7 +14155,7 @@
                     ":PL2X MUSIC"
                 ]
             ],
-            "Position": 1180,
+            "Position": 1160,
             "displayOnly": false
         },
         "presentation": {
@@ -15385,7 +15385,7 @@
                     300
                 ]
             ],
-            "Position": 1190,
+            "Position": 1170,
             "displayOnly": false
         },
         "presentation": {
@@ -15405,7 +15405,7 @@
             "Ident": "PSATT",
             "Type": 0,
             "PropertyName": "SubwooferATT",
-            "Position": 1200,
+            "Position": 1180,
             "displayOnly": false
         },
         "presentation": {
@@ -15449,7 +15449,7 @@
                     " LOW"
                 ]
             ],
-            "Position": 1210,
+            "Position": 1190,
             "displayOnly": false
         },
         "presentation": {
@@ -15495,7 +15495,7 @@
                     " BT"
                 ]
             ],
-            "Position": 1220,
+            "Position": 1200,
             "displayOnly": false
         },
         "presentation": {
@@ -15531,7 +15531,7 @@
                     " 2"
                 ]
             ],
-            "Position": 1230,
+            "Position": 1210,
             "displayOnly": false
         },
         "presentation": {
@@ -15597,7 +15597,7 @@
                     "NGT"
                 ]
             ],
-            "Position": 1240,
+            "Position": 1220,
             "displayOnly": false
         },
         "presentation": {
@@ -15675,7 +15675,7 @@
                     6
                 ]
             ],
-            "Position": 1250,
+            "Position": 1230,
             "displayOnly": false
         },
         "presentation": {
@@ -15757,7 +15757,7 @@
                     12
                 ]
             ],
-            "Position": 1260,
+            "Position": 1240,
             "displayOnly": false
         },
         "presentation": {
@@ -15839,7 +15839,7 @@
                     6
                 ]
             ],
-            "Position": 1270,
+            "Position": 1250,
             "displayOnly": false
         },
         "presentation": {
@@ -15921,7 +15921,7 @@
                     6
                 ]
             ],
-            "Position": 1280,
+            "Position": 1260,
             "displayOnly": false
         },
         "presentation": {
@@ -16003,7 +16003,7 @@
                     6
                 ]
             ],
-            "Position": 1290,
+            "Position": 1270,
             "displayOnly": false
         },
         "presentation": {
@@ -16053,7 +16053,7 @@
                     " HI"
                 ]
             ],
-            "Position": 1300,
+            "Position": 1280,
             "displayOnly": false
         },
         "presentation": {
@@ -16131,7 +16131,7 @@
                     12
                 ]
             ],
-            "Position": 1310,
+            "Position": 1290,
             "displayOnly": false
         },
         "presentation": {
@@ -16176,7 +16176,7 @@
                     "2"
                 ]
             ],
-            "Position": 1320,
+            "Position": 1300,
             "displayOnly": false
         },
         "presentation": {
@@ -16242,7 +16242,7 @@
                     "AUTO"
                 ]
             ],
-            "Position": 1330,
+            "Position": 1310,
             "displayOnly": false
         },
         "presentation": {
@@ -16313,7 +16313,7 @@
                     "OFF"
                 ]
             ],
-            "Position": 1340,
+            "Position": 1320,
             "displayOnly": false
         },
         "presentation": {
@@ -16359,7 +16359,7 @@
                     "MBYP"
                 ]
             ],
-            "Position": 1350,
+            "Position": 1330,
             "displayOnly": false
         },
         "presentation": {
@@ -16395,7 +16395,7 @@
                     " AMP"
                 ]
             ],
-            "Position": 1360,
+            "Position": 1340,
             "displayOnly": false
         },
         "presentation": {
@@ -16431,7 +16431,7 @@
                     "FUL"
                 ]
             ],
-            "Position": 1370,
+            "Position": 1350,
             "displayOnly": false
         },
         "presentation": {
@@ -16447,7 +16447,7 @@
             "Ident": "VSVST",
             "Type": 0,
             "PropertyName": "VerticalStretch",
-            "Position": 1380,
+            "Position": 1360,
             "displayOnly": false
         },
         "presentation": {
@@ -16461,7 +16461,7 @@
             "Ident": "MNMEN",
             "Type": 0,
             "PropertyName": "GUIMenu",
-            "Position": 1390,
+            "Position": 1370,
             "displayOnly": false
         },
         "presentation": {
@@ -16475,7 +16475,7 @@
             "Ident": "MNSRC",
             "Type": 0,
             "PropertyName": "GUIMenuSource",
-            "Position": 1400,
+            "Position": 1380,
             "displayOnly": false
         },
         "presentation": {
@@ -16529,7 +16529,7 @@
                     "RTN"
                 ]
             ],
-            "Position": 1410,
+            "Position": 1390,
             "displayOnly": false
         },
         "presentation": {
@@ -16545,7 +16545,7 @@
             "Ident": "MNZST",
             "Type": 0,
             "PropertyName": "AllZoneStereo",
-            "Position": 1420,
+            "Position": 1400,
             "displayOnly": false
         },
         "presentation": {
@@ -16589,7 +16589,7 @@
                     " BRI"
                 ]
             ],
-            "Position": 1430,
+            "Position": 1410,
             "displayOnly": false
         },
         "presentation": {
@@ -16605,7 +16605,7 @@
             "Ident": "SSHOSALS",
             "Type": 0,
             "PropertyName": "AutoLipSync",
-            "Position": 1440,
+            "Position": 1420,
             "displayOnly": false
         },
         "presentation": {
@@ -16620,7 +16620,7 @@
             "Type": 3,
             "PropertyName": "Zone2Name",
             "ProfilName": "Zone2Name",
-            "Position": 1450,
+            "Position": 1430,
             "Icon": "Information",
             "displayOnly": true
         },
@@ -16636,7 +16636,7 @@
             "Ident": "Z2POWER",
             "Type": 0,
             "PropertyName": "Zone2Power",
-            "Position": 1460,
+            "Position": 1440,
             "displayOnly": false
         },
         "presentation": {
@@ -16650,7 +16650,7 @@
             "Ident": "Z2MU",
             "Type": 0,
             "PropertyName": "Zone2Mute",
-            "Position": 1470,
+            "Position": 1450,
             "displayOnly": false
         },
         "presentation": {
@@ -17070,7 +17070,7 @@
                     18
                 ]
             ],
-            "Position": 1480,
+            "Position": 1460,
             "displayOnly": false
         },
         "presentation": {
@@ -17099,7 +17099,7 @@
             "Stepsize": 0,
             "Digits": 0,
             "Associations": [],
-            "Position": 1490,
+            "Position": 1470,
             "displayOnly": false
         },
         "presentation": {
@@ -17134,7 +17134,7 @@
                     "MONO"
                 ]
             ],
-            "Position": 1500,
+            "Position": 1480,
             "displayOnly": false
         },
         "presentation": {
@@ -17356,7 +17356,7 @@
                     12
                 ]
             ],
-            "Position": 1510,
+            "Position": 1490,
             "displayOnly": false
         },
         "presentation": {
@@ -17582,7 +17582,7 @@
                     12
                 ]
             ],
-            "Position": 1520,
+            "Position": 1500,
             "displayOnly": false
         },
         "presentation": {
@@ -17696,7 +17696,7 @@
                     10
                 ]
             ],
-            "Position": 1530,
+            "Position": 1510,
             "displayOnly": false
         },
         "presentation": {
@@ -17810,7 +17810,7 @@
                     10
                 ]
             ],
-            "Position": 1540,
+            "Position": 1520,
             "displayOnly": false
         },
         "presentation": {
@@ -17870,7 +17870,7 @@
                     "5"
                 ]
             ],
-            "Position": 1550,
+            "Position": 1530,
             "displayOnly": false
         },
         "presentation": {
@@ -17886,7 +17886,7 @@
             "Ident": "Z2HPF",
             "Type": 0,
             "PropertyName": "Z2HPF",
-            "Position": 1560,
+            "Position": 1540,
             "displayOnly": false
         },
         "presentation": {
@@ -17920,7 +17920,7 @@
                     " PCM"
                 ]
             ],
-            "Position": 1570,
+            "Position": 1550,
             "displayOnly": false
         },
         "presentation": {
@@ -17998,7 +17998,7 @@
                     120
                 ]
             ],
-            "Position": 1580,
+            "Position": 1560,
             "displayOnly": false
         },
         "presentation": {
@@ -18048,7 +18048,7 @@
                     "8H"
                 ]
             ],
-            "Position": 1590,
+            "Position": 1570,
             "displayOnly": false
         },
         "presentation": {
@@ -18065,7 +18065,7 @@
             "Type": 3,
             "PropertyName": "Zone3Name",
             "ProfilName": "Zone3Name",
-            "Position": 1600,
+            "Position": 1580,
             "Icon": "Information",
             "displayOnly": true
         },
@@ -18081,7 +18081,7 @@
             "Ident": "Z3POWER",
             "Type": 0,
             "PropertyName": "Zone3Power",
-            "Position": 1610,
+            "Position": 1590,
             "displayOnly": false
         },
         "presentation": {
@@ -18095,7 +18095,7 @@
             "Ident": "Z3MU",
             "Type": 0,
             "PropertyName": "Zone3Mute",
-            "Position": 1620,
+            "Position": 1600,
             "displayOnly": false
         },
         "presentation": {
@@ -18515,7 +18515,7 @@
                     18
                 ]
             ],
-            "Position": 1630,
+            "Position": 1610,
             "displayOnly": false
         },
         "presentation": {
@@ -18544,7 +18544,7 @@
             "Stepsize": 0,
             "Digits": 0,
             "Associations": [],
-            "Position": 1640,
+            "Position": 1620,
             "displayOnly": false
         },
         "presentation": {
@@ -18579,7 +18579,7 @@
                     "MONO"
                 ]
             ],
-            "Position": 1650,
+            "Position": 1630,
             "displayOnly": false
         },
         "presentation": {
@@ -18801,7 +18801,7 @@
                     12
                 ]
             ],
-            "Position": 1660,
+            "Position": 1640,
             "displayOnly": false
         },
         "presentation": {
@@ -19027,7 +19027,7 @@
                     12
                 ]
             ],
-            "Position": 1670,
+            "Position": 1650,
             "displayOnly": false
         },
         "presentation": {
@@ -19141,7 +19141,7 @@
                     10
                 ]
             ],
-            "Position": 1680,
+            "Position": 1660,
             "displayOnly": false
         },
         "presentation": {
@@ -19255,7 +19255,7 @@
                     10
                 ]
             ],
-            "Position": 1690,
+            "Position": 1670,
             "displayOnly": false
         },
         "presentation": {
@@ -19315,7 +19315,7 @@
                     "5"
                 ]
             ],
-            "Position": 1700,
+            "Position": 1680,
             "displayOnly": false
         },
         "presentation": {
@@ -19331,7 +19331,7 @@
             "Ident": "Z3HPF",
             "Type": 0,
             "PropertyName": "Z3HPF",
-            "Position": 1710,
+            "Position": 1690,
             "displayOnly": false
         },
         "presentation": {
@@ -19407,7 +19407,7 @@
                     120
                 ]
             ],
-            "Position": 1720,
+            "Position": 1700,
             "displayOnly": false
         },
         "presentation": {
@@ -19457,7 +19457,7 @@
                     "8H"
                 ]
             ],
-            "Position": 1730,
+            "Position": 1710,
             "displayOnly": false
         },
         "presentation": {
@@ -19763,7 +19763,7 @@
                     "56"
                 ]
             ],
-            "Position": 1740,
+            "Position": 1720,
             "displayOnly": false
         },
         "presentation": {
@@ -19804,7 +19804,7 @@
                     "DAB"
                 ]
             ],
-            "Position": 1750,
+            "Position": 1730,
             "displayOnly": false
         },
         "presentation": {
@@ -19840,7 +19840,7 @@
                     "ANMANUAL"
                 ]
             ],
-            "Position": 1760,
+            "Position": 1740,
             "displayOnly": false
         },
         "presentation": {

@@ -92,7 +92,7 @@ class DenonAVRHTTP extends AVRModule
             }
         }
 
-        $this->RegisterVariables_OLD($DenonAVRVar, $idents, $AVRType, $manufacturername);
+        $this->RegisterVariables($DenonAVRVar, $idents, $manufacturername);
 
     }
 

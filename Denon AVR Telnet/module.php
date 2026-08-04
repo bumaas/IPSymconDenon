@@ -706,13 +706,13 @@ class DenonAVRTelnet extends AVRModule
     public function ChannelVolumeFDR(float $Value): void
     { // Front Dolby Right -12 to 12, Step 0.5
         $SubCommand = new DENONIPSProfiles()->GetSubCommandOfValue(DENON_API_Commands::CVFDR, $Value);
-        $this->SendCommand(DENON_API_Commands::CVFL . $SubCommand);
+        $this->SendCommand(DENON_API_Commands::CVFDR . $SubCommand);
     }
 
     public function ChannelVolumeSDL(float $Value): void
     { // Surround Dolby Left -12 to 12, Step 0.5
         $SubCommand = new DENONIPSProfiles()->GetSubCommandOfValue(DENON_API_Commands::CVSDL, $Value);
-        $this->SendCommand(DENON_API_Commands::CVFDR . $SubCommand);
+        $this->SendCommand(DENON_API_Commands::CVSDL . $SubCommand);
     }
 
     public function ChannelVolumeSDR(float $Value): void
@@ -854,7 +854,7 @@ class DenonAVRTelnet extends AVRModule
     //Tone CTRL
     public function ToneCTRL(bool $Value): void
     { // Tone CTRL true (On) or false (Off)
-        $SubCommand = new DENONIPSProfiles()->GetSubCommandOfValue(DENON_API_Commands::TONECTRL, $Value);
+        $SubCommand = new DENONIPSProfiles()->GetSubCommandOfValue(DENON_API_Commands::PSTONECTRL, $Value);
         $this->SendCommand(DENON_API_Commands::TONECTRL . $SubCommand);
     }
 

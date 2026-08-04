@@ -55,12 +55,11 @@ Composite-Strings sind über locale.json nicht übersetzbar.
     Golden-Diffs im Commit reviewen — nie um einen roten Test „wegzudrücken".
   - `--dump <Modell>` schreibt Voll-Dumps nach `tests/dump/` (gitignored) zum
     Diff-Debugging bei reinen sha256-Abweichungen.
-  - Die Golden Files **frieren bekannte Altfehler bewusst ein** (Fixes ändern die
-    Goldens sichtbar): `ChannelVolumeFDR` sendet `CVFL`, `ChannelVolumeSDL` sendet
-    `CVFDR`, `ToneCTRL`-Ident-Mismatch (`PSTONE CTRL` vs. `PSTONE_CTRL`),
-    `DENONIPSProfiles::$order` enthält 2 Duplikate (Positionsverschiebung),
-    `Denon AVR HTTP/module.php` ruft nicht existentes `RegisterVariables_OLD()`
-    (Fatal bei ApplyChanges des HTTP-Moduls).
+  - Die ursprünglich mit Build 76 eingefrorenen Altfehler wurden in **Build 77**
+    gegen die Goldens gefixt (CVFDR/CVSDL-Sendeprefixe, ToneCTRL-Ident-Mismatch,
+    `$order`-Duplikate, `RegisterVariables_OLD`-Fatal im HTTP-Modul — letzterer
+    seither per `registration_http.json` mit abgesichert). Die Goldens spiegeln
+    das korrigierte Verhalten.
 
 ## Bekannte offene Punkte (bewusst zurückgestellt)
 

@@ -417,7 +417,7 @@
             "events": [
                 [
                     "SendDataToParent",
-                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFL 395\\r\"}"
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFDR 395\\r\"}"
                 ]
             ],
             "errors": []
@@ -429,7 +429,7 @@
             "events": [
                 [
                     "SendDataToParent",
-                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFL 50\\r\"}"
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFDR 50\\r\"}"
                 ]
             ],
             "errors": []
@@ -729,7 +729,7 @@
             "events": [
                 [
                     "SendDataToParent",
-                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFDR 395\\r\"}"
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSDL 395\\r\"}"
                 ]
             ],
             "errors": []
@@ -741,7 +741,7 @@
             "events": [
                 [
                     "SendDataToParent",
-                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVFDR 50\\r\"}"
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"CVSDL 50\\r\"}"
                 ]
             ],
             "errors": []
@@ -3128,12 +3128,10 @@
             "events": [
                 [
                     "SendDataToParent",
-                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSTONE CTRL\\r\"}"
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSTONE CTRL ON\\r\"}"
                 ]
             ],
-            "errors": [
-                "no profile found. Ident: PSTONE CTRL, Value: 1"
-            ]
+            "errors": []
         },
         {
             "args": [
@@ -3142,12 +3140,10 @@
             "events": [
                 [
                     "SendDataToParent",
-                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSTONE CTRL\\r\"}"
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSTONE CTRL OFF\\r\"}"
                 ]
             ],
-            "errors": [
-                "no profile found. Ident: PSTONE CTRL, Value: "
-            ]
+            "errors": []
         }
     ],
     "TrebleLevel": [

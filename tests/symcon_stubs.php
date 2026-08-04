@@ -85,6 +85,15 @@ function DAVRST_GetInputVarMapping($InstanceID): array
     return [];
 }
 
+function DAVRSH_SaveInputVarmapping($InstanceID, string $MappingInputs): void
+{
+}
+
+function DAVRSH_GetInputVarMapping($InstanceID): array
+{
+    return [];
+}
+
 class IPSModuleStrict
 {
     protected int $InstanceID;

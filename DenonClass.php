@@ -1132,7 +1132,6 @@ class DENONIPSVarType extends stdClass
         //Sound Processing (Audio Setting)
         self::ptFrontSpeaker,
         self::ptSpeakerOutput,
-        self::ptSpeakerOutput,
         self::ptFrontHeight,
         self::ptSubwoofer,
         self::ptToneCTRL,
@@ -1145,7 +1144,6 @@ class DENONIPSVarType extends stdClass
         self::ptSubwoofer2Level,
         self::ptSubwoofer3Level,
         self::ptSubwoofer4Level,
-        self::ptDialogLevelAdjust,
         self::ptDialogLevelAdjust,
         self::ptCenterLevelAdjust,
         self::ptLFELevel,
