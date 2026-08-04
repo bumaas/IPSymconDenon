@@ -11,10 +11,15 @@ Wolbolar/IPSymconDenon), gepflegt von bumaas.
 - `Denon Discovery/` — Konfigurator (SSDP-Suche).
 - `Denon HTTP IO/` — I/O-Modul (HTTP-Polling), `Denon Splitter HTTP/`,
   `Denon Splitter Telnet/` — Splitter.
-- `DenonClass.php` (Repo-Wurzel, ~5000 Zeilen) — Herzstück: Basisklasse `AVRModule`
-  (Variablen-Registrierung, Presentations, Formularteile) + `DENONIPSProfiles`
-  (Katalog der ~174 Variablendefinitionen inkl. Reihenfolge `$order` und
-  Capability-Filterung) + API-Kommandos/Datenklassen.
+- `DenonClass.php` (Repo-Wurzel) — **Aggregator**: lädt `AVRModels.php` + alle
+  Klassen unter `libs/` in der ursprünglichen Deklarationsreihenfolge (statische
+  Initialisierer werden lazy aufgelöst — Reihenfolge nicht „reparieren").
+- `libs/` — die eigentliche Klassenbibliothek: `AVRModule.php` (Basisklasse:
+  Variablen-Registrierung, Presentations, Formularteile, RequestAction-Kern,
+  `sendMappedValue(Name)`-Helfer, Zonen-Prädikate), `DENONIPSProfiles.php`
+  (Katalog der ~174 Variablendefinitionen inkl. `$order` und Capability-
+  Filterung), `DENON_API_Commands.php`, `DENON_StatusHTML.php`,
+  `DenonAVRCP_API_Data.php`, `DENONIPSVarType.php`, `DENON_HTTP_Interface.php`.
 - `DenonAVR.php` / `MarantzAVR.php` — Modellklassen (je Modell Zonen/Fähigkeiten),
   `AVRModels.php` — Capabilities-Register (`AVRs`, `AVR`).
 - `library.json` — Version/Build/Date; Build-Konvention siehe globale CLAUDE.md.
@@ -65,10 +70,11 @@ Composite-Strings sind über locale.json nicht übersetzbar.
 
 - `Denon AVR HTTP` bindet `FormExpertParameters()` nicht ein — die Property
   `WriteDebugInformationToLogfile` ist dort per Formular unerreichbar (Telnet hat sie).
-- ~130 flache Befehls-Wrapper in `Denon AVR Telnet/module.php` (Power() …
-  Zone3QuickSelect()) — Kandidat für spätere Konsolidierung.
 - Keine Aufräum-Routine für verwaiste Alt-Profile aus Bestandsinstallationen
   (vor der Presentations-Umstellung angelegt).
+- Spec-Konformitäts-Check gegen die Hersteller-Protokoll-Excels unter
+  `X:\Denon_Marantz` (u. a. `Marantz_FY23-CY2022_AV_CINEMA_PROTOCOL_V04.xlsx`)
+  steht noch aus — Skript soll lokal lesen, Excels nicht committen.
 
 ## Support-Kontext
 
