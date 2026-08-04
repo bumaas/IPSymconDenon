@@ -133,15 +133,9 @@ class DenonAVRTelnet extends AVRModule
             // ReadProperty of CommandArea 'Zone_Commands'
             foreach ($profiles as $key => $profile) {
                 if (in_array($profile['Ident'], $AVRCaps['Zone_Commands'], true)) {
-                    // if it is a zone specific Command
-                    if (in_array(substr($profile['Ident'], 0, 2), ['Z2', 'Z3'])
-                        || in_array(substr($profile['Ident'], 0, 5), ['Zone2', 'Zone3'])) {
-                        //select only the idents of the current zone
-                        if ((str_starts_with($profile['Ident'], 'Z' . ($Zone + 1)))
-                            || (str_starts_with($profile['Ident'], 'Zone' . ($Zone + 1)))) {
-                            $idents[$key] = $this->ReadPropertyBoolean($profile['PropertyName']);
-                        }
-                    } else {
+                    // Zonen-Commands: nur die der aktuellen Zone, zonenneutrale immer
+                    if (!$this->isZoneSpecificIdent($profile['Ident'])
+                        || $this->identMatchesZone($profile['Ident'], $Zone + 1)) {
                         $idents[$key] = $this->ReadPropertyBoolean($profile['PropertyName']);
                     }
                 }
@@ -1454,23 +1448,14 @@ class DenonAVRTelnet extends AVRModule
             }
         } else {
             foreach ($profiles as $profile) {
-                // if it is a zone specific Command
-                if (in_array(substr($profile['Ident'], 0, 2), ['Z2', 'Z3'])
-                    || in_array(substr($profile['Ident'], 0, 5), ['Zone2', 'Zone3'])) {
-                    //select only the idents of the current zone
-                    if ((str_starts_with($profile['Ident'], 'Z' . $Zone))
-                        || (str_starts_with($profile['Ident'], 'Zone' . $Zone))) {
-                        $item =
-                            $this->getTypeItem('CheckBox', $profile['Ident'], $profile['PropertyName'], $profile['Name'], $AVRCaps['Zone_Commands']);
-                        if ($item) {
-                            $form[] = $item;
-                        }
-                    }
-                } else {
-                    $item = $this->getTypeItem('CheckBox', $profile['Ident'], $profile['PropertyName'], $profile['Name'], $AVRCaps['Zone_Commands']);
-                    if ($item) {
-                        $form[] = $item;
-                    }
+                // Zonen-Commands: nur die der aktuellen Zone, zonenneutrale immer
+                if ($this->isZoneSpecificIdent($profile['Ident'])
+                    && !$this->identMatchesZone($profile['Ident'], $Zone)) {
+                    continue;
+                }
+                $item = $this->getTypeItem('CheckBox', $profile['Ident'], $profile['PropertyName'], $profile['Name'], $AVRCaps['Zone_Commands']);
+                if ($item) {
+                    $form[] = $item;
                 }
             }
         }

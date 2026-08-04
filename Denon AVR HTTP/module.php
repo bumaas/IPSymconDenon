@@ -75,17 +75,10 @@ class DenonAVRHTTP extends AVRModule
 
             // ReadProperty of CommandArea 'Zone_Commands'
             foreach ($profiles as $key=>$profile) {
-                if (in_array($profile['Ident'], $AVRCaps['Zone_Commands'])) {
-                    // if it is a zone specific Command
-                    if (in_array(substr($profile['Ident'], 0, 2), ['Z2', 'Z3'])
-                        || in_array(substr($profile['Ident'], 0, 5), ['Zone2', 'Zone3'])) {
-
-                        //select only the idents of the current zone
-                        if ((substr($profile['Ident'], 0, 2) == 'Z' . ($Zone + 1))
-                            || (substr($profile['Ident'], 0, 5) == 'Zone' . ($Zone + 1))) {
-                            $idents[$key] = $this->ReadPropertyBoolean($profile['PropertyName']);
-                        }
-                    } else {
+                if (in_array($profile['Ident'], $AVRCaps['Zone_Commands'], true)) {
+                    // Zonen-Commands: nur die der aktuellen Zone, zonenneutrale immer
+                    if (!$this->isZoneSpecificIdent($profile['Ident'])
+                        || $this->identMatchesZone($profile['Ident'], $Zone + 1)) {
                         $idents[$key] = $this->ReadPropertyBoolean($profile['PropertyName']);
                     }
                 }

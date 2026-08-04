@@ -532,6 +532,20 @@ class AVRModule extends IPSModuleStrict
         return $APICommand;
     }
 
+    // Ident gehoert zu einer Nebenzone (Z2/Z3/Zone2/Zone3-Praefix)?
+    protected function isZoneSpecificIdent(string $ident): bool
+    {
+        return in_array(substr($ident, 0, 2), ['Z2', 'Z3'], true)
+               || in_array(substr($ident, 0, 5), ['Zone2', 'Zone3'], true);
+    }
+
+    // Ident gehoert zur uebergebenen Zonennummer (2 oder 3)?
+    protected function identMatchesZone(string $ident, int $zoneNumber): bool
+    {
+        return str_starts_with($ident, 'Z' . $zoneNumber)
+               || str_starts_with($ident, 'Zone' . $zoneNumber);
+    }
+
     /**
      * Kanonisches Befehlsmuster: Subcommand aus dem Profilkatalog nachschlagen
      * und (Sende-Praefix . Subcommand) an den Splitter schicken.
