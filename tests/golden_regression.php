@@ -293,6 +293,34 @@ function buildFiles(): array
     }
     $files['wrappers.json'] = $wrappers;
 
+    // requestaction: Kern + Nachfuehr-Requests je Ident (Telnet und HTTP)
+    $raCases = [
+        ['PW', true], ['MU', false], ['MV', -40.5], ['PSDYNEQ', true],
+        ['PSVOLLEV', true], ['PSSP', 'FRO'], ['PSFH', true], ['PSDIM', 2],
+        ['Z2POWER', true], ['Z3VOL', -20.5], ['PSTONE_CTRL', true], ['VSSC', '48P'],
+        ['SI', 'CD']
+    ];
+    $requestAction = [];
+    foreach ([['telnet', TelnetHarness::class], ['http', HttpHarness::class]] as [$variant, $class]) {
+        $harness = newHarness($class, COMBOS[0]);
+        $cases   = [];
+        foreach ($raCases as [$ident, $value]) {
+            $harness->resetRecorded();
+            takeErrors();
+            $case = ['ident' => $ident, 'value' => $value];
+            try {
+                $harness->RequestAction($ident, $value);
+            } catch (Throwable $e) {
+                $case['exception'] = get_class($e) . ': ' . $e->getMessage();
+            }
+            $case['events'] = $harness->recorded;
+            $case['errors'] = takeErrors();
+            $cases[]        = $case;
+        }
+        $requestAction[$variant] = $cases;
+    }
+    $files['requestaction.json'] = $requestAction;
+
     // forms: GetConfigurationForm je Kombination
     $forms = [];
     foreach (COMBOS as $combo) {

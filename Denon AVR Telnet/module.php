@@ -206,73 +206,47 @@ class DenonAVRTelnet extends AVRModule
      * @throws \Exception
      *
      */
-    public function RequestAction($Ident, $Value): void
+    //Commands ohne automatischen Response: nach dem Senden wird der Status
+    //nachgefragt (<command>+?), damit die Variablen nachgeführt werden.
+    //Wert = mit Leerzeichen vor dem '?' (true) oder ohne (false).
+    //todo: gibt es Variablen, die nachgeführt werden müssen, da sie sonst nicht aktualisiert werden?
+    //die Liste ist noch zu überprüfen
+    private const array STATUS_REQUEST_AFTER_SEND = [
+        'PSVOLLEV' => true,  // Dolby Volume Leveler
+        'PSREFLEV' => true,  // ReferenceLevel (wird manchmal(!) nicht automatisch beantwortet)
+        'PSVOLMOD' => true,  // Dolby Volume Modeler
+        'PSDCO'    => true,  // Dynamic Compressor
+        'PSDRC'    => true,  // Dynamic Range Compression
+        'PSPAN'    => true,  // Panorama
+        'PSDYNEQ'  => true,  // Dynamic EQ
+        'PSAFD'    => true,
+        'VSAUDIO'  => true,
+        'PSRSZ'    => true,  // Room Size
+        'VSSC'     => true,  // Resolution
+        'VSSCH'    => true,  // Resolution HDMI
+        'PSSWR'    => true,  // Subwoofer
+        'PSDIM'    => true,
+        'Z2'       => false,
+        'Z3'       => false,
+        'MU'       => false,
+        'PSFRONT'  => false, // Front Speaker
+    ];
+
+    //Effect Speaker Selection: Nachfrage mit ':'-Suffix
+    private const array STATUS_REQUEST_WITH_COLON = ['PSSP', 'PSFH'];
+
+    protected function getSplitterInputVarMapping(): array
     {
-        //Input übergeben
         /** @noinspection PhpUndefinedFunctionInspection */
-        $InputMapping = DAVRST_GetInputVarMapping($this->GetParent());
-        $this->Logger_Dbg(__FUNCTION__, 'Denon Telnet AVR: InputMapping: ' . json_encode($InputMapping, JSON_THROW_ON_ERROR));
+        return DAVRST_GetInputVarMapping($this->GetParent());
+    }
 
-        //Command aus Ident
-        $APICommand = $this->GetAPICommandFromIdent($Ident);
-
-        // Subcommand holen
-        $AVRType       = $this->GetAVRType($this->GetManufacturerName());
-        $APISubCommand = new DENONIPSProfiles($AVRType, $InputMapping, function (string $message, string $data) {
-            $this->Logger_Dbg($message, $data);
-        })->GetSubCommandOfValue($Ident, $Value);
-        $this->Logger_Dbg(__FUNCTION__, 'Denon Telnet AVR: Ident: ' . $Ident . ', Value: ' . $Value . ', SubCommand: ' . $APISubCommand);
-
-        // Daten senden
-        try {
-            $this->SendCommand($APICommand . $APISubCommand);
-
-            //bei Commands ohne automatischen Response wird noch ein Request abgesetzt (<command>+?), damit die Variablen nachgeführt werden
-            //todo: gibt es Variablen, die nachgeführt werden müssen, da sie sonst nicht aktualisiert werden?
-            //die Liste ist noch zu überprüfen
-            if ($APICommand === 'PSVOLLEV') {         // Dolby Volume Leveler
-                $this->SendRequest($APICommand, true);
-            } elseif ($APICommand === 'PSREFLEV') {   // ReferenceLevel (wird manchmal(!) nicht automatisch beantwortet)
-                $this->SendRequest($APICommand, true);
-            } elseif ($APICommand === 'PSVOLMOD') {   // Dolby Volume Modeler
-                $this->SendRequest($APICommand, true);
-            } elseif ($APICommand === 'PSDCO') {      // Dynamic Compressor
-                $this->SendRequest($APICommand, true);
-            } elseif ($APICommand === 'PSDRC') {      // Dynamic Range Compression
-                $this->SendRequest($APICommand, true);
-            } elseif ($APICommand === 'PSPAN') {      //Panorama
-                $this->SendRequest($APICommand, true);
-            } elseif ($APICommand === 'PSDYNEQ') {    //Dynamic EQ
-                $this->SendRequest($APICommand, true);
-            } elseif ($APICommand === 'PSAFD') {      //
-                $this->SendRequest($APICommand, true);
-            } elseif ($APICommand === 'VSAUDIO') {
-                $this->SendRequest($APICommand, true);
-            } elseif ($APICommand === 'PSRSZ') {      // Room Size
-                $this->SendRequest($APICommand, true);
-            } elseif ($APICommand === 'VSSC') {       //Resolution
-                $this->SendRequest($APICommand, true);
-            } elseif ($APICommand === 'VSSCH') {      //Resolution HDMI
-                $this->SendRequest($APICommand, true);
-            } elseif ($APICommand === 'PSSWR') {      //Subwoofer
-                $this->SendRequest($APICommand, true);
-            } elseif ($APICommand === 'Z2') {         //Z2
-                $this->SendRequest($APICommand, false);
-            } elseif ($APICommand === 'Z3') {         //Z3
-                $this->SendRequest($APICommand, false);
-            } elseif ($APICommand === 'MU') {         //MU
-                $this->SendRequest($APICommand, false);
-            } elseif ($APICommand === 'PSFRONT') {    //Front Speaker
-                $this->SendRequest($APICommand, false);
-            } elseif ($APICommand === 'PSSP') {    //Effect Speaker Selection
-                $this->SendRequest($APICommand . ':', true);
-            } elseif ($APICommand === 'PSFH') {    //Effect Speaker Selection
-                $this->SendRequest($APICommand . ':', true);
-            } elseif ($APICommand === 'PSDIM') {    //Effect Speaker Selection
-                $this->SendRequest($APICommand, true);
-            }
-        } catch (Exception $ex) {
-            $this->Logger_Err($ex->getMessage() . ', Code: ' . $ex->getCode());
+    protected function afterRequestAction(string $APICommand): void
+    {
+        if (in_array($APICommand, self::STATUS_REQUEST_WITH_COLON, true)) {
+            $this->SendRequest($APICommand . ':', true);
+        } elseif (array_key_exists($APICommand, self::STATUS_REQUEST_AFTER_SEND)) {
+            $this->SendRequest($APICommand, self::STATUS_REQUEST_AFTER_SEND[$APICommand]);
         }
     }
 

@@ -532,6 +532,42 @@ class AVRModule extends IPSModuleStrict
         return $APICommand;
     }
 
+    public function RequestAction($Ident, $Value): void
+    {
+        //Input übergeben
+        $InputMapping = $this->getSplitterInputVarMapping();
+        $this->Logger_Dbg(__FUNCTION__, 'InputMapping: ' . json_encode($InputMapping, JSON_THROW_ON_ERROR));
+
+        //Command aus Ident
+        $APICommand = $this->GetAPICommandFromIdent($Ident);
+
+        // Subcommand holen
+        $AVRType       = $this->GetAVRType($this->GetManufacturerName());
+        $APISubCommand = new DENONIPSProfiles($AVRType, $InputMapping, function (string $message, string $data) {
+            $this->Logger_Dbg($message, $data);
+        })->GetSubCommandOfValue($Ident, $Value);
+        $this->Logger_Dbg(__FUNCTION__, 'Ident: ' . $Ident . ', Value: ' . $Value . ', SubCommand: ' . $APISubCommand);
+
+        // Daten senden
+        try {
+            $this->SendCommand($APICommand . $APISubCommand);
+            $this->afterRequestAction($APICommand);
+        } catch (Exception $ex) {
+            $this->Logger_Err($ex->getMessage() . ', Code: ' . $ex->getCode());
+        }
+    }
+
+    // vom Modul zu ueberschreiben: InputMapping vom jeweiligen Splitter holen
+    protected function getSplitterInputVarMapping(): array
+    {
+        return [];
+    }
+
+    // Hook nach dem Senden (z. B. Status-Nachfuehrung im Telnet-Modul)
+    protected function afterRequestAction(string $APICommand): void
+    {
+    }
+
     // Ident gehoert zu einer Nebenzone (Z2/Z3/Zone2/Zone3-Praefix)?
     protected function isZoneSpecificIdent(string $ident): bool
     {

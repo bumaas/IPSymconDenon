@@ -100,27 +100,12 @@ class DenonAVRHTTP extends AVRModule
      * Die folgenden Funktionen stehen automatisch zur Verfügung, wenn das Modul über die "Module Control" eingefügt wurden.
      * Die Funktionen werden, mit dem selbst eingerichteten Prefix, in PHP und JSON-RPC wiefolgt zur Verfügung gestellt:.
      */
-    public function RequestAction($Ident, $Value): void
+    //RequestAction kommt aus AVRModule; Rückgabe ist egal, die Variable wird
+    //automatisch durch getstatus() im IO-Modul nachgeführt
+    protected function getSplitterInputVarMapping(): array
     {
-
-        //Input übergeben
-        $InputMapping = DAVRSH_GetInputVarMapping($this->GetParent());
-
-        //Command aus Ident
-        $APICommand = $this->GetAPICommandFromIdent($Ident);
-
-        // Subcommand holen
-        $AVRType = $this->GetAVRType($this->GetManufacturerName());
-        $APISubCommand = (new DENONIPSProfiles($AVRType, $InputMapping))->GetSubCommandOfValue($Ident, $Value);
-        $this->SendDebug(get_class() . '::' . __FUNCTION__, 'Ident: ' . $Ident . ', Value: ' . $Value . ', SubCommand: ' . $APISubCommand, 0);
-
-        // Daten senden        Rückgabe ist egal, Variable wird automatisch durch getstatus() im IO-Modul nachgeführt
-        try {
-            $this->SendCommand($APICommand . $APISubCommand);
-        } catch (Exception $ex) {
-            $this->Logger_Err($ex->getMessage());
-        }
-
+        /** @noinspection PhpUndefinedFunctionInspection */
+        return DAVRSH_GetInputVarMapping($this->GetParent());
     }
 
     //Denon Commands

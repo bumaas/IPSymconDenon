@@ -1,0 +1,348 @@
+{
+    "telnet": [
+        {
+            "ident": "PW",
+            "value": true,
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PWON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "ident": "MU",
+            "value": false,
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MUOFF\\r\"}"
+                ],
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MU?\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "ident": "MV",
+            "value": -40.5,
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"MV395\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "ident": "PSDYNEQ",
+            "value": true,
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSDYNEQ ON\\r\"}"
+                ],
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSDYNEQ ?\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "ident": "PSVOLLEV",
+            "value": true,
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSVOLLEV\\r\"}"
+                ],
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSVOLLEV ?\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: PSVOLLEV, Value: 1"
+            ]
+        },
+        {
+            "ident": "PSSP",
+            "value": "FRO",
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSSP\\r\"}"
+                ],
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSSP: ?\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: PSSP, Value: FRO"
+            ]
+        },
+        {
+            "ident": "PSFH",
+            "value": true,
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSFH:ON\\r\"}"
+                ],
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSFH: ?\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "ident": "PSDIM",
+            "value": 2,
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSDIM 02\\r\"}"
+                ],
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSDIM ?\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "ident": "Z2POWER",
+            "value": true,
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z2ON\\r\"}"
+                ],
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z2?\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "ident": "Z3VOL",
+            "value": -20.5,
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z3\\r\"}"
+                ],
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"Z3?\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: Z3VOL, Value: -20.5"
+            ]
+        },
+        {
+            "ident": "PSTONE_CTRL",
+            "value": true,
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSTONE CTRL ON\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "ident": "VSSC",
+            "value": "48P",
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"VSSC\\r\"}"
+                ],
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"VSSC ?\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: VSSC, Value: 48P"
+            ]
+        },
+        {
+            "ident": "SI",
+            "value": "CD",
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"SI\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: SI, Value: CD"
+            ]
+        }
+    ],
+    "http": [
+        {
+            "ident": "PW",
+            "value": true,
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{DB1DDFAD-0DE9-47CF-B8E8-FB7E7425BF90}\",\"Buffer\":\"PWON\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "ident": "MU",
+            "value": false,
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{DB1DDFAD-0DE9-47CF-B8E8-FB7E7425BF90}\",\"Buffer\":\"MUOFF\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "ident": "MV",
+            "value": -40.5,
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{DB1DDFAD-0DE9-47CF-B8E8-FB7E7425BF90}\",\"Buffer\":\"MV395\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "ident": "PSDYNEQ",
+            "value": true,
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{DB1DDFAD-0DE9-47CF-B8E8-FB7E7425BF90}\",\"Buffer\":\"PSDYNEQ ON\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "ident": "PSVOLLEV",
+            "value": true,
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{DB1DDFAD-0DE9-47CF-B8E8-FB7E7425BF90}\",\"Buffer\":\"PSVOLLEV\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: PSVOLLEV, Value: 1"
+            ]
+        },
+        {
+            "ident": "PSSP",
+            "value": "FRO",
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{DB1DDFAD-0DE9-47CF-B8E8-FB7E7425BF90}\",\"Buffer\":\"PSSP\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: PSSP, Value: FRO"
+            ]
+        },
+        {
+            "ident": "PSFH",
+            "value": true,
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{DB1DDFAD-0DE9-47CF-B8E8-FB7E7425BF90}\",\"Buffer\":\"PSFH:ON\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "ident": "PSDIM",
+            "value": 2,
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{DB1DDFAD-0DE9-47CF-B8E8-FB7E7425BF90}\",\"Buffer\":\"PSDIM 02\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "ident": "Z2POWER",
+            "value": true,
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{DB1DDFAD-0DE9-47CF-B8E8-FB7E7425BF90}\",\"Buffer\":\"Z2ON\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "ident": "Z3VOL",
+            "value": -20.5,
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{DB1DDFAD-0DE9-47CF-B8E8-FB7E7425BF90}\",\"Buffer\":\"Z3\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: Z3VOL, Value: -20.5"
+            ]
+        },
+        {
+            "ident": "PSTONE_CTRL",
+            "value": true,
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{DB1DDFAD-0DE9-47CF-B8E8-FB7E7425BF90}\",\"Buffer\":\"PSTONE CTRL ON\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "ident": "VSSC",
+            "value": "48P",
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{DB1DDFAD-0DE9-47CF-B8E8-FB7E7425BF90}\",\"Buffer\":\"VSSC\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: VSSC, Value: 48P"
+            ]
+        },
+        {
+            "ident": "SI",
+            "value": "CD",
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{DB1DDFAD-0DE9-47CF-B8E8-FB7E7425BF90}\",\"Buffer\":\"SI\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: SI, Value: CD"
+            ]
+        }
+    ]
+}
