@@ -697,6 +697,13 @@ Dimension
 Parameter $Value 0 to 6
 
 ```php
+DAVRT_Dimmer(int $InstanceID, int $Value)
+```
+
+Dimmer (Display-Helligkeit)
+Parameter $Value 0 = Off, 1 = Dark, 2 = Dim, 3 = Bright
+
+```php
 DAVRT_Effect(int $InstanceID, bool $Value)
 ```
 

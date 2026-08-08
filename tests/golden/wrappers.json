@@ -1407,6 +1407,34 @@
             ]
         }
     ],
+    "Dimmer": [
+        {
+            "args": [
+                0
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"DIM OFF\\r\"}"
+                ]
+            ],
+            "errors": []
+        },
+        {
+            "args": [
+                15
+            ],
+            "events": [
+                [
+                    "SendDataToParent",
+                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"DIM\\r\"}"
+                ]
+            ],
+            "errors": [
+                "no association found. Ident: DIM, Value: 15"
+            ]
+        }
+    ],
     "DolbyVolume": [
         {
             "args": [

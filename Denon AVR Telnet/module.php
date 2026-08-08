@@ -830,6 +830,12 @@ class DenonAVRTelnet extends AVRModule
         $this->sendMappedValue(DENON_API_Commands::PSDIM, $Value);
     }
 
+    //Dimmer (display brightness, not to be confused with Dimension/PSDIM or Brightness/PVBR)
+    public function Dimmer(int $Value): void
+    { //Dimmer: 0 = Off, 1 = Dark, 2 = Dim, 3 = Bright
+        $this->sendMappedValue(DENON_API_Commands::DIM, $Value);
+    }
+
     //Effect Level
     public function EffectLevel(float $Value): void
     { //Effect Level can be operated from 1 to 15 Step 0.5
