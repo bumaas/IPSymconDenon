@@ -1,0 +1,5 @@
+# Die JSON-Dateien werden von den Testskripten mit LF geschrieben
+# (tests/golden_regression.php pretty()). Ohne diese Regel meldet git unter
+# Windows die Golden-Dateien als geändert, obwohl sich am Inhalt nichts
+# ändert - reine Zeilenenden-Geisterdiffs.
+*.json text eol=lf
