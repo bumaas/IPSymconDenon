@@ -1044,9 +1044,6 @@
         "lost": {
             "SV_SubCommands": [
                 "AUX2"
-            ],
-            "SystemControl_Commands": [
-                "DIM"
             ]
         }
     },
@@ -1284,15 +1281,6 @@
         "lost": {
             "PS_Commands": [
                 "PSDIL"
-            ]
-        }
-    },
-    "Denon_AVR_X4700H": {
-        "model": "AVR-X4700H",
-        "parent": "Denon_AVR_X4500H",
-        "lost": {
-            "SystemControl_Commands": [
-                "DIM"
             ]
         }
     },

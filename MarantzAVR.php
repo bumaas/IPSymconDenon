@@ -164,6 +164,14 @@ class Marantz_NR1506 extends Marantz_NR1504
         DENON_API_Commands::PSMDAX,
         DENON_API_Commands::PSDELAY,
     ];
+    // wie Marantz_NR1504, laut Protokoll-Spec zusätzlich der Display-Dimmer (DIM)
+    public static array  $SystemControl_Commands = [
+        DENON_API_Commands::MN,
+        DENON_API_Commands::MNMEN,
+        DENON_API_Commands::DISPLAY,
+        DENON_API_Commands::SSHOSALS,
+        DENON_API_Commands::DIM,
+    ];
 }
 
 class Marantz_NR1508 extends Marantz_NR1506
@@ -611,6 +619,15 @@ class Marantz_NR1605 extends Marantz_NR1604
         DENON_API_Commands::Z2SLP,
         DENON_API_Commands::Z3SLP, //not documented, but working
     ];
+    // wie Marantz_NR1604, laut Protokoll-Spec zusätzlich der Display-Dimmer (DIM)
+    public static array  $SystemControl_Commands = [
+        DENON_API_Commands::MN,
+        DENON_API_Commands::MNMEN,
+        DENON_API_Commands::MNZST,
+        DENON_API_Commands::DISPLAY,
+        DENON_API_Commands::SSHOSALS,
+        DENON_API_Commands::DIM,
+    ];
 }
 
 class Marantz_NR1606 extends Marantz_NR1605
@@ -793,6 +810,7 @@ class Marantz_NR1711 extends Marantz_NR1609
         DENON_API_Commands::SSHOSALS,
         DENON_API_Commands::BTTX,
         DENON_API_Commands::SPPR,
+        DENON_API_Commands::DIM,
     ];
 
 }
@@ -942,6 +960,7 @@ class Marantz_STEREO_70s extends Marantz_CINEMA_70s
         DENON_API_Commands::MNMEN,
         DENON_API_Commands::MNZST,
         DENON_API_Commands::BTTX,
+        DENON_API_Commands::DIM,
     ];
     public static array  $Zone_Commands  = [
         DENON_API_Commands::Z2POWER,
@@ -1291,6 +1310,15 @@ class Marantz_SR5009 extends Marantz_SR5008
         DENON_API_Commands::Z2SLP,
         DENON_API_Commands::Z3SLP, //not documented, but working
     ];
+    // wie Marantz_SR5008, laut Protokoll-Spec zusätzlich der Display-Dimmer (DIM)
+    public static array  $SystemControl_Commands = [
+        DENON_API_Commands::MN,
+        DENON_API_Commands::MNMEN,
+        DENON_API_Commands::MNZST,
+        DENON_API_Commands::DISPLAY,
+        DENON_API_Commands::SSHOSALS,
+        DENON_API_Commands::DIM,
+    ];
 }
 
 class Marantz_SR5010 extends Marantz_SR5009
@@ -1446,6 +1474,7 @@ class Marantz_SR5013 extends Marantz_SR5012
         DENON_API_Commands::SSHOSALS,
         DENON_API_Commands::BTTX,
         DENON_API_Commands::SPPR,
+        DENON_API_Commands::DIM,
     ];
 
 }
@@ -1601,6 +1630,7 @@ class Marantz_CINEMA_60 extends Marantz_SR5015
         DENON_API_Commands::SSHOSALS,
         DENON_API_Commands::BTTX,
         DENON_API_Commands::SPPR,
+        DENON_API_Commands::DIM,
     ];
 
 }
@@ -2128,6 +2158,15 @@ class Marantz_SR6009 extends Marantz_SR6008
         DENON_API_Commands::Z2SLP,
         DENON_API_Commands::Z3SLP,
     ];
+    // wie Marantz_SR6008, laut Protokoll-Spec zusätzlich der Display-Dimmer (DIM)
+    public static array  $SystemControl_Commands = [
+        DENON_API_Commands::MN,
+        DENON_API_Commands::MNMEN,
+        DENON_API_Commands::MNZST,
+        DENON_API_Commands::DISPLAY,
+        DENON_API_Commands::SSHOSALS,
+        DENON_API_Commands::DIM,
+    ];
 }
 
 class Marantz_SR6010 extends Marantz_SR6009
@@ -2399,6 +2438,7 @@ class Marantz_SR6015 extends Marantz_SR6013
         DENON_API_Commands::SSHOSALS,
         DENON_API_Commands::BTTX,
         DENON_API_Commands::SPPR,
+        DENON_API_Commands::DIM,
     ];
 
 }
@@ -2503,6 +2543,7 @@ class Marantz_CINEMA_50 extends Marantz_SR6015
         DENON_API_Commands::SSHOSALS,
         DENON_API_Commands::BTTX,
         DENON_API_Commands::SPPR,
+        DENON_API_Commands::DIM,
     ];
 
 }
@@ -2979,6 +3020,15 @@ class Marantz_SR7009 extends Marantz_SR7008
         DENON_API_Commands::Z2SLP,
         DENON_API_Commands::Z3SLP,
     ];
+    // wie Marantz_SR7008, laut Protokoll-Spec zusätzlich der Display-Dimmer (DIM)
+    public static array  $SystemControl_Commands = [
+        DENON_API_Commands::MN,
+        DENON_API_Commands::MNMEN,
+        DENON_API_Commands::MNZST,
+        DENON_API_Commands::DISPLAY,
+        DENON_API_Commands::SSHOSALS,
+        DENON_API_Commands::DIM,
+    ];
 }
 
 class Marantz_SR7010 extends Marantz_SR7009
@@ -3249,6 +3299,7 @@ class Marantz_SR7015 extends Marantz_SR7013
         DENON_API_Commands::SSHOSALS,
         DENON_API_Commands::BTTX,
         DENON_API_Commands::SPPR,
+        DENON_API_Commands::DIM,
     ];
 }
 class Marantz_CINEMA_40 extends Marantz_SR7015
@@ -3341,6 +3392,7 @@ class Marantz_CINEMA_40 extends Marantz_SR7015
         DENON_API_Commands::SSHOSALS,
         DENON_API_Commands::BTTX,
         DENON_API_Commands::SPPR,
+        DENON_API_Commands::DIM,
     ];
 }
 
@@ -3565,6 +3617,7 @@ class Marantz_AV7702 extends Marantz_AV7701
         DENON_API_Commands::MNZST,
         DENON_API_Commands::DISPLAY,
         DENON_API_Commands::SSHOSALS,
+        DENON_API_Commands::DIM,
     ];
 
     public static array  $PowerFunctions         = [
@@ -4033,6 +4086,7 @@ class Marantz_AV7706 extends Marantz_AV7705
         DENON_API_Commands::SSHOSALS,
         DENON_API_Commands::BTTX,
         DENON_API_Commands::SPPR,
+        DENON_API_Commands::DIM,
     ];
 }
 
@@ -4332,5 +4386,14 @@ class Marantz_AV8802 extends Marantz_AV8801
         DENON_API_Commands::SCH4K,
         DENON_API_Commands::SCH4KF,
         DENON_API_Commands::SCHAUTO,
+    ];
+    // wie Marantz_AV8801, laut Protokoll-Spec zusätzlich der Display-Dimmer (DIM)
+    public static array  $SystemControl_Commands = [
+        DENON_API_Commands::MN,
+        DENON_API_Commands::MNMEN,
+        DENON_API_Commands::MNZST,
+        DENON_API_Commands::DISPLAY,
+        DENON_API_Commands::SSHOSALS,
+        DENON_API_Commands::DIM,
     ];
 }

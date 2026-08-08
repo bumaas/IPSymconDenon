@@ -851,6 +851,14 @@ class Denon_AVR_X2300W extends Denon_AVR_X2200W
         DENON_API_Commands::PSRSTR,
     ];
 
+    // wie AVR, laut Protokoll-Spec zusätzlich der Display-Dimmer (DIM)
+    public static array  $SystemControl_Commands     = [
+        DENON_API_Commands::MN,
+        DENON_API_Commands::MNMEN,
+        DENON_API_Commands::DISPLAY,
+        DENON_API_Commands::NS,
+        DENON_API_Commands::DIM,
+    ];
 }
 
 class Denon_AVR_X2400H extends Denon_AVR_X2300W
@@ -1048,6 +1056,7 @@ class Denon_AVR_X2700H extends Denon_AVR_X2600H
         DENON_API_Commands::MNZST,
         DENON_API_Commands::BTTX,
         DENON_API_Commands::SPPR,
+        DENON_API_Commands::DIM,
     ];
 
 
@@ -1330,6 +1339,14 @@ class Denon_AVR_X1300W extends Denon_AVR_X1200W
         DENON_API_Commands::MSMATRIX,
         DENON_API_Commands::MSVIDEOGAME,
         DENON_API_Commands::MSVIRTUAL,
+    ];
+    // wie AVR, laut Protokoll-Spec zusätzlich der Display-Dimmer (DIM)
+    public static array  $SystemControl_Commands     = [
+        DENON_API_Commands::MN,
+        DENON_API_Commands::MNMEN,
+        DENON_API_Commands::DISPLAY,
+        DENON_API_Commands::NS,
+        DENON_API_Commands::DIM,
     ];
 }
 
@@ -2240,6 +2257,14 @@ class Denon_AVR_X4300H extends Denon_AVR_X4200W
         DENON_API_Commands::CVZRL,
     ];
 
+    // wie Denon_AVR_X4000, laut Protokoll-Spec zusätzlich der Display-Dimmer (DIM)
+    public static array  $SystemControl_Commands = [
+        DENON_API_Commands::MN,
+        DENON_API_Commands::MNMEN,
+        DENON_API_Commands::MNSRC,
+        DENON_API_Commands::DISPLAY,
+        DENON_API_Commands::DIM,
+    ];
 }
 
 class Denon_AVR_X4400H extends Denon_AVR_X4300H
@@ -2421,6 +2446,7 @@ class Denon_AVR_X4700H extends Denon_AVR_X4500H
         DENON_API_Commands::DISPLAY,
         DENON_API_Commands::BTTX,
         DENON_API_Commands::SPPR,
+        DENON_API_Commands::DIM,
     ];
 
 }
@@ -3248,6 +3274,15 @@ class Denon_AVC_X8500H extends Denon_AVR_X7200WA
         DENON_API_Commands::MSMATRIX,
         DENON_API_Commands::MSVIDEOGAME,
         DENON_API_Commands::MSVIRTUAL,
+    ];
+    // wie Denon_AVR_X7200W, laut Protokoll-Spec zusätzlich der Display-Dimmer (DIM)
+    public static array  $SystemControl_Commands = [
+        DENON_API_Commands::MN,
+        DENON_API_Commands::MNMEN,
+        DENON_API_Commands::MNSRC,
+        DENON_API_Commands::DISPLAY,
+        DENON_API_Commands::NS,
+        DENON_API_Commands::DIM,
     ];
 }
 

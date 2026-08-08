@@ -1832,6 +1832,7 @@
             "Zone2Name"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -3032,6 +3033,7 @@
             "Zone3Name"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -3791,6 +3793,7 @@
         ],
         "SystemControl_Commands": [
             "BTTX",
+            "DIM",
             "MN",
             "MNMEN",
             "MNZST",
@@ -3978,6 +3981,7 @@
         ],
         "SystemControl_Commands": [
             "BTTX",
+            "DIM",
             "MN",
             "MNMEN",
             "MNZST",
@@ -5869,6 +5873,7 @@
             "Zone3Name"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -6105,6 +6110,7 @@
             "Zone3Name"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -6582,6 +6588,7 @@
         ],
         "SystemControl_Commands": [
             "BTTX",
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -6825,6 +6832,7 @@
         ],
         "SystemControl_Commands": [
             "BTTX",
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -8847,6 +8855,7 @@
             "Zone3Name"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -9198,6 +9207,7 @@
         ],
         "SystemControl_Commands": [
             "BTTX",
+            "DIM",
             "MN",
             "MNMEN",
             "MNZST",
@@ -9385,6 +9395,7 @@
         ],
         "SystemControl_Commands": [
             "BTTX",
+            "DIM",
             "MN",
             "MNMEN",
             "MNZST",
@@ -9765,6 +9776,7 @@
         "PV_Commands": [],
         "Zone_Commands": [],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -10618,6 +10630,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -10790,6 +10803,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -10962,6 +10976,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -11144,6 +11159,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -11327,6 +11343,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -11513,6 +11530,7 @@
         ],
         "SystemControl_Commands": [
             "BTTX",
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -11687,6 +11705,7 @@
         ],
         "SystemControl_Commands": [
             "BTTX",
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -11824,6 +11843,7 @@
         ],
         "SystemControl_Commands": [
             "BTTX",
+            "DIM",
             "MN",
             "MNMEN",
             "MNZST"
@@ -12431,6 +12451,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -12612,6 +12633,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -12793,6 +12815,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -12984,6 +13007,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -13178,6 +13202,7 @@
         ],
         "SystemControl_Commands": [
             "BTTX",
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -13375,6 +13400,7 @@
         ],
         "SystemControl_Commands": [
             "BTTX",
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -13546,6 +13572,7 @@
         ],
         "SystemControl_Commands": [
             "BTTX",
+            "DIM",
             "MN",
             "MNMEN",
             "MNZST",
@@ -14414,6 +14441,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -14618,6 +14646,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -14820,6 +14849,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -15034,6 +15064,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -15248,6 +15279,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -15466,6 +15498,7 @@
         ],
         "SystemControl_Commands": [
             "BTTX",
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -15663,6 +15696,7 @@
         ],
         "SystemControl_Commands": [
             "BTTX",
+            "DIM",
             "MN",
             "MNMEN",
             "MNZST",
@@ -16397,6 +16431,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -16610,6 +16645,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -16821,6 +16857,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -17044,6 +17081,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -17267,6 +17305,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -17494,6 +17533,7 @@
         ],
         "SystemControl_Commands": [
             "BTTX",
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -17710,6 +17750,7 @@
         ],
         "SystemControl_Commands": [
             "BTTX",
+            "DIM",
             "MN",
             "MNMEN",
             "MNZST",
@@ -17939,6 +17980,7 @@
         ],
         "SystemControl_Commands": [
             "BTTX",
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -18487,6 +18529,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -18693,6 +18736,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -18897,6 +18941,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -19113,6 +19158,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -19329,6 +19375,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -19549,6 +19596,7 @@
         ],
         "SystemControl_Commands": [
             "BTTX",
+            "DIM",
             "Display",
             "MN",
             "MNMEN",
@@ -19943,6 +19991,7 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "DIM",
             "Display",
             "MN",
             "MNMEN",

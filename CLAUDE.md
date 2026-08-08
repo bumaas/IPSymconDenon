@@ -109,17 +109,20 @@ Composite-Strings sind über locale.json nicht übersetzbar.
 - Befunde des Spec-Checks (tests/spec_check.php, Stand 2026-08): Die
   Zone-3-/PV-Video-Bereinigung („Paket 1") ist seit **2.28 build 84** umgesetzt
   (16 Modelle, Overrides an den Ketten-Köpfen X2400H/X3400H bzw. je
-  CINEMA-Klasse). Noch offen („Paket 2/3"): fehlende Kommandos ergänzen
+  CINEMA-Klasse). Die **DIM-Direktwahl** ist seit **2.29 build 87** umgesetzt
+  (68 statt 19 Modelle). Noch offen („Paket 2/3"): fehlende Kommandos ergänzen
   (VSMONI-Direktwahl, PSIMAX-Gruppe, PSDIRAC per V03-Spec für X3800H/X4800H,
-  Trigger TR1/TR2, DIM-Direktwahl, SYREMOTE/SYPANEL-Lock) sowie neue Modelle
+  Trigger TR1/TR2, SYREMOTE/SYPANEL-Lock) sowie neue Modelle
   (CINEMA 30, AV 10, Denon-S-Serie, X3300W, A1H, A110).
 - Die Baseline der Kettenprüfung (`tests/inheritance_baseline.json`) **duldet den
-  Ist-Stand**, sie bestätigt ihn nicht: 556 Einzelverluste in 83 Klassen sind
-  eingefroren, darunter die beiden bekannten DIM-Brüche `Denon_AVR_X2700H`
-  (`DenonAVR.php:1045`) und `Denon_AVR_X4700H` (`DenonAVR.php:2417`). Sie
-  verschwinden aus der Baseline, sobald der DIM-Fix aus `SPEC-Vererbung.md`
-  bzw. `SPEC.md` umgesetzt wird. Planungsgrundlage für beides:
-  `SPEC-Vererbung.md` (Werkzeuge) und `SPEC.md` (fachlicher Fix).
+  Ist-Stand**, sie bestätigt ihn nicht: 554 Einzelverluste in 82 Klassen sind
+  eingefroren. Sie sind überwiegend legitim (ein günstigeres Modell darf ein
+  Feature nicht haben), aber nicht einzeln geprüft.
+- Die fünf binären Marantz-`.xls` (2015, FY16–FY21) überspringt
+  `tests/spec_check.php` weiterhin. Sie wurden am 2026-08-08 einmalig per
+  Excel-COM ausgewertet (Ergebnis in der Commit-Message zu 2.29 build 87); zwei
+  von ihnen nutzen ein drittes Tabellen-Layout mit der Kommandospalte
+  `Command code` statt `COMMAND`, das der Leser in `spec_check.php` nicht kennt.
 
 ## Support-Kontext
 
