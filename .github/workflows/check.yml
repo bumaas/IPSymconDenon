@@ -28,6 +28,8 @@ jobs:
           php -l tests/golden_regression.php
           php -l tests/spec_check.php
           php -l tests/dim_gate.php
+          php -l tests/inheritance_check.php
+          php -l tests/capability_diff.php
       - name: JSON-Validität
         run: |
           find . -name '*.json' -not -path './.git/*' -print0 |
@@ -36,3 +38,5 @@ jobs:
         run: php tests/check_locale.php
       - name: Golden-Regression
         run: php tests/golden_regression.php
+      - name: Vererbungsketten
+        run: php tests/inheritance_check.php

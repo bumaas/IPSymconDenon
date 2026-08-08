@@ -1,0 +1,1456 @@
+{
+    "Marantz_NR1504": {
+        "model": "Marantz-NR1504",
+        "parent": "MarantzAVR",
+        "lost": {
+            "SV_SubCommands": [
+                "DVD",
+                "DVR",
+                "GAME2",
+                "V.AUX",
+                "DOCK"
+            ],
+            "VS_Commands": [
+                "VSMONI",
+                "VSSC",
+                "VSSCH",
+                "VSVST",
+                "VSVPM"
+            ],
+            "SystemControl_Commands": [
+                "NS"
+            ]
+        }
+    },
+    "Marantz_NR1506": {
+        "model": "Marantz-NR1506",
+        "parent": "Marantz_NR1504",
+        "lost": {
+            "PS_Commands": [
+                "PSDCO"
+            ]
+        }
+    },
+    "Marantz_NR1508": {
+        "model": "Marantz-NR1508",
+        "parent": "Marantz_NR1506",
+        "lost": {
+            "InfoFunctions": [
+                "MainZoneName",
+                "Model"
+            ],
+            "CV_Commands": [
+                "CVSBL",
+                "CVSBR",
+                "CVSB"
+            ],
+            "PS_Commands": [
+                "PSMODE"
+            ],
+            "SystemControl_Commands": [
+                "Display",
+                "SSHOSALS"
+            ]
+        }
+    },
+    "Marantz_NR1509": {
+        "model": "Marantz-NR1509",
+        "parent": "Marantz_NR1508",
+        "lost": {
+            "PS_Commands": [
+                "PSDIL"
+            ]
+        }
+    },
+    "Marantz_NR1602": {
+        "model": "Marantz-NR1602",
+        "parent": "MarantzAVR",
+        "lost": {
+            "SV_SubCommands": [
+                "SAT/CBL",
+                "DVR",
+                "GAME2",
+                "V.AUX",
+                "DOCK",
+                "ON",
+                "OFF"
+            ],
+            "CV_Commands": [
+                "CVZRL"
+            ],
+            "VS_Commands": [
+                "VSMONI",
+                "VSSC",
+                "VSSCH",
+                "VSVST"
+            ],
+            "SystemControl_Commands": [
+                "NS"
+            ]
+        }
+    },
+    "Marantz_NR1603": {
+        "model": "Marantz-NR1603",
+        "parent": "Marantz_NR1602",
+        "lost": {
+            "SV_SubCommands": [
+                "SAT"
+            ],
+            "PS_Commands": [
+                "PSDCO"
+            ],
+            "SystemControl_Commands": [
+                "MNSRC"
+            ]
+        }
+    },
+    "Marantz_NR1604": {
+        "model": "Marantz-NR1604",
+        "parent": "Marantz_NR1603",
+        "lost": {
+            "SV_SubCommands": [
+                "SOURCE"
+            ]
+        }
+    },
+    "Marantz_NR1605": {
+        "model": "Marantz-NR1605",
+        "parent": "Marantz_NR1604",
+        "lost": {
+            "PS_Commands": [
+                "PSHT_EQ"
+            ]
+        }
+    },
+    "Marantz_NR1606": {
+        "model": "Marantz-NR1606",
+        "parent": "Marantz_NR1605",
+        "lost": {
+            "PS_Commands": [
+                "PSPAN",
+                "PSDIM",
+                "PSCEN",
+                "PSCEI",
+                "PSMODE",
+                "PSPHG"
+            ]
+        }
+    },
+    "Marantz_NR1608": {
+        "model": "Marantz-NR1608",
+        "parent": "Marantz_NR1607",
+        "lost": {
+            "InfoFunctions": [
+                "MainZoneName",
+                "Model"
+            ]
+        }
+    },
+    "Marantz_NR1609": {
+        "model": "Marantz-NR1609",
+        "parent": "Marantz_NR1608",
+        "lost": {
+            "PS_Commands": [
+                "PSDIL"
+            ]
+        }
+    },
+    "Marantz_CINEMA_70s": {
+        "model": "Marantz-CINEMA70s",
+        "parent": "Marantz_NR1711",
+        "lost": {
+            "SI_SubCommands": [
+                "DVD",
+                "GAME",
+                "8K"
+            ],
+            "SV_SubCommands": [
+                "GAME",
+                "8K"
+            ],
+            "PS_Commands": [
+                "PSCLV"
+            ],
+            "VS_Commands": [
+                "VSASP",
+                "VSSC"
+            ],
+            "PV_Commands": [
+                "PVPICT",
+                "PVCN",
+                "PVBR",
+                "PVST",
+                "PVCM",
+                "PVHUE",
+                "PVDNR",
+                "PVENH"
+            ],
+            "Zone_Commands": [
+                "Z3POWER",
+                "Z3INPUT",
+                "Z3VOL",
+                "Z3MU",
+                "Z3STBY",
+                "Z3CVFL",
+                "Z3CVFR",
+                "Z3SLP"
+            ]
+        }
+    },
+    "Marantz_STEREO_70s": {
+        "model": "Marantz-STEREO70s",
+        "parent": "Marantz_CINEMA_70s",
+        "lost": {
+            "CV_Commands": [
+                "CVFL",
+                "CVFR",
+                "CVC",
+                "CVSL",
+                "CVSR",
+                "CVSBL",
+                "CVSBR",
+                "CVSB",
+                "CVFHL",
+                "CVFHR",
+                "CVTFL",
+                "CVTFR",
+                "CVTML",
+                "CVTMR",
+                "CVFDL",
+                "CVFDR",
+                "CVSDL",
+                "CVSDR",
+                "CVZRL"
+            ],
+            "PS_Commands": [
+                "PSSWR",
+                "PSTONE_CTRL",
+                "PSLOM",
+                "PSDEH",
+                "PSLFE",
+                "PSCES",
+                "PSSPV",
+                "PSDIC",
+                "PSNEURAL",
+                "PSCINEMA_EQ",
+                "PSMULTEQ",
+                "PSDYNEQ",
+                "PSREFLEV",
+                "PSDYNVOL",
+                "PSGEQ",
+                "PSHEQ",
+                "PSDRC"
+            ],
+            "VS_Commands": [
+                "VSVPM"
+            ],
+            "Zone_Commands": [
+                "Z2CVFL",
+                "Z2CVFR"
+            ],
+            "SystemControl_Commands": [
+                "Display",
+                "SSHOSALS",
+                "SPPR"
+            ]
+        }
+    },
+    "Marantz_SR5006": {
+        "model": "Marantz-SR5006",
+        "parent": "MarantzAVR",
+        "lost": {
+            "SV_SubCommands": [
+                "SAT/CBL",
+                "DVR",
+                "GAME2",
+                "V.AUX",
+                "DOCK",
+                "ON",
+                "OFF"
+            ],
+            "CV_Commands": [
+                "CVZRL"
+            ],
+            "VS_Commands": [
+                "VSMONI",
+                "VSSC",
+                "VSSCH",
+                "VSVST"
+            ],
+            "SystemControl_Commands": [
+                "NS"
+            ]
+        }
+    },
+    "Marantz_SR5007": {
+        "model": "Marantz-SR5007",
+        "parent": "Marantz_SR5006",
+        "lost": {
+            "SV_SubCommands": [
+                "SAT",
+                "VCR"
+            ],
+            "PS_Commands": [
+                "PSDCO"
+            ],
+            "SystemControl_Commands": [
+                "MNSRC"
+            ]
+        }
+    },
+    "Marantz_SR5008": {
+        "model": "Marantz-SR5008",
+        "parent": "Marantz_SR5007",
+        "lost": {
+            "SV_SubCommands": [
+                "SOURCE"
+            ]
+        }
+    },
+    "Marantz_SR5009": {
+        "model": "Marantz-SR5009",
+        "parent": "Marantz_SR5008",
+        "lost": {
+            "PS_Commands": [
+                "PSHT_EQ"
+            ]
+        }
+    },
+    "Marantz_SR5010": {
+        "model": "Marantz-SR5010",
+        "parent": "Marantz_SR5009",
+        "lost": {
+            "CV_Commands": [
+                "CVFWL",
+                "CVFWR"
+            ],
+            "PS_Commands": [
+                "PSPAN",
+                "PSDIM",
+                "PSCEN",
+                "PSCEI",
+                "PSMODE",
+                "PSPHG"
+            ]
+        }
+    },
+    "Marantz_SR5012": {
+        "model": "Marantz-SR5012",
+        "parent": "Marantz_SR5011",
+        "lost": {
+            "InfoFunctions": [
+                "MainZoneName",
+                "Model"
+            ]
+        }
+    },
+    "Marantz_SR5013": {
+        "model": "Marantz-SR5013",
+        "parent": "Marantz_SR5012",
+        "lost": {
+            "PS_Commands": [
+                "PSDIL"
+            ]
+        }
+    },
+    "Marantz_CINEMA_60": {
+        "model": "Marantz-CINEMA60",
+        "parent": "Marantz_SR5015",
+        "lost": {
+            "SI_SubCommands": [
+                "DVD",
+                "GAME",
+                "8K"
+            ],
+            "SV_SubCommands": [
+                "GAME",
+                "8K"
+            ],
+            "CV_Commands": [
+                "CVSW2"
+            ],
+            "PS_Commands": [
+                "PSCLV",
+                "PSLFL",
+                "PSAUROPR",
+                "PSAUROST"
+            ],
+            "VS_Commands": [
+                "VSASP",
+                "VSSC"
+            ],
+            "PV_Commands": [
+                "PVPICT",
+                "PVCN",
+                "PVBR",
+                "PVST",
+                "PVCM",
+                "PVHUE",
+                "PVDNR",
+                "PVENH"
+            ],
+            "Zone_Commands": [
+                "Z3POWER",
+                "Z3INPUT",
+                "Z3VOL",
+                "Z3MU",
+                "Z3STBY",
+                "Z3CVFL",
+                "Z3CVFR",
+                "Z3SLP"
+            ],
+            "SystemControl_Commands": [
+                "Display"
+            ]
+        }
+    },
+    "Marantz_SR6005": {
+        "model": "Marantz-SR6005",
+        "parent": "MarantzAVR",
+        "lost": {
+            "SV_SubCommands": [
+                "DVR",
+                "GAME2",
+                "V.AUX",
+                "DOCK",
+                "ON",
+                "OFF"
+            ],
+            "CV_Commands": [
+                "CVZRL"
+            ],
+            "PSDYNVOL_SubCommands": [
+                " LIT",
+                " MED",
+                " HEV"
+            ],
+            "VS_Commands": [
+                "VSMONI",
+                "VSVST"
+            ],
+            "SystemControl_Commands": [
+                "NS"
+            ]
+        }
+    },
+    "Marantz_SR6006": {
+        "model": "Marantz-SR6006",
+        "parent": "Marantz_SR6005",
+        "lost": {
+            "MS_SubCommands": [
+                "NEURAL",
+                "STANDARD",
+                "MATRIX"
+            ],
+            "SV_SubCommands": [
+                "SAT/CBL"
+            ],
+            "PS_Commands": [
+                "PSSP",
+                "PSFH",
+                "PSMODE"
+            ]
+        }
+    },
+    "Marantz_SR6007": {
+        "model": "Marantz-SR6007",
+        "parent": "Marantz_SR6006",
+        "lost": {
+            "SV_SubCommands": [
+                "SAT",
+                "VCR"
+            ],
+            "PS_Commands": [
+                "PSDCO"
+            ],
+            "SystemControl_Commands": [
+                "MNSRC"
+            ]
+        }
+    },
+    "Marantz_SR6008": {
+        "model": "Marantz-SR6008",
+        "parent": "Marantz_SR6007",
+        "lost": {
+            "SV_SubCommands": [
+                "SOURCE"
+            ],
+            "PS_Commands": [
+                "PSCEI"
+            ]
+        }
+    },
+    "Marantz_SR6009": {
+        "model": "Marantz-SR6009",
+        "parent": "Marantz_SR6008",
+        "lost": {
+            "PS_Commands": [
+                "PSHT_EQ"
+            ],
+            "VS_Commands": [
+                "VSMONI"
+            ]
+        }
+    },
+    "Marantz_SR6010": {
+        "model": "Marantz-SR6010",
+        "parent": "Marantz_SR6009",
+        "lost": {
+            "PS_Commands": [
+                "PSSP",
+                "PSPAN",
+                "PSDIM",
+                "PSCEN",
+                "PSCEG",
+                "PSMODE",
+                "PSPHG",
+                "PSSTH"
+            ]
+        }
+    },
+    "Marantz_SR6011": {
+        "model": "Marantz-SR6011",
+        "parent": "Marantz_SR6010",
+        "lost": {
+            "CV_Commands": [
+                "CVFWL",
+                "CVFWR"
+            ]
+        }
+    },
+    "Marantz_SR6012": {
+        "model": "Marantz-SR6012",
+        "parent": "Marantz_SR6011",
+        "lost": {
+            "InfoFunctions": [
+                "MainZoneName",
+                "Model"
+            ]
+        }
+    },
+    "Marantz_SR6013": {
+        "model": "Marantz-SR6013",
+        "parent": "Marantz_SR6012",
+        "lost": {
+            "PS_Commands": [
+                "PSDIL"
+            ]
+        }
+    },
+    "Marantz_CINEMA_50": {
+        "model": "Marantz-CINEMA50",
+        "parent": "Marantz_SR6015",
+        "lost": {
+            "SI_SubCommands": [
+                "DVD",
+                "GAME",
+                "8K"
+            ],
+            "SV_SubCommands": [
+                "GAME",
+                "8K"
+            ],
+            "PS_Commands": [
+                "PSCLV",
+                "PSLFL",
+                "PSDSX",
+                "PSSTW"
+            ],
+            "VS_Commands": [
+                "VSASP",
+                "VSSC"
+            ],
+            "PV_Commands": [
+                "PVPICT",
+                "PVCN",
+                "PVBR",
+                "PVST",
+                "PVCM",
+                "PVHUE",
+                "PVDNR",
+                "PVENH"
+            ],
+            "Zone_Commands": [
+                "Z3POWER",
+                "Z3INPUT",
+                "Z3VOL",
+                "Z3MU",
+                "Z3STBY",
+                "Z3CS",
+                "Z3CVFL",
+                "Z3CVFR",
+                "Z3HPF",
+                "Z3PSBAS",
+                "Z3PSTRE",
+                "Z3SLP"
+            ],
+            "SystemControl_Commands": [
+                "Display"
+            ]
+        }
+    },
+    "Marantz_SR7005": {
+        "model": "Marantz-SR7005",
+        "parent": "MarantzAVR",
+        "lost": {
+            "SV_SubCommands": [
+                "SAT/CBL",
+                "DVR",
+                "GAME2",
+                "V.AUX",
+                "DOCK",
+                "ON",
+                "OFF"
+            ],
+            "CV_Commands": [
+                "CVZRL"
+            ],
+            "PSDYNVOL_SubCommands": [
+                " LIT",
+                " MED",
+                " HEV"
+            ],
+            "VS_Commands": [
+                "VSVST"
+            ],
+            "SystemControl_Commands": [
+                "NS"
+            ]
+        }
+    },
+    "Marantz_SR7007": {
+        "model": "Marantz-SR7007",
+        "parent": "Marantz_SR7005",
+        "lost": {
+            "MS_SubCommands": [
+                "NEURAL",
+                "STANDARD",
+                "MATRIX"
+            ],
+            "SV_SubCommands": [
+                "SAT"
+            ],
+            "PS_Commands": [
+                "PSFH",
+                "PSDCO"
+            ],
+            "SystemControl_Commands": [
+                "MNSRC"
+            ]
+        }
+    },
+    "Marantz_SR7008": {
+        "model": "Marantz-SR7008",
+        "parent": "Marantz_SR7007",
+        "lost": {
+            "SV_SubCommands": [
+                "VCR",
+                "SOURCE"
+            ],
+            "PS_Commands": [
+                "PSCEI"
+            ]
+        }
+    },
+    "Marantz_SR7009": {
+        "model": "Marantz-SR7009",
+        "parent": "Marantz_SR7008",
+        "lost": {
+            "PS_Commands": [
+                "PSPAN",
+                "PSDIM",
+                "PSCEN",
+                "PSPHG",
+                "PSHT_EQ"
+            ]
+        }
+    },
+    "Marantz_SR7010": {
+        "model": "Marantz-SR7010",
+        "parent": "Marantz_SR7009",
+        "lost": {
+            "PS_Commands": [
+                "PSSP",
+                "PSCEG",
+                "PSMODE"
+            ]
+        }
+    },
+    "Marantz_SR7011": {
+        "model": "Marantz-SR7011",
+        "parent": "Marantz_SR7010",
+        "lost": {
+            "CV_Commands": [
+                "CVFWL",
+                "CVFWR"
+            ]
+        }
+    },
+    "Marantz_SR7012": {
+        "model": "Marantz-SR7012",
+        "parent": "Marantz_SR7011",
+        "lost": {
+            "InfoFunctions": [
+                "MainZoneName",
+                "Model"
+            ]
+        }
+    },
+    "Marantz_SR7013": {
+        "model": "Marantz-SR7013",
+        "parent": "Marantz_SR7012",
+        "lost": {
+            "PS_Commands": [
+                "PSDIL"
+            ]
+        }
+    },
+    "Marantz_CINEMA_40": {
+        "model": "Marantz-CINEMA40",
+        "parent": "Marantz_SR7015",
+        "lost": {
+            "SI_SubCommands": [
+                "DVD",
+                "GAME",
+                "8K"
+            ],
+            "SV_SubCommands": [
+                "DVD",
+                "GAME",
+                "8K"
+            ],
+            "PS_Commands": [
+                "PSCLV",
+                "PSLFL",
+                "PSDSX",
+                "PSSTW"
+            ],
+            "VS_Commands": [
+                "VSASP",
+                "VSSC"
+            ],
+            "PV_Commands": [
+                "PVPICT",
+                "PVCN",
+                "PVBR",
+                "PVST",
+                "PVCM",
+                "PVHUE",
+                "PVDNR",
+                "PVENH"
+            ],
+            "SystemControl_Commands": [
+                "Display"
+            ]
+        }
+    },
+    "Marantz_AV7701": {
+        "model": "Marantz-AV7701",
+        "parent": "MarantzAVR",
+        "lost": {
+            "SV_SubCommands": [
+                "DVR",
+                "GAME2",
+                "V.AUX",
+                "DOCK",
+                "ON",
+                "OFF"
+            ],
+            "CV_Commands": [
+                "CVZRL"
+            ],
+            "VS_Commands": [
+                "VSVST"
+            ],
+            "SystemControl_Commands": [
+                "NS"
+            ]
+        }
+    },
+    "Marantz_AV7702": {
+        "model": "Marantz-AV7702",
+        "parent": "Marantz_AV7701",
+        "lost": {
+            "SV_SubCommands": [
+                "SOURCE"
+            ],
+            "PS_Commands": [
+                "PSPAN",
+                "PSDIM",
+                "PSCEN",
+                "PSCEI",
+                "PSPHG",
+                "PSREFLEV",
+                "PSDYNVOL"
+            ]
+        }
+    },
+    "Marantz_AV7702mkII": {
+        "model": "Marantz-AV7702 mk II",
+        "parent": "Marantz_AV7702",
+        "lost": {
+            "CV_Commands": [
+                "CVZRL"
+            ],
+            "PS_Commands": [
+                "PSCEG",
+                "PSMODE"
+            ]
+        }
+    },
+    "Marantz_AV7703": {
+        "model": "Marantz-AV7703",
+        "parent": "Marantz_AV7702mkII",
+        "lost": {
+            "CV_Commands": [
+                "CVFWL",
+                "CVFWR"
+            ]
+        }
+    },
+    "Marantz_AV7704": {
+        "model": "Marantz-AV7704",
+        "parent": "Marantz_AV7703",
+        "lost": {
+            "InfoFunctions": [
+                "MainZoneName",
+                "Model"
+            ],
+            "PS_Commands": [
+                "PSSP",
+                "PSSTH",
+                "PSHT_EQ"
+            ]
+        }
+    },
+    "Marantz_AV7705": {
+        "model": "Marantz-AV7705",
+        "parent": "Marantz_AV7704",
+        "lost": {
+            "PS_Commands": [
+                "PSDIL"
+            ]
+        }
+    },
+    "Marantz_AV8801": {
+        "model": "Marantz-AV8801",
+        "parent": "MarantzAVR",
+        "lost": {
+            "SV_SubCommands": [
+                "DVR",
+                "GAME2",
+                "V.AUX",
+                "DOCK",
+                "ON",
+                "OFF"
+            ],
+            "CV_Commands": [
+                "CVZRL"
+            ],
+            "SystemControl_Commands": [
+                "NS"
+            ]
+        }
+    },
+    "Marantz_AV8802": {
+        "model": "Marantz-AV8802",
+        "parent": "Marantz_AV8801",
+        "lost": {
+            "SV_SubCommands": [
+                "SOURCE"
+            ],
+            "PS_Commands": [
+                "PSPAN",
+                "PSDIM",
+                "PSCEN"
+            ]
+        }
+    },
+    "Denon_AVR_3808A": {
+        "model": "AVR-3808A",
+        "parent": "DenonAVR",
+        "lost": {
+            "InfoFunctions": [
+                "MainZoneName",
+                "Model"
+            ],
+            "MS_SubCommands": [
+                "MCH STEREO"
+            ],
+            "VS_Commands": [
+                "VSSCH",
+                "VSVST",
+                "VSAUDIO",
+                "VSVPM"
+            ]
+        }
+    },
+    "Denon_AVR_3310": {
+        "model": "AVR-3310",
+        "parent": "DenonAVR",
+        "lost": {
+            "MS_SubCommands": [
+                "MCH STEREO"
+            ],
+            "VS_Commands": [
+                "VSMONI",
+                "VSVST",
+                "VSVPM"
+            ]
+        }
+    },
+    "Denon_AVR_3311": {
+        "model": "AVR-3311",
+        "parent": "Denon_AVR_3310",
+        "lost": {
+            "MS_SubCommands": [
+                "7CH STEREO"
+            ],
+            "SV_SubCommands": [
+                "GAME2",
+                "ON",
+                "OFF"
+            ],
+            "PSDYNVOL_SubCommands": [
+                " LIT",
+                " MED",
+                " HEV"
+            ]
+        }
+    },
+    "Denon_AVR_4310": {
+        "model": "AVR-4310",
+        "parent": "DenonAVR",
+        "lost": {
+            "MS_SubCommands": [
+                "MCH STEREO"
+            ],
+            "SV_SubCommands": [
+                "BD",
+                "GAME",
+                "GAME2",
+                "DOCK",
+                "ON",
+                "OFF"
+            ],
+            "PSDYNVOL_SubCommands": [
+                " LIT",
+                " MED",
+                " HEV"
+            ],
+            "VS_Commands": [
+                "VSVPM"
+            ]
+        }
+    },
+    "Denon_AVR_4311": {
+        "model": "AVR-4311",
+        "parent": "Denon_AVR_4310",
+        "lost": {
+            "MS_SubCommands": [
+                "7CH STEREO"
+            ],
+            "SV_SubCommands": [
+                "VCR"
+            ],
+            "PSDYNVOL_SubCommands": [
+                " ON"
+            ]
+        }
+    },
+    "Denon_AVR_X2000": {
+        "model": "AVR-X2000",
+        "parent": "DenonAVR",
+        "lost": {
+            "SV_SubCommands": [
+                "DVR",
+                "GAME2",
+                "V.AUX",
+                "DOCK"
+            ],
+            "VS_Commands": [
+                "VSMONI",
+                "VSVST"
+            ]
+        }
+    },
+    "Denon_AVR_X2100W": {
+        "model": "AVR-X2100W",
+        "parent": "Denon_AVR_X2000",
+        "lost": {
+            "MS_SubCommands": [
+                "STANDARD"
+            ],
+            "PV_Commands": [
+                "PVHUE"
+            ]
+        }
+    },
+    "Denon_AVR_X2200W": {
+        "model": "AVR-X2200W",
+        "parent": "Denon_AVR_X2100W",
+        "lost": {
+            "PS_Commands": [
+                "PSMODE",
+                "PSPHG",
+                "PSPAN",
+                "PSDIM",
+                "PSCEN",
+                "PSCEI"
+            ]
+        }
+    },
+    "Denon_AVR_X2400H": {
+        "model": "AVR-X2400H",
+        "parent": "Denon_AVR_X2300W",
+        "lost": {
+            "InfoFunctions": [
+                "MainZoneName",
+                "Model"
+            ],
+            "VS_Commands": [
+                "VSSC"
+            ],
+            "Zone_Commands": [
+                "Zone3Name",
+                "Z3INPUT",
+                "Z3VOL",
+                "Z3POWER",
+                "Z3MU",
+                "Z3CVFL",
+                "Z3CVFR",
+                "Z3QUICK",
+                "Z3SLP",
+                "Z3STBY"
+            ],
+            "SystemControl_Commands": [
+                "Display",
+                "NS"
+            ]
+        }
+    },
+    "Denon_AVR_X2500H": {
+        "model": "AVR-X2500H",
+        "parent": "Denon_AVR_X2400H",
+        "lost": {
+            "PS_Commands": [
+                "PSDIL"
+            ]
+        }
+    },
+    "Denon_AVR_X2700H": {
+        "model": "AVR-X2700H",
+        "parent": "Denon_AVR_X2600H",
+        "lost": {
+            "SV_SubCommands": [
+                "AUX2"
+            ],
+            "SystemControl_Commands": [
+                "DIM"
+            ]
+        }
+    },
+    "Denon_AVR_X2800H": {
+        "model": "AVR-X2800H",
+        "parent": "Denon_AVR_X2700H",
+        "lost": {
+            "SI_SubCommands": [
+                "GAME"
+            ],
+            "SV_SubCommands": [
+                "GAME"
+            ],
+            "PV_Commands": [
+                "PVPICT",
+                "PVCN",
+                "PVBR",
+                "PVST",
+                "PVDNR",
+                "PVENH"
+            ]
+        }
+    },
+    "Denon_AVR_X1100W": {
+        "model": "AVR-X1100W",
+        "parent": "DenonAVR",
+        "lost": {
+            "VS_Commands": [
+                "VSMONI",
+                "VSSC",
+                "VSSCH",
+                "VSVST",
+                "VSVPM"
+            ]
+        }
+    },
+    "Denon_AVR_X1200W": {
+        "model": "AVR-X1200W",
+        "parent": "Denon_AVR_X1100W",
+        "lost": {
+            "SV_SubCommands": [
+                "DVR",
+                "GAME2",
+                "V.AUX",
+                "DOCK"
+            ],
+            "PS_Commands": [
+                "PSMODE",
+                "PSPHG"
+            ]
+        }
+    },
+    "Denon_AVR_X1300W": {
+        "model": "AVR-X1300W",
+        "parent": "Denon_AVR_X1200W",
+        "lost": {
+            "MS_SubCommands": [
+                "PURE DIRECT"
+            ]
+        }
+    },
+    "Denon_AVR_X1400H": {
+        "model": "AVR-X1400H",
+        "parent": "Denon_AVR_X1300W",
+        "lost": {
+            "InfoFunctions": [
+                "MainZoneName",
+                "Model"
+            ],
+            "SystemControl_Commands": [
+                "Display",
+                "NS"
+            ]
+        }
+    },
+    "Denon_AVR_X1500H": {
+        "model": "AVR-X1500H",
+        "parent": "Denon_AVR_X1400H",
+        "lost": {
+            "PS_Commands": [
+                "PSDIL"
+            ]
+        }
+    },
+    "Denon_AVR_X3000": {
+        "model": "AVR-X3000",
+        "parent": "DenonAVR",
+        "lost": {
+            "SV_SubCommands": [
+                "DVR",
+                "GAME2",
+                "V.AUX",
+                "DOCK"
+            ],
+            "VS_Commands": [
+                "VSMONI",
+                "VSVST"
+            ]
+        }
+    },
+    "Denon_AVR_X3400H": {
+        "model": "AVR-X3400H",
+        "parent": "Denon_AVR_X3000",
+        "lost": {
+            "InfoFunctions": [
+                "MainZoneName",
+                "Model"
+            ],
+            "CV_Commands": [
+                "CVFWL",
+                "CVFWR"
+            ],
+            "PS_Commands": [
+                "PSPHG",
+                "PSDSX",
+                "PSSTW",
+                "PSSTH",
+                "PSPAN",
+                "PSDIM",
+                "PSCEN",
+                "PSCEG"
+            ],
+            "PV_Commands": [
+                "PVHUE"
+            ],
+            "Zone_Commands": [
+                "Zone3Name",
+                "Z3INPUT",
+                "Z3VOL",
+                "Z3POWER",
+                "Z3MU",
+                "Z3CS",
+                "Z3CVFL",
+                "Z3CVFR",
+                "Z3HPF",
+                "Z3QUICK",
+                "Z3SLP"
+            ],
+            "SystemControl_Commands": [
+                "MNSRC",
+                "Display",
+                "NS"
+            ]
+        }
+    },
+    "Denon_AVR_X3500H": {
+        "model": "AVR-X3500H",
+        "parent": "Denon_AVR_X3400H",
+        "lost": {
+            "PS_Commands": [
+                "PSDIL"
+            ]
+        }
+    },
+    "Denon_AVR_X3700H": {
+        "model": "AVR-X3700H",
+        "parent": "Denon_AVR_X3500H",
+        "lost": {
+            "VS_Commands": [
+                "VSSC"
+            ]
+        }
+    },
+    "Denon_AVR_X3800H": {
+        "model": "AVR-X3800H",
+        "parent": "Denon_AVR_X3700H",
+        "lost": {
+            "SI_SubCommands": [
+                "GAME"
+            ],
+            "SV_SubCommands": [
+                "GAME"
+            ],
+            "PV_Commands": [
+                "PVPICT",
+                "PVCN",
+                "PVBR",
+                "PVST",
+                "PVDNR",
+                "PVENH"
+            ]
+        }
+    },
+    "Denon_AVR_X4000": {
+        "model": "AVR-X4000",
+        "parent": "DenonAVR",
+        "lost": {
+            "SV_SubCommands": [
+                "DVR",
+                "GAME2",
+                "V.AUX",
+                "DOCK"
+            ],
+            "VS_Commands": [
+                "VSMONI",
+                "VSVST"
+            ],
+            "SystemControl_Commands": [
+                "NS"
+            ]
+        }
+    },
+    "Denon_AVR_X4100W": {
+        "model": "AVR-X4100W",
+        "parent": "Denon_AVR_X4000",
+        "lost": {
+            "MS_SubCommands": [
+                "STANDARD"
+            ],
+            "PS_Commands": [
+                "PSPAN",
+                "PSDIM",
+                "PSCEN",
+                "PSCEG"
+            ]
+        }
+    },
+    "Denon_AVR_X4300H": {
+        "model": "AVR-X4300H",
+        "parent": "Denon_AVR_X4200W",
+        "lost": {
+            "InfoFunctions": [
+                "MainZoneName",
+                "Model"
+            ],
+            "CV_Commands": [
+                "CVFWL",
+                "CVFWR"
+            ]
+        }
+    },
+    "Denon_AVR_X4500H": {
+        "model": "AVR-X4500H",
+        "parent": "Denon_AVR_X4400H",
+        "lost": {
+            "PS_Commands": [
+                "PSDIL"
+            ]
+        }
+    },
+    "Denon_AVR_X4700H": {
+        "model": "AVR-X4700H",
+        "parent": "Denon_AVR_X4500H",
+        "lost": {
+            "SystemControl_Commands": [
+                "DIM"
+            ]
+        }
+    },
+    "Denon_AVR_X4800H": {
+        "model": "AVR-X4800H",
+        "parent": "Denon_AVR_X4700H",
+        "lost": {
+            "SI_SubCommands": [
+                "GAME"
+            ],
+            "SV_SubCommands": [
+                "GAME"
+            ],
+            "PV_Commands": [
+                "PVPICT",
+                "PVCN",
+                "PVBR",
+                "PVST",
+                "PVHUE",
+                "PVDNR",
+                "PVENH"
+            ]
+        }
+    },
+    "Denon_AVR_X5200W": {
+        "model": "AVR-X5200W",
+        "parent": "DenonAVR",
+        "lost": {
+            "SV_SubCommands": [
+                "DVR",
+                "GAME2",
+                "V.AUX",
+                "DOCK"
+            ],
+            "VS_Commands": [
+                "VSVST"
+            ]
+        }
+    },
+    "Denon_AVR_X6200W": {
+        "model": "AVR-X6200W",
+        "parent": "DenonAVR",
+        "lost": {
+            "SV_SubCommands": [
+                "DVR",
+                "GAME2",
+                "V.AUX",
+                "DOCK"
+            ],
+            "VS_Commands": [
+                "VSVST"
+            ],
+            "SystemControl_Commands": [
+                "NS"
+            ]
+        }
+    },
+    "Denon_AVR_X6300H": {
+        "model": "AVR-X6300H",
+        "parent": "Denon_AVR_X6200W",
+        "lost": {
+            "InfoFunctions": [
+                "MainZoneName",
+                "Model"
+            ],
+            "Zone_Commands": [
+                "Model",
+                "Zone2Name",
+                "Zone3Name"
+            ],
+            "SystemControl_Commands": [
+                "MNSRC",
+                "Display"
+            ]
+        }
+    },
+    "Denon_AVR_X7200W": {
+        "model": "AVR-X7200W",
+        "parent": "DenonAVR",
+        "lost": {
+            "SV_SubCommands": [
+                "DVR",
+                "GAME2",
+                "V.AUX",
+                "DOCK"
+            ]
+        }
+    },
+    "Denon_AVC_X8500H": {
+        "model": "AVC-X8500H",
+        "parent": "Denon_AVR_X7200WA",
+        "lost": {
+            "InfoFunctions": [
+                "MainZoneName",
+                "Model"
+            ],
+            "MS_SubCommands": [
+                "WIDE SCREEN",
+                "SUPER STADIUM",
+                "CLASSIC CONCERT"
+            ]
+        }
+    },
+    "Denon_DRA_N5": {
+        "model": "DRA-N5",
+        "parent": "DenonAVR",
+        "lost": {
+            "InfoFunctions": [
+                "MainZoneName",
+                "Model"
+            ],
+            "PowerFunctions": [
+                "ZM"
+            ],
+            "InputSettings": [
+                "MSQUICK",
+                "SD",
+                "DC",
+                "SV"
+            ],
+            "SurroundMode": [
+                "MS",
+                "SurroundDisplay"
+            ],
+            "CV_Commands": [
+                "CVFL",
+                "CVFR",
+                "CVC",
+                "CVSW",
+                "CVSL",
+                "CVSR"
+            ],
+            "PS_Commands": [
+                "PSDELAY",
+                "PSRSTR"
+            ],
+            "VS_Commands": [
+                "VSMONI",
+                "VSSC",
+                "VSSCH",
+                "VSVST",
+                "VSAUDIO",
+                "VSVPM"
+            ],
+            "SystemControl_Commands": [
+                "MNMEN"
+            ]
+        }
+    },
+    "Denon_RCD_N8": {
+        "model": "RCD-N8",
+        "parent": "Denon_DRA_N5",
+        "lost": {
+            "SI_SubCommands": [
+                "USB",
+                "AUXB",
+                "AUXD"
+            ]
+        }
+    }
+}

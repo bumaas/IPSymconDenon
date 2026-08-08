@@ -60,6 +60,10 @@ Composite-Strings sind über locale.json nicht übersetzbar.
     Golden-Diffs im Commit reviewen — nie um einen roten Test „wegzudrücken".
   - `--dump <Modell>` schreibt Voll-Dumps nach `tests/dump/` (gitignored) zum
     Diff-Debugging bei reinen sha256-Abweichungen.
+  - Der Bereich `capabilities.json` hält dieselben Capabilities zusätzlich im
+    **Klartext** (sortierte Listen). `models.json` zeigt nur *dass* sich etwas
+    geändert hat, `capabilities.json` macht im `git diff` sichtbar *was* — beide
+    entstehen im selben Lauf und können nicht auseinanderlaufen.
   - Die ursprünglich mit Build 76 eingefrorenen Altfehler wurden in **Build 77**
     gegen die Goldens gefixt (CVFDR/CVSDL-Sendeprefixe, ToneCTRL-Ident-Mismatch,
     `$order`-Duplikate, `RegisterVariables_OLD`-Fatal im HTTP-Modul — letzterer
@@ -75,6 +79,27 @@ Composite-Strings sind über locale.json nicht übersetzbar.
   Wertebereiche und die alten binären `.xls` (Marantz FY16–FY21) werden nicht
   geprüft.
 
+- `tests/inheritance_check.php` — **Kettenprüfung** (ohne Kernel/Netz/Spec-Dateien,
+  daher als einziges Werkzeug dieser Art auch in der CI wirksam). Die
+  Capability-Arrays der Modellklassen kennen **keinen Merge**: eine Neudeklaration
+  ersetzt die Elternliste vollständig, wodurch still ein Kommando wegfallen kann
+  (so verlor `Denon_AVR_X2700H` den Dimmer `DIM`, und Build 85 erzeugte denselben
+  Bruch neu bei `Denon_AVR_X4700H`).
+  - Prüfen: `C:\php\php tests/inheritance_check.php` (auch in der CI).
+  - Rund 200 Verluste sind Bestand und meist legitim; sie liegen als **Baseline**
+    in `tests/inheritance_baseline.json`. Rot wird nur ein *neuer* Verlust.
+  - `--update` nur nach bewusster Prüfung; den Baseline-Diff im Commit reviewen.
+  - `--command DIM` zeigt die Abdeckung eines Kommandos samt Deklarationsstellen
+    und Erbengemeinschaften — die Sicht, die man zum Ergänzen von Capabilities
+    braucht. `--model` / `--area` filtern die Anzeige.
+
+- `tests/capability_diff.php` — **Vorher-Nachher-Vergleich** im Klartext, für das
+  Review von Capability-Änderungen:
+  `C:\php\php tests/capability_diff.php --from <Ref|Datei> [--to <Ref|Datei>]`.
+  Holt den Vorher-Stand aus `tests/golden/capabilities.json` des Refs; kennt der
+  Ref die Datei noch nicht, wird ersatzweise ein temporärer `git worktree`
+  aufgemacht. Informativ (Exit 0), Exit 1 nur bei Umgebungsfehlern.
+
 ## Bekannte offene Punkte (bewusst zurückgestellt)
 
 - `Denon AVR HTTP` bindet `FormExpertParameters()` nicht ein — die Property
@@ -88,6 +113,13 @@ Composite-Strings sind über locale.json nicht übersetzbar.
   (VSMONI-Direktwahl, PSIMAX-Gruppe, PSDIRAC per V03-Spec für X3800H/X4800H,
   Trigger TR1/TR2, DIM-Direktwahl, SYREMOTE/SYPANEL-Lock) sowie neue Modelle
   (CINEMA 30, AV 10, Denon-S-Serie, X3300W, A1H, A110).
+- Die Baseline der Kettenprüfung (`tests/inheritance_baseline.json`) **duldet den
+  Ist-Stand**, sie bestätigt ihn nicht: 556 Einzelverluste in 83 Klassen sind
+  eingefroren, darunter die beiden bekannten DIM-Brüche `Denon_AVR_X2700H`
+  (`DenonAVR.php:1045`) und `Denon_AVR_X4700H` (`DenonAVR.php:2417`). Sie
+  verschwinden aus der Baseline, sobald der DIM-Fix aus `SPEC-Vererbung.md`
+  bzw. `SPEC.md` umgesetzt wird. Planungsgrundlage für beides:
+  `SPEC-Vererbung.md` (Werkzeuge) und `SPEC.md` (fachlicher Fix).
 
 ## Support-Kontext
 

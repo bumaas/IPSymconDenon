@@ -9,6 +9,8 @@ declare(strict_types=1);
  * tests/golden/ ein und vergleicht jede erneute Erzeugung strukturell dagegen.
  * Bereiche:
  *   models        - Capabilities aller AVR-Modelle (Digest je Modell)
+ *   capabilities  - dieselben Capabilities im Klartext (macht Änderungen an
+ *                   Modellfähigkeiten im git diff lesbar, siehe SPEC-Vererbung.md)
  *   profiles      - Profilkatalog + Profil-Mapping je Modell (Digest)
  *   presentations - Presentation-Arrays aller Profile je Modell (Digest,
  *                   Voll-Dump für Referenzmodelle)
@@ -73,6 +75,34 @@ function digest(mixed $data): string
 function pretty(mixed $data): string
 {
     return json_encode($data, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n";
+}
+
+/**
+ * Abweichung zweier Golden-Einträge als Text.
+ *
+ * Bei Einträgen mit Unterfeldern (z. B. capabilities.json: ein Bereich je Key)
+ * werden nur die abweichenden Felder gezeigt - sonst stünde bei jedem
+ * geänderten Modell der komplette Datensatz zweimal in der Ausgabe.
+ */
+function abweichungsDetails(mixed $golden, mixed $actual): string
+{
+    if (!is_array($golden) || !is_array($actual)) {
+        return '    erwartet: ' . canonical($golden) . "\n" . '    erhalten: ' . canonical($actual) . "\n";
+    }
+    $text = '';
+    foreach ($actual as $feld => $wert) {
+        if (!array_key_exists($feld, $golden)) {
+            $text .= "    $feld: neu, erhalten " . canonical($wert) . "\n";
+        } elseif ($golden[$feld] !== $wert) {
+            $text .= "    $feld: erwartet " . canonical($golden[$feld]) . ', erhalten ' . canonical($wert) . "\n";
+        }
+    }
+    foreach ($golden as $feld => $wert) {
+        if (!array_key_exists($feld, $actual)) {
+            $text .= "    $feld: entfallen, erwartet war " . canonical($wert) . "\n";
+        }
+    }
+    return $text;
 }
 
 // ---- Test-Harnische --------------------------------------------------------
@@ -160,6 +190,24 @@ function presentationsForModel(string $model): array
     return $full;
 }
 
+/**
+ * Capabilities eines Modells mit sortierten Kommandolisten.
+ *
+ * Sortiert wird bewusst: eine reine Umsortierung im Quelltext soll keinen Diff
+ * über hunderte Zeilen erzeugen. Die Reihenfolge bleibt trotzdem abgesichert -
+ * der sha256 in models.json hasht die unsortierte Struktur.
+ */
+function sortedCapabilities(array $caps): array
+{
+    foreach ($caps as $key => $value) {
+        if (is_array($value)) {
+            sort($value);
+            $caps[$key] = $value;
+        }
+    }
+    return $caps;
+}
+
 function profilesForModel(string $model): array
 {
     $profileManager = new DENONIPSProfiles($model);
@@ -174,14 +222,19 @@ function buildFiles(): array
     $files     = [];
     $allModels = array_keys(AVRs::getAllAVRs());
 
-    // models: Capabilities-Digest je Modell (inkl. Konsistenz-Check-Fehlern)
-    $models = [];
+    // models:       Capabilities-Digest je Modell (inkl. Konsistenz-Check-Fehlern)
+    // capabilities: dieselben Daten im Klartext, damit im Review sichtbar wird,
+    //               *was* sich geändert hat - der Digest zeigt nur *dass*.
+    $models       = [];
+    $capabilities = [];
     foreach ($allModels as $model) {
         takeErrors();
-        $caps           = AVRs::getCapabilities($model);
-        $models[$model] = ['sha256' => digest($caps), 'errors' => takeErrors()];
+        $caps                 = AVRs::getCapabilities($model);
+        $models[$model]       = ['sha256' => digest($caps), 'errors' => takeErrors()];
+        $capabilities[$model] = sortedCapabilities($caps);
     }
-    $files['models.json'] = $models;
+    $files['models.json']       = $models;
+    $files['capabilities.json'] = $capabilities;
 
     // profiles: Katalog + Mapping je Modell
     $profiles = [];
@@ -394,8 +447,7 @@ foreach ($files as $name => $actual) {
             echo "  NEU (nicht in Golden-Datei): $key\n";
         } elseif ($golden[$key] !== $value) {
             echo "  ABWEICHUNG: $key\n";
-            echo '    erwartet: ' . canonical($golden[$key]) . "\n";
-            echo '    erhalten: ' . canonical($value) . "\n";
+            echo abweichungsDetails($golden[$key], $value);
         }
     }
     foreach (array_keys($golden) as $key) {
