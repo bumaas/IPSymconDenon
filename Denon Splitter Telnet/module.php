@@ -138,7 +138,7 @@ class DenonSplitterTelnet extends IPSModuleStrict
                 // Daten senden
                 try {
                     //Daten abholen
-                    $DenonStatusHTTP = new DENON_StatusHTML();
+                    $DenonStatusHTTP = new DENON_StatusHTML(null, $this->Logger_Err(...));
 
                     $ipdenon         = IPS_GetProperty($this->GetParent(), 'host');
                     $AVRType         = $this->GetValue('AVRType');

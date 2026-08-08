@@ -27,11 +27,11 @@ class DenonAVRIOHTTP extends IPSModuleStrict
         //Never delete this line!
         parent::ApplyChanges();
 
-        $this->RegisterVariableString('InputMapping', 'Input Mapping', '', 1);
-        IPS_SetHidden($this->GetIDForIdent('InputMapping'), true);
-
-        $this->RegisterVariableString('AVRType', 'AVRType', '', 2);
-        IPS_SetHidden($this->GetIDForIdent('AVRType'), true);
+        // Die Sichtbarkeit nur beim erstmaligen Anlegen vorgeben — danach liegt sie
+        // in der Hoheit des Anwenders und darf nicht bei jedem ApplyChanges
+        // zurückgesetzt werden.
+        $this->RegisterHiddenVariableString('InputMapping', 'Input Mapping', 1);
+        $this->RegisterHiddenVariableString('AVRType', 'AVRType', 2);
 
         //IP Prüfen
         if (filter_var($this->ReadPropertyString('Host'), FILTER_VALIDATE_IP)) {
@@ -44,6 +44,28 @@ class DenonAVRIOHTTP extends IPSModuleStrict
             $this->SetStatus(self::STATUS_INST_IP_IS_INVALID); //IP Adresse ist ungültig
         }
         $this->SetUpdateTimerInterval();
+    }
+
+    private function Logger_Err(string $message): void
+    {
+        $this->SendDebug('LOG_ERR', $message, 0);
+
+        $this->LogMessage($message, KL_ERROR);
+    }
+
+    /**
+     * Legt eine interne Statusvariable an und blendet sie aus — die Sichtbarkeit
+     * aber nur dann, wenn die Variable neu entsteht.
+     */
+    private function RegisterHiddenVariableString(string $Ident, string $Name, int $Position): void
+    {
+        $existed = @IPS_GetObjectIDByIdent($Ident, $this->InstanceID) !== false;
+
+        $this->RegisterVariableString($Ident, $Name, '', $Position);
+
+        if (!$existed) {
+            IPS_SetHidden($this->GetIDForIdent($Ident), true);
+        }
     }
 
     protected function SetUpdateTimerInterval(): void
@@ -104,7 +126,7 @@ class DenonAVRIOHTTP extends IPSModuleStrict
             // Daten senden
             try {
                 //Daten abholen
-                $DenonStatus  = new DENON_StatusHTML();
+                $DenonStatus  = new DENON_StatusHTML(null, $this->Logger_Err(...));
                 $ipdenon      = $this->ReadPropertyString('Host');
                 $InputMapping = $this->GetInputVarMapping();
                 $AVRType      = $this->GetAVRType();

@@ -6,14 +6,28 @@ class DENON_StatusHTML extends stdClass
 {
     private bool $debug = false; //wird im Constructor gesetzt
     private $Logger_Dbg;
+    private $Logger_Err;
 
-    public function __construct(?callable $Logger_Dbg = null)
+    public function __construct(?callable $Logger_Dbg = null, ?callable $Logger_Err = null)
     {
         if (isset($Logger_Dbg)){
             $this->debug = true;
             $this->Logger_Dbg = $Logger_Dbg;
         }
 
+        $this->Logger_Err = $Logger_Err;
+    }
+
+    /**
+     * Meldet einen Fehler über den vom aufrufenden Modul übergebenen Logger.
+     * Die Klasse gehört zu keiner Instanz und hat daher selbst kein
+     * $this->LogMessage(); ohne übergebenen Logger bleibt die Meldung stumm.
+     */
+    private function logError(string $function, string $message): void
+    {
+        if ($this->Logger_Err !== null) {
+            call_user_func($this->Logger_Err, __CLASS__ . '::' . $function . ': ' . $message);
+        }
     }
 
     //Status
@@ -61,21 +75,21 @@ class DENON_StatusHTML extends stdClass
             $xmlMainZone = @new SimpleXMLElement(file_get_contents($http));
             $DataMain    = $this->MainZoneXml($xmlMainZone, $DataMain, $VarMappings, $Inputs);
         } catch (Exception $e) {
-            IPS_LogMessage(__CLASS__, __FUNCTION__ . ': ' . $e->getMessage());
+            $this->logError(__FUNCTION__, $e->getMessage());
         }
 
         try {
             $xmlNetAudioStatus = @new SimpleXMLElement(file_get_contents('http://' . $ip . '/goform/formMainZone_NetAudioStatusXml.xml'));
             $DataMain          = $this->NetAudioStatusXml($xmlNetAudioStatus, $DataMain);
         } catch (Exception $e) {
-            IPS_LogMessage(__CLASS__, __FUNCTION__ . ': ' . $e->getMessage());
+            $this->logError(__FUNCTION__, $e->getMessage());
         }
 
         try {
             $xmlDeviceinfo = @new SimpleXMLElement(file_get_contents('http://' . $ip . '/goform/formMainZone_Deviceinfo.xml'));
             $DataMain      = $this->Deviceinfo($xmlDeviceinfo, $DataMain);
         } catch (Exception $e) {
-            IPS_LogMessage(__CLASS__, __FUNCTION__ . ': ' . $e->getMessage());
+            $this->logError(__FUNCTION__, $e->getMessage());
         }
 
         // Zone 2
@@ -86,7 +100,7 @@ class DENON_StatusHTML extends stdClass
             $xml    = @new SimpleXMLElement(file_get_contents('http://' . $ip . '/goform/formMainZone_MainZoneXml.xml?_=&ZoneName=ZONE2'));
             $DataZ2 = $this->StateZone2($xml, $DataZ2, $InputMapping);
         } catch (Exception $e) {
-            IPS_LogMessage(__CLASS__, __FUNCTION__ . ': ' . $e->getMessage());
+            $this->logError(__FUNCTION__, $e->getMessage());
         }
 
         // Zone 3
@@ -97,7 +111,7 @@ class DENON_StatusHTML extends stdClass
             $xml    = @new SimpleXMLElement(file_get_contents('http://' . $ip . '/goform/formMainZone_MainZoneXml.xml?_=&ZoneName=ZONE3'));
             $DataZ3 = $this->StateZone3($xml, $DataZ3, $InputMapping);
         } catch (Exception $e) {
-            IPS_LogMessage(__CLASS__, __FUNCTION__ . ': ' . $e->getMessage());
+            $this->logError(__FUNCTION__, $e->getMessage());
         }
 
         //Model
@@ -107,7 +121,7 @@ class DENON_StatusHTML extends stdClass
             $DataZ2          = $this->DeviceSearch($xmlDeviceSearch, $DataZ2);
             $DataZ3          = $this->DeviceSearch($xmlDeviceSearch, $DataZ3);
         } catch (Exception $e) {
-            IPS_LogMessage(__CLASS__, __FUNCTION__ . ': ' . $e->getMessage());
+            $this->logError(__FUNCTION__, $e->getMessage());
         }
 
         $datasend = [
