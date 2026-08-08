@@ -27,6 +27,7 @@ jobs:
           php -l tests/symcon_stubs.php
           php -l tests/golden_regression.php
           php -l tests/spec_check.php
+          php -l tests/dim_gate.php
       - name: JSON-Validität
         run: |
           find . -name '*.json' -not -path './.git/*' -print0 |

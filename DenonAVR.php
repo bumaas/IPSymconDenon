@@ -2328,6 +2328,14 @@ class Denon_AVR_X4500H extends Denon_AVR_X4400H
         DENON_API_Commands::PSAUROPR,
         DENON_API_Commands::PSAUROST,
     ];
+    // Basis wie Denon_AVR_X4000, laut Protokoll-Spec zusätzlich der Display-Dimmer (DIM)
+    public static array $SystemControl_Commands = [
+        DENON_API_Commands::MN,
+        DENON_API_Commands::MNMEN,
+        DENON_API_Commands::MNSRC,
+        DENON_API_Commands::DISPLAY,
+        DENON_API_Commands::DIM,
+    ];
 }
 
 class Denon_AVR_X4700H extends Denon_AVR_X4500H
