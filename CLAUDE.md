@@ -93,6 +93,18 @@ Composite-Strings sind über locale.json nicht übersetzbar.
     und Erbengemeinschaften — die Sicht, die man zum Ergänzen von Capabilities
     braucht. `--model` / `--area` filtern die Anzeige.
 
+- `tests/association_check.php` — **Assoziations-Vollständigkeit** (ohne Kernel/
+  Netz, daher in der CI wirksam). Einige Profile lassen ihre Assoziationen von
+  `updateProfileAccordingToCaps()` modellabhängig filtern; der Filter kann nur
+  wegnehmen. Was ein Modell in `<Ident>_SubCommands` deklariert, der Katalog aber
+  nicht kennt, verschwindet **still** und ist nicht auswählbar. Genau so fehlten
+  bis Build 94 `Game1` (14 Modelle), `8K` (18) und `Dock` (9) beim Video Select
+  sowie `Auto` (94 Modelle) beim Surround Mode.
+  - Prüfen: `C:\php\php tests/association_check.php`, `--details` listet die
+    betroffenen Modelle.
+  - Beim Ergänzen einer Assoziation **nur anhängen, nie umnummerieren** — der
+    Wert steht so in den Variablen der Bestandsinstallationen.
+
 - `tests/capability_diff.php` — **Vorher-Nachher-Vergleich** im Klartext, für das
   Review von Capability-Änderungen:
   `C:\php\php tests/capability_diff.php --from <Ref|Datei> [--to <Ref|Datei>]`.
@@ -114,20 +126,27 @@ Composite-Strings sind über locale.json nicht übersetzbar.
   (VSMONI-Direktwahl, PSIMAX-Gruppe, PSDIRAC per V03-Spec für X3800H/X4800H,
   Trigger TR1/TR2/TR3, SYREMOTE/SYPANEL-Lock) sowie neue Modelle
   (CINEMA 30, AV 10, Denon-S-Serie, X3300W, A1H, A110).
-- Die Specs **Denon CY2026 V02** und **Marantz CY2025 V04** sind vollständig
-  eingearbeitet: die Modelle seit **2.30 build 92**, ihre Kommandos (`BTLEV`,
-  `CLM`, `SYHPT`, `PSCEX`, `PSSURLEV`, `PSDACFIL`, Quick Select 6) seit
-  **2.30 build 93**. Offen bleibt daraus nur:
-  - `Z2QUICK6` beim **AVR-S980H** — die Spec markiert es mit `@10`
-    („Requires Amp assign = Zone2"), nicht als unterstützt.
+- Aus den Specs **Denon CY2026 V02** und **Marantz CY2025 V04** sind die Modelle
+  seit **2.30 build 92** und die Kommandos `BTLEV`, `CLM`, `SYHPT`, `PSCEX`,
+  `PSSURLEV`, `PSDACFIL`, Quick Select 6 seit **2.30 build 93** umgesetzt.
+  Aus diesen beiden Specs stehen noch aus:
+  - `ILB` (Illumination, 6 Werte) bei AV 20/AV 30 — bislang in keiner Liste.
   - `PSDACFIL` für **CINEMA 30** und **AV 10** — beide Modelle kennt das Modul
     nicht (siehe Modell-Liste oben).
+  - `CVTTR` bei AV 20/AV 30 (die CINEMA 40 hat dieselbe Lücke).
 - Quick Select 6 wird über die Capability-Arrays `MSQUICK_SubCommands` und
   `Z2QUICK_SubCommands` gefiltert (Muster: `PSDYNVOL_SubCommands`). Zone 3
   bleibt bewusst ungefiltert bei 0–5, weil kein Modell dort eine sechste Auswahl
   hat. Wer eine Capability dieser Art ergänzt, muss sie an drei Stellen
   eintragen: `class AVR`, `AVR::getCapabilities()` und `CAPABILITY_PROPERTIES`
   in `tests/inheritance_check.php` — der Prüfer schlägt sonst zu Recht Alarm.
+  Namensfalle: der Array**name** folgt dem Profil-Ident (`Z2QUICK_SubCommands`),
+  der **Inhalt** den Assoziationen — und die sind in allen Zonen die
+  `MSQUICK*`-Konstanten.
+- Die Spec-Marke `@10` heißt **unterstützt, sofern entsprechend konfiguriert**
+  („Requires Amp assign = Zone2"), nicht „nicht unterstützt". Beim AVR-S980H
+  trägt die gesamte Zone 2 diese Marke, auch die längst angebotenen Quick
+  Selects 1–5 — sie deshalb nicht als Ausschlussgrund lesen.
 - `SYHPT` (HDMI Hot Plug Test) ist eine reine Aktion: keine Statusabfrage
   (deshalb im `GetStates()`-Ausschluss des Telnet-Moduls), und die Quittung
   `SYHPT OK` steht in der Ignorierliste von `DenonAVRCP_API_Data`. Achtung bei
@@ -139,6 +158,26 @@ Composite-Strings sind über locale.json nicht übersetzbar.
   sie hängen. Ein leeres `Tuner_Control` gibt es bei **keinem** der Modelle,
   der Pfad ist also ungetestet; die Frage „welche Modelle haben wirklich einen
   Tuner?" gehört in einen eigenen Durchgang.
+- Aus dem Code-Review zu Build 94 bewusst zurückgestellt:
+  - **Kein additiver Mechanismus für Capability-Arrays.** Jede Neudeklaration
+    schreibt die Elternliste ab (allein Build 93 rund 370 kopierte Zeilen). Ein
+    `$PS_Commands_add`, das `AVR::getCapabilities()` mit der Elternliste
+    zusammenführt, würde die ganze Fehlerklasse abräumen, die
+    `tests/inheritance_check.php` heute nur nachträglich meldet. Großer,
+    modellübergreifender Umbau — eigener Durchgang.
+  - **`SYHPT` als Zustandsvariable modelliert.** Die Variable bekommt nie einen
+    Wert zurück (keine Statusabfrage, Quittung ignoriert) und steht nach dem
+    Neuladen wieder auf „High". Das ist dieselbe Bauart wie `ptNavigation` (MN),
+    also konsistent, aber nicht schön. Ein `'noStatusRequest' => true` im
+    Profilkatalog, das `GetStates()` auswertet, würde die Ausnahme an einer
+    Stelle bündeln statt in drei Dateien (Katalogkommentar, Ident-Blacklist im
+    Telnet-Modul, Ignorierliste im Splitter).
+  - **`PSCLV`, `PSMODE`, `VSASP`** stehen bei X3800H/X3900H/X2900H in den
+    Capabilities, obwohl die jeweilige Spec sie nicht (X3800H: ausdrücklich als
+    nicht unterstützt) führt — geerbter Altbestand, gleiche Klasse wie der
+    Tuner-Punkt oben.
+  - **`MSQUICK1MEMORY`–`MSQUICK6MEMORY`** und `MSQUICKSTATE` sind unbenutzt.
+    Entweder Quick-Select-Memory als Profil umsetzen oder den Block entfernen.
 - Die Baseline der Kettenprüfung (`tests/inheritance_baseline.json`) **duldet den
   Ist-Stand**, sie bestätigt ihn nicht: 556 Einzelverluste in 83 Klassen sind
   eingefroren. Sie sind überwiegend legitim (ein günstigeres Modell darf ein

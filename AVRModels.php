@@ -515,7 +515,11 @@ class AVR extends stdClass
                                                          DENON_API_Commands::DYNVOLHEV,
     ];
 
-    //Quick Select: erst die CY2026-Modelle kennen die sechste Auswahl
+    //Quick Select: erst die CY2026-Modelle kennen die sechste Auswahl.
+    //Namenskonvention beachten: updateProfileAccordingToCaps() bildet den Caps-Schlüssel
+    //aus dem Profil-Ident ('Z2QUICK' -> 'Z2QUICK_SubCommands'), der Inhalt sind aber die
+    //Subcommands der Assoziationen - und die sind bei allen Zonen die MSQUICK*-Konstanten.
+    //Also: Name nach dem Ident, Inhalt nach den Assoziationen.
     public static array  $MSQUICK_SubCommands        = [
         DENON_API_Commands::MSQUICK0,
         DENON_API_Commands::MSQUICK1,

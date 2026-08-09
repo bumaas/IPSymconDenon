@@ -613,6 +613,16 @@
                     16,
                     "Off",
                     "OFF"
+                ],
+                [
+                    18,
+                    "Game1",
+                    "GAME1"
+                ],
+                [
+                    19,
+                    "8K",
+                    "8K"
                 ]
             ],
             "Position": 170,
@@ -622,7 +632,7 @@
             "PRESENTATION": "{52D9E126-D7D2-2CBB-5E62-4CF7BA7C5D82}",
             "ICON": "Database",
             "SUFFIX": "",
-            "OPTIONS": "[{\"Value\":0,\"Caption\":\"DVD\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":1,\"Caption\":\"BD\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":2,\"Caption\":\"TV\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":3,\"Caption\":\"Sat\\/CBL\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":5,\"Caption\":\"MediaPlayer\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":11,\"Caption\":\"AUX1\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":12,\"Caption\":\"AUX2\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":13,\"Caption\":\"CD\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":15,\"Caption\":\"On\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":16,\"Caption\":\"Off\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1}]"
+            "OPTIONS": "[{\"Value\":0,\"Caption\":\"DVD\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":1,\"Caption\":\"BD\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":2,\"Caption\":\"TV\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":3,\"Caption\":\"Sat\\/CBL\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":5,\"Caption\":\"MediaPlayer\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":11,\"Caption\":\"AUX1\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":12,\"Caption\":\"AUX2\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":13,\"Caption\":\"CD\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":15,\"Caption\":\"On\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":16,\"Caption\":\"Off\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":18,\"Caption\":\"Game1\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":19,\"Caption\":\"8K\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1}]"
         }
     },
     "SurroundMode": {

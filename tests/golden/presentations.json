@@ -1,27 +1,27 @@
 {
     "AVR-3808A": {
         "count": 180,
-        "sha256": "9ad860a20c487f6c19fa227cf2645775cb384afaff4f5f3ac7652f85fb24f7ab",
+        "sha256": "6e992237dcee4167133a5db38d3c8ebbe18212cdfb87e7b1ee4410ea5e7eddb5",
         "errors": []
     },
     "AVR-3310": {
         "count": 180,
-        "sha256": "75d8d43e9b8b099f4e8e2ac7ad7f13fe7f3eb3f74488643ea7108fa5979a99e7",
+        "sha256": "8776874b3332940ceeac0d38b73994a6f63cdb7967a7d775578ef0f3e96e03e7",
         "errors": []
     },
     "AVR-3311": {
         "count": 180,
-        "sha256": "22b42512f8340d8ff1f0d695ff2445b7454497485ae01a76c2e2aaf51e684176",
+        "sha256": "169349e605338417846893416149ecf70b7c59351c2178f43446d323201041ac",
         "errors": []
     },
     "AVR-3312": {
         "count": 180,
-        "sha256": "b9b61dbfede490afae024efbb524bd5ebdf1838af76a5bf761c7db3ca332eb29",
+        "sha256": "1482df224319003ae6e967cec2a632e047f51b4058ef35f0b3d2e36ed4ccf1f7",
         "errors": []
     },
     "AVR-3313": {
         "count": 180,
-        "sha256": "b9b61dbfede490afae024efbb524bd5ebdf1838af76a5bf761c7db3ca332eb29",
+        "sha256": "1482df224319003ae6e967cec2a632e047f51b4058ef35f0b3d2e36ed4ccf1f7",
         "errors": []
     },
     "AVR-4310": {
@@ -31,7 +31,7 @@
     },
     "AVR-4311": {
         "count": 180,
-        "sha256": "2c59200fa132cf8e36845b1460364e2e6e427f029e6df231d00bb36caa4adbe2",
+        "sha256": "9a321960c25b0eee98f0663808a753e4a3eb0360757d2e9598e883684694d1f1",
         "errors": []
     },
     "AVR-4810": {
@@ -41,32 +41,32 @@
     },
     "AVR-X1100W": {
         "count": 180,
-        "sha256": "d7ad2992c2055a56168f191246f03720721cbd40b0f24601380bd7a09183d377",
+        "sha256": "881997d4584cf0ce6f77b115a4629817c89944a17b475357278008da3a371b54",
         "errors": []
     },
     "AVR-X1200W": {
         "count": 180,
-        "sha256": "24126e2524eebc1272fea2d849d409fdd2ca93ed85405af4dd1e87cb3565aa6f",
+        "sha256": "706f22d11b2b849dde39cc05def7c8db5232e9fb896c34bfe07d9dc1ea94ca6e",
         "errors": []
     },
     "AVR-X1300W": {
         "count": 180,
-        "sha256": "5e5ac7f2439e6ec8c63fe4a51a0ba8d066afd62f00ef618bc17d10dcd78168d3",
+        "sha256": "3f89c3c86e02785db28fae8df78d08d7f5d3efbad8321569935c5f9d2acb498e",
         "errors": []
     },
     "AVR-X1400H": {
         "count": 180,
-        "sha256": "5e5ac7f2439e6ec8c63fe4a51a0ba8d066afd62f00ef618bc17d10dcd78168d3",
+        "sha256": "3f89c3c86e02785db28fae8df78d08d7f5d3efbad8321569935c5f9d2acb498e",
         "errors": []
     },
     "AVR-X1500H": {
         "count": 180,
-        "sha256": "5e5ac7f2439e6ec8c63fe4a51a0ba8d066afd62f00ef618bc17d10dcd78168d3",
+        "sha256": "3f89c3c86e02785db28fae8df78d08d7f5d3efbad8321569935c5f9d2acb498e",
         "errors": []
     },
     "AVR-X1600H": {
         "count": 180,
-        "sha256": "5e5ac7f2439e6ec8c63fe4a51a0ba8d066afd62f00ef618bc17d10dcd78168d3",
+        "sha256": "3f89c3c86e02785db28fae8df78d08d7f5d3efbad8321569935c5f9d2acb498e",
         "errors": []
     },
     "AVR-X2000": {
@@ -76,47 +76,47 @@
     },
     "AVR-X2100W": {
         "count": 180,
-        "sha256": "13c35cb250ee3eea45cda2c15ce127cbfebc40cd2486eeb70d719bc683b8b4d9",
+        "sha256": "49609c1426d98ffe0bab14eb408f816f3954c44ac658e505afbce6b65c2b94af",
         "errors": []
     },
     "AVR-X2200W": {
         "count": 180,
-        "sha256": "13c35cb250ee3eea45cda2c15ce127cbfebc40cd2486eeb70d719bc683b8b4d9",
+        "sha256": "49609c1426d98ffe0bab14eb408f816f3954c44ac658e505afbce6b65c2b94af",
         "errors": []
     },
     "AVR-X2300W": {
         "count": 180,
-        "sha256": "13c35cb250ee3eea45cda2c15ce127cbfebc40cd2486eeb70d719bc683b8b4d9",
+        "sha256": "49609c1426d98ffe0bab14eb408f816f3954c44ac658e505afbce6b65c2b94af",
         "errors": []
     },
     "AVR-X2400H": {
         "count": 180,
-        "sha256": "13c35cb250ee3eea45cda2c15ce127cbfebc40cd2486eeb70d719bc683b8b4d9",
+        "sha256": "49609c1426d98ffe0bab14eb408f816f3954c44ac658e505afbce6b65c2b94af",
         "errors": []
     },
     "AVR-X2500H": {
         "count": 180,
-        "sha256": "13c35cb250ee3eea45cda2c15ce127cbfebc40cd2486eeb70d719bc683b8b4d9",
+        "sha256": "49609c1426d98ffe0bab14eb408f816f3954c44ac658e505afbce6b65c2b94af",
         "errors": []
     },
     "AVR-X2600H": {
         "count": 180,
-        "sha256": "13c35cb250ee3eea45cda2c15ce127cbfebc40cd2486eeb70d719bc683b8b4d9",
+        "sha256": "49609c1426d98ffe0bab14eb408f816f3954c44ac658e505afbce6b65c2b94af",
         "errors": []
     },
     "AVR-X2700H": {
         "count": 180,
-        "sha256": "6e00e7432fd05cef3a556e681edf3a04a8ed8411ef436328492d6a8e4e943ac2",
+        "sha256": "70ac09cf2e11a59fc8038f85a699ab83010c45fc4eb51fc8fa9b78ebdedfb9b2",
         "errors": []
     },
     "AVR-X2800H": {
         "count": 180,
-        "sha256": "f12d6ceb6e408d347cdf4c23b8d574f6698503aaebb9d1d226a91ca8ca9a69c8",
+        "sha256": "ddd8ecc240b83d0c81d6ebfbf0f104c155af9585af44293ff7479f0d041a008e",
         "errors": []
     },
     "AVR-X2900H": {
         "count": 180,
-        "sha256": "3db29de0df75c187a7442c0f206a8564c2719c8af332a93e70e0168105f13678",
+        "sha256": "78f24a4926fbbd6686ad82130b6c9f4efcc4d7ba340dd42927e180b1041417cb",
         "errors": []
     },
     "AVR-X3000": {
@@ -136,17 +136,17 @@
     },
     "AVR-X3700H": {
         "count": 180,
-        "sha256": "129434a81246c298380ac8d9f0b89236016cab79dcd70312493eada3f8fcab49",
+        "sha256": "e54957086bde1ad66d0da3276bd5623911bdb806ed357d4379af4ed22b488dee",
         "errors": []
     },
     "AVR-X3800H": {
         "count": 180,
-        "sha256": "2a1551698cb30e34db175f268920988f61c0c0d5e56f57df9ec046b603cc15bc",
+        "sha256": "46d59b708eb375a9c463c705e70dca0946d04cb9b40be3709b15fa450832f068",
         "errors": []
     },
     "AVR-X3900H": {
         "count": 180,
-        "sha256": "cad9fbbd5ec749bf71dc9bea782b41bc39bdac88e85fcc8625e39c180e221a29",
+        "sha256": "f3414c36442cf421649517d546752fe9faa4f658eb206820d4283adc2876a8b3",
         "errors": []
     },
     "AVR-X4000": {
@@ -156,407 +156,407 @@
     },
     "AVR-X4100W": {
         "count": 180,
-        "sha256": "84b629f8a6ed9e572d604827a98a2327fdbc1421b164cc341b14a8e4cdcc5096",
+        "sha256": "abd4cb076e4c01ed9179965af898a660185b5ae2fb2f51a804b7c7373261b3f5",
         "errors": []
     },
     "AVR-X4200W": {
         "count": 180,
-        "sha256": "84b629f8a6ed9e572d604827a98a2327fdbc1421b164cc341b14a8e4cdcc5096",
+        "sha256": "abd4cb076e4c01ed9179965af898a660185b5ae2fb2f51a804b7c7373261b3f5",
         "errors": []
     },
     "AVR-X4300H": {
         "count": 180,
-        "sha256": "84b629f8a6ed9e572d604827a98a2327fdbc1421b164cc341b14a8e4cdcc5096",
+        "sha256": "abd4cb076e4c01ed9179965af898a660185b5ae2fb2f51a804b7c7373261b3f5",
         "errors": []
     },
     "AVR-X4400H": {
         "count": 180,
-        "sha256": "84b629f8a6ed9e572d604827a98a2327fdbc1421b164cc341b14a8e4cdcc5096",
+        "sha256": "abd4cb076e4c01ed9179965af898a660185b5ae2fb2f51a804b7c7373261b3f5",
         "errors": []
     },
     "AVR-X4500H": {
         "count": 180,
-        "sha256": "84b629f8a6ed9e572d604827a98a2327fdbc1421b164cc341b14a8e4cdcc5096",
+        "sha256": "abd4cb076e4c01ed9179965af898a660185b5ae2fb2f51a804b7c7373261b3f5",
         "errors": []
     },
     "AVR-X4700H": {
         "count": 180,
-        "sha256": "84b629f8a6ed9e572d604827a98a2327fdbc1421b164cc341b14a8e4cdcc5096",
+        "sha256": "ae42842d108cf9e1e6d6c0d2172217fa4b4e5c84734187d819a1ef78dad432de",
         "errors": []
     },
     "AVR-X4800H": {
         "count": 180,
-        "sha256": "2f59044d3d7a9bf9ccb1e4c7407a1d1ae3dd50d5aad4bc518111d079fdee4ba8",
+        "sha256": "ad693c2e82c6efe313013092c6af343b1ac4c25a7c06851f4903c2f54af672dc",
         "errors": []
     },
     "AVR-X5200W": {
         "count": 180,
-        "sha256": "07bd0d977fa3488bff2224de0ce71664bd4a1a60977c0a2f399d8c3bce43652a",
+        "sha256": "ab7b542fbc844d4873f55bd9e372867ab22b6cbd7a547d7ce4be419fa61542dd",
         "errors": []
     },
     "AVR-X6200W": {
         "count": 180,
-        "sha256": "07bd0d977fa3488bff2224de0ce71664bd4a1a60977c0a2f399d8c3bce43652a",
+        "sha256": "ab7b542fbc844d4873f55bd9e372867ab22b6cbd7a547d7ce4be419fa61542dd",
         "errors": []
     },
     "AVR-X6300H": {
         "count": 180,
-        "sha256": "07bd0d977fa3488bff2224de0ce71664bd4a1a60977c0a2f399d8c3bce43652a",
+        "sha256": "ab7b542fbc844d4873f55bd9e372867ab22b6cbd7a547d7ce4be419fa61542dd",
         "errors": []
     },
     "AVR-X6400H": {
         "count": 180,
-        "sha256": "07bd0d977fa3488bff2224de0ce71664bd4a1a60977c0a2f399d8c3bce43652a",
+        "sha256": "ab7b542fbc844d4873f55bd9e372867ab22b6cbd7a547d7ce4be419fa61542dd",
         "errors": []
     },
     "AVR-X6500H": {
         "count": 180,
-        "sha256": "07bd0d977fa3488bff2224de0ce71664bd4a1a60977c0a2f399d8c3bce43652a",
+        "sha256": "ab7b542fbc844d4873f55bd9e372867ab22b6cbd7a547d7ce4be419fa61542dd",
         "errors": []
     },
     "AVR-X6700H": {
         "count": 180,
-        "sha256": "07bd0d977fa3488bff2224de0ce71664bd4a1a60977c0a2f399d8c3bce43652a",
+        "sha256": "891419585760beb38b0f7c812798cea496893f4f38d988ca0dc7d6f268a4f4c5",
         "errors": []
     },
     "AVR-X7200W": {
         "count": 180,
-        "sha256": "773e6ca5e7ce57f4fc89bfa4ae468d8c62b3b4d169741ee7c72368a7fe075bd7",
+        "sha256": "f41cf95101c756a4b49f991cd6177531aabd9b2997505ffeb9a9b770614fa397",
         "errors": []
     },
     "AVR-X7200WA": {
         "count": 180,
-        "sha256": "773e6ca5e7ce57f4fc89bfa4ae468d8c62b3b4d169741ee7c72368a7fe075bd7",
+        "sha256": "f41cf95101c756a4b49f991cd6177531aabd9b2997505ffeb9a9b770614fa397",
         "errors": []
     },
     "AVC-X8500H": {
         "count": 180,
-        "sha256": "07bd0d977fa3488bff2224de0ce71664bd4a1a60977c0a2f399d8c3bce43652a",
+        "sha256": "ab7b542fbc844d4873f55bd9e372867ab22b6cbd7a547d7ce4be419fa61542dd",
         "errors": []
     },
     "AVR-S750H": {
         "count": 180,
-        "sha256": "5e5ac7f2439e6ec8c63fe4a51a0ba8d066afd62f00ef618bc17d10dcd78168d3",
+        "sha256": "3f89c3c86e02785db28fae8df78d08d7f5d3efbad8321569935c5f9d2acb498e",
         "errors": []
     },
     "AVR-S960H": {
         "count": 180,
-        "sha256": "6e00e7432fd05cef3a556e681edf3a04a8ed8411ef436328492d6a8e4e943ac2",
+        "sha256": "70ac09cf2e11a59fc8038f85a699ab83010c45fc4eb51fc8fa9b78ebdedfb9b2",
         "errors": []
     },
     "AVR-S970H": {
         "count": 180,
-        "sha256": "f12d6ceb6e408d347cdf4c23b8d574f6698503aaebb9d1d226a91ca8ca9a69c8",
+        "sha256": "ddd8ecc240b83d0c81d6ebfbf0f104c155af9585af44293ff7479f0d041a008e",
         "errors": []
     },
     "AVR-S980H": {
         "count": 180,
-        "sha256": "64876fa85c7720b96812d79e4aa655545bfe007fbc81a7178ec5b9bf60dc3b54",
+        "sha256": "78f24a4926fbbd6686ad82130b6c9f4efcc4d7ba340dd42927e180b1041417cb",
         "errors": []
     },
     "DRA-N5": {
         "count": 180,
-        "sha256": "23c776080aee5825e662da475d06f1db037c4f29ad4df6e4d3c8592ac93e59d5",
+        "sha256": "ea2fd6bcbfd2d3a126f5767e3fed397f2970bfd1d2cb4c3d58727503c12cdaa1",
         "errors": []
     },
     "RCD-N8": {
         "count": 180,
-        "sha256": "23c776080aee5825e662da475d06f1db037c4f29ad4df6e4d3c8592ac93e59d5",
+        "sha256": "ea2fd6bcbfd2d3a126f5767e3fed397f2970bfd1d2cb4c3d58727503c12cdaa1",
         "errors": []
     },
     "Marantz-NR1504": {
         "count": 180,
-        "sha256": "dd2070f01c503c0eba1db94e1b22cf918d14a90a1ee14c4f75bf8146de8913d8",
+        "sha256": "419bb6da22702d6b1290826476c0f3d28597ae44e524f56acf8d8398bb95912d",
         "errors": []
     },
     "Marantz-NR1506": {
         "count": 180,
-        "sha256": "dd2070f01c503c0eba1db94e1b22cf918d14a90a1ee14c4f75bf8146de8913d8",
+        "sha256": "419bb6da22702d6b1290826476c0f3d28597ae44e524f56acf8d8398bb95912d",
         "errors": []
     },
     "Marantz-NR1508": {
         "count": 180,
-        "sha256": "dd2070f01c503c0eba1db94e1b22cf918d14a90a1ee14c4f75bf8146de8913d8",
+        "sha256": "419bb6da22702d6b1290826476c0f3d28597ae44e524f56acf8d8398bb95912d",
         "errors": []
     },
     "Marantz-NR1509": {
         "count": 180,
-        "sha256": "dd2070f01c503c0eba1db94e1b22cf918d14a90a1ee14c4f75bf8146de8913d8",
+        "sha256": "419bb6da22702d6b1290826476c0f3d28597ae44e524f56acf8d8398bb95912d",
         "errors": []
     },
     "Marantz-NR1602": {
         "count": 180,
-        "sha256": "155dfc7ae57fb10c4a61bf555717abaeec1bcc535ea8d79d07188ae1236fc83d",
+        "sha256": "d06077f4e11838c28da3e0568946102965ae8f2c8d2c808efb1686a239f8b5b6",
         "errors": []
     },
     "Marantz-NR1603": {
         "count": 180,
-        "sha256": "3916b3e4bc2d3d03c538a9a168da07c91998a2a426901c1fd8253c1768e072d5",
+        "sha256": "4ecb0fad46812b84c597cf705932c978ed49bf1dda16d4d096c5416e0a213c39",
         "errors": []
     },
     "Marantz-NR1604": {
         "count": 180,
-        "sha256": "d7150a834c99567f96d4b96bc8cf67791bf60322d5aa8d5877f7c8f95fcfcbb4",
+        "sha256": "3ef0ac4836e37013f99e7f308f9cff4363a3e7c9898a25fe011545555323aaae",
         "errors": []
     },
     "Marantz-NR1605": {
         "count": 180,
-        "sha256": "d7150a834c99567f96d4b96bc8cf67791bf60322d5aa8d5877f7c8f95fcfcbb4",
+        "sha256": "3ef0ac4836e37013f99e7f308f9cff4363a3e7c9898a25fe011545555323aaae",
         "errors": []
     },
     "Marantz-NR1606": {
         "count": 180,
-        "sha256": "d7150a834c99567f96d4b96bc8cf67791bf60322d5aa8d5877f7c8f95fcfcbb4",
+        "sha256": "3ef0ac4836e37013f99e7f308f9cff4363a3e7c9898a25fe011545555323aaae",
         "errors": []
     },
     "Marantz-NR1607": {
         "count": 180,
-        "sha256": "d7150a834c99567f96d4b96bc8cf67791bf60322d5aa8d5877f7c8f95fcfcbb4",
+        "sha256": "3ef0ac4836e37013f99e7f308f9cff4363a3e7c9898a25fe011545555323aaae",
         "errors": []
     },
     "Marantz-NR1608": {
         "count": 180,
-        "sha256": "d7150a834c99567f96d4b96bc8cf67791bf60322d5aa8d5877f7c8f95fcfcbb4",
+        "sha256": "3ef0ac4836e37013f99e7f308f9cff4363a3e7c9898a25fe011545555323aaae",
         "errors": []
     },
     "Marantz-NR1609": {
         "count": 180,
-        "sha256": "d7150a834c99567f96d4b96bc8cf67791bf60322d5aa8d5877f7c8f95fcfcbb4",
+        "sha256": "3ef0ac4836e37013f99e7f308f9cff4363a3e7c9898a25fe011545555323aaae",
         "errors": []
     },
     "Marantz-NR1711": {
         "count": 180,
-        "sha256": "d7150a834c99567f96d4b96bc8cf67791bf60322d5aa8d5877f7c8f95fcfcbb4",
+        "sha256": "ce81a957eab3320b633d376964a2aff703975184fd6b6321a32207a164217368",
         "errors": []
     },
     "Marantz-CINEMA70s": {
         "count": 180,
-        "sha256": "327ecf8dd44fb9fe029b8027cafd88f31a154637e756384709d8a8f3b5e060b3",
+        "sha256": "1122feea7de9761a61314edb6d0069e1746ba1e29d70a217169927493c68f350",
         "errors": []
     },
     "Marantz-STEREO70s": {
         "count": 180,
-        "sha256": "327ecf8dd44fb9fe029b8027cafd88f31a154637e756384709d8a8f3b5e060b3",
+        "sha256": "1122feea7de9761a61314edb6d0069e1746ba1e29d70a217169927493c68f350",
         "errors": []
     },
     "Marantz-SR5006": {
         "count": 180,
-        "sha256": "b2021aac3969c232c89634881f0eeeca320a5fa658f42f2e8ff7ee889b2f997e",
+        "sha256": "cbf65eabb245520afe85cbb41584e32dc7b96efe239fe34665bc41670e143877",
         "errors": []
     },
     "Marantz-SR5007": {
         "count": 180,
-        "sha256": "226d61a5ca27dda4e8b049c06f61e300b5dcf0c86687cdea4e92b149144c40f8",
+        "sha256": "f131b380d79cbf0498e3dec6e83d395d3301a125ab7a49b2974908d3ed9bf1e6",
         "errors": []
     },
     "Marantz-SR5008": {
         "count": 180,
-        "sha256": "d7150a834c99567f96d4b96bc8cf67791bf60322d5aa8d5877f7c8f95fcfcbb4",
+        "sha256": "3ef0ac4836e37013f99e7f308f9cff4363a3e7c9898a25fe011545555323aaae",
         "errors": []
     },
     "Marantz-SR5009": {
         "count": 180,
-        "sha256": "d7150a834c99567f96d4b96bc8cf67791bf60322d5aa8d5877f7c8f95fcfcbb4",
+        "sha256": "3ef0ac4836e37013f99e7f308f9cff4363a3e7c9898a25fe011545555323aaae",
         "errors": []
     },
     "Marantz-SR5010": {
         "count": 180,
-        "sha256": "d7150a834c99567f96d4b96bc8cf67791bf60322d5aa8d5877f7c8f95fcfcbb4",
+        "sha256": "3ef0ac4836e37013f99e7f308f9cff4363a3e7c9898a25fe011545555323aaae",
         "errors": []
     },
     "Marantz-SR5011": {
         "count": 180,
-        "sha256": "d7150a834c99567f96d4b96bc8cf67791bf60322d5aa8d5877f7c8f95fcfcbb4",
+        "sha256": "3ef0ac4836e37013f99e7f308f9cff4363a3e7c9898a25fe011545555323aaae",
         "errors": []
     },
     "Marantz-SR5012": {
         "count": 180,
-        "sha256": "d7150a834c99567f96d4b96bc8cf67791bf60322d5aa8d5877f7c8f95fcfcbb4",
+        "sha256": "3ef0ac4836e37013f99e7f308f9cff4363a3e7c9898a25fe011545555323aaae",
         "errors": []
     },
     "Marantz-SR5013": {
         "count": 180,
-        "sha256": "d7150a834c99567f96d4b96bc8cf67791bf60322d5aa8d5877f7c8f95fcfcbb4",
+        "sha256": "3ef0ac4836e37013f99e7f308f9cff4363a3e7c9898a25fe011545555323aaae",
         "errors": []
     },
     "Marantz-SR5015": {
         "count": 180,
-        "sha256": "d7150a834c99567f96d4b96bc8cf67791bf60322d5aa8d5877f7c8f95fcfcbb4",
+        "sha256": "ce81a957eab3320b633d376964a2aff703975184fd6b6321a32207a164217368",
         "errors": []
     },
     "Marantz-CINEMA60": {
         "count": 180,
-        "sha256": "327ecf8dd44fb9fe029b8027cafd88f31a154637e756384709d8a8f3b5e060b3",
+        "sha256": "1122feea7de9761a61314edb6d0069e1746ba1e29d70a217169927493c68f350",
         "errors": []
     },
     "Marantz-SR6005": {
         "count": 180,
-        "sha256": "f7cd9125121a6c8e610c6aa3995e78eaa779ee4e8999c585c012b699b3280f0d",
+        "sha256": "1ac7768865ae990fecf60f90dab106a62503d6c1100808ed8eb40231b1472d59",
         "errors": []
     },
     "Marantz-SR6006": {
         "count": 180,
-        "sha256": "cf169e4c7282653e3ddddd40b9d19076feafadf6c302909a5ce165fced194b14",
+        "sha256": "46eecff7078583e833fc7d942764e99ce29841cd1ed9dd087d05ed7eae412d3c",
         "errors": []
     },
     "Marantz-SR6007": {
         "count": 180,
-        "sha256": "df236156af115c721d614e0c03d8f30b6116cbbeaee6d0d0835c3137651a8f2a",
+        "sha256": "a3f6d36b19c2fad47d4b0b31185716297324b16afb10657ad8475e44596f69a8",
         "errors": []
     },
     "Marantz-SR6008": {
         "count": 180,
-        "sha256": "cfa758720192ffb602340814c9ae597f541178acee225c07f22615f2a94fb42c",
+        "sha256": "f6979ecf83b58aa1894a8ca945bbee10d4e502fe3a04c0d9a88de55e2297e0e8",
         "errors": []
     },
     "Marantz-SR6009": {
         "count": 180,
-        "sha256": "281115b2a91a2ab8afe65820346853beb180f878039aca9e1a3c9e1d81cd76b4",
+        "sha256": "89d9d0ddfc9b25372899f5201ea0b2c359bd7314351f15108df675a45af61f7f",
         "errors": []
     },
     "Marantz-SR6010": {
         "count": 180,
-        "sha256": "281115b2a91a2ab8afe65820346853beb180f878039aca9e1a3c9e1d81cd76b4",
+        "sha256": "89d9d0ddfc9b25372899f5201ea0b2c359bd7314351f15108df675a45af61f7f",
         "errors": []
     },
     "Marantz-SR6011": {
         "count": 180,
-        "sha256": "281115b2a91a2ab8afe65820346853beb180f878039aca9e1a3c9e1d81cd76b4",
+        "sha256": "89d9d0ddfc9b25372899f5201ea0b2c359bd7314351f15108df675a45af61f7f",
         "errors": []
     },
     "Marantz-SR6012": {
         "count": 180,
-        "sha256": "281115b2a91a2ab8afe65820346853beb180f878039aca9e1a3c9e1d81cd76b4",
+        "sha256": "89d9d0ddfc9b25372899f5201ea0b2c359bd7314351f15108df675a45af61f7f",
         "errors": []
     },
     "Marantz-SR6013": {
         "count": 180,
-        "sha256": "281115b2a91a2ab8afe65820346853beb180f878039aca9e1a3c9e1d81cd76b4",
+        "sha256": "89d9d0ddfc9b25372899f5201ea0b2c359bd7314351f15108df675a45af61f7f",
         "errors": []
     },
     "Marantz-SR6015": {
         "count": 180,
-        "sha256": "281115b2a91a2ab8afe65820346853beb180f878039aca9e1a3c9e1d81cd76b4",
+        "sha256": "f9b8b3333e0064c3ea9d9ffc38ed42d8e3198b10e9aeb783bb90bf2537dba6bf",
         "errors": []
     },
     "Marantz-CINEMA50": {
         "count": 180,
-        "sha256": "780262e8a4d86d99c38c7285c2b549b7135c37192169555e9252c67ac293c4f6",
+        "sha256": "093d044f8bb039daeaf961a2bc3f0156e3bd88ed330afc75fb09dc2bdc72e3a4",
         "errors": []
     },
     "Marantz-SR7005": {
         "count": 180,
-        "sha256": "cc663e3f13cd5067a7b056ebcef3d7482a0d4fd5cd8f1901694d76e11d8def60",
+        "sha256": "df5f2d96a90d25665dcabaa8a8c7402507f4dac3fed5ca9eafb060c0be2148dd",
         "errors": []
     },
     "Marantz-SR7007": {
         "count": 180,
-        "sha256": "fe709ee3e005d5acbc18eb00bda16681294bff658600c24850e8d092e87d8a9b",
+        "sha256": "601e6b133f365bc3fcc249f5e5a650bbcae4ab948aff9820de356f3b24574fb9",
         "errors": []
     },
     "Marantz-SR7008": {
         "count": 180,
-        "sha256": "cfa758720192ffb602340814c9ae597f541178acee225c07f22615f2a94fb42c",
+        "sha256": "f6979ecf83b58aa1894a8ca945bbee10d4e502fe3a04c0d9a88de55e2297e0e8",
         "errors": []
     },
     "Marantz-SR7009": {
         "count": 180,
-        "sha256": "30284911ed624e97168d73ba2e02dc54da7595b7f35bdfc4e0ad363ad004465f",
+        "sha256": "fdd65ad448fb4581e05805e8e26bbb632e7df7af64ff02eebfa88e8d638df5b8",
         "errors": []
     },
     "Marantz-SR7010": {
         "count": 180,
-        "sha256": "30284911ed624e97168d73ba2e02dc54da7595b7f35bdfc4e0ad363ad004465f",
+        "sha256": "fdd65ad448fb4581e05805e8e26bbb632e7df7af64ff02eebfa88e8d638df5b8",
         "errors": []
     },
     "Marantz-SR7011": {
         "count": 180,
-        "sha256": "30284911ed624e97168d73ba2e02dc54da7595b7f35bdfc4e0ad363ad004465f",
+        "sha256": "fdd65ad448fb4581e05805e8e26bbb632e7df7af64ff02eebfa88e8d638df5b8",
         "errors": []
     },
     "Marantz-SR7012": {
         "count": 180,
-        "sha256": "30284911ed624e97168d73ba2e02dc54da7595b7f35bdfc4e0ad363ad004465f",
+        "sha256": "fdd65ad448fb4581e05805e8e26bbb632e7df7af64ff02eebfa88e8d638df5b8",
         "errors": []
     },
     "Marantz-SR7013": {
         "count": 180,
-        "sha256": "30284911ed624e97168d73ba2e02dc54da7595b7f35bdfc4e0ad363ad004465f",
+        "sha256": "fdd65ad448fb4581e05805e8e26bbb632e7df7af64ff02eebfa88e8d638df5b8",
         "errors": []
     },
     "Marantz-SR7015": {
         "count": 180,
-        "sha256": "30284911ed624e97168d73ba2e02dc54da7595b7f35bdfc4e0ad363ad004465f",
+        "sha256": "e69c91c444c2494143f04da705628aaded7432b0ad791ae8508dd425e7ceab40",
         "errors": []
     },
     "Marantz-CINEMA40": {
         "count": 180,
-        "sha256": "2f2155ae01e3404ce5fca87adf59e9f865cc94866b008cfa5d39320af92804b8",
+        "sha256": "c60086a0cde59b80839bf2eee25c04c67e718b614fdb36e662c52523527e3b04",
         "errors": []
     },
     "Marantz-SR8015": {
         "count": 180,
-        "sha256": "30284911ed624e97168d73ba2e02dc54da7595b7f35bdfc4e0ad363ad004465f",
+        "sha256": "e69c91c444c2494143f04da705628aaded7432b0ad791ae8508dd425e7ceab40",
         "errors": []
     },
     "Marantz-AV7005": {
         "count": 180,
-        "sha256": "cc663e3f13cd5067a7b056ebcef3d7482a0d4fd5cd8f1901694d76e11d8def60",
+        "sha256": "df5f2d96a90d25665dcabaa8a8c7402507f4dac3fed5ca9eafb060c0be2148dd",
         "errors": []
     },
     "Marantz-AV7701": {
         "count": 180,
-        "sha256": "e570c0f342084a4ab72c0efd32f41ae0f2f39557b5f339769d84503913ba2af6",
+        "sha256": "1eb7ba19b95e5b4a4b449f494507f70cb837bcb0ff0fcc9b85787b6aaffeea26",
         "errors": []
     },
     "Marantz-AV7702": {
         "count": 180,
-        "sha256": "4713423eebf392d71dcdfdd3ae9f4e300ce96fc03f9d83b6f92ff717d9d00821",
+        "sha256": "6402bba8fc9d8b62e02b111ea639f000bb54f741829d66dc3b4402bdece4fda7",
         "errors": []
     },
     "Marantz-AV7702 mk II": {
         "count": 180,
-        "sha256": "4713423eebf392d71dcdfdd3ae9f4e300ce96fc03f9d83b6f92ff717d9d00821",
+        "sha256": "6402bba8fc9d8b62e02b111ea639f000bb54f741829d66dc3b4402bdece4fda7",
         "errors": []
     },
     "Marantz-AV7703": {
         "count": 180,
-        "sha256": "4713423eebf392d71dcdfdd3ae9f4e300ce96fc03f9d83b6f92ff717d9d00821",
+        "sha256": "6402bba8fc9d8b62e02b111ea639f000bb54f741829d66dc3b4402bdece4fda7",
         "errors": []
     },
     "Marantz-AV7704": {
         "count": 180,
-        "sha256": "4713423eebf392d71dcdfdd3ae9f4e300ce96fc03f9d83b6f92ff717d9d00821",
+        "sha256": "6402bba8fc9d8b62e02b111ea639f000bb54f741829d66dc3b4402bdece4fda7",
         "errors": []
     },
     "Marantz-AV7705": {
         "count": 180,
-        "sha256": "4713423eebf392d71dcdfdd3ae9f4e300ce96fc03f9d83b6f92ff717d9d00821",
+        "sha256": "6402bba8fc9d8b62e02b111ea639f000bb54f741829d66dc3b4402bdece4fda7",
         "errors": []
     },
     "Marantz-AV7706": {
         "count": 180,
-        "sha256": "4713423eebf392d71dcdfdd3ae9f4e300ce96fc03f9d83b6f92ff717d9d00821",
+        "sha256": "6a5f8e80277fb7f0801e283d7e61a11ed36393e53a791a3f911acb4fc23c5d83",
         "errors": []
     },
     "Marantz-AV20": {
         "count": 180,
-        "sha256": "9bae32e7981ebbfe888bb648e60d29ea896fe46e1c38410e81dd00e74931f866",
+        "sha256": "a606fec54275f42f9bef38f72716dc567418f976b259eaa69f26dba49beaff1c",
         "errors": []
     },
     "Marantz-AV30": {
         "count": 180,
-        "sha256": "9bae32e7981ebbfe888bb648e60d29ea896fe46e1c38410e81dd00e74931f866",
+        "sha256": "c4433b22a680fd7ef96efe4e16286e5c0292299af5e34436cf9ab7d69c17b9a1",
         "errors": []
     },
     "Marantz-AV8801": {
         "count": 180,
-        "sha256": "e570c0f342084a4ab72c0efd32f41ae0f2f39557b5f339769d84503913ba2af6",
+        "sha256": "1eb7ba19b95e5b4a4b449f494507f70cb837bcb0ff0fcc9b85787b6aaffeea26",
         "errors": []
     },
     "Marantz-AV8802": {
         "count": 180,
-        "sha256": "4713423eebf392d71dcdfdd3ae9f4e300ce96fc03f9d83b6f92ff717d9d00821",
+        "sha256": "6402bba8fc9d8b62e02b111ea639f000bb54f741829d66dc3b4402bdece4fda7",
         "errors": []
     }
 }

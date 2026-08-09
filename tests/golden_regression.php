@@ -142,12 +142,24 @@ class HttpHarness extends DenonAVRHTTP
 // Referenzmodelle/-kombinationen (Namen sind Keys von AVRs::getAllAVRs());
 // Voll-Dumps weiterer Modelle bei Bedarf per --dump <Modell>
 const PRESENTATION_FULL_MODELS = ['AVR-X3800H'];
+// 'enable': Properties, die zusätzlich zu den Voreinstellungen auf true gesetzt
+// werden. Ohne das registriert die Aufzeichnung nur die wenigen per Default
+// aktiven Variablen - neu aufgenommene Kommandos blieben ungeprüft.
 const COMBOS = [
     ['label' => 'X3800H_main',  'manufacturer' => 1, 'model' => 'AVR-X3800H',     'zone' => 0],
     ['label' => 'X3800H_zone2', 'manufacturer' => 1, 'model' => 'AVR-X3800H',     'zone' => 1],
     ['label' => 'X3000_main',   'manufacturer' => 1, 'model' => 'AVR-X3000',      'zone' => 0],
     ['label' => 'SR6015_main',  'manufacturer' => 2, 'model' => 'Marantz-SR6015', 'zone' => 0],
     ['label' => 'DRA-N5_main',  'manufacturer' => 1, 'model' => 'DRA-N5',         'zone' => 0],
+    // CY2026/CY2025: deckt die mit Build 93 aufgenommenen Kommandos ab
+    ['label'  => 'X3900H_main', 'manufacturer' => 1, 'model' => 'AVR-X3900H', 'zone' => 0,
+     'enable' => ['BluetoothLevel', 'ChannelLevelMonitoring', 'HDMIHotPlugTest',
+                  'ChannelExpander', 'SurroundLevelCompensation', 'QuickSelect', 'SurroundMode', 'VideoSelect']],
+    ['label'  => 'X3900H_zone2', 'manufacturer' => 1, 'model' => 'AVR-X3900H', 'zone' => 1,
+     'enable' => ['Z2Quick']],
+    ['label'  => 'AV20_main', 'manufacturer' => 2, 'model' => 'Marantz-AV20', 'zone' => 0,
+     'enable' => ['BluetoothLevel', 'HDMIHotPlugTest', 'SurroundLevelCompensation',
+                  'DACFilter', 'QuickSelect', 'SurroundMode', 'VideoSelect']],
 ];
 const FORMS_FULL_LABEL = 'X3800H_main';
 
@@ -164,6 +176,9 @@ function newHarness(string $class, array $combo): IPSModuleStrict
     $harness->setPropertyForTest('manufacturer', $combo['manufacturer']);
     $harness->setPropertyForTest($combo['manufacturer'] === 2 ? 'AVRTypeMarantz' : 'AVRTypeDenon', $caps['internalID']);
     $harness->setPropertyForTest('Zone', $combo['zone']);
+    foreach ($combo['enable'] ?? [] as $property) {
+        $harness->setPropertyForTest($property, true);
+    }
     $harness->resetRecorded();
     takeErrors();
     return $harness;

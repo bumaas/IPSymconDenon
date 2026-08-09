@@ -1249,9 +1249,21 @@ class Denon_AVR_S980H extends Denon_AVR_S970H
         DENON_API_Commands::DIM,
     ];
 
-    // Zone 2 bleibt bei 0-5: Z2QUICK6 ist in der Spec nur mit '@10'
-    // ("Requires Amp assign = Zone2") markiert, nicht als unterstützt.
+    // Beim S980H trägt die gesamte Zone 2 die Spec-Marke '@10'
+    // ("Requires Amp assign = Zone2") - auch die Quick Selects 1-5, die das Modul
+    // längst anbietet. '@10' heißt also "unterstützt, sofern so konfiguriert";
+    // die sechste Auswahl gilt damit genauso wie die anderen fünf.
     public static array $MSQUICK_SubCommands = [
+        DENON_API_Commands::MSQUICK0,
+        DENON_API_Commands::MSQUICK1,
+        DENON_API_Commands::MSQUICK2,
+        DENON_API_Commands::MSQUICK3,
+        DENON_API_Commands::MSQUICK4,
+        DENON_API_Commands::MSQUICK5,
+        DENON_API_Commands::MSQUICK6,
+    ];
+
+    public static array $Z2QUICK_SubCommands = [
         DENON_API_Commands::MSQUICK0,
         DENON_API_Commands::MSQUICK1,
         DENON_API_Commands::MSQUICK2,

@@ -1038,10 +1038,10 @@ class DENON_API_Commands extends stdClass
     public const string PSCEXHI  = ' HI'; // Channel Expander High
 
     public const string PSSURLEV    = 'PSSURLEV'; // Surround Level Compensation
-    public const string SURLEVOFF   = ' OFF'; // Surround Level Compensation Off
-    public const string SURLEVLIT   = ' LIT'; // Surround Level Compensation Light
-    public const string SURLEVMED   = ' MED'; // Surround Level Compensation Medium
-    public const string SURLEVHEV   = ' HEV'; // Surround Level Compensation Heavy
+    public const string PSSURLEVOFF = ' OFF'; // Surround Level Compensation Off
+    public const string PSSURLEVLIT = ' LIT'; // Surround Level Compensation Light
+    public const string PSSURLEVMED = ' MED'; // Surround Level Compensation Medium
+    public const string PSSURLEVHEV = ' HEV'; // Surround Level Compensation Heavy
 
     public const string PSDACFIL      = 'PSDACFIL'; // DAC Filter (nur Marantz)
     public const string PSDACFILMODE1 = ' MODE1'; // DAC Filter Mode 1

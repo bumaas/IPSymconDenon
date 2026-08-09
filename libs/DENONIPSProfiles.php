@@ -830,6 +830,9 @@ declare(strict_types=1);
                     [19, 'Matrix', DENON_API_Commands::MSMATRIX],
                     [20, 'Video Game', DENON_API_Commands::MSVIDEOGAME],
                     [21, 'Virtual', DENON_API_Commands::MSVIRTUAL],
+                    //nur anhängen, nie umnummerieren: die Werte stehen so in den Variablen
+                    [22, 'Auto', DENON_API_Commands::MSAUTO],
+                    [23, 'Neural', DENON_API_Commands::MSNEURAL],
                 ],
                 'IndividualStatusRequest' => 'MS?',
             ],
@@ -940,6 +943,15 @@ declare(strict_types=1);
                     [14, 'Source', DENON_API_Commands::IS_SOURCE],
                     [15, 'On', DENON_API_Commands::IS_ON],
                     [16, 'Off', DENON_API_Commands::IS_OFF],
+                    //nur anhängen, nie umnummerieren: die Werte stehen so in den Variablen
+                    [17, 'Dock', DENON_API_Commands::IS_DOCK],
+                    [18, 'Game1', DENON_API_Commands::IS_GAME1],
+                    [19, '8K', DENON_API_Commands::IS_8K],
+                    [20, 'AUX3', DENON_API_Commands::IS_AUX3],
+                    [21, 'AUX4', DENON_API_Commands::IS_AUX4],
+                    [22, 'AUX5', DENON_API_Commands::IS_AUX5],
+                    [23, 'AUX6', DENON_API_Commands::IS_AUX6],
+                    [24, 'AUX7', DENON_API_Commands::IS_AUX7],
                 ],
             ],
             self::ptSurroundBackMode => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::PSSB, 'Name' => 'Surround Back Mode',
@@ -1203,10 +1215,10 @@ declare(strict_types=1);
                 'PropertyName'                             => 'SurroundLevelCompensation',
                 'Profilesettings'                          => ['Intensity', '', '', 0, 0, 0, 0],
                 'Associations'                             => [
-                    [0, 'Off', DENON_API_Commands::SURLEVOFF],
-                    [1, 'Light', DENON_API_Commands::SURLEVLIT],
-                    [2, 'Medium', DENON_API_Commands::SURLEVMED],
-                    [3, 'Heavy', DENON_API_Commands::SURLEVHEV],
+                    [0, 'Off', DENON_API_Commands::PSSURLEVOFF],
+                    [1, 'Light', DENON_API_Commands::PSSURLEVLIT],
+                    [2, 'Medium', DENON_API_Commands::PSSURLEVMED],
+                    [3, 'Heavy', DENON_API_Commands::PSSURLEVHEV],
                 ],
             ],
             self::ptChannelExpander => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::PSCEX, 'Name' => 'Channel Expander',
@@ -1676,6 +1688,8 @@ declare(strict_types=1);
         $associations = $this->profiles[$profilename]['Associations'];
         if (!array_key_exists($ident . '_SubCommands', $caps)) {
             trigger_error(__FUNCTION__ . ': unknown capability "' . $ident . '_SubCommands' . '"');
+
+            return; //ohne Rückkehr liefe in_array() gegen null und würde fatal
         }
         $subcommands = $caps[$ident . '_SubCommands'];
         for ($i = (count($associations) - 1); $i >= 0; $i--) {

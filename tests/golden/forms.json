@@ -23,5 +23,20 @@
         "length": 5305,
         "sha256": "cfc1e1f92835bcf3377b9ae221d8076e3b19000a37b1c29547fccc881dc16850",
         "errors": []
+    },
+    "X3900H_main": {
+        "length": 13237,
+        "sha256": "8a00fa6b5458ea1aba8d1c0054579520714b97eb260bfe7da9ca094c2be7d203",
+        "errors": []
+    },
+    "X3900H_zone2": {
+        "length": 5283,
+        "sha256": "5105c357ac8ff85f9ab061d3c9ce015069d1badfb7debfa3672f77d93bbadcce",
+        "errors": []
+    },
+    "AV20_main": {
+        "length": 12896,
+        "sha256": "2414d4a96a84db11ecc3ee3af547219b9d20a078b207537f773a9ba34f64b104",
+        "errors": []
     }
 }
