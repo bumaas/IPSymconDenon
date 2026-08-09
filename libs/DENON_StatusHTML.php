@@ -6,6 +6,17 @@ class DENON_StatusHTML extends stdClass
 {
     private const ENDPOINT_COUNT = 6; //Anzahl der in getStates() abgefragten Endpunkte
 
+    /**
+     * Zeitgrenze je Endpunkt in Sekunden.
+     *
+     * Ohne Stream-Context läuft jeder Abruf in default_socket_timeout (Standard
+     * 60 s); bei totem Host wären das ENDPOINT_COUNT * 60 s = 6 Minuten pro
+     * Zyklus, und das innerhalb der Semaphore des Aufrufers. Mit 2 s bleibt der
+     * schlechteste Fall bei 12 s. Das liegt weiterhin über dem 10-Sekunden-Timer
+     * des Aufrufers - abgebrochen wird trotzdem nicht, siehe fetchXml().
+     */
+    private const HTTP_TIMEOUT = 2.0;
+
     private bool $debug = false; //wird im Constructor gesetzt
     private $Logger_Dbg;
     private $Logger_Warn;
@@ -43,7 +54,7 @@ class DENON_StatusHTML extends stdClass
             call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, $endpoint . ': ' . $url);
         }
 
-        $body = @file_get_contents($url);
+        $body = @file_get_contents($url, false, $this->httpContext());
         if ($body === false) {
             $this->failures[$endpoint] = 'not reachable';
             return null;
@@ -55,6 +66,20 @@ class DENON_StatusHTML extends stdClass
             $this->failures[$endpoint] = $t->getMessage();
             return null;
         }
+    }
+
+    /**
+     * Stream-Context der Abrufe.
+     *
+     * Die Option 'timeout' des http-Wrappers begrenzt beides: den Verbindungs-
+     * aufbau und das Lesen. Als eigene Methode, damit tests/httppath_check.php
+     * die Grenze ohne Netz prüfen kann.
+     *
+     * @return resource
+     */
+    protected function httpContext()
+    {
+        return stream_context_create(['http' => ['timeout' => self::HTTP_TIMEOUT]]);
     }
 
     /**

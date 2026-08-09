@@ -120,6 +120,16 @@ Composite-Strings sind über locale.json nicht übersetzbar.
   - Keine Golden Files: jede Zusicherung steht für sich und sagt, was richtig
     wäre. Ein Snapshot hätte hier nur das Ist-Verhalten eingefroren.
 
+- `tests/httppath_check.php` — **Verhaltensprüfung des HTTP-Pfads** (`Denon HTTP
+  IO`, `DENON_StatusHTML`; ohne Kernel und Netz, in der CI). Drei Abschnitte:
+  Semaphorenbilanz (kein `IPS_SemaphoreLeave` ohne gehaltene Sperre — der Stub
+  führt dafür Buch wie der Kernel), Fehlerursache (`getPrevious()` gesetzt,
+  Originalmeldung im Text, plus eine Quelltextprüfung über **alle** drei
+  `throw`-Stellen) und das Abruf-Timeout über die Naht `httpContext()`.
+  - Prüfen: `C:\php\php tests/httppath_check.php`.
+  - Kein Abschnitt löst einen echten HTTP-Abruf aus: der Fehlerpfad wird über
+    einen Harnisch erreicht, dessen `GetInputVarMapping()` wirft.
+
 - `tests/capability_diff.php` — **Vorher-Nachher-Vergleich** im Klartext, für das
   Review von Capability-Änderungen:
   `C:\php\php tests/capability_diff.php --from <Ref|Datei> [--to <Ref|Datei>]`.
@@ -127,118 +137,67 @@ Composite-Strings sind über locale.json nicht übersetzbar.
   Ref die Datei noch nicht, wird ersatzweise ein temporärer `git worktree`
   aufgemacht. Informativ (Exit 0), Exit 1 nur bei Umgebungsfehlern.
 
-## Offene Defekte im HTTP-Pfad
+## Robustheit im Empfangs- und HTTP-Pfad (2.30 build 97/98)
 
-Anders als die Punkte im nächsten Abschnitt sind das **Fehler, keine fehlenden
-Features**. Sie wirken genau dann, wenn ohnehin etwas klemmt (Gerät aus, Netz
-weg), und sind alle im Code nachgelesen (zuletzt geprüft: 2.30 build 97).
-Sinnvoll als **ein eigener Build „Robustheit"**, nicht mit funktionalen
-Änderungen gemischt.
+Fünf Fehler — **keine** fehlenden Features —, die genau dann wirken, wenn
+ohnehin etwas klemmt (Gerät aus, Netz weg). Sie sind mit **build 97** (Telnet)
+und **build 98** (HTTP) behoben. Beide Pfade haben seither ein Regressionsnetz,
+das vorher fehlte: die Golden-Suite deckt nur den Sendeweg ab, `ReceiveData`
+steht dort sogar auf der Ausschlussliste. Fehler dieser Art fielen also erst
+beim Anwender auf — zum Vergleich hat `Denon Splitter Telnet/module.php` 110
+Commits, rund 50 davon mit einem Fix-Betreff.
 
-Die Nummerierung setzt die ursprüngliche Liste fort; 1 und 2 lagen im
-Telnet-Empfangspfad und sind seit **2.30 build 97** erledigt (siehe unten).
+**build 97 — Telnet-Empfangspfad** (`tests/receivepath_check.php`, 11 Zusicherungen):
 
-3. **Semaphore wird freigegeben, ohne sie zu halten.** In `Denon HTTP IO` rufen
-   `GetStatus()` und zweimal `SendCommand()` auch im Zweig „Lock fehlgeschlagen"
-   `unlock()` auf, und `unlock()` ruft bedingungslos `IPS_SemaphoreLeave` — ein
-   Tick gibt damit die Sperre eines **anderen**, noch laufenden Ticks frei. Bei
-   10-Sekunden-Timer und sechs blockierenden HTTP-Abrufen ist Überlappung der
-   Regelfall.
-4. **Die Fehlerursache wird weggeworfen.** `GetStatus()` fängt `Exception $exc`
-   und wirft stattdessen `new Exception('SendJson failed')` — Meldung, Datei und
-   Zeile der echten Ursache sind weg. Gleiches Muster in `SendCommand()`
-   (`file_get_contents failed`, `GetStatus failed`).
-5. **Keine Timeouts an den HTTP-Abrufen.** `DENON_StatusHTML::fetchXml()` nutzt
-   `@file_get_contents($url)` ohne Stream-Context. Bei totem Host blockiert jeder
-   der sechs Endpunkte bis `default_socket_timeout` (Standard 60 s) → bis zu
-   ~6 Minuten pro Zyklus, und das innerhalb der Semaphore des Aufrufers.
-
-**Warum das hier steht und nicht im Code:** Der HTTP-Pfad hat **kein**
-Regressionsnetz — die Golden-Suite deckt den Sendeweg ab. Gerade in diesem
-Bereich ist die Fix-Dichte am höchsten: `Denon Splitter Telnet/module.php` hat
-110 Commits, davon rund 50 mit einem Fix-Betreff. Fehler fallen dort also erst
-beim Anwender auf.
-
-### Erledigt: Telnet-Empfangspfad (2.30 build 97)
-
-Die ursprünglichen Defekte 1 und 2 sind behoben, das Netz dazu ist
-`tests/receivepath_check.php` (11 Zusicherungen, in der CI):
-
-- **Fragmentpuffer** (Defekt 2, echter Fehler): `ReceiveData()` verwirft
-  Bruchstücke über `FRAGMENT_MAX_LENGTH` (4096 Byte) und älter als
-  `FRAGMENT_MAX_AGE` (30 s) mit einer Warnung, statt sie bis zum Neustart jeder
-  folgenden Antwort voranzustellen. `protected function currentTime(): int` ist
-  die Naht, an der die Prüfroutine die Uhr stellt.
-- **Null-Rückgabe** (Defekt 1): `GetCommandResponse()` überspringt eine Antwort
-  ohne `ValueMapping`, statt den ganzen Stapel zu verwerfen; Rückgabetyp jetzt
+- **Fragmentpuffer ohne Verfall.** `ReceiveData()` puffert Pakete, die nicht auf
+  `\r` enden; ein abgerissenes Telegramm blieb dauerhaft liegen und wurde jeder
+  folgenden Antwort vorangestellt — die Instanz war bis zum Neustart still taub.
+  Jetzt verfallen Bruchstücke über `FRAGMENT_MAX_LENGTH` (4096 Byte) und älter
+  als `FRAGMENT_MAX_AGE` (30 s) mit einer Warnung. 4096 Byte sind rund das
+  Fünffache eines vollständigen Statusabrufs; die Grenze greift nur im
+  Fehlerfall. `protected function currentTime(): int` ist die Naht, an der die
+  Prüfroutine die Uhr stellt.
+- **Null-Rückgabe.** `GetCommandResponse()` überspringt eine Antwort ohne
+  `ValueMapping`, statt den ganzen Stapel zu verwerfen; Rückgabetyp jetzt
   `array` statt `?array`. **Erreichbar war das `return null` allerdings nie** —
   `GetVariableProfileMapping()` setzt `ValueMapping` ausnahmslos, über alle 112
   Modelle und 174 Katalogeinträge nachgemessen. Der Fix ist Absicherung, kein
   reparierter Absturz; die Zusicherung selbst steht seither als Prüfung in der
-  Routine. Die frühere Beschreibung („bricht den Empfangspfad ab") war zu stark.
+  Routine.
 
-Ein Golden über `GetCommandResponse()` mit einem Korpus **echter**
-Telnet-Antwortzeilen bliebe die wirksamste Ergänzung — dafür braucht es einen
-Mitschnitt aus dem Splitter-Debug, keine erfundenen Daten.
+**build 98 — HTTP-Pfad** (`tests/httppath_check.php`, 10 Zusicherungen):
 
-### Umsetzungsplan (HTTP-Pfad)
+- **Semaphore ohne Besitz freigegeben.** `GetStatus()` und zweimal
+  `SendCommand()` riefen auch im Zweig „Lock fehlgeschlagen" `unlock()`, und
+  `unlock()` ruft bedingungslos `IPS_SemaphoreLeave` — ein Tick gab damit die
+  Sperre eines **anderen**, noch laufenden Ticks frei. Bei 10-Sekunden-Timer und
+  sechs blockierenden Abrufen war Überlappung der Regelfall. Die drei Aufrufe
+  sind entfallen. `SemaphoreStub` in `tests/symcon_stubs.php` führt dafür
+  dasselbe Konto wie der Kernel und meldet jedes `Leave` ohne `Enter`.
+- **Fehlerursache verworfen.** Die drei `throw new Exception('… failed')`
+  reichen jetzt Meldung **und** Ursache durch (`… . $exc->getMessage(), 0, $exc`).
+- **Keine Timeouts.** `fetchXml()` bekommt den Stream-Context aus
+  `protected function httpContext()` mit `HTTP_TIMEOUT = 2.0`; die Option
+  `timeout` des http-Wrappers begrenzt Verbindungsaufbau *und* Lesen. Statt bis
+  zu 6 × 60 s pro Zyklus (innerhalb der Semaphore des Aufrufers) sind es
+  höchstens 6 × 2 s. **Kein Early-Abort:** ein 404 einer nicht vorhandenen Zone
+  ist normal und darf die übrigen Endpunkte nicht abschneiden (so steht es im
+  Kommentar über `fetchXml()`); die 12 s liegen daher weiterhin über dem
+  10-Sekunden-Timer.
 
-Vorabklärung (2026-08-09): Der Pfad ist mit der vorhandenen Stub-Infrastruktur
-**testbar**. Es fehlen in `tests/symcon_stubs.php` nur die Semaphoren:
-`IPS_SemaphoreEnter`/`IPS_SemaphoreLeave` sind gar nicht gestubbt.
+**Zwei Prüfdateien statt einer.** Der ursprüngliche Plan sah eine Datei mit vier
+Abschnitten vor. Sie wäre nach dem ersten Commit rot gewesen — deshalb je eine
+Datei pro Pfad, jede zusammen mit ihrem Fix. Beide entstanden **vor** dem Fix und
+waren nachweislich rot (receivepath: 2 von 11, httppath: 6 von 10); ein Test, der
+nie rot war, ist wertlos. `golden_regression` rührte sich bei keinem der beiden
+Commits — der Sendeweg ist nicht angefasst.
 
-Die Prüfroutine entsteht **vor** dem Fix (lokal rot) und landet im selben
-Commit, damit die CI an keinem Punkt der Historie rot ist. Aus demselben Grund
-bekommt der HTTP-Pfad eine **eigene** Datei `tests/httppath_check.php`: eine
-gemeinsame Datei mit dem Empfangspfad wäre nach dem ersten Commit rot gewesen
-(Abweichung vom ursprünglichen Plan, der eine Datei mit vier Abschnitten vorsah).
-
-**Der Commit — HTTP-Pfad (Defekte 3+4+5):**
-- `tests/symcon_stubs.php`: zählende Semaphoren-Stubs, `IPS_SemaphoreEnter` per
-  Testschalter auf `false` zwingbar.
-- `Denon HTTP IO/module.php`: die drei `unlock()`-Aufrufe im Zweig „Lock
-  fehlgeschlagen" entfallen; `throw new Exception('… failed', 0, $exc)` samt
-  Originalmeldung im Text an allen drei Stellen.
-- `libs/DENON_StatusHTML.php`: `fetchXml()` mit Stream-Context, Timeout als
-  Klassenkonstante, gebaut in `protected function httpContext()` — die Naht, an
-  der die Prüfroutine ohne Netz ansetzt.
-
-**Nur Timeout, kein Early-Abort.** Eine ältere Notiz schlug vor, nach dem ersten
-Fehlschlag abzubrechen; der Kommentar über `fetchXml()` sagt ausdrücklich das
-Gegenteil (ein 404 einer nicht vorhandenen Zone ist normal). Der Worst Case sinkt
-damit auf 6 × Timeout — bei 2 s also 12 s und weiterhin über dem 10-s-Timer. Das
-gehört in die Commit-Message, nicht weggerundet.
-
-**Prüfroutine `tests/httppath_check.php`** (ohne Kernel, Netz und
-Herstellerdateien; Exit 1 bei Abweichung, CI-tauglich). Alle drei Abschnitte
-sind bereits gebaut und waren gegen den heutigen Stand rot — sie liegen
-ausformuliert im Scratchpad der Sitzung vom 2026-08-09:
-1. *Semaphorenbilanz*: `IPS_SemaphoreEnter` liefert `false`, `GetStatus()` und
-   `ForwardDatastring()` (→ `SendCommand()`) laufen in den Fehlzweig; kein
-   `Leave` darf auf eine nicht gehaltene Sperre treffen. Der Stub führt dafür
-   selbst Buch (`SemaphoreStub::$unbalanced`) — genau wie der Kernel. Braucht
-   keine Produktivänderung, um prüfbar zu werden.
-2. *Fehlerursache*: ein Harnisch lässt `GetInputVarMapping()` werfen (erste
-   Anweisung im `try`, die ohne Netz scheitern kann); die geworfene Exception
-   muss `getPrevious()` gesetzt haben und die Originalmeldung im Text führen.
-   Dazu eine Quelltextprüfung, dass **alle drei** `throw new Exception`-Stellen
-   die Ursache durchreichen — die beiden in `SendCommand()` wären sonst nur über
-   einen echten HTTP-Abruf erreichbar.
-3. *Timeout*: `httpContext()` liefert einen Context mit endlichem `timeout`
-   unterhalb der Obergrenze (5 s: 6 Endpunkte × 5 s bei totem Host), geprüft per
-   `stream_context_get_options()`.
-
-**Ausdrücklich nicht Teil davon:** das Golden über echte Telnet-Mitschnitte
-(braucht einen Mitschnitt, erfundene Zeilen frieren nur die eigene Erwartung
-ein); Logger-Trait, Attribut-Migration und additiver Capability-Mechanismus;
-alles am Sendeweg, am Profilkatalog und an Capabilities (keine neuen Kommandos
-oder Modelle); neue oder geänderte öffentliche Funktionen; Retry, Backoff oder
-ein anderer Timer im HTTP-Polling; die `FormExpertParameters()`-Lücke und die
-Aufräum-Routine für verwaiste Alt-Profile.
-
-**Nachweise bei der Umsetzung:** dass die neue Routine vor dem jeweiligen Fix
-wirklich rot ist (ein Test, der nie rot war, ist wertlos), und dass sich
-`golden_regression` **nicht** rührt — Block A fasst den Sendeweg nicht an.
+**Weiterhin offen:** ein Golden über `GetCommandResponse()` mit einem Korpus
+**echter** Telnet-Antwortzeilen wäre die wirksamste Ergänzung — dafür braucht es
+einen Mitschnitt aus dem Splitter-Debug, keine erfundenen Daten. Bewusst nicht
+Teil der beiden Builds waren außerdem: Logger-Trait, Attribut-Migration und
+additiver Capability-Mechanismus; Retry oder Backoff im HTTP-Polling; die
+`FormExpertParameters()`-Lücke und die Aufräum-Routine für verwaiste Alt-Profile.
 
 ## Bekannte offene Punkte (bewusst zurückgestellt)
 

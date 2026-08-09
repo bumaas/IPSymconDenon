@@ -139,16 +139,19 @@ class DenonAVRIOHTTP extends IPSModuleStrict
                 // Senden fehlgeschlagen
                 $this->unlock('HTTPGetState');
 
-                throw new Exception('SendJson failed');
+                //Ursache anhängen und verketten: ohne sie sind Meldung, Datei und
+                //Zeile des eigentlichen Fehlers verloren
+                throw new Exception('SendJson failed: ' . $exc->getMessage(), 0, $exc);
             }
             $this->unlock('HTTPGetState');
 
             return 0;
         }
 
+        //kein unlock: die Sperre wurde nie erlangt. Ein unlock gäbe hier die
+        //Sperre eines anderen, noch laufenden Ticks frei.
         $this->SendDebug('Denon HTTP I/O:', 'Can not send to parent', 0);
         $this->LogMessage('Denon AVR I/O: Can not send to parent', KL_ERROR);
-        $this->unlock('HTTPGetState');
 
         return 0;
     }
@@ -177,13 +180,13 @@ class DenonAVRIOHTTP extends IPSModuleStrict
                 // Senden fehlgeschlagen
                 $this->unlock('HTTPCommandSend');
 
-                throw new Exception('file_get_contents failed');
+                throw new Exception('file_get_contents failed: ' . $exc->getMessage(), 0, $exc);
             }
             $this->unlock('HTTPCommandSend');
         } else {
+            //kein unlock: die Sperre wurde nie erlangt
             $this->SendDebug('Denon HTTP I/O:', 'Can not send to AVR', 0);
             $this->LogMessage('Denon AVR I/O: ' . 'Can not send to parent', KL_ERROR);
-            $this->unlock('HTTPCommandSend');
         }
 
         IPS_Sleep(1000); //von 400 auf 1000 erhöht, da manche AVR (z.B. 3312) nicht schnell genug sind
@@ -195,13 +198,13 @@ class DenonAVRIOHTTP extends IPSModuleStrict
             } catch (Exception $exc) {
                 $this->unlock('HTTPCommandSend');
 
-                throw new Exception('GetStatus failed');
+                throw new Exception('GetStatus failed: ' . $exc->getMessage(), 0, $exc);
             }
             $this->unlock('HTTPCommandSend');
         } else {
+            //kein unlock: die Sperre wurde nie erlangt
             $this->SendDebug('Denon HTTP I/O:', 'Can not get response', 0);
             $this->LogMessage('Denon AVR I/O: ' . 'Can not get response', KL_ERROR);
-            $this->unlock('HTTPCommandSend');
         }
     }
 

@@ -45,6 +45,66 @@ function IPS_Sleep(int $Milliseconds): bool
     return true;
 }
 
+/**
+ * Zählende Semaphoren-Stubs.
+ *
+ * Der Kernel führt Buch darüber, wer eine Sperre hält; IPS_SemaphoreLeave auf
+ * eine nicht gehaltene Sperre gibt die Sperre eines *anderen* Aufrufers frei.
+ * Damit dieser Fehler im Test sichtbar wird, führen die Stubs dasselbe Konto:
+ * jedes Leave ohne passendes Enter landet in SemaphoreStub::$unbalanced.
+ *
+ * SemaphoreStub::$failEnter erzwingt den Zweig "Lock fehlgeschlagen", der sich
+ * sonst nicht deterministisch herstellen ließe.
+ */
+class SemaphoreStub
+{
+    public static bool $failEnter = false;
+
+    /** @var array<string, int> aktuell gehaltene Sperren je Name */
+    public static array $held = [];
+
+    public static int $entered = 0;
+    public static int $left    = 0;
+
+    /** @var list<string> Leave-Aufrufe ohne gehaltene Sperre */
+    public static array $unbalanced = [];
+
+    public static function reset(bool $failEnter = false): void
+    {
+        self::$failEnter  = $failEnter;
+        self::$held       = [];
+        self::$entered    = 0;
+        self::$left       = 0;
+        self::$unbalanced = [];
+    }
+}
+
+function IPS_SemaphoreEnter(string $Name, int $Milliseconds): bool
+{
+    if (SemaphoreStub::$failEnter) {
+        return false;
+    }
+
+    SemaphoreStub::$entered++;
+    SemaphoreStub::$held[$Name] = (SemaphoreStub::$held[$Name] ?? 0) + 1;
+
+    return true;
+}
+
+function IPS_SemaphoreLeave(string $Name): bool
+{
+    SemaphoreStub::$left++;
+
+    if ((SemaphoreStub::$held[$Name] ?? 0) === 0) {
+        SemaphoreStub::$unbalanced[] = $Name;
+        return false;
+    }
+
+    SemaphoreStub::$held[$Name]--;
+
+    return true;
+}
+
 function IPS_GetName(int $ID): string
 {
     return 'Objekt#' . $ID;
