@@ -198,6 +198,21 @@ Select AVR Zone and select the commands that should be available. All other comm
 
 ###  a. Functions:
 
+**The recommended way to switch is `RequestAction`.** Every status variable of
+the module that is not display-only can be set directly with it — without
+knowing a module specific function:
+
+```php
+RequestAction(<VariableID>, <Value>);
+```
+
+Example: for the variable "Dimmer" (display brightness) `<Value>` means
+0 = Off, 1 = Dark, 2 = Dim, 3 = Bright.
+
+The functions listed below remain usable. They are mainly needed where no
+status variable exists (e.g. menu and network navigation) or where several
+parameters are required.
+
 #### Denon HTTP Modul:
 
 ```php
@@ -347,13 +362,6 @@ DAVRT_AudysseyDSX(int $InstanceID, string $Value)
 
 Dynamic Range Compression
 Parameter $Value Off / Wide (Audyssey DSX ON(Wide)) / Height (Audyssey DSX ON(Height)) / Height/Wide (Audyssey DSX ON(Height/Wide))
-
-```php
-DAVRT_CinemaEQ(int $InstanceID, bool $Value)
-```
-
-CinemaEQ on /off
-Parameter $Value false (Off) / true (On)
 
 ```php
 DAVRT_Panorama(int $InstanceID, bool $Value)
@@ -697,20 +705,6 @@ Dimension
 Parameter $Value 0 to 6
 
 ```php
-DAVRT_Dimmer(int $InstanceID, int $Value)
-```
-
-Dimmer (display brightness)
-Parameter $Value 0 = Off, 1 = Dark, 2 = Dim, 3 = Bright
-
-```php
-DAVRT_Effect(int $InstanceID, bool $Value)
-```
-
-Effect on /off
-Parameter $Value false (Off) / true (On)
-
-```php
 DAVRT_EffectLevel(int $InstanceID, float $Value)
 ```
 
@@ -744,20 +738,6 @@ DAVRT_RoomSize(int $InstanceID, string $Value)
 
 Room Size
 Parameter $Value Small , Small/Medium , Medium , Medium/Large , Large
-
-```php
-DAVRT_StageWidth(int $InstanceID, float $Value)
-```
-
-Stage Width
-Parameter $Value -10 to +10 , Step 0.5
-
-```php
-DAVRT_StageHeight(int $InstanceID, float $Value)
-```
-
-Stage Height
-Parameter $Value -10 to +10 , Step 0.5
 
 ```php
 DAVRT_SurroundBackMode(int $InstanceID, string $Value)
@@ -922,7 +902,7 @@ LFE Level
 Parameter $Value -6 to 6 , Step 0.5
 
 ```php
-DAVRT_Sleep(int $InstanceID, int $Value)
+DAVRT_SLEEP(int $InstanceID, int $Value)
 ```
 
 Sleep
@@ -1033,15 +1013,6 @@ Network Audio Navigation Page Previous
 
 Analog Tuner
 ```php
-DAVRT_SelectTunerPresetAnalog(int $InstanceID, string $Value)
-```
-
-Select Tuner Preset
-Parameter $Value A1 - G8 	
-
-Zone 2
-
-```php
 DAVRT_Z2_Volume(int $InstanceID, string $Value)
 ```
 
@@ -1049,7 +1020,7 @@ Zone 2 Volume up / down
 Parameter $Value UP / DOWN
 
 ```php
-DAVRT_Z2_VolumeFix(int $InstanceID, float $Value)
+DAVRT_Zone2VolumeFix(int $InstanceID, float $Value)
 ```
 
 set Zone 2 Volume to value
@@ -1110,7 +1081,7 @@ Zone 3 Volume up / down
 Parameter $Value UP / DOWN
 
 ```php
-DAVRT_Z3_VolumeFix(int $InstanceID, float $Value)
+DAVRT_Zone3VolumeFix(int $InstanceID, float $Value)
 ```
 
 set Zone 3 Volume to value

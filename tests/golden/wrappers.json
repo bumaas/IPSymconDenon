@@ -1203,36 +1203,6 @@
             "errors": []
         }
     ],
-    "CinemaEQ": [
-        {
-            "args": [
-                true
-            ],
-            "events": [
-                [
-                    "SendDataToParent",
-                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSCINEMA EQ\\r\"}"
-                ]
-            ],
-            "errors": [
-                "no profile found. Ident: PSCINEMA EQ, Value: 1"
-            ]
-        },
-        {
-            "args": [
-                false
-            ],
-            "events": [
-                [
-                    "SendDataToParent",
-                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSCINEMA EQ\\r\"}"
-                ]
-            ],
-            "errors": [
-                "no profile found. Ident: PSCINEMA EQ, Value: "
-            ]
-        }
-    ],
     "Contrast": [
         {
             "args": [
@@ -1404,34 +1374,6 @@
             ],
             "errors": [
                 "no association found. Ident: PSDIM, Value: 15"
-            ]
-        }
-    ],
-    "Dimmer": [
-        {
-            "args": [
-                0
-            ],
-            "events": [
-                [
-                    "SendDataToParent",
-                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"DIM OFF\\r\"}"
-                ]
-            ],
-            "errors": []
-        },
-        {
-            "args": [
-                15
-            ],
-            "events": [
-                [
-                    "SendDataToParent",
-                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"DIM\\r\"}"
-                ]
-            ],
-            "errors": [
-                "no association found. Ident: DIM, Value: 15"
             ]
         }
     ],
@@ -2508,32 +2450,6 @@
             "errors": []
         }
     ],
-    "RecSelect": [
-        {
-            "args": [
-                "ON"
-            ],
-            "events": [
-                [
-                    "SendDataToParent",
-                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\" ?ON\\r\"}"
-                ]
-            ],
-            "errors": []
-        },
-        {
-            "args": [
-                "Auto"
-            ],
-            "events": [
-                [
-                    "SendDataToParent",
-                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\" ?Auto\\r\"}"
-                ]
-            ],
-            "errors": []
-        }
-    ],
     "ReferenceLevel": [
         {
             "args": [
@@ -2829,150 +2745,6 @@
             ],
             "errors": [
                 "no subcommand found. Ident: PSSP, Value: Auto"
-            ]
-        }
-    ],
-    "StageHeight": [
-        {
-            "args": [
-                -10.5
-            ],
-            "events": [
-                [
-                    "SendDataToParent",
-                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSSTH\\r\"}"
-                ]
-            ],
-            "errors": [
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "no subcommand found. Ident: PSSTH, Value: -10.5"
-            ]
-        },
-        {
-            "args": [
-                0
-            ],
-            "events": [
-                [
-                    "SendDataToParent",
-                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSSTH\\r\"}"
-                ]
-            ],
-            "errors": [
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "no subcommand found. Ident: PSSTH, Value: 0"
-            ]
-        }
-    ],
-    "StageWidth": [
-        {
-            "args": [
-                -10.5
-            ],
-            "events": [
-                [
-                    "SendDataToParent",
-                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSSTW\\r\"}"
-                ]
-            ],
-            "errors": [
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "no subcommand found. Ident: PSSTW, Value: -10.5"
-            ]
-        },
-        {
-            "args": [
-                0
-            ],
-            "events": [
-                [
-                    "SendDataToParent",
-                    "{\"DataID\":\"{01A68655-DDAF-4F79-9F35-65878A86F344}\",\"Buffer\":\"PSSTW\\r\"}"
-                ]
-            ],
-            "errors": [
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "GetSubCommandOfValueName: unknown type: 2",
-                "no subcommand found. Ident: PSSTW, Value: 0"
             ]
         }
     ],

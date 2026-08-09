@@ -455,12 +455,6 @@ class DenonAVRTelnet extends AVRModule
         $this->sendMappedValueName(DENON_API_Commands::PSDSX, $Value);
     }
 
-    //CinemaEQ
-    public function CinemaEQ(bool $Value): void
-    { // CinemaEQ true (On) or false (Off)
-        $this->sendMappedValue(DENON_API_Commands::CINEMAEQCOMMAND, $Value);
-    }
-
     //Panorama
     public function Panorama(bool $Value): void
     { // Panorama true (On) or false (Off)
@@ -649,12 +643,6 @@ class DenonAVRTelnet extends AVRModule
         $this->sendMappedValue(DENON_API_Commands::CVBDR, $Value);
     }
 
-    //RecSelect
-    public function RecSelect(string $command): void
-    { // NET/USB; USB; NAPSTER; LASTFM; FLICKR; FAVORITES; IRADIO; SERVER; SERVER;  USB/IPOD
-        $this->SendCommand(DENON_API_Commands::SR . $command);
-    }
-
     //Video Select
     public function VideoSelect(string $command) // Video Select DVD , BD , TV , SAT/CBL , DVR ,GAME , AUX , DOCK , SOURCE, MPLAY
     : void
@@ -830,12 +818,6 @@ class DenonAVRTelnet extends AVRModule
         $this->sendMappedValue(DENON_API_Commands::PSDIM, $Value);
     }
 
-    //Dimmer (display brightness, not to be confused with Dimension/PSDIM or Brightness/PVBR)
-    public function Dimmer(int $Value): void
-    { //Dimmer: 0 = Off, 1 = Dark, 2 = Dim, 3 = Bright
-        $this->sendMappedValue(DENON_API_Commands::DIM, $Value);
-    }
-
     //Effect Level
     public function EffectLevel(float $Value): void
     { //Effect Level can be operated from 1 to 15 Step 0.5
@@ -870,18 +852,6 @@ class DenonAVRTelnet extends AVRModule
     public function RoomSize(string $Value): void
     { // Room Size Small / Small/Medium / Medium / Medium/Large / Large
         $this->sendMappedValueName(DENON_API_Commands::PSRSZ, $Value);
-    }
-
-    //Stage Width
-    public function StageWidth(float $Value): void
-    { //Stage Width can be operated from -10 to +10 Step 0.5
-        $this->sendMappedValueName(DENON_API_Commands::PSSTW, (string)$Value);
-    }
-
-    //Stage Height
-    public function StageHeight(float $Value): void
-    { //Stage Width can be operated from -10 to +10 Step 0.5
-        $this->sendMappedValueName(DENON_API_Commands::PSSTH, (string)$Value);
     }
 
     //Surround Back Mode
