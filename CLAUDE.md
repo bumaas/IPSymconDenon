@@ -32,6 +32,29 @@ Variablen bekommen ihre Darstellung zentral über `AVRModule::GetVariablePresent
 modellabhängig gefiltert (`updateProfileAccordingToCaps()`) bzw. dynamisch aus der
 AVR-XML gebaut (`SetInputSources()`).
 
+## Schalten: `RequestAction` statt eigener Wrapper
+
+Symcon bietet seit 5.0 die globale Funktion `RequestAction(int $VariablenID, mixed $Wert)`;
+paresy hat sie 2018 ausdrücklich als Ersatz für hardwarespezifische Schaltfunktionen
+eingeführt. Die Voraussetzung erfüllt das Modul: `AVRModule` ruft `EnableAction()` für jede
+schaltbare Statusvariable (`libs/AVRModule.php:461`). **Für reines Zustandsschalten sind
+eigene öffentliche Wrapper damit überholt.**
+
+- **Neue** öffentliche Funktionen nur noch, wenn `RequestAction` den Fall strukturell nicht
+  abbilden kann: keine Statusvariable (z. B. Menü- und Netzwerk-Navigation), mehrere
+  Parameter oder ein Rückgabewert.
+- **Bestehende, funktionierende** Wrapper bleiben. Sie zu entfernen wäre ein Breaking Change
+  an der Skript-API und damit ein Major-Sprung — sie sind nicht deprecated.
+- **Ausnahme:** nachweislich defekte Wrapper dürfen entfernt statt repariert werden, sofern
+  die Fähigkeit über `RequestAction` erreichbar bleibt. So geschehen in **2.30 build 91**
+  (`CinemaEQ`, `StageWidth`, `StageHeight`, `RecSelect` — alle vier konnten nie erfolgreich
+  aufgerufen werden; dazu `Dimmer` aus der eintägigen Beta 2.29 #88).
+- Die Funktionsreferenz in `docs/de/README.md` und `docs/en/README.md` beginnt deshalb mit
+  `RequestAction` als empfohlenem Weg; die Wrapper stehen dahinter als das, wofür sie noch
+  gebraucht werden.
+- Abgesichert sind alle Wrapper über `tests/golden/wrappers.json` (Sende-Buffer je Funktion) —
+  ein entfallener oder umbenannter Wrapper fällt dort sofort auf.
+
 ## Texte pflegen
 
 Die Formulare werden überwiegend **dynamisch** in PHP gebaut (`GetConfigurationForm()`
@@ -77,7 +100,9 @@ Composite-Strings sind über locale.json nicht übersetzbar.
   Informativer Report (Exit 0): Richtung A Modul→Spec (OK / laut Spec nicht
   unterstützt / keine Spec-Zeile), Richtung B Spec→Modul (fehlende Kommandos).
   Wertebereiche und die alten binären `.xls` (Marantz FY16–FY21) werden nicht
-  geprüft.
+  geprüft. Der Abgleich läuft über Kommando-Präfixe: `DIM` deckt pauschal alle
+  Untervarianten ab (`DIM BRI`, `DIM SEL`, …), einzelne fehlende Werte sieht das
+  Skript also nicht.
 
 - `tests/inheritance_check.php` — **Kettenprüfung** (ohne Kernel/Netz/Spec-Dateien,
   daher als einziges Werkzeug dieser Art auch in der CI wirksam). Die
@@ -287,6 +312,22 @@ additiver Capability-Mechanismus; Retry oder Backoff im HTTP-Polling; die
   Excel-COM ausgewertet (Ergebnis in der Commit-Message zu 2.29 build 87); zwei
   von ihnen nutzen ein drittes Tabellen-Layout mit der Kommandospalte
   `Command code` statt `COMMAND`, das der Leser in `spec_check.php` nicht kennt.
+- `tests/check_locale.php` hängt für die AVR-Module nur `DenonClass.php` an
+  (`$sharedPhpFiles`, `:33-36`). Seit der `libs/`-Zerlegung (Build 81) ist das ein
+  reiner Aggregator — die gemeinsamen `'caption'`-Literale aus `libs/AVRModule.php`
+  werden nicht mehr geprüft. Der Exit-Code bleibt 0, die Abdeckung ist also still
+  verloren gegangen; der Fix ist ein Einzeiler (Dateiliste erweitern), zieht aber
+  vermutlich verwaiste de-Schlüssel nach sich.
+- Die **Live-Verifikation der DIM-Direktwahl** ist erledigt (2026-08-08 am
+  AVR-X3800H): der Receiver antwortet nach `DIM x` **von sich aus**. `DIM` gehört
+  deshalb **nicht** in `STATUS_REQUEST_AFTER_SEND` — ein Eintrag dort kostete je
+  Schaltvorgang 30 ms Wartezeit und ein überflüssiges Telegramm. Belegt ist
+  bislang nur der X3800H; ein nicht nachgeführter Dimmer bei einem anderen Modell
+  wäre ein modellspezifischer Befund, kein Widerspruch.
+- **`ILB`** (Marantz „Illumination", Werte AUTO/BRI/DIM/DAR/OFF/SEL) ist bewusst nicht
+  umgesetzt. Es ist — anders als `DIM` — echt modellabhängig (FY23: nur AV 10 und
+  CINEMA 40; CY2023: nur CINEMA 30) und bräuchte deshalb eine eigene Capability.
+  Ebenfalls offen gelassen: `DIM SEL` (Toggle), das nicht in eine Enumeration passt.
 
 ## Support-Kontext
 
