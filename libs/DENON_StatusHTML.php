@@ -4,29 +4,89 @@ declare(strict_types=1);
 
 class DENON_StatusHTML extends stdClass
 {
+    private const ENDPOINT_COUNT = 6; //Anzahl der in getStates() abgefragten Endpunkte
+
     private bool $debug = false; //wird im Constructor gesetzt
     private $Logger_Dbg;
-    private $Logger_Err;
+    private $Logger_Warn;
 
-    public function __construct(?callable $Logger_Dbg = null, ?callable $Logger_Err = null)
+    /** @var array<string, string> fehlgeschlagene Endpunkte des laufenden Abrufs: Name => Ursache */
+    private array $failures = [];
+
+    public function __construct(?callable $Logger_Dbg = null, ?callable $Logger_Warn = null)
     {
         if (isset($Logger_Dbg)){
             $this->debug = true;
             $this->Logger_Dbg = $Logger_Dbg;
         }
 
-        $this->Logger_Err = $Logger_Err;
+        $this->Logger_Warn = $Logger_Warn;
     }
 
     /**
-     * Meldet einen Fehler über den vom aufrufenden Modul übergebenen Logger.
-     * Die Klasse gehört zu keiner Instanz und hat daher selbst kein
-     * $this->LogMessage(); ohne übergebenen Logger bleibt die Meldung stumm.
+     * Holt ein XML-Dokument von einem Endpunkt des AVR.
+     *
+     * Ein nicht erreichbarer Endpunkt ist im Alltag normal — das Gerät ist aus,
+     * oder das Modell kennt die Zone gar nicht und antwortet mit einer
+     * HTML-Fehlerseite. Beides darf weder den Abruf der übrigen Endpunkte
+     * abbrechen noch je Zyklus mehrere Logeinträge erzeugen, deshalb wird nur
+     * gesammelt und am Ende einmal gemeldet.
+     *
+     * Wichtig: file_get_contents liefert im Fehlerfall false, und wegen
+     * declare(strict_types=1) wirft SimpleXMLElement dann einen TypeError —
+     * also einen Error, kein Exception. Deshalb der ausdrückliche false-Test
+     * und catch (Throwable).
      */
-    private function logError(string $function, string $message): void
+    private function fetchXml(string $endpoint, string $url): ?SimpleXMLElement
     {
-        if ($this->Logger_Err !== null) {
-            call_user_func($this->Logger_Err, __CLASS__ . '::' . $function . ': ' . $message);
+        if ($this->debug) {
+            call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, $endpoint . ': ' . $url);
+        }
+
+        $body = @file_get_contents($url);
+        if ($body === false) {
+            $this->failures[$endpoint] = 'not reachable';
+            return null;
+        }
+
+        try {
+            return @new SimpleXMLElement($body);
+        } catch (Throwable $t) {
+            $this->failures[$endpoint] = $t->getMessage();
+            return null;
+        }
+    }
+
+    /**
+     * Meldet die gesammelten Fehlschläge eines Abrufs in genau einer Zeile.
+     * Die Klasse gehört zu keiner Instanz und hat daher kein $this->LogMessage();
+     * ohne übergebenen Logger greift trigger_error wie sonst auch in der Bibliothek.
+     */
+    private function reportFailures(string $function, string $ip): void
+    {
+        if ($this->failures === []) {
+            return;
+        }
+
+        $details = [];
+        foreach ($this->failures as $endpoint => $reason) {
+            $details[] = $endpoint . ' (' . $reason . ')';
+        }
+
+        $message = sprintf(
+            '%s::%s: %d of %d requests to %s failed: %s',
+            __CLASS__,
+            $function,
+            count($this->failures),
+            self::ENDPOINT_COUNT,
+            $ip,
+            implode(', ', $details)
+        );
+
+        if ($this->Logger_Warn !== null) {
+            call_user_func($this->Logger_Warn, $message);
+        } else {
+            trigger_error($message, E_USER_WARNING);
         }
     }
 
@@ -67,62 +127,50 @@ class DENON_StatusHTML extends stdClass
             call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'Inputs: ' . json_encode($Inputs, JSON_THROW_ON_ERROR));
         }
 
-        try {
-            $http = 'http://' . $ip . AVRs::getCapabilities($AVRType)['httpMainZone'];
-            if ($this->debug) {
-                call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'http (MainZone): ' . $http);
-            }
-            $xmlMainZone = @new SimpleXMLElement(file_get_contents($http));
-            $DataMain    = $this->MainZoneXml($xmlMainZone, $DataMain, $VarMappings, $Inputs);
-        } catch (Exception $e) {
-            $this->logError(__FUNCTION__, $e->getMessage());
+        $this->failures = [];
+
+        $xmlMainZone = $this->fetchXml('MainZone', 'http://' . $ip . AVRs::getCapabilities($AVRType)['httpMainZone']);
+        if ($xmlMainZone !== null) {
+            $DataMain = $this->MainZoneXml($xmlMainZone, $DataMain, $VarMappings, $Inputs);
         }
 
-        try {
-            $xmlNetAudioStatus = @new SimpleXMLElement(file_get_contents('http://' . $ip . '/goform/formMainZone_NetAudioStatusXml.xml'));
-            $DataMain          = $this->NetAudioStatusXml($xmlNetAudioStatus, $DataMain);
-        } catch (Exception $e) {
-            $this->logError(__FUNCTION__, $e->getMessage());
+        $xmlNetAudioStatus = $this->fetchXml('NetAudioStatus', 'http://' . $ip . '/goform/formMainZone_NetAudioStatusXml.xml');
+        if ($xmlNetAudioStatus !== null) {
+            $DataMain = $this->NetAudioStatusXml($xmlNetAudioStatus, $DataMain);
         }
 
-        try {
-            $xmlDeviceinfo = @new SimpleXMLElement(file_get_contents('http://' . $ip . '/goform/formMainZone_Deviceinfo.xml'));
-            $DataMain      = $this->Deviceinfo($xmlDeviceinfo, $DataMain);
-        } catch (Exception $e) {
-            $this->logError(__FUNCTION__, $e->getMessage());
+        $xmlDeviceinfo = $this->fetchXml('Deviceinfo', 'http://' . $ip . '/goform/formMainZone_Deviceinfo.xml');
+        if ($xmlDeviceinfo !== null) {
+            $DataMain = $this->Deviceinfo($xmlDeviceinfo, $DataMain);
         }
 
         // Zone 2
 
         $DataZ2 = [];
 
-        try {
-            $xml    = @new SimpleXMLElement(file_get_contents('http://' . $ip . '/goform/formMainZone_MainZoneXml.xml?_=&ZoneName=ZONE2'));
+        $xml = $this->fetchXml('ZONE2', 'http://' . $ip . '/goform/formMainZone_MainZoneXml.xml?_=&ZoneName=ZONE2');
+        if ($xml !== null) {
             $DataZ2 = $this->StateZone2($xml, $DataZ2, $InputMapping);
-        } catch (Exception $e) {
-            $this->logError(__FUNCTION__, $e->getMessage());
         }
 
         // Zone 3
 
         $DataZ3 = [];
 
-        try {
-            $xml    = @new SimpleXMLElement(file_get_contents('http://' . $ip . '/goform/formMainZone_MainZoneXml.xml?_=&ZoneName=ZONE3'));
+        $xml = $this->fetchXml('ZONE3', 'http://' . $ip . '/goform/formMainZone_MainZoneXml.xml?_=&ZoneName=ZONE3');
+        if ($xml !== null) {
             $DataZ3 = $this->StateZone3($xml, $DataZ3, $InputMapping);
-        } catch (Exception $e) {
-            $this->logError(__FUNCTION__, $e->getMessage());
         }
 
         //Model
-        try {
-            $xmlDeviceSearch = @new SimpleXMLElement(file_get_contents('http://' . $ip . '/goform/formiPhoneAppDeviceSearch.xml'));
-            $DataMain        = $this->DeviceSearch($xmlDeviceSearch, $DataMain);
-            $DataZ2          = $this->DeviceSearch($xmlDeviceSearch, $DataZ2);
-            $DataZ3          = $this->DeviceSearch($xmlDeviceSearch, $DataZ3);
-        } catch (Exception $e) {
-            $this->logError(__FUNCTION__, $e->getMessage());
+        $xmlDeviceSearch = $this->fetchXml('DeviceSearch', 'http://' . $ip . '/goform/formiPhoneAppDeviceSearch.xml');
+        if ($xmlDeviceSearch !== null) {
+            $DataMain = $this->DeviceSearch($xmlDeviceSearch, $DataMain);
+            $DataZ2   = $this->DeviceSearch($xmlDeviceSearch, $DataZ2);
+            $DataZ3   = $this->DeviceSearch($xmlDeviceSearch, $DataZ3);
         }
+
+        $this->reportFailures(__FUNCTION__, $ip);
 
         $datasend = [
             'ResponseType' => 'HTTP',

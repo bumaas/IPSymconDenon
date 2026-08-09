@@ -46,11 +46,11 @@ class DenonAVRIOHTTP extends IPSModuleStrict
         $this->SetUpdateTimerInterval();
     }
 
-    private function Logger_Err(string $message): void
+    private function Logger_Warn(string $message): void
     {
-        $this->SendDebug('LOG_ERR', $message, 0);
+        $this->SendDebug('LOG_WARN', $message, 0);
 
-        $this->LogMessage($message, KL_ERROR);
+        $this->LogMessage($message, KL_WARNING);
     }
 
     /**
@@ -126,7 +126,7 @@ class DenonAVRIOHTTP extends IPSModuleStrict
             // Daten senden
             try {
                 //Daten abholen
-                $DenonStatus  = new DENON_StatusHTML(null, $this->Logger_Err(...));
+                $DenonStatus  = new DENON_StatusHTML(null, $this->Logger_Warn(...));
                 $ipdenon      = $this->ReadPropertyString('Host');
                 $InputMapping = $this->GetInputVarMapping();
                 $AVRType      = $this->GetAVRType();

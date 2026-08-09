@@ -275,7 +275,7 @@ class DenonAVRTelnet extends AVRModule
     {
         $AVRType = $this->GetAVRType($this->GetManufacturerName());
 
-        $DenonGet = new DENON_StatusHTML(null, $this->Logger_Err(...));
+        $DenonGet = new DENON_StatusHTML(null, $this->Logger_Warn(...));
 
         try {
             /** @noinspection PhpUndefinedFunctionInspection */

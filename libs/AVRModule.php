@@ -887,6 +887,12 @@ class AVRModule extends IPSModuleStrict
 
     }
 
+    protected function Logger_Warn(string $message): void
+    {
+        $this->SendDebug('LOG_WARN', $message, 0);
+        $this->LogMessage($message, KL_WARNING);
+    }
+
     protected function Logger_Inf(string $message): void
     {
         $this->SendDebug('LOG_INFO', $message, 0);
