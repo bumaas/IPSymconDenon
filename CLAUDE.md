@@ -112,6 +112,50 @@ Composite-Strings sind über locale.json nicht übersetzbar.
   Ref die Datei noch nicht, wird ersatzweise ein temporärer `git worktree`
   aufgemacht. Informativ (Exit 0), Exit 1 nur bei Umgebungsfehlern.
 
+## Offene Defekte im Empfangs- und HTTP-Pfad
+
+Anders als die Punkte im nächsten Abschnitt sind das **Fehler, keine fehlenden
+Features**. Sie wirken genau dann, wenn ohnehin etwas klemmt (Gerät aus, Netz
+weg), und sind alle im Code nachgelesen (zuletzt geprüft: 2.30 build 94).
+Sinnvoll als **ein eigener Build „Robustheit"**, nicht mit funktionalen
+Änderungen gemischt.
+
+1. **Null-Dereferenzierung im Telnet-Splitter.**
+   `DenonAVRCP_API_Data::GetCommandResponse()` ist `?array` und liefert `null`,
+   wenn einem Katalogeintrag das `ValueMapping` fehlt (einziges `return null`,
+   im `default`-Zweig). `DenonSplitterTelnet::ReceiveData()` greift unmittelbar
+   danach ungeprüft mit `$SetCommand['SurroundDisplay']` und
+   `count($SetCommand['Data'])` zu — unter PHP 8 ist `count(null)` ein
+   **TypeError** und bricht den Empfangspfad ab.
+2. **Fragmentpuffer ohne Verfall.** `DenonSplitterTelnet::ReceiveData()` puffert
+   Pakete, die nicht auf `\r` enden, über `GetBuffer`/`SetBuffer` — ohne Alterung
+   und ohne Längenbegrenzung. Ein abgerissenes Telegramm bleibt dauerhaft liegen
+   und wird jeder folgenden Antwort vorangestellt; die Instanz „vergiftet" sich
+   still bis zum Neustart.
+3. **Semaphore wird freigegeben, ohne sie zu halten.** In `Denon HTTP IO` rufen
+   `GetStatus()` und zweimal `SendCommand()` auch im Zweig „Lock fehlgeschlagen"
+   `unlock()` auf, und `unlock()` ruft bedingungslos `IPS_SemaphoreLeave` — ein
+   Tick gibt damit die Sperre eines **anderen**, noch laufenden Ticks frei. Bei
+   10-Sekunden-Timer und sechs blockierenden HTTP-Abrufen ist Überlappung der
+   Regelfall.
+4. **Die Fehlerursache wird weggeworfen.** `GetStatus()` fängt `Exception $exc`
+   und wirft stattdessen `new Exception('SendJson failed')` — Meldung, Datei und
+   Zeile der echten Ursache sind weg. Gleiches Muster in `SendCommand()`
+   (`file_get_contents failed`, `GetStatus failed`).
+5. **Keine Timeouts an den HTTP-Abrufen.** `DENON_StatusHTML::fetchXml()` nutzt
+   `@file_get_contents($url)` ohne Stream-Context. Bei totem Host blockiert jeder
+   der sechs Endpunkte bis `default_socket_timeout` (Standard 60 s) → bis zu
+   ~6 Minuten pro Zyklus, und das innerhalb der Semaphore des Aufrufers.
+
+**Warum das hier steht und nicht im Code:** Der Empfangspfad hat **kein**
+Regressionsnetz — die Golden-Suite deckt den Sendeweg ab, `ReceiveData` steht
+dort sogar auf der Ausschlussliste. Gerade dort ist die Fix-Dichte am höchsten:
+`Denon Splitter Telnet/module.php` hat 110 Commits, davon rund 50 mit einem
+Fix-Betreff. Fehler fallen dort also erst beim Anwender auf. Der wirksamste
+flankierende Test wäre ein Golden über `GetCommandResponse()` mit einem Korpus
+**echter** Telnet-Antwortzeilen — dafür braucht es einen Mitschnitt aus dem
+Splitter-Debug, keine erfundenen Daten.
+
 ## Bekannte offene Punkte (bewusst zurückgestellt)
 
 - `Denon AVR HTTP` bindet `FormExpertParameters()` nicht ein — die Property
@@ -178,6 +222,19 @@ Composite-Strings sind über locale.json nicht übersetzbar.
     Tuner-Punkt oben.
   - **`MSQUICK1MEMORY`–`MSQUICK6MEMORY`** und `MSQUICKSTATE` sind unbenutzt.
     Entweder Quick-Select-Memory als Profil umsetzen oder den Block entfernen.
+- Aus dem Code-Review zu Build 89 (Struktur, kein Defekt):
+  - `Logger_Err`/`Logger_Warn` liegen byte-identisch in `libs/AVRModule.php`,
+    `Denon Splitter Telnet` und `Denon HTTP IO` — ein `trait` in `libs/` (über den
+    `DenonClass.php`-Aggregator geladen) würde das für alle sechs Module auflösen.
+  - `InputMapping` und `AVRType` sind internes Buchhaltungswissen; der
+    idiomatische Container wäre `RegisterAttributeString` (unsichtbar per
+    Konstruktion, ganz ohne `IPS_SetHidden`). `Denon Splitter Telnet` registriert
+    dieselben zwei Idents zudem **unversteckt** — die Bibliothek verhält sich also
+    widersprüchlich. Umbau mit Migrationsbedarf.
+  - `RegisterHiddenVariableString()` im HTTP-IO ist nicht testbar: die Stubs in
+    `tests/symcon_stubs.php` kennen weder `IPS_GetObjectIDByIdent` noch
+    `IPS_SetHidden`, und die Golden-Suite fährt `DenonAVRHTTP`, nicht
+    `DenonAVRIOHTTP`.
 - Die Baseline der Kettenprüfung (`tests/inheritance_baseline.json`) **duldet den
   Ist-Stand**, sie bestätigt ihn nicht: 556 Einzelverluste in 83 Klassen sind
   eingefroren. Sie sind überwiegend legitim (ein günstigeres Modell darf ein
