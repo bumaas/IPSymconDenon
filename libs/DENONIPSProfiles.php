@@ -100,6 +100,12 @@ declare(strict_types=1);
     public const string ptPictureMode           = 'PictureMode';
     public const string ptEnhancer       = 'Enhancer';
     public const string ptBluetoothTransmitter = 'BluetoothTransmitter';
+    public const string ptBluetoothLevel       = 'BluetoothLevel';
+    public const string ptChannelLevelMonitoring = 'ChannelLevelMonitoring';
+    public const string ptHDMIHotPlugTest        = 'HDMIHotPlugTest';
+    public const string ptChannelExpander        = 'ChannelExpander';
+    public const string ptSurroundLevelCompensation = 'SurroundLevelCompensation';
+    public const string ptDACFilter                 = 'DACFilter';
     public const string ptSpeakerPreset        = 'SpeakerPreset';
 
     public const string ptZone2Power       = 'Zone2Power';
@@ -321,6 +327,9 @@ declare(strict_types=1);
         self::ptReferenceLevel,
         self::ptDiracLiveFilter,
         self::ptDynamicVolume,
+        self::ptSurroundLevelCompensation,
+        self::ptChannelExpander,
+        self::ptDACFilter,
         self::ptAudysseyLFC,
         self::ptAudysseyContainmentAmount,
         self::ptGraphicEQ,
@@ -341,6 +350,8 @@ declare(strict_types=1);
         self::ptAudioRestorer, // only Denon
 
         self::ptBluetoothTransmitter,
+        self::ptBluetoothLevel,
+        self::ptChannelLevelMonitoring,
         self::ptSpeakerPreset,
 
         //Video
@@ -367,6 +378,7 @@ declare(strict_types=1);
         self::ptAllZoneStereo,
         self::ptDimmer,
         self::ptAutoLipSync,
+        self::ptHDMIHotPlugTest,
 
         //Zone 2
         self::ptZone2Name,
@@ -426,6 +438,7 @@ declare(strict_types=1);
         $assRange000to300 = $this->GetAssociationOfAsciiTodB('000', '300', '000');
         $assRange00to10_invert = $this->GetAssociationOfAsciiTodB('00', '10', '00', 1, false, true, true);
         $assRange00to15_invert = $this->GetAssociationOfAsciiTodB('00', '15', '00', 1, false, true, true);
+        $assRange30to90 = $this->GetAssociationOfAsciiTodB('30', '90', '80'); //Bluetooth Level: 30 = -50 dB, 80 = 0 dB, 90 = +10 dB
         $assRange44to56 = $this->GetAssociationOfAsciiTodB('44', '56', '50');
         $assRange40to60 = $this->GetAssociationOfAsciiTodB('40', '60', '50');
         $assRange00to06 = $this->GetAssociationOfAsciiTodB('00', '06', '00');
@@ -756,6 +769,7 @@ declare(strict_types=1);
                     [3, 'Select 3', DENON_API_Commands::MSQUICK3],
                     [4, 'Select 4', DENON_API_Commands::MSQUICK4],
                     [5, 'Select 5', DENON_API_Commands::MSQUICK5],
+                    [6, 'Select 6', DENON_API_Commands::MSQUICK6], // erst ab CY2026, wird über MSQUICK_SubCommands gefiltert
                 ],
             ],
             self::ptSmartSelect => ['Type'                        => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::MSSMART, 'Name' => 'Smart Select',
@@ -1088,6 +1102,23 @@ declare(strict_types=1);
                     [3, 'Bluetooth only', DENON_API_Commands::BTTXBT],
                 ],
             ],
+            self::ptChannelLevelMonitoring => ['Type'    => DENONIPSVarType::vtBoolean, 'Ident' => DENON_API_Commands::CLM, 'Name' => 'Channel Level Monitoring',
+                'PropertyName'                           => 'ChannelLevelMonitoring',
+                'Associations'                           => [
+                    [false, DENON_API_Commands::CLMOFF],
+                    [true, DENON_API_Commands::CLMON],
+                ], ],
+            self::ptHDMIHotPlugTest => ['Type'           => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::SYHPT, 'Name' => 'HDMI Hot Plug Test',
+                'PropertyName'                           => 'HDMIHotPlugTest',
+                'Profilesettings'                        => ['Move', '', '', 0, 0, 0, 0],
+                'Associations'                           => [
+                    [0, 'High', DENON_API_Commands::SYHPTHIGH],
+                    [1, 'Low', DENON_API_Commands::SYHPTLOW],
+                    [2, 'Toggle', DENON_API_Commands::SYHPTTOG],
+                ],
+                // reine Aktion, die Antwort lautet 'SYHPT OK' - kein Statusabruf möglich
+                // (der Ident ist deshalb in GetStates() ausgenommen)
+            ],
             self::ptSpeakerPreset => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::SPPR, 'Name' => 'Speaker Preset',
                 'PropertyName'                       => 'SpeakerPreset',
                 'Profilesettings'                    => ['Database', '', '', 0, 0, 0, 0],
@@ -1166,6 +1197,33 @@ declare(strict_types=1);
                     [5, 'Evening', DENON_API_Commands::DYNVOLEVE], // only older AVRs
                     [6, 'Midnight', DENON_API_Commands::DYNVOLNGT], // only older AVRs
                     [7, 'Midnight', DENON_API_Commands::DYNVOLON], // only older Denon AVRs (i.e. 4310)
+                ],
+            ],
+            self::ptSurroundLevelCompensation => ['Type'   => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::PSSURLEV, 'Name' => 'Surround Level Compensation',
+                'PropertyName'                             => 'SurroundLevelCompensation',
+                'Profilesettings'                          => ['Intensity', '', '', 0, 0, 0, 0],
+                'Associations'                             => [
+                    [0, 'Off', DENON_API_Commands::SURLEVOFF],
+                    [1, 'Light', DENON_API_Commands::SURLEVLIT],
+                    [2, 'Medium', DENON_API_Commands::SURLEVMED],
+                    [3, 'Heavy', DENON_API_Commands::SURLEVHEV],
+                ],
+            ],
+            self::ptChannelExpander => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::PSCEX, 'Name' => 'Channel Expander',
+                'PropertyName'                             => 'ChannelExpander',
+                'Profilesettings'                          => ['Intensity', '', '', 0, 0, 0, 0],
+                'Associations'                             => [
+                    [0, 'Off', DENON_API_Commands::PSCEXOFF],
+                    [1, 'Low', DENON_API_Commands::PSCEXLOW],
+                    [2, 'High', DENON_API_Commands::PSCEXHI],
+                ],
+            ],
+            self::ptDACFilter => ['Type'                   => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::PSDACFIL, 'Name' => 'DAC Filter',
+                'PropertyName'                             => 'DACFilter',
+                'Profilesettings'                          => ['Intensity', '', '', 0, 0, 0, 0],
+                'Associations'                             => [
+                    [0, 'Mode 1', DENON_API_Commands::PSDACFILMODE1],
+                    [1, 'Mode 2', DENON_API_Commands::PSDACFILMODE2],
                 ],
             ],
             self::ptResolutionHDMI => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::VSSCH, 'Name' => 'Resolution HDMI',
@@ -1258,8 +1316,10 @@ declare(strict_types=1);
                     [3, 'Select 3', DENON_API_Commands::MSQUICK3],
                     [4, 'Select 4', DENON_API_Commands::MSQUICK4],
                     [5, 'Select 5', DENON_API_Commands::MSQUICK5],
+                    [6, 'Select 6', DENON_API_Commands::MSQUICK6], // erst ab CY2026, wird über Z2QUICK_SubCommands gefiltert
                 ],
             ],
+            // Zone 3 kennt laut CY2026-Spec kein Quick Select 6, deshalb bleibt es hier bei 0-5
             self::ptZone3QuickSelect => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::Z3QUICK, 'Name' => 'Zone 3 Quick Select',
                 'PropertyName'                              => 'Z3Quick',
                 'Profilesettings'                           => ['Database', '', '', 0, 0, 0, 0],
@@ -1501,6 +1561,8 @@ declare(strict_types=1);
                 'PropertyName'                                            => 'DialogLevelAdjust', 'Profilesettings' => ['Intensity', '', ' dB', -12, 12, 0.5, 1], 'Associations' => $assRange38to62_add05step, ],
             self::ptAuroMatic3DStrength => ['Type'                        => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::PSAUROST, 'Name' => 'Auromatic 3D Strength',
                 'PropertyName'                                            => 'AuroMatic3DStrength', 'Profilesettings' => ['Intensity', '', ' dB', 0, 16, 1, 0], 'Associations' => $assRange00to16, ],
+            self::ptBluetoothLevel => ['Type'                             => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::BTLEV, 'Name' => 'Bluetooth Level',
+                'PropertyName'                                            => 'BluetoothLevel', 'Profilesettings' => ['Intensity', '', ' dB', -50, 10, 1, 0], 'Associations' => $assRange30to90, ],
             self::ptZone2Volume => ['Type'                                => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::Z2VOL, 'Name' => 'Zone 2 Volume',
                 'PropertyName'                                            => self::ptZone2Volume, 'Profilesettings' => ['Intensity', '', ' dB', -80, 18, 1, 0], 'Associations' => $assRange00to98,
                 'IndividualStatusRequest'                                 => 'Z2?', ],
@@ -1556,6 +1618,8 @@ declare(strict_types=1);
             $this->updateProfileAccordingToCaps(self::ptSpeakerOutput, $caps);
             $this->updateProfileAccordingToCaps(self::ptDynamicVolume, $caps);
             $this->updateProfileAccordingToCaps(self::ptVideoSelect, $caps);
+            $this->updateProfileAccordingToCaps(self::ptQuickSelect, $caps);
+            $this->updateProfileAccordingToCaps(self::ptZone2QuickSelect, $caps);
 
             if (in_array($AVRType, ['AVR-X4000', 'AVR_3808A', 'AVR-X3000', 'AVR-4310', 'AVR-4311', 'AVR-3310', 'AVR-3311', 'AVR-3312', 'AVR-3313',
                                     'Marantz-SR6005', 'Marantz-SR6006', 'Marantz-NR1602', 'Marantz-SR5006', 'Marantz-SR7005', 'Marantz-AV7005'])){

@@ -1178,6 +1178,39 @@ class Denon_AVR_X2900H extends Denon_AVR_X2800H
         DENON_API_Commands::PSRSTR,
         DENON_API_Commands::PSDIRAC,
     ];
+
+    // Liste des X2800H, laut CY2026-Spec zusätzlich mit BTLEV, CLM und SYHPT
+    public static array $SystemControl_Commands = [
+        DENON_API_Commands::MN,
+        DENON_API_Commands::MNMEN,
+        DENON_API_Commands::MNZST,
+        DENON_API_Commands::BTTX,
+        DENON_API_Commands::BTLEV,
+        DENON_API_Commands::CLM,
+        DENON_API_Commands::SYHPT,
+        DENON_API_Commands::SPPR,
+        DENON_API_Commands::DIM,
+    ];
+
+    public static array $MSQUICK_SubCommands = [
+        DENON_API_Commands::MSQUICK0,
+        DENON_API_Commands::MSQUICK1,
+        DENON_API_Commands::MSQUICK2,
+        DENON_API_Commands::MSQUICK3,
+        DENON_API_Commands::MSQUICK4,
+        DENON_API_Commands::MSQUICK5,
+        DENON_API_Commands::MSQUICK6,
+    ];
+
+    public static array $Z2QUICK_SubCommands = [
+        DENON_API_Commands::MSQUICK0,
+        DENON_API_Commands::MSQUICK1,
+        DENON_API_Commands::MSQUICK2,
+        DENON_API_Commands::MSQUICK3,
+        DENON_API_Commands::MSQUICK4,
+        DENON_API_Commands::MSQUICK5,
+        DENON_API_Commands::MSQUICK6,
+    ];
 }
 
 class Denon_AVR_S960H extends Denon_AVR_X2700H
@@ -1199,11 +1232,34 @@ class Denon_AVR_S970H extends Denon_AVR_X2800H
 class Denon_AVR_S980H extends Denon_AVR_S970H
 {
     // see 'Denon CY2026_AVR_PROTOCOL_V02.xlsx'
-    // laut Spec gegenüber dem S970H nur Kommandos, die das Modul noch nicht kennt
-    // (BTLEV, CLM, MSQUICK6, SYHPT)
     public static string $Name = 'AVR-S980H';
 
     public static int $internalID = 212;
+
+    // Liste des S970H, laut CY2026-Spec zusätzlich mit BTLEV, CLM und SYHPT
+    public static array $SystemControl_Commands = [
+        DENON_API_Commands::MN,
+        DENON_API_Commands::MNMEN,
+        DENON_API_Commands::MNZST,
+        DENON_API_Commands::BTTX,
+        DENON_API_Commands::BTLEV,
+        DENON_API_Commands::CLM,
+        DENON_API_Commands::SYHPT,
+        DENON_API_Commands::SPPR,
+        DENON_API_Commands::DIM,
+    ];
+
+    // Zone 2 bleibt bei 0-5: Z2QUICK6 ist in der Spec nur mit '@10'
+    // ("Requires Amp assign = Zone2") markiert, nicht als unterstützt.
+    public static array $MSQUICK_SubCommands = [
+        DENON_API_Commands::MSQUICK0,
+        DENON_API_Commands::MSQUICK1,
+        DENON_API_Commands::MSQUICK2,
+        DENON_API_Commands::MSQUICK3,
+        DENON_API_Commands::MSQUICK4,
+        DENON_API_Commands::MSQUICK5,
+        DENON_API_Commands::MSQUICK6,
+    ];
 }
 /* ---------------------
  * Denon AVR-X1x00W Serie
@@ -2057,6 +2113,41 @@ class Denon_AVR_X3900H extends Denon_AVR_X3800H
         DENON_API_Commands::PSAUROST,
         DENON_API_Commands::PSAUROMODE,
         DENON_API_Commands::PSDIRAC,
+        DENON_API_Commands::PSSURLEV,
+        DENON_API_Commands::PSCEX,
+    ];
+
+    // Liste des X3800H, laut CY2026-Spec zusätzlich mit BTLEV, CLM und SYHPT
+    public static array $SystemControl_Commands = [
+        DENON_API_Commands::MN,
+        DENON_API_Commands::MNMEN,
+        DENON_API_Commands::MNZST,
+        DENON_API_Commands::BTTX,
+        DENON_API_Commands::BTLEV,
+        DENON_API_Commands::CLM,
+        DENON_API_Commands::SYHPT,
+        DENON_API_Commands::SPPR,
+        DENON_API_Commands::DIM,
+    ];
+
+    public static array $MSQUICK_SubCommands = [
+        DENON_API_Commands::MSQUICK0,
+        DENON_API_Commands::MSQUICK1,
+        DENON_API_Commands::MSQUICK2,
+        DENON_API_Commands::MSQUICK3,
+        DENON_API_Commands::MSQUICK4,
+        DENON_API_Commands::MSQUICK5,
+        DENON_API_Commands::MSQUICK6,
+    ];
+
+    public static array $Z2QUICK_SubCommands = [
+        DENON_API_Commands::MSQUICK0,
+        DENON_API_Commands::MSQUICK1,
+        DENON_API_Commands::MSQUICK2,
+        DENON_API_Commands::MSQUICK3,
+        DENON_API_Commands::MSQUICK4,
+        DENON_API_Commands::MSQUICK5,
+        DENON_API_Commands::MSQUICK6,
     ];
 }
 

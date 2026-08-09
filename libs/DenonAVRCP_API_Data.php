@@ -326,6 +326,7 @@ class DenonAVRCP_API_Data extends stdClass
                     DENON_API_Commands::SD . DENON_API_Commands::SDEARC, //nur als Event
                     DENON_API_Commands::CVTTR . ' ON',
                     DENON_API_Commands::CVTTR . ' OFF',
+                    DENON_API_Commands::SYHPT . ' OK', //Quittung des Hot Plug Tests, kein Status
                     'CVEND',
                     'OPALS',
                     'TFANNAME',

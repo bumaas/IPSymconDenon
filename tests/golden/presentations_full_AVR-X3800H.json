@@ -12684,13 +12684,136 @@
             "OPTIONS": "[{\"Value\":0,\"Caption\":\"Off\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":1,\"Caption\":\"Light\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":2,\"Caption\":\"Medium\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":3,\"Caption\":\"Heavy\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1}]"
         }
     },
+    "SurroundLevelCompensation": {
+        "config": {
+            "Name": "Surround Level Compensation",
+            "Ident": "PSSURLEV",
+            "Type": 1,
+            "PropertyName": "SurroundLevelCompensation",
+            "ProfilName": "SurroundLevelCompensation",
+            "Icon": "Intensity",
+            "Prefix": "",
+            "Suffix": "",
+            "MinValue": 0,
+            "MaxValue": 0,
+            "Stepsize": 0,
+            "Digits": 0,
+            "Associations": [
+                [
+                    0,
+                    "Off",
+                    " OFF"
+                ],
+                [
+                    1,
+                    "Light",
+                    " LIT"
+                ],
+                [
+                    2,
+                    "Medium",
+                    " MED"
+                ],
+                [
+                    3,
+                    "Heavy",
+                    " HEV"
+                ]
+            ],
+            "Position": 1020,
+            "displayOnly": false
+        },
+        "presentation": {
+            "PRESENTATION": "{52D9E126-D7D2-2CBB-5E62-4CF7BA7C5D82}",
+            "ICON": "Intensity",
+            "SUFFIX": "",
+            "OPTIONS": "[{\"Value\":0,\"Caption\":\"Off\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":1,\"Caption\":\"Light\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":2,\"Caption\":\"Medium\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":3,\"Caption\":\"Heavy\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1}]"
+        }
+    },
+    "ChannelExpander": {
+        "config": {
+            "Name": "Channel Expander",
+            "Ident": "PSCEX",
+            "Type": 1,
+            "PropertyName": "ChannelExpander",
+            "ProfilName": "ChannelExpander",
+            "Icon": "Intensity",
+            "Prefix": "",
+            "Suffix": "",
+            "MinValue": 0,
+            "MaxValue": 0,
+            "Stepsize": 0,
+            "Digits": 0,
+            "Associations": [
+                [
+                    0,
+                    "Off",
+                    " OFF"
+                ],
+                [
+                    1,
+                    "Low",
+                    " LOW"
+                ],
+                [
+                    2,
+                    "High",
+                    " HI"
+                ]
+            ],
+            "Position": 1030,
+            "displayOnly": false
+        },
+        "presentation": {
+            "PRESENTATION": "{52D9E126-D7D2-2CBB-5E62-4CF7BA7C5D82}",
+            "ICON": "Intensity",
+            "SUFFIX": "",
+            "OPTIONS": "[{\"Value\":0,\"Caption\":\"Off\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":1,\"Caption\":\"Low\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":2,\"Caption\":\"High\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1}]"
+        }
+    },
+    "DACFilter": {
+        "config": {
+            "Name": "DAC Filter",
+            "Ident": "PSDACFIL",
+            "Type": 1,
+            "PropertyName": "DACFilter",
+            "ProfilName": "DACFilter",
+            "Icon": "Intensity",
+            "Prefix": "",
+            "Suffix": "",
+            "MinValue": 0,
+            "MaxValue": 0,
+            "Stepsize": 0,
+            "Digits": 0,
+            "Associations": [
+                [
+                    0,
+                    "Mode 1",
+                    " MODE1"
+                ],
+                [
+                    1,
+                    "Mode 2",
+                    " MODE2"
+                ]
+            ],
+            "Position": 1040,
+            "displayOnly": false
+        },
+        "presentation": {
+            "PRESENTATION": "{52D9E126-D7D2-2CBB-5E62-4CF7BA7C5D82}",
+            "ICON": "Intensity",
+            "SUFFIX": "",
+            "OPTIONS": "[{\"Value\":0,\"Caption\":\"Mode 1\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":1,\"Caption\":\"Mode 2\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1}]"
+        }
+    },
     "AudysseyLFC": {
         "config": {
             "Name": "Audyssey LFC",
             "Ident": "PSLFC",
             "Type": 0,
             "PropertyName": "AudysseyLFC",
-            "Position": 1020,
+            "Position": 1050,
             "displayOnly": false
         },
         "presentation": {
@@ -12746,7 +12869,7 @@
                     7
                 ]
             ],
-            "Position": 1030,
+            "Position": 1060,
             "displayOnly": false
         },
         "presentation": {
@@ -12766,7 +12889,7 @@
             "Ident": "PSGEQ",
             "Type": 0,
             "PropertyName": "GraphicEQ",
-            "Position": 1040,
+            "Position": 1070,
             "displayOnly": false
         },
         "presentation": {
@@ -12780,7 +12903,7 @@
             "Ident": "PSHEQ",
             "Type": 0,
             "PropertyName": "HeadphoneEQ",
-            "Position": 1050,
+            "Position": 1080,
             "displayOnly": false
         },
         "presentation": {
@@ -12829,7 +12952,7 @@
                     " HI"
                 ]
             ],
-            "Position": 1060,
+            "Position": 1090,
             "displayOnly": false
         },
         "presentation": {
@@ -12875,7 +12998,7 @@
                     " HIGH"
                 ]
             ],
-            "Position": 1070,
+            "Position": 1100,
             "displayOnly": false
         },
         "presentation": {
@@ -12921,7 +13044,7 @@
                     " HI"
                 ]
             ],
-            "Position": 1080,
+            "Position": 1110,
             "displayOnly": false
         },
         "presentation": {
@@ -13751,7 +13874,7 @@
                     200
                 ]
             ],
-            "Position": 1090,
+            "Position": 1120,
             "displayOnly": false
         },
         "presentation": {
@@ -13801,7 +13924,7 @@
                     " SPE"
                 ]
             ],
-            "Position": 1100,
+            "Position": 1130,
             "displayOnly": false
         },
         "presentation": {
@@ -13895,7 +14018,7 @@
                     16
                 ]
             ],
-            "Position": 1110,
+            "Position": 1140,
             "displayOnly": false
         },
         "presentation": {
@@ -13940,7 +14063,7 @@
                     " LAR"
                 ]
             ],
-            "Position": 1120,
+            "Position": 1150,
             "displayOnly": false
         },
         "presentation": {
@@ -14030,7 +14153,7 @@
                     15
                 ]
             ],
-            "Position": 1130,
+            "Position": 1160,
             "displayOnly": false
         },
         "presentation": {
@@ -14050,7 +14173,7 @@
             "Ident": "PSAFD",
             "Type": 0,
             "PropertyName": "AFDM",
-            "Position": 1140,
+            "Position": 1170,
             "displayOnly": false
         },
         "presentation": {
@@ -14104,7 +14227,7 @@
                     " L"
                 ]
             ],
-            "Position": 1150,
+            "Position": 1180,
             "displayOnly": false
         },
         "presentation": {
@@ -14155,7 +14278,7 @@
                     ":PL2X MUSIC"
                 ]
             ],
-            "Position": 1160,
+            "Position": 1190,
             "displayOnly": false
         },
         "presentation": {
@@ -15385,7 +15508,7 @@
                     300
                 ]
             ],
-            "Position": 1170,
+            "Position": 1200,
             "displayOnly": false
         },
         "presentation": {
@@ -15405,7 +15528,7 @@
             "Ident": "PSATT",
             "Type": 0,
             "PropertyName": "SubwooferATT",
-            "Position": 1180,
+            "Position": 1210,
             "displayOnly": false
         },
         "presentation": {
@@ -15449,7 +15572,7 @@
                     " LOW"
                 ]
             ],
-            "Position": 1190,
+            "Position": 1220,
             "displayOnly": false
         },
         "presentation": {
@@ -15495,7 +15618,7 @@
                     " BT"
                 ]
             ],
-            "Position": 1200,
+            "Position": 1230,
             "displayOnly": false
         },
         "presentation": {
@@ -15503,6 +15626,294 @@
             "ICON": "Database",
             "SUFFIX": "",
             "OPTIONS": "[{\"Value\":0,\"Caption\":\"Off\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":1,\"Caption\":\"On\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":2,\"Caption\":\"Bluetooth + Speaker\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":3,\"Caption\":\"Bluetooth only\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1}]"
+        }
+    },
+    "BluetoothLevel": {
+        "config": {
+            "Name": "Bluetooth Level",
+            "Ident": "BTLEV",
+            "Type": 2,
+            "PropertyName": "BluetoothLevel",
+            "ProfilName": "BluetoothLevel",
+            "Icon": "Intensity",
+            "Prefix": "",
+            "Suffix": " dB",
+            "MinValue": -50,
+            "MaxValue": 10,
+            "Stepsize": 1,
+            "Digits": 0,
+            "Associations": [
+                [
+                    " 30",
+                    -50
+                ],
+                [
+                    " 31",
+                    -49
+                ],
+                [
+                    " 32",
+                    -48
+                ],
+                [
+                    " 33",
+                    -47
+                ],
+                [
+                    " 34",
+                    -46
+                ],
+                [
+                    " 35",
+                    -45
+                ],
+                [
+                    " 36",
+                    -44
+                ],
+                [
+                    " 37",
+                    -43
+                ],
+                [
+                    " 38",
+                    -42
+                ],
+                [
+                    " 39",
+                    -41
+                ],
+                [
+                    " 40",
+                    -40
+                ],
+                [
+                    " 41",
+                    -39
+                ],
+                [
+                    " 42",
+                    -38
+                ],
+                [
+                    " 43",
+                    -37
+                ],
+                [
+                    " 44",
+                    -36
+                ],
+                [
+                    " 45",
+                    -35
+                ],
+                [
+                    " 46",
+                    -34
+                ],
+                [
+                    " 47",
+                    -33
+                ],
+                [
+                    " 48",
+                    -32
+                ],
+                [
+                    " 49",
+                    -31
+                ],
+                [
+                    " 50",
+                    -30
+                ],
+                [
+                    " 51",
+                    -29
+                ],
+                [
+                    " 52",
+                    -28
+                ],
+                [
+                    " 53",
+                    -27
+                ],
+                [
+                    " 54",
+                    -26
+                ],
+                [
+                    " 55",
+                    -25
+                ],
+                [
+                    " 56",
+                    -24
+                ],
+                [
+                    " 57",
+                    -23
+                ],
+                [
+                    " 58",
+                    -22
+                ],
+                [
+                    " 59",
+                    -21
+                ],
+                [
+                    " 60",
+                    -20
+                ],
+                [
+                    " 61",
+                    -19
+                ],
+                [
+                    " 62",
+                    -18
+                ],
+                [
+                    " 63",
+                    -17
+                ],
+                [
+                    " 64",
+                    -16
+                ],
+                [
+                    " 65",
+                    -15
+                ],
+                [
+                    " 66",
+                    -14
+                ],
+                [
+                    " 67",
+                    -13
+                ],
+                [
+                    " 68",
+                    -12
+                ],
+                [
+                    " 69",
+                    -11
+                ],
+                [
+                    " 70",
+                    -10
+                ],
+                [
+                    " 71",
+                    -9
+                ],
+                [
+                    " 72",
+                    -8
+                ],
+                [
+                    " 73",
+                    -7
+                ],
+                [
+                    " 74",
+                    -6
+                ],
+                [
+                    " 75",
+                    -5
+                ],
+                [
+                    " 76",
+                    -4
+                ],
+                [
+                    " 77",
+                    -3
+                ],
+                [
+                    " 78",
+                    -2
+                ],
+                [
+                    " 79",
+                    -1
+                ],
+                [
+                    " 80",
+                    0
+                ],
+                [
+                    " 81",
+                    1
+                ],
+                [
+                    " 82",
+                    2
+                ],
+                [
+                    " 83",
+                    3
+                ],
+                [
+                    " 84",
+                    4
+                ],
+                [
+                    " 85",
+                    5
+                ],
+                [
+                    " 86",
+                    6
+                ],
+                [
+                    " 87",
+                    7
+                ],
+                [
+                    " 88",
+                    8
+                ],
+                [
+                    " 89",
+                    9
+                ],
+                [
+                    " 90",
+                    10
+                ]
+            ],
+            "Position": 1240,
+            "displayOnly": false
+        },
+        "presentation": {
+            "PRESENTATION": "{6B9CAEEC-5958-C223-30F7-BD36569FC57A}",
+            "ICON": "Intensity",
+            "SUFFIX": "  dB",
+            "MIN": -50,
+            "MAX": 10,
+            "STEP_SIZE": 1,
+            "PERCENTAGE": false,
+            "DIGITS": 0
+        }
+    },
+    "ChannelLevelMonitoring": {
+        "config": {
+            "Name": "Channel Level Monitoring",
+            "Ident": "CLM",
+            "Type": 0,
+            "PropertyName": "ChannelLevelMonitoring",
+            "Position": 1250,
+            "displayOnly": false
+        },
+        "presentation": {
+            "PRESENTATION": "{60AE6B26-B3E2-BDB1-A3A1-BE232940664B}",
+            "ICON": false
         }
     },
     "SpeakerPreset": {
@@ -15531,7 +15942,7 @@
                     " 2"
                 ]
             ],
-            "Position": 1210,
+            "Position": 1260,
             "displayOnly": false
         },
         "presentation": {
@@ -15597,7 +16008,7 @@
                     "NGT"
                 ]
             ],
-            "Position": 1220,
+            "Position": 1270,
             "displayOnly": false
         },
         "presentation": {
@@ -15675,7 +16086,7 @@
                     6
                 ]
             ],
-            "Position": 1230,
+            "Position": 1280,
             "displayOnly": false
         },
         "presentation": {
@@ -15757,7 +16168,7 @@
                     12
                 ]
             ],
-            "Position": 1240,
+            "Position": 1290,
             "displayOnly": false
         },
         "presentation": {
@@ -15839,7 +16250,7 @@
                     6
                 ]
             ],
-            "Position": 1250,
+            "Position": 1300,
             "displayOnly": false
         },
         "presentation": {
@@ -15921,7 +16332,7 @@
                     6
                 ]
             ],
-            "Position": 1260,
+            "Position": 1310,
             "displayOnly": false
         },
         "presentation": {
@@ -16003,7 +16414,7 @@
                     6
                 ]
             ],
-            "Position": 1270,
+            "Position": 1320,
             "displayOnly": false
         },
         "presentation": {
@@ -16053,7 +16464,7 @@
                     " HI"
                 ]
             ],
-            "Position": 1280,
+            "Position": 1330,
             "displayOnly": false
         },
         "presentation": {
@@ -16131,7 +16542,7 @@
                     12
                 ]
             ],
-            "Position": 1290,
+            "Position": 1340,
             "displayOnly": false
         },
         "presentation": {
@@ -16176,7 +16587,7 @@
                     "2"
                 ]
             ],
-            "Position": 1300,
+            "Position": 1350,
             "displayOnly": false
         },
         "presentation": {
@@ -16242,7 +16653,7 @@
                     "AUTO"
                 ]
             ],
-            "Position": 1310,
+            "Position": 1360,
             "displayOnly": false
         },
         "presentation": {
@@ -16313,7 +16724,7 @@
                     "OFF"
                 ]
             ],
-            "Position": 1320,
+            "Position": 1370,
             "displayOnly": false
         },
         "presentation": {
@@ -16359,7 +16770,7 @@
                     "MBYP"
                 ]
             ],
-            "Position": 1330,
+            "Position": 1380,
             "displayOnly": false
         },
         "presentation": {
@@ -16395,7 +16806,7 @@
                     " AMP"
                 ]
             ],
-            "Position": 1340,
+            "Position": 1390,
             "displayOnly": false
         },
         "presentation": {
@@ -16431,7 +16842,7 @@
                     "FUL"
                 ]
             ],
-            "Position": 1350,
+            "Position": 1400,
             "displayOnly": false
         },
         "presentation": {
@@ -16447,7 +16858,7 @@
             "Ident": "VSVST",
             "Type": 0,
             "PropertyName": "VerticalStretch",
-            "Position": 1360,
+            "Position": 1410,
             "displayOnly": false
         },
         "presentation": {
@@ -16461,7 +16872,7 @@
             "Ident": "MNMEN",
             "Type": 0,
             "PropertyName": "GUIMenu",
-            "Position": 1370,
+            "Position": 1420,
             "displayOnly": false
         },
         "presentation": {
@@ -16475,7 +16886,7 @@
             "Ident": "MNSRC",
             "Type": 0,
             "PropertyName": "GUIMenuSource",
-            "Position": 1380,
+            "Position": 1430,
             "displayOnly": false
         },
         "presentation": {
@@ -16529,7 +16940,7 @@
                     "RTN"
                 ]
             ],
-            "Position": 1390,
+            "Position": 1440,
             "displayOnly": false
         },
         "presentation": {
@@ -16545,7 +16956,7 @@
             "Ident": "MNZST",
             "Type": 0,
             "PropertyName": "AllZoneStereo",
-            "Position": 1400,
+            "Position": 1450,
             "displayOnly": false
         },
         "presentation": {
@@ -16589,7 +17000,7 @@
                     " BRI"
                 ]
             ],
-            "Position": 1410,
+            "Position": 1460,
             "displayOnly": false
         },
         "presentation": {
@@ -16605,12 +17016,53 @@
             "Ident": "SSHOSALS",
             "Type": 0,
             "PropertyName": "AutoLipSync",
-            "Position": 1420,
+            "Position": 1470,
             "displayOnly": false
         },
         "presentation": {
             "PRESENTATION": "{60AE6B26-B3E2-BDB1-A3A1-BE232940664B}",
             "ICON": false
+        }
+    },
+    "HDMIHotPlugTest": {
+        "config": {
+            "Name": "HDMI Hot Plug Test",
+            "Ident": "SYHPT",
+            "Type": 1,
+            "PropertyName": "HDMIHotPlugTest",
+            "ProfilName": "HDMIHotPlugTest",
+            "Icon": "Move",
+            "Prefix": "",
+            "Suffix": "",
+            "MinValue": 0,
+            "MaxValue": 0,
+            "Stepsize": 0,
+            "Digits": 0,
+            "Associations": [
+                [
+                    0,
+                    "High",
+                    " HIGH"
+                ],
+                [
+                    1,
+                    "Low",
+                    " LOW"
+                ],
+                [
+                    2,
+                    "Toggle",
+                    " TOG"
+                ]
+            ],
+            "Position": 1480,
+            "displayOnly": false
+        },
+        "presentation": {
+            "PRESENTATION": "{52D9E126-D7D2-2CBB-5E62-4CF7BA7C5D82}",
+            "ICON": "Move",
+            "SUFFIX": "",
+            "OPTIONS": "[{\"Value\":0,\"Caption\":\"High\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":1,\"Caption\":\"Low\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1},{\"Value\":2,\"Caption\":\"Toggle\",\"IconActive\":false,\"IconValue\":\"\",\"Color\":-1}]"
         }
     },
     "Zone2Name": {
@@ -16620,7 +17072,7 @@
             "Type": 3,
             "PropertyName": "Zone2Name",
             "ProfilName": "Zone2Name",
-            "Position": 1430,
+            "Position": 1490,
             "Icon": "Information",
             "displayOnly": true
         },
@@ -16636,7 +17088,7 @@
             "Ident": "Z2POWER",
             "Type": 0,
             "PropertyName": "Zone2Power",
-            "Position": 1440,
+            "Position": 1500,
             "displayOnly": false
         },
         "presentation": {
@@ -16650,7 +17102,7 @@
             "Ident": "Z2MU",
             "Type": 0,
             "PropertyName": "Zone2Mute",
-            "Position": 1450,
+            "Position": 1510,
             "displayOnly": false
         },
         "presentation": {
@@ -17070,7 +17522,7 @@
                     18
                 ]
             ],
-            "Position": 1460,
+            "Position": 1520,
             "displayOnly": false
         },
         "presentation": {
@@ -17099,7 +17551,7 @@
             "Stepsize": 0,
             "Digits": 0,
             "Associations": [],
-            "Position": 1470,
+            "Position": 1530,
             "displayOnly": false
         },
         "presentation": {
@@ -17134,7 +17586,7 @@
                     "MONO"
                 ]
             ],
-            "Position": 1480,
+            "Position": 1540,
             "displayOnly": false
         },
         "presentation": {
@@ -17356,7 +17808,7 @@
                     12
                 ]
             ],
-            "Position": 1490,
+            "Position": 1550,
             "displayOnly": false
         },
         "presentation": {
@@ -17582,7 +18034,7 @@
                     12
                 ]
             ],
-            "Position": 1500,
+            "Position": 1560,
             "displayOnly": false
         },
         "presentation": {
@@ -17696,7 +18148,7 @@
                     10
                 ]
             ],
-            "Position": 1510,
+            "Position": 1570,
             "displayOnly": false
         },
         "presentation": {
@@ -17810,7 +18262,7 @@
                     10
                 ]
             ],
-            "Position": 1520,
+            "Position": 1580,
             "displayOnly": false
         },
         "presentation": {
@@ -17870,7 +18322,7 @@
                     "5"
                 ]
             ],
-            "Position": 1530,
+            "Position": 1590,
             "displayOnly": false
         },
         "presentation": {
@@ -17886,7 +18338,7 @@
             "Ident": "Z2HPF",
             "Type": 0,
             "PropertyName": "Z2HPF",
-            "Position": 1540,
+            "Position": 1600,
             "displayOnly": false
         },
         "presentation": {
@@ -17920,7 +18372,7 @@
                     " PCM"
                 ]
             ],
-            "Position": 1550,
+            "Position": 1610,
             "displayOnly": false
         },
         "presentation": {
@@ -17998,7 +18450,7 @@
                     120
                 ]
             ],
-            "Position": 1560,
+            "Position": 1620,
             "displayOnly": false
         },
         "presentation": {
@@ -18048,7 +18500,7 @@
                     "8H"
                 ]
             ],
-            "Position": 1570,
+            "Position": 1630,
             "displayOnly": false
         },
         "presentation": {
@@ -18065,7 +18517,7 @@
             "Type": 3,
             "PropertyName": "Zone3Name",
             "ProfilName": "Zone3Name",
-            "Position": 1580,
+            "Position": 1640,
             "Icon": "Information",
             "displayOnly": true
         },
@@ -18081,7 +18533,7 @@
             "Ident": "Z3POWER",
             "Type": 0,
             "PropertyName": "Zone3Power",
-            "Position": 1590,
+            "Position": 1650,
             "displayOnly": false
         },
         "presentation": {
@@ -18095,7 +18547,7 @@
             "Ident": "Z3MU",
             "Type": 0,
             "PropertyName": "Zone3Mute",
-            "Position": 1600,
+            "Position": 1660,
             "displayOnly": false
         },
         "presentation": {
@@ -18515,7 +18967,7 @@
                     18
                 ]
             ],
-            "Position": 1610,
+            "Position": 1670,
             "displayOnly": false
         },
         "presentation": {
@@ -18544,7 +18996,7 @@
             "Stepsize": 0,
             "Digits": 0,
             "Associations": [],
-            "Position": 1620,
+            "Position": 1680,
             "displayOnly": false
         },
         "presentation": {
@@ -18579,7 +19031,7 @@
                     "MONO"
                 ]
             ],
-            "Position": 1630,
+            "Position": 1690,
             "displayOnly": false
         },
         "presentation": {
@@ -18801,7 +19253,7 @@
                     12
                 ]
             ],
-            "Position": 1640,
+            "Position": 1700,
             "displayOnly": false
         },
         "presentation": {
@@ -19027,7 +19479,7 @@
                     12
                 ]
             ],
-            "Position": 1650,
+            "Position": 1710,
             "displayOnly": false
         },
         "presentation": {
@@ -19141,7 +19593,7 @@
                     10
                 ]
             ],
-            "Position": 1660,
+            "Position": 1720,
             "displayOnly": false
         },
         "presentation": {
@@ -19255,7 +19707,7 @@
                     10
                 ]
             ],
-            "Position": 1670,
+            "Position": 1730,
             "displayOnly": false
         },
         "presentation": {
@@ -19315,7 +19767,7 @@
                     "5"
                 ]
             ],
-            "Position": 1680,
+            "Position": 1740,
             "displayOnly": false
         },
         "presentation": {
@@ -19331,7 +19783,7 @@
             "Ident": "Z3HPF",
             "Type": 0,
             "PropertyName": "Z3HPF",
-            "Position": 1690,
+            "Position": 1750,
             "displayOnly": false
         },
         "presentation": {
@@ -19407,7 +19859,7 @@
                     120
                 ]
             ],
-            "Position": 1700,
+            "Position": 1760,
             "displayOnly": false
         },
         "presentation": {
@@ -19457,7 +19909,7 @@
                     "8H"
                 ]
             ],
-            "Position": 1710,
+            "Position": 1770,
             "displayOnly": false
         },
         "presentation": {
@@ -19763,7 +20215,7 @@
                     "56"
                 ]
             ],
-            "Position": 1720,
+            "Position": 1780,
             "displayOnly": false
         },
         "presentation": {
@@ -19804,7 +20256,7 @@
                     "DAB"
                 ]
             ],
-            "Position": 1730,
+            "Position": 1790,
             "displayOnly": false
         },
         "presentation": {
@@ -19840,7 +20292,7 @@
                     "ANMANUAL"
                 ]
             ],
-            "Position": 1740,
+            "Position": 1800,
             "displayOnly": false
         },
         "presentation": {

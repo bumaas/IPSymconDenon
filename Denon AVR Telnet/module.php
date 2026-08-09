@@ -164,7 +164,8 @@ class DenonAVRTelnet extends AVRModule
             if (!$ObjektIDInfo['ObjectIsHidden']) {
                 $Ident = $ObjektIDInfo['ObjectIdent'];
                 //spezielle Elemente ebenfalls nicht abfragen
-                if (!in_array($Ident, ['MN', 'MNMEN', 'MNSRC', 'MainZoneName', 'Model', 'SurroundDisplay'])) {
+                //SYHPT ist eine reine Aktion (Antwort 'SYHPT OK'), es gibt keinen Status
+                if (!in_array($Ident, ['MN', 'MNMEN', 'MNSRC', 'MainZoneName', 'Model', 'SurroundDisplay', 'SYHPT'])) {
                     $AVRCommands[] = $Ident;
                 }
             }

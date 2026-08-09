@@ -109,6 +109,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSMONI",
@@ -243,6 +259,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -401,6 +433,22 @@
             " EVE",
             " NGT",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -592,6 +640,22 @@
             " NGT",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -782,6 +846,22 @@
             " NGT",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -959,6 +1039,22 @@
         "PSDYNVOL_SubCommands": [
             " OFF",
             " ON"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -1153,6 +1249,22 @@
             " NGT",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -1335,6 +1447,22 @@
         "PSDYNVOL_SubCommands": [
             " OFF",
             " ON"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -1522,6 +1650,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSAUDIO"
         ],
@@ -1668,6 +1812,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSAUDIO"
         ],
@@ -1812,6 +1972,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSAUDIO"
@@ -1971,6 +2147,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSAUDIO"
         ],
@@ -2128,6 +2320,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSAUDIO"
@@ -2287,6 +2495,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSAUDIO"
         ],
@@ -2421,6 +2645,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -2600,6 +2840,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -2784,6 +3040,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -2973,6 +3245,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -3174,6 +3462,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -3362,6 +3666,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -3553,6 +3873,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -3743,6 +4079,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -3938,6 +4290,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -4126,6 +4494,24 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -4168,12 +4554,15 @@
             "Zone2Name"
         ],
         "SystemControl_Commands": [
+            "BTLEV",
             "BTTX",
+            "CLM",
             "DIM",
             "MN",
             "MNMEN",
             "MNZST",
-            "SPPR"
+            "SPPR",
+            "SYHPT"
         ],
         "httpMainZone": "",
         "Tuner_Control": [
@@ -4291,6 +4680,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -4502,6 +4907,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -4705,6 +5126,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -4912,6 +5349,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -5143,6 +5596,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -5327,6 +5796,7 @@
             "PSBAS",
             "PSBSC",
             "PSCES",
+            "PSCEX",
             "PSCINEMA_EQ",
             "PSCLV",
             "PSCNTAMT",
@@ -5352,6 +5822,7 @@
             "PSRSTR",
             "PSRSZ",
             "PSSPV",
+            "PSSURLEV",
             "PSSWL",
             "PSSWL2",
             "PSSWL3",
@@ -5366,6 +5837,24 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
         ],
         "VS_Commands": [
             "VSASP",
@@ -5414,12 +5903,15 @@
             "Zone2Name"
         ],
         "SystemControl_Commands": [
+            "BTLEV",
             "BTTX",
+            "CLM",
             "DIM",
             "MN",
             "MNMEN",
             "MNZST",
-            "SPPR"
+            "SPPR",
+            "SYHPT"
         ],
         "httpMainZone": "",
         "Tuner_Control": [
@@ -5541,6 +6033,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -5754,6 +6262,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -5978,6 +6502,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -6212,6 +6752,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -6450,6 +7006,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -6686,6 +7258,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -6926,6 +7514,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -7179,6 +7783,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -7399,6 +8019,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -7610,6 +8246,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -7833,6 +8485,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -8059,6 +8727,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -8283,6 +8967,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -8517,6 +9217,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -8742,6 +9458,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -8966,6 +9698,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -9200,6 +9948,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -9408,6 +10172,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSAUDIO"
         ],
@@ -9569,6 +10349,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -9764,6 +10560,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -9952,6 +10764,23 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -9994,12 +10823,15 @@
             "Zone2Name"
         ],
         "SystemControl_Commands": [
+            "BTLEV",
             "BTTX",
+            "CLM",
             "DIM",
             "MN",
             "MNMEN",
             "MNZST",
-            "SPPR"
+            "SPPR",
+            "SYHPT"
         ],
         "httpMainZone": "",
         "Tuner_Control": [
@@ -10065,6 +10897,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [],
         "VSSC_SubCommands": [],
@@ -10140,6 +10988,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [],
         "VSSC_SubCommands": [],
@@ -10249,6 +11113,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSAUDIO"
@@ -10367,6 +11247,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSAUDIO"
@@ -10491,6 +11387,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSAUDIO"
         ],
@@ -10613,6 +11525,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSAUDIO"
         ],
@@ -10719,6 +11647,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSAUDIO",
@@ -10850,6 +11794,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -11007,6 +11967,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -11175,6 +12151,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -11349,6 +12341,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -11521,6 +12529,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -11705,6 +12729,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -11888,6 +12928,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -12074,6 +13130,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -12269,6 +13341,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSAUDIO",
             "VSSCH",
@@ -12409,6 +13497,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSAUDIO",
             "VSSCH"
@@ -12442,6 +13546,7 @@
             "Z2VOL"
         ],
         "SystemControl_Commands": [
+            "BTLEV",
             "BTTX",
             "DIM",
             "MN",
@@ -12546,6 +13651,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSAUDIO",
@@ -12680,6 +13801,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -12824,6 +13961,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -12995,6 +14148,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -13178,6 +14347,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -13359,6 +14544,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -13551,6 +14752,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -13745,6 +14962,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -13944,6 +15177,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -14135,6 +15384,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSAUDIO",
             "VSMONI",
@@ -14280,6 +15545,22 @@
             " EVE",
             " NGT",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -14444,6 +15725,22 @@
             " EVE",
             " NGT",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -14619,6 +15916,22 @@
             " NGT",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -14792,6 +16105,22 @@
             " EVE",
             " NGT",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -14976,6 +16305,22 @@
             " EVE",
             " NGT",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -15182,6 +16527,22 @@
             " NGT",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -15384,6 +16745,22 @@
             " EVE",
             " NGT",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -15599,6 +16976,22 @@
             " NGT",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -15813,6 +17206,22 @@
             " EVE",
             " NGT",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -16031,6 +17440,22 @@
             " EVE",
             " NGT",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -16253,6 +17678,22 @@
             " NGT",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSAUDIO",
             "VSMONI",
@@ -16409,6 +17850,22 @@
             " EVE",
             " NGT",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -16581,6 +18038,22 @@
             " EVE",
             " NGT",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -16757,6 +18230,22 @@
             " EVE",
             " NGT",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -16965,6 +18454,22 @@
             " EVE",
             " NGT",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -17180,6 +18685,22 @@
             " NGT",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -17391,6 +18912,22 @@
             " EVE",
             " NGT",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -17616,6 +19153,22 @@
             " NGT",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -17839,6 +19392,22 @@
             " EVE",
             " NGT",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -18066,6 +19635,22 @@
             " EVE",
             " NGT",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -18295,6 +19880,22 @@
             " NGT",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSAUDIO",
             "VSMONI",
@@ -18514,6 +20115,22 @@
             " NGT",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -18695,6 +20312,22 @@
             " NGT",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -18865,6 +20498,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -19063,6 +20712,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -19271,6 +20936,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -19475,6 +21156,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -19693,6 +21390,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -19909,6 +21622,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -20130,6 +21859,22 @@
             " MED",
             " OFF"
         ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "VS_Commands": [
             "VSASP",
             "VSAUDIO",
@@ -20332,6 +22077,7 @@
             "PSCES",
             "PSCINEMA_EQ",
             "PSCNTAMT",
+            "PSDACFIL",
             "PSDEH",
             "PSDELAY",
             "PSDIC",
@@ -20351,6 +22097,7 @@
             "PSREFLEV",
             "PSSP",
             "PSSPV",
+            "PSSURLEV",
             "PSSWL",
             "PSSWL2",
             "PSSWL3",
@@ -20365,6 +22112,22 @@
             " EVE",
             " NGT",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSAUDIO",
@@ -20420,13 +22183,15 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "BTLEV",
             "BTTX",
             "DIM",
             "MN",
             "MNMEN",
             "MNZST",
             "SPPR",
-            "SSHOSALS"
+            "SSHOSALS",
+            "SYHPT"
         ],
         "httpMainZone": "",
         "Tuner_Control": [
@@ -20544,6 +22309,7 @@
             "PSCES",
             "PSCINEMA_EQ",
             "PSCNTAMT",
+            "PSDACFIL",
             "PSDEH",
             "PSDELAY",
             "PSDIC",
@@ -20563,6 +22329,7 @@
             "PSREFLEV",
             "PSSP",
             "PSSPV",
+            "PSSURLEV",
             "PSSWL",
             "PSSWL2",
             "PSSWL3",
@@ -20577,6 +22344,22 @@
             " EVE",
             " NGT",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSAUDIO",
@@ -20632,13 +22415,15 @@
             "Z3VOL"
         ],
         "SystemControl_Commands": [
+            "BTLEV",
             "BTTX",
             "DIM",
             "MN",
             "MNMEN",
             "MNZST",
             "SPPR",
-            "SSHOSALS"
+            "SSHOSALS",
+            "SYHPT"
         ],
         "httpMainZone": "",
         "Tuner_Control": [
@@ -20752,6 +22537,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",
@@ -20960,6 +22761,22 @@
             " LIT",
             " MED",
             " OFF"
+        ],
+        "MSQUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "Z2QUICK_SubCommands": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "VS_Commands": [
             "VSASP",

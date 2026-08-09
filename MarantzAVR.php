@@ -960,6 +960,7 @@ class Marantz_STEREO_70s extends Marantz_CINEMA_70s
         DENON_API_Commands::MNMEN,
         DENON_API_Commands::MNZST,
         DENON_API_Commands::BTTX,
+        DENON_API_Commands::BTLEV, //laut CY2023-Spec unterstützt
         DENON_API_Commands::DIM,
     ];
     public static array  $Zone_Commands  = [
@@ -4128,6 +4129,59 @@ class Marantz_AV30 extends Marantz_CINEMA_40
         DENON_API_Commands::MSAURO3D,
         DENON_API_Commands::MSAURO2DSURR,
         DENON_API_Commands::MSMCHSTEREO,
+    ];
+
+    // Liste der CINEMA 40, laut CY2025-Spec zusätzlich mit PSSURLEV und PSDACFIL
+    public static array  $PS_Commands = [
+        DENON_API_Commands::PSFRONT,
+        DENON_API_Commands::PSSP,
+        DENON_API_Commands::PSSWR,
+        DENON_API_Commands::PSTONECTRL,
+        DENON_API_Commands::PSBAS,
+        DENON_API_Commands::PSTRE,
+        DENON_API_Commands::PSLOM,
+        DENON_API_Commands::PSBSC,
+        DENON_API_Commands::PSDEH,
+        DENON_API_Commands::PSSWL,
+        DENON_API_Commands::PSSWL2,
+        DENON_API_Commands::PSSWL3,
+        DENON_API_Commands::PSSWL4,
+        DENON_API_Commands::PSLFE,
+        DENON_API_Commands::PSCES,
+        DENON_API_Commands::PSSPV,
+        DENON_API_Commands::PSDIC,
+        DENON_API_Commands::PSNEURAL,
+        DENON_API_Commands::PSCINEMAEQ,
+        DENON_API_Commands::PSMULTEQ,
+        DENON_API_Commands::PSDYNEQ,
+        DENON_API_Commands::PSREFLEV,
+        DENON_API_Commands::PSDYNVOL,
+        DENON_API_Commands::PSLFC,
+        DENON_API_Commands::PSCNTAMT,
+        DENON_API_Commands::PSGEQ,
+        DENON_API_Commands::PSHEQ,
+        DENON_API_Commands::PSDRC,
+        DENON_API_Commands::PSMDAX,
+        DENON_API_Commands::PSDELAY,
+        DENON_API_Commands::PSAUROPR,
+        DENON_API_Commands::PSAUROST,
+        DENON_API_Commands::PSAUROMODE,
+        DENON_API_Commands::PSDIRAC,
+        DENON_API_Commands::PSSURLEV,
+        DENON_API_Commands::PSDACFIL,
+    ];
+
+    // Liste der CINEMA 40, laut CY2025-Spec zusätzlich mit BTLEV und SYHPT
+    public static array  $SystemControl_Commands = [
+        DENON_API_Commands::MN,
+        DENON_API_Commands::MNMEN,
+        DENON_API_Commands::MNZST,
+        DENON_API_Commands::SSHOSALS,
+        DENON_API_Commands::BTTX,
+        DENON_API_Commands::BTLEV,
+        DENON_API_Commands::SYHPT,
+        DENON_API_Commands::SPPR,
+        DENON_API_Commands::DIM,
     ];
 }
 

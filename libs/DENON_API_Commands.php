@@ -100,8 +100,9 @@ class DENON_API_Commands extends stdClass
     public const string PSRSZ   = 'PSRSZ'; //Room Size
     public const string PSSWR   = 'PSSWR'; //Subwoofer
 
-    public const string BTTX = 'BTTX'; //Bluetooth Transmitter
-    public const string SPPR = 'SPPR'; //Speaker Preset
+    public const string BTTX  = 'BTTX'; //Bluetooth Transmitter
+    public const string BTLEV = 'BTLEV'; //Bluetooth Level (30..90, 80 = 0 dB)
+    public const string SPPR  = 'SPPR'; //Speaker Preset
 
     //PV
     public const string PV        = 'PV'; // Picture Mode
@@ -188,6 +189,18 @@ class DENON_API_Commands extends stdClass
     public const string SY = 'SY'; // Remote Lock
     public const string TR = 'TR'; // Trigger
     public const string UG = 'UG'; // Upgrade ID Display
+
+    // Achtung: SY ist Präfix von SYHPT. SY wird derzeit von keinem Profil benutzt,
+    // deshalb gibt es keine Kollision im Empfangspfad. Kommt SY (Remote Lock) später
+    // als Profil dazu, muss SYHPT im Katalog davor stehen - wie bei PSDEL/PSDELAY.
+    public const string SYHPT     = 'SYHPT'; // HDMI Hot Plug Test
+    public const string SYHPTHIGH = ' HIGH'; // Hot Plug Test = High
+    public const string SYHPTLOW  = ' LOW'; // Hot Plug Test = Low
+    public const string SYHPTTOG  = ' TOG'; // Hot Plug Test = Toggle (Puls High-Low-High)
+
+    public const string CLM    = 'CLM'; // Channel Level Monitoring
+    public const string CLMON  = ' ON'; // Channel Level Monitoring On
+    public const string CLMOFF = ' OFF'; // Channel Level Monitoring Off
 
     //Analog Tuner
     public const string TF = 'TF'; // Tuner Frequency
@@ -435,6 +448,7 @@ class DENON_API_Commands extends stdClass
     public const string MSQUICK3 = '3'; // Quick Select 3 Mode Select
     public const string MSQUICK4 = '4'; // Quick Select 4 Mode Select
     public const string MSQUICK5 = '5'; // Quick Select 5 Mode Select
+    public const string MSQUICK6 = '6'; // Quick Select 6 Mode Select (ab CY2026)
 
     //MSQUICKMEMORY
     public const string MSQUICK1MEMORY = '1 MEMORY'; // Quick Select 1 Mode Memory
@@ -442,6 +456,7 @@ class DENON_API_Commands extends stdClass
     public const string MSQUICK3MEMORY = '3 MEMORY'; // Quick Select 3 Mode Memory
     public const string MSQUICK4MEMORY = '4 MEMORY'; // Quick Select 4 Mode Memory
     public const string MSQUICK5MEMORY = '5 MEMORY'; // Quick Select 5 Mode Memory
+    public const string MSQUICK6MEMORY = '6 MEMORY'; // Quick Select 6 Mode Memory
     public const string MSQUICKSTATE   = 'QUICK ?'; // QUICK ? Return MSQUICK Status
 
     //Smart Select Mode
@@ -1016,6 +1031,22 @@ class DENON_API_Commands extends stdClass
     public const string PSAUROMODEEXP  = ' EXP'; // Auro 3D Mode Channel Expansion
 
     public const string PSDIRAC = 'PSDIRAC'; //Dirac Live Filter
+
+    public const string PSCEX    = 'PSCEX'; // Channel Expander
+    public const string PSCEXOFF = ' OFF'; // Channel Expander Off
+    public const string PSCEXLOW = ' LOW'; // Channel Expander Low
+    public const string PSCEXHI  = ' HI'; // Channel Expander High
+
+    public const string PSSURLEV    = 'PSSURLEV'; // Surround Level Compensation
+    public const string SURLEVOFF   = ' OFF'; // Surround Level Compensation Off
+    public const string SURLEVLIT   = ' LIT'; // Surround Level Compensation Light
+    public const string SURLEVMED   = ' MED'; // Surround Level Compensation Medium
+    public const string SURLEVHEV   = ' HEV'; // Surround Level Compensation Heavy
+
+    public const string PSDACFIL      = 'PSDACFIL'; // DAC Filter (nur Marantz)
+    public const string PSDACFILMODE1 = ' MODE1'; // DAC Filter Mode 1
+    public const string PSDACFILMODE2 = ' MODE2'; // DAC Filter Mode 2
+
     public const string CVSHL   = 'CVSHL'; // Surround Height Left
     public const string CVSHR   = 'CVSHR'; // Surround Height Right
     public const string CVTS    = 'CVTS'; // Top Surround

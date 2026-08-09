@@ -114,13 +114,26 @@ Composite-Strings sind über locale.json nicht übersetzbar.
   (VSMONI-Direktwahl, PSIMAX-Gruppe, PSDIRAC per V03-Spec für X3800H/X4800H,
   Trigger TR1/TR2/TR3, SYREMOTE/SYPANEL-Lock) sowie neue Modelle
   (CINEMA 30, AV 10, Denon-S-Serie, X3300W, A1H, A110).
-- Aus den Specs **Denon CY2026 V02** und **Marantz CY2025 V04** (Modelle seit
-  **2.30 build 92** unterstützt) sind diese Kommandos noch nicht umgesetzt, weil
-  das Modul sie generell nicht kennt: `BTLEV` (Bluetooth-Sendepegel), `CLM`,
-  `SYHPT` (Kopfhörer), `PSCEX`, `PSSURLEV`, `PSDACFIL` (nur AV 20/AV 30) sowie
-  `MSQUICK6`/`Z2QUICK6`. Quick Select 6 ist dabei kein reiner Capability-
-  Eintrag: die Assoziationen in `DENONIPSProfiles` sind fest 0–5 und müssten
-  erst modellabhängig gefiltert werden.
+- Die Specs **Denon CY2026 V02** und **Marantz CY2025 V04** sind vollständig
+  eingearbeitet: die Modelle seit **2.30 build 92**, ihre Kommandos (`BTLEV`,
+  `CLM`, `SYHPT`, `PSCEX`, `PSSURLEV`, `PSDACFIL`, Quick Select 6) seit
+  **2.30 build 93**. Offen bleibt daraus nur:
+  - `Z2QUICK6` beim **AVR-S980H** — die Spec markiert es mit `@10`
+    („Requires Amp assign = Zone2"), nicht als unterstützt.
+  - `PSDACFIL` für **CINEMA 30** und **AV 10** — beide Modelle kennt das Modul
+    nicht (siehe Modell-Liste oben).
+- Quick Select 6 wird über die Capability-Arrays `MSQUICK_SubCommands` und
+  `Z2QUICK_SubCommands` gefiltert (Muster: `PSDYNVOL_SubCommands`). Zone 3
+  bleibt bewusst ungefiltert bei 0–5, weil kein Modell dort eine sechste Auswahl
+  hat. Wer eine Capability dieser Art ergänzt, muss sie an drei Stellen
+  eintragen: `class AVR`, `AVR::getCapabilities()` und `CAPABILITY_PROPERTIES`
+  in `tests/inheritance_check.php` — der Prüfer schlägt sonst zu Recht Alarm.
+- `SYHPT` (HDMI Hot Plug Test) ist eine reine Aktion: keine Statusabfrage
+  (deshalb im `GetStates()`-Ausschluss des Telnet-Moduls), und die Quittung
+  `SYHPT OK` steht in der Ignorierliste von `DenonAVRCP_API_Data`. Achtung bei
+  künftigen `SY`-Kommandos: `SY` (Remote Lock) ist Präfix von `SYHPT` — sobald
+  es ein `SY`-Profil gibt, muss `SYHPT` im Katalog davor stehen (wie
+  `PSDEL`/`PSDELAY`).
 - Die neuen Modelle erben ein `Tuner_Control`, das ihre Spec als nicht
   unterstützt markiert (`TM`, `TMAN`, `TPAN`) — genau wie die CINEMA 40, an der
   sie hängen. Ein leeres `Tuner_Control` gibt es bei **keinem** der Modelle,

@@ -431,6 +431,9 @@ class AVR extends stdClass
         DENON_API_Commands::DISPLAY,
         DENON_API_Commands::NS,
         DENON_API_Commands::BTTX,
+        DENON_API_Commands::BTLEV,
+        DENON_API_Commands::CLM,
+        DENON_API_Commands::SYHPT,
         DENON_API_Commands::SPPR,
     ];
 
@@ -498,6 +501,9 @@ class AVR extends stdClass
         DENON_API_Commands::PSAFD,
         DENON_API_Commands::PSRSZ,
         DENON_API_Commands::PSRSTR,
+        DENON_API_Commands::PSCEX,
+        DENON_API_Commands::PSSURLEV,
+        DENON_API_Commands::PSDACFIL,
     ];
 
     public static array  $PSSP_SubCommands           = [];
@@ -507,6 +513,25 @@ class AVR extends stdClass
                                                          DENON_API_Commands::DYNVOLLIT,
                                                          DENON_API_Commands::DYNVOLMED,
                                                          DENON_API_Commands::DYNVOLHEV,
+    ];
+
+    //Quick Select: erst die CY2026-Modelle kennen die sechste Auswahl
+    public static array  $MSQUICK_SubCommands        = [
+        DENON_API_Commands::MSQUICK0,
+        DENON_API_Commands::MSQUICK1,
+        DENON_API_Commands::MSQUICK2,
+        DENON_API_Commands::MSQUICK3,
+        DENON_API_Commands::MSQUICK4,
+        DENON_API_Commands::MSQUICK5,
+    ];
+
+    public static array  $Z2QUICK_SubCommands        = [
+        DENON_API_Commands::MSQUICK0,
+        DENON_API_Commands::MSQUICK1,
+        DENON_API_Commands::MSQUICK2,
+        DENON_API_Commands::MSQUICK3,
+        DENON_API_Commands::MSQUICK4,
+        DENON_API_Commands::MSQUICK5,
     ];
 
     public static array  $PV_Commands                = [];
@@ -592,6 +617,8 @@ class AVR extends stdClass
             'PS_Commands'            => static::$PS_Commands,
             'PSSP_SubCommands'       => static::$PSSP_SubCommands,
             'PSDYNVOL_SubCommands'   => static::$PSDYNVOL_SubCommands,
+            'MSQUICK_SubCommands'    => static::$MSQUICK_SubCommands,
+            'Z2QUICK_SubCommands'    => static::$Z2QUICK_SubCommands,
             'VS_Commands'            => static::$VS_Commands,
             'VSSC_SubCommands'       => static::$VSSC_SubCommands,
             'VSSCH_SubCommands'      => static::$VSSCH_SubCommands,
