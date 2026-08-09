@@ -55,6 +55,33 @@ eigene öffentliche Wrapper damit überholt.**
 - Abgesichert sind alle Wrapper über `tests/golden/wrappers.json` (Sende-Buffer je Funktion) —
   ein entfallener oder umbenannter Wrapper fällt dort sofort auf.
 
+## Mindest-PHP und `compatibility.version`
+
+Der Code setzt eine deutlich neuere PHP-Version voraus, als man beim Lesen
+vermutet — beides ist gewollt, aber leicht zu übersehen:
+
+- **PHP 8.4** wegen `new Foo()->bar()` (new ohne Klammern) an fünf Stellen:
+  `Denon AVR Telnet/module.php:176,1364`, `libs/AVRModule.php:591,597`,
+  `libs/DenonAVRCP_API_Data.php:298`. Unter PHP 8.3 ist das ein **Parse-Fehler** —
+  die Bibliothek lädt dort nicht, es gibt keine teilweise Funktion.
+- **PHP 8.3** wegen getypter Klassenkonstanten (`public const string …`), rund
+  1000 Stellen, überwiegend in `libs/DENON_API_Commands.php` und
+  `libs/DENONIPSProfiles.php`.
+- `library.json` steht deshalb auf `compatibility.version: "8.2"`, gesetzt am
+  2026-02-02 im selben Commit (`6acd5dc`, 2.20 build 58), der die 8.4-Syntax
+  einführte. Eine Symcon-**8.2** gibt es in der Versionsübersicht nicht (8.0
+  Q1/2025 → 8.1 Q3/2025 → 9.0 Q1/2026); die Zahl dürfte die Beta-Nummer der
+  9.0-Linie sein. Der Effekt stimmt so oder so: unterhalb der 9.0-Linie wird das
+  Modul nicht angeboten, und 9.0 bringt PHP 8.5.
+
+**Wer `compatibility.version` senkt, muss vorher die fünf 8.4-Stellen
+umschreiben** — sonst ist die Bibliothek bei genau den Anwendern unlesbar, die
+man damit erreichen wollte. Umgekehrt gilt: neue 8.5-Syntax erst, wenn die
+Compatibility mitzieht.
+
+`E_USER_ERROR` ist seit PHP 8.4 deprecated und wird im Modulcode nicht mehr
+benutzt; `AVRs::getCapabilities()` wirft stattdessen eine `RuntimeException`.
+
 ## Texte pflegen
 
 Die Formulare werden überwiegend **dynamisch** in PHP gebaut (`GetConfigurationForm()`
@@ -154,6 +181,20 @@ Composite-Strings sind über locale.json nicht übersetzbar.
   - Prüfen: `C:\php\php tests/httppath_check.php`.
   - Kein Abschnitt löst einen echten HTTP-Abruf aus: der Fehlerpfad wird über
     einen Harnisch erreicht, dessen `GetInputVarMapping()` wirft.
+
+- `tests/review_rules_check.php` — **Auflagen des abgelehnten Stable-Reviews**
+  (ohne Kernel und Netz, in der CI). Eine frühere Stable-Einreichung
+  (`fd951c2653`) wurde abgelehnt wegen `IPS_LogMessage` im Modulcode und einem
+  `IPS_SetHidden` in `ApplyChanges`. Beides ist seit Build 89/90 behoben; die
+  Prüfung hält es fest, statt sich auf eine Gedächtnisnotiz zu verlassen — eine
+  erneute Ablehnung kostet einen ganzen Review-Zyklus.
+  - Prüfen: `C:\php\php tests/review_rules_check.php [--details]`.
+  - Arbeitet über `token_get_all()`: Kommentare fallen vorher weg (ein
+    auskommentierter Aufruf ist kein Befund), und `IPS_SetHidden` wird der
+    umschließenden **Funktion** zugeordnet. Rot wird es in `Create`/`ApplyChanges`
+    oder wenn im selben Rumpf keine Existenzprüfung steht.
+  - Der Wortlaut des Reviews steht im Kopf der Datei — er ist sonst nirgends im
+    Repo, sondern nur im Feld `remark` des Store-Datensatzes.
 
 - `tests/capability_diff.php` — **Vorher-Nachher-Vergleich** im Klartext, für das
   Review von Capability-Änderungen:

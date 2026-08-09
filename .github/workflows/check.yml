@@ -33,6 +33,7 @@ jobs:
           php -l tests/association_check.php
           php -l tests/receivepath_check.php
           php -l tests/httppath_check.php
+          php -l tests/review_rules_check.php
       - name: JSON-Validität
         run: |
           find . -name '*.json' -not -path './.git/*' -print0 |
@@ -49,3 +50,5 @@ jobs:
         run: php tests/receivepath_check.php
       - name: HTTP-Pfad
         run: php tests/httppath_check.php
+      - name: Auflagen des Stable-Reviews
+        run: php tests/review_rules_check.php

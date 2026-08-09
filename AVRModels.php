@@ -261,10 +261,15 @@ class AVRs extends stdClass
     public static function getCapabilities($AVRType)
     {
         $caps = self::getAllAVRs()[$AVRType];
+        //Entwickler-Wachhunde: eine Exception statt trigger_error(..., E_USER_ERROR),
+        //denn E_USER_ERROR ist seit PHP 8.4 deprecated. Die Abbruchwirkung bleibt.
+        //Kein ausgeliefertes Modell löst das aus - tests/golden_regression.php fährt
+        //alle 112 durch.
         if (($caps['httpMainZone'] !== DENON_HTTP_Interface::NoHTTPInterface) && (count($caps['SI_SubCommands']) > 0)) {
-            trigger_error('Faulty configuration: No SI_SubCommands expected when httpMainZone is set', E_USER_ERROR);
-        } elseif (($caps['httpMainZone'] === DENON_HTTP_Interface::NoHTTPInterface) && (count($caps['SI_SubCommands']) === 0)) {
-            trigger_error('Faulty configuration: No SI_SubCommands defined although httpMainZone is not set', E_USER_ERROR);
+            throw new RuntimeException('Faulty configuration: No SI_SubCommands expected when httpMainZone is set: ' . $AVRType);
+        }
+        if (($caps['httpMainZone'] === DENON_HTTP_Interface::NoHTTPInterface) && (count($caps['SI_SubCommands']) === 0)) {
+            throw new RuntimeException('Faulty configuration: No SI_SubCommands defined although httpMainZone is not set: ' . $AVRType);
         }
         return $caps;
     }
