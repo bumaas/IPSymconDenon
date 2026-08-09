@@ -4091,6 +4091,133 @@ class Marantz_AV7706 extends Marantz_AV7705
 }
 
 /* ---------------------
+ * Marantz AV 20 / AV 30 (Vorstufen, CY2025)
+ *
+ * Basis ist die CINEMA 40: laut Spec identisch bis auf die hier gesetzten
+ * Abweichungen. AV 30 ist die kleinere Vorstufe, AV 20 ergänzt die Eingänge
+ * AUX3-AUX7 und die Front-Wide-Kanäle.
+   --------------------*/
+class Marantz_AV30 extends Marantz_CINEMA_40
+{
+    // see Marantz_CY2025_AV_PROTOCOL_V04.xlsx
+    public static string $Name       = 'Marantz-AV30';
+
+    public static int    $internalID = 120;
+
+    // Vorstufe ohne Endstufen: laut Spec kein ECO-Modus
+    public static array  $PowerFunctions = [
+        DENON_API_Commands::PW,
+        DENON_API_Commands::ZM,
+        DENON_API_Commands::MU,
+        DENON_API_Commands::STBY,
+        DENON_API_Commands::SLP,
+    ];
+
+    // Liste der CINEMA 40 ohne MSVIRTUAL (laut Spec nicht unterstützt)
+    public static array  $MS_SubCommands = [
+        DENON_API_Commands::MSMOVIE,
+        DENON_API_Commands::MSMUSIC,
+        DENON_API_Commands::MSGAME,
+        DENON_API_Commands::MSDIRECT,
+        DENON_API_Commands::MSPUREDIRECT,
+        DENON_API_Commands::MSSTEREO,
+        DENON_API_Commands::MSAUTO,
+        DENON_API_Commands::MSSTANDARD,
+        DENON_API_Commands::MSDOLBYDIGITAL,
+        DENON_API_Commands::MSDTSSURROUND,
+        DENON_API_Commands::MSAURO3D,
+        DENON_API_Commands::MSAURO2DSURR,
+        DENON_API_Commands::MSMCHSTEREO,
+    ];
+}
+
+class Marantz_AV20 extends Marantz_AV30
+{
+    // see Marantz_CY2025_AV_PROTOCOL_V04.xlsx
+    public static string $Name       = 'Marantz-AV20';
+
+    public static int    $internalID = 119;
+
+    // Liste der AV 30, zusätzlich die Front-Wide-Kanäle
+    public static array  $CV_Commands = [
+        DENON_API_Commands::MV,
+        DENON_API_Commands::CVFL,
+        DENON_API_Commands::CVFR,
+        DENON_API_Commands::CVC,
+        DENON_API_Commands::CVSW,
+        DENON_API_Commands::CVSW2,
+        DENON_API_Commands::CVSL,
+        DENON_API_Commands::CVSR,
+        DENON_API_Commands::CVSBL,
+        DENON_API_Commands::CVSBR,
+        DENON_API_Commands::CVSB,
+        DENON_API_Commands::CVFHL,
+        DENON_API_Commands::CVFHR,
+        DENON_API_Commands::CVFWL,
+        DENON_API_Commands::CVFWR,
+        DENON_API_Commands::CVTFL,
+        DENON_API_Commands::CVTFR,
+        DENON_API_Commands::CVTML,
+        DENON_API_Commands::CVTMR,
+        DENON_API_Commands::CVTRL,
+        DENON_API_Commands::CVTRR,
+        DENON_API_Commands::CVRHL,
+        DENON_API_Commands::CVRHR,
+        DENON_API_Commands::CVFDL,
+        DENON_API_Commands::CVFDR,
+        DENON_API_Commands::CVSDL,
+        DENON_API_Commands::CVSDR,
+        DENON_API_Commands::CVBDL,
+        DENON_API_Commands::CVBDR,
+        DENON_API_Commands::CVSHL,
+        DENON_API_Commands::CVSHR,
+        DENON_API_Commands::CVTS,
+        DENON_API_Commands::CVZRL,
+    ];
+
+    // Liste der AV 30, zusätzlich AUX3 bis AUX7
+    public static array  $SI_SubCommands = [
+        DENON_API_Commands::IS_PHONO,
+        DENON_API_Commands::IS_CD,
+        DENON_API_Commands::IS_BD,
+        DENON_API_Commands::IS_TV,
+        DENON_API_Commands::IS_SAT_CBL,
+        DENON_API_Commands::IS_MPLAY,
+        DENON_API_Commands::IS_GAME1,
+        DENON_API_Commands::IS_GAME2,
+        DENON_API_Commands::IS_TUNER,
+        DENON_API_Commands::IS_AUX1,
+        DENON_API_Commands::IS_AUX2,
+        DENON_API_Commands::IS_AUX3,
+        DENON_API_Commands::IS_AUX4,
+        DENON_API_Commands::IS_AUX5,
+        DENON_API_Commands::IS_AUX6,
+        DENON_API_Commands::IS_AUX7,
+        DENON_API_Commands::IS_NET,
+        DENON_API_Commands::IS_BT,
+    ];
+
+    public static array  $SV_SubCommands = [
+        DENON_API_Commands::IS_BD,
+        DENON_API_Commands::IS_TV,
+        DENON_API_Commands::IS_SAT_CBL,
+        DENON_API_Commands::IS_MPLAY,
+        DENON_API_Commands::IS_GAME1,
+        DENON_API_Commands::IS_GAME2,
+        DENON_API_Commands::IS_AUX1,
+        DENON_API_Commands::IS_AUX2,
+        DENON_API_Commands::IS_AUX3,
+        DENON_API_Commands::IS_AUX4,
+        DENON_API_Commands::IS_AUX5,
+        DENON_API_Commands::IS_AUX6,
+        DENON_API_Commands::IS_AUX7,
+        DENON_API_Commands::IS_CD,
+        DENON_API_Commands::IS_ON,
+        DENON_API_Commands::IS_OFF,
+    ];
+}
+
+/* ---------------------
  * Marantz AV880x Serie
    --------------------*/
 class Marantz_AV8801 extends MarantzAVR

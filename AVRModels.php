@@ -66,6 +66,9 @@ require_once __DIR__ . '/DenonAVR.php';  // diverse Klassen
                 207 => "AVR-X2800H",
                 208 => "AVR-X3800H",
                 209 => "AVR-X4800H",
+                210 => "AVR-X3900H",
+                211 => "AVR-X2900H",
+                212 => "AVR-S980H",
 
                 60 => "Marantz-NR1504", //
                 61 => "Marantz-NR1506", //
@@ -125,7 +128,9 @@ require_once __DIR__ . '/DenonAVR.php';  // diverse Klassen
                 115 => "Marantz-CINEMA50", // 9.4 -> SR6015
                 116 => "Marantz-CINEMA40", // 11.4, 9 Endstufen -> SR7015
          //       117 => "Marantz-CINEMA30", //  -> SR8015
-                118 => "Marantz-AV10", // 15.4 (neu)
+         //       118 => "Marantz-AV10", // 15.4 (noch nicht umgesetzt)
+                119 => "Marantz-AV20", // Vorstufe, CY2025
+                120 => "Marantz-AV30", // Vorstufe, CY2025
 
                 50 => "None"
  */
@@ -160,11 +165,13 @@ class AVRs extends stdClass
             Denon_AVR_X2600H::$Name  => Denon_AVR_X2600H::getCapabilities(),
             Denon_AVR_X2700H::$Name  => Denon_AVR_X2700H::getCapabilities(),
             Denon_AVR_X2800H::$Name  => Denon_AVR_X2800H::getCapabilities(),
+            Denon_AVR_X2900H::$Name  => Denon_AVR_X2900H::getCapabilities(),
             Denon_AVR_X3000::$Name   => Denon_AVR_X3000::getCapabilities(),
             Denon_AVR_X3400H::$Name  => Denon_AVR_X3400H::getCapabilities(),
             Denon_AVR_X3500H::$Name  => Denon_AVR_X3500H::getCapabilities(),
             Denon_AVR_X3700H::$Name  => Denon_AVR_X3700H::getCapabilities(),
             Denon_AVR_X3800H::$Name  => Denon_AVR_X3800H::getCapabilities(),
+            Denon_AVR_X3900H::$Name  => Denon_AVR_X3900H::getCapabilities(),
             Denon_AVR_X4000::$Name   => Denon_AVR_X4000::getCapabilities(),
             Denon_AVR_X4100W::$Name  => Denon_AVR_X4100W::getCapabilities(),
             Denon_AVR_X4200W::$Name  => Denon_AVR_X4200W::getCapabilities(),
@@ -185,6 +192,7 @@ class AVRs extends stdClass
             Denon_AVR_S750H::$Name   => Denon_AVR_S750H::getCapabilities(),
             Denon_AVR_S960H::$Name   => Denon_AVR_S960H::getCapabilities(),
             Denon_AVR_S970H::$Name   => Denon_AVR_S970H::getCapabilities(),
+            Denon_AVR_S980H::$Name   => Denon_AVR_S980H::getCapabilities(),
             Denon_DRA_N5::$Name      => Denon_DRA_N5::getCapabilities(),
             Denon_RCD_N8::$Name      => Denon_RCD_N8::getCapabilities(),
 
@@ -243,6 +251,8 @@ class AVRs extends stdClass
             Marantz_AV7704::$Name     => Marantz_AV7704::getCapabilities(),
             Marantz_AV7705::$Name     => Marantz_AV7705::getCapabilities(),
             Marantz_AV7706::$Name     => Marantz_AV7706::getCapabilities(),
+            Marantz_AV20::$Name       => Marantz_AV20::getCapabilities(),
+            Marantz_AV30::$Name       => Marantz_AV30::getCapabilities(),
             Marantz_AV8801::$Name     => Marantz_AV8801::getCapabilities(),
             Marantz_AV8802::$Name     => Marantz_AV8802::getCapabilities(),
         ];

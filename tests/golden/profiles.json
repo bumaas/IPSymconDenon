@@ -114,6 +114,11 @@
         "sha256": "1f0336ba4d956d319a575514034afc0c737ca77d1f87f09fb8fab104f2e0f02a",
         "errors": []
     },
+    "AVR-X2900H": {
+        "count": 174,
+        "sha256": "1f0336ba4d956d319a575514034afc0c737ca77d1f87f09fb8fab104f2e0f02a",
+        "errors": []
+    },
     "AVR-X3000": {
         "count": 174,
         "sha256": "2c20a07056ce26cf0668449cfe3fcb42b7ed098c64ad1be9c52a33699ad11c24",
@@ -135,6 +140,11 @@
         "errors": []
     },
     "AVR-X3800H": {
+        "count": 174,
+        "sha256": "7a0b5f3a3b5820c1311f03b9d513f4384fe537b0f97df09324ffcd7bf1de2845",
+        "errors": []
+    },
+    "AVR-X3900H": {
         "count": 174,
         "sha256": "7a0b5f3a3b5820c1311f03b9d513f4384fe537b0f97df09324ffcd7bf1de2845",
         "errors": []
@@ -235,6 +245,11 @@
         "errors": []
     },
     "AVR-S970H": {
+        "count": 174,
+        "sha256": "1f0336ba4d956d319a575514034afc0c737ca77d1f87f09fb8fab104f2e0f02a",
+        "errors": []
+    },
+    "AVR-S980H": {
         "count": 174,
         "sha256": "1f0336ba4d956d319a575514034afc0c737ca77d1f87f09fb8fab104f2e0f02a",
         "errors": []
@@ -522,6 +537,16 @@
     "Marantz-AV7706": {
         "count": 174,
         "sha256": "b0cc45a33ffa6a1e909b8f71e77411d42a7191999e6b316e093c54cd819bc5c3",
+        "errors": []
+    },
+    "Marantz-AV20": {
+        "count": 174,
+        "sha256": "b473123a7c18f8c02a8441d68a9c32e2bb4f67a97366b4af6bb5b127c530cee5",
+        "errors": []
+    },
+    "Marantz-AV30": {
+        "count": 174,
+        "sha256": "b473123a7c18f8c02a8441d68a9c32e2bb4f67a97366b4af6bb5b127c530cee5",
         "errors": []
     },
     "Marantz-AV8801": {

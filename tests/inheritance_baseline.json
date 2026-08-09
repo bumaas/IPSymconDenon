@@ -832,6 +832,18 @@
             ]
         }
     },
+    "Marantz_AV30": {
+        "model": "Marantz-AV30",
+        "parent": "Marantz_CINEMA_40",
+        "lost": {
+            "PowerFunctions": [
+                "ECO"
+            ],
+            "MS_SubCommands": [
+                "VIRTUAL"
+            ]
+        }
+    },
     "Marantz_AV8801": {
         "model": "Marantz-AV8801",
         "parent": "MarantzAVR",

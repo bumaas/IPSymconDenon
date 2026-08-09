@@ -288,6 +288,11 @@ class DENON_API_Commands extends stdClass
     public const string IS_AUX     = 'AUX'; // Select Input Source AUX
     public const string IS_AUX1    = 'AUX1'; // Select Input Source AUX1
     public const string IS_AUX2    = 'AUX2'; // Select Input Source AUX2
+    public const string IS_AUX3    = 'AUX3'; // Select Input Source AUX3
+    public const string IS_AUX4    = 'AUX4'; // Select Input Source AUX4
+    public const string IS_AUX5    = 'AUX5'; // Select Input Source AUX5
+    public const string IS_AUX6    = 'AUX6'; // Select Input Source AUX6
+    public const string IS_AUX7    = 'AUX7'; // Select Input Source AUX7
     public const string IS_VAUX  = 'V.AUX'; // Select Input Source V.AUX
     public const string IS_DOCK  = 'DOCK'; // Select Input Source Dock
     public const string IS_IPOD  = 'IPOD'; // Select Input Source iPOD
@@ -347,6 +352,11 @@ class DENON_API_Commands extends stdClass
         self::IS_AUX,
         self::IS_AUX1,
         self::IS_AUX2,
+        self::IS_AUX3,
+        self::IS_AUX4,
+        self::IS_AUX5,
+        self::IS_AUX6,
+        self::IS_AUX7,
         self::IS_AUXA,
         self::IS_AUXB,
         self::IS_AUXC,

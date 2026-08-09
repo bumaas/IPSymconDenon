@@ -1140,6 +1140,46 @@ class Denon_AVR_X2800H extends Denon_AVR_X2700H
 
 }
 
+class Denon_AVR_X2900H extends Denon_AVR_X2800H
+{
+    // see 'Denon CY2026_AVR_PROTOCOL_V02.xlsx'
+    public static string $Name = 'AVR-X2900H';
+
+    public static int $internalID = 211;
+
+    // Liste des X2800H, laut CY2026-Spec zusätzlich mit Dirac Live Filter
+    public static array $PS_Commands = [
+        DENON_API_Commands::PSFRONT,
+        DENON_API_Commands::PSSWR,
+        DENON_API_Commands::PSTONECTRL,
+        DENON_API_Commands::PSBAS, DENON_API_Commands::PSTRE,
+        DENON_API_Commands::PSLOM,
+        DENON_API_Commands::PSDEH,
+        DENON_API_Commands::PSSWL,
+        DENON_API_Commands::PSCLV,
+        DENON_API_Commands::PSLFE,
+        DENON_API_Commands::PSCES,
+        DENON_API_Commands::PSSPV,
+        DENON_API_Commands::PSDIC,
+        DENON_API_Commands::PSNEURAL,
+        DENON_API_Commands::PSCINEMAEQ,
+        DENON_API_Commands::PSMULTEQ,
+        DENON_API_Commands::PSMODE,
+        DENON_API_Commands::PSDYNEQ,
+        DENON_API_Commands::PSREFLEV,
+        DENON_API_Commands::PSDYNVOL,
+        DENON_API_Commands::PSGEQ,
+        DENON_API_Commands::PSHEQ,
+        DENON_API_Commands::PSDRC,
+        DENON_API_Commands::PSEFF,
+        DENON_API_Commands::PSDEL,
+        DENON_API_Commands::PSRSZ,
+        DENON_API_Commands::PSDELAY,
+        DENON_API_Commands::PSRSTR,
+        DENON_API_Commands::PSDIRAC,
+    ];
+}
+
 class Denon_AVR_S960H extends Denon_AVR_X2700H
 {
     // see FY21AVR_DENON_PROTOCOL_V04.xlsx
@@ -1154,6 +1194,16 @@ class Denon_AVR_S970H extends Denon_AVR_X2800H
     public static string $Name = 'AVR-S970H';
 
     public static int $internalID = 206;
+}
+
+class Denon_AVR_S980H extends Denon_AVR_S970H
+{
+    // see 'Denon CY2026_AVR_PROTOCOL_V02.xlsx'
+    // laut Spec gegenüber dem S970H nur Kommandos, die das Modul noch nicht kennt
+    // (BTLEV, CLM, MSQUICK6, SYHPT)
+    public static string $Name = 'AVR-S980H';
+
+    public static int $internalID = 212;
 }
 /* ---------------------
  * Denon AVR-X1x00W Serie
@@ -1958,6 +2008,55 @@ class Denon_AVR_X3800H extends Denon_AVR_X3700H
         DENON_API_Commands::PSAUROPR,
         DENON_API_Commands::PSAUROST,
         DENON_API_Commands::PSAUROMODE,
+    ];
+}
+
+class Denon_AVR_X3900H extends Denon_AVR_X3800H
+{
+    // see 'Denon CY2026_AVR_PROTOCOL_V02.xlsx'
+    public static string $Name = 'AVR-X3900H';
+
+    public static int $internalID = 210;
+
+    // Liste des X3800H, laut CY2026-Spec zusätzlich mit Dirac Live Filter
+    public static array $PS_Commands = [
+        DENON_API_Commands::PSFRONT,
+        DENON_API_Commands::PSSWR,
+        DENON_API_Commands::PSTONECTRL,
+        DENON_API_Commands::PSBAS, DENON_API_Commands::PSTRE,
+        DENON_API_Commands::PSLOM,
+        DENON_API_Commands::PSBSC,
+        DENON_API_Commands::PSDEH,
+        DENON_API_Commands::PSSWL,
+        DENON_API_Commands::PSSWL2,
+        DENON_API_Commands::PSSWL3,
+        DENON_API_Commands::PSSWL4,
+        DENON_API_Commands::PSCLV,
+        DENON_API_Commands::PSLFE,
+        DENON_API_Commands::PSCES,
+        DENON_API_Commands::PSSPV,
+        DENON_API_Commands::PSDIC,
+        DENON_API_Commands::PSNEURAL,
+        DENON_API_Commands::PSCINEMAEQ,
+        DENON_API_Commands::PSMULTEQ,
+        DENON_API_Commands::PSMODE,
+        DENON_API_Commands::PSDYNEQ,
+        DENON_API_Commands::PSREFLEV,
+        DENON_API_Commands::PSDYNVOL,
+        DENON_API_Commands::PSLFC,
+        DENON_API_Commands::PSCNTAMT,
+        DENON_API_Commands::PSGEQ,
+        DENON_API_Commands::PSHEQ,
+        DENON_API_Commands::PSDRC,
+        DENON_API_Commands::PSEFF,
+        DENON_API_Commands::PSDEL,
+        DENON_API_Commands::PSRSZ,
+        DENON_API_Commands::PSDELAY,
+        DENON_API_Commands::PSRSTR,
+        DENON_API_Commands::PSAUROPR,
+        DENON_API_Commands::PSAUROST,
+        DENON_API_Commands::PSAUROMODE,
+        DENON_API_Commands::PSDIRAC,
     ];
 }
 

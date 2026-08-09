@@ -52,7 +52,7 @@ Composite-Strings sind über locale.json nicht übersetzbar.
 
 - `tests/check_locale.php` — Übersetzungs-Vollständigkeit (siehe „Texte pflegen").
 - `tests/golden_regression.php` — **Golden-File-Regressionstest** (läuft ohne Kernel/
-  Netz über `tests/symcon_stubs.php`): friert Capabilities aller 107 Modelle,
+  Netz über `tests/symcon_stubs.php`): friert Capabilities aller 112 Modelle,
   Profilkatalog, Presentations, Variablen-Registrierung, alle ~150 Telnet-Wrapper-
   Buffer und die Konfigurationsformulare als `tests/golden/*.json` ein.
   - Prüfen: `C:\php\php tests/golden_regression.php` (auch in der CI).
@@ -112,10 +112,22 @@ Composite-Strings sind über locale.json nicht übersetzbar.
   CINEMA-Klasse). Die **DIM-Direktwahl** ist seit **2.29 build 87** umgesetzt
   (68 statt 19 Modelle). Noch offen („Paket 2/3"): fehlende Kommandos ergänzen
   (VSMONI-Direktwahl, PSIMAX-Gruppe, PSDIRAC per V03-Spec für X3800H/X4800H,
-  Trigger TR1/TR2, SYREMOTE/SYPANEL-Lock) sowie neue Modelle
+  Trigger TR1/TR2/TR3, SYREMOTE/SYPANEL-Lock) sowie neue Modelle
   (CINEMA 30, AV 10, Denon-S-Serie, X3300W, A1H, A110).
+- Aus den Specs **Denon CY2026 V02** und **Marantz CY2025 V04** (Modelle seit
+  **2.30 build 92** unterstützt) sind diese Kommandos noch nicht umgesetzt, weil
+  das Modul sie generell nicht kennt: `BTLEV` (Bluetooth-Sendepegel), `CLM`,
+  `SYHPT` (Kopfhörer), `PSCEX`, `PSSURLEV`, `PSDACFIL` (nur AV 20/AV 30) sowie
+  `MSQUICK6`/`Z2QUICK6`. Quick Select 6 ist dabei kein reiner Capability-
+  Eintrag: die Assoziationen in `DENONIPSProfiles` sind fest 0–5 und müssten
+  erst modellabhängig gefiltert werden.
+- Die neuen Modelle erben ein `Tuner_Control`, das ihre Spec als nicht
+  unterstützt markiert (`TM`, `TMAN`, `TPAN`) — genau wie die CINEMA 40, an der
+  sie hängen. Ein leeres `Tuner_Control` gibt es bei **keinem** der Modelle,
+  der Pfad ist also ungetestet; die Frage „welche Modelle haben wirklich einen
+  Tuner?" gehört in einen eigenen Durchgang.
 - Die Baseline der Kettenprüfung (`tests/inheritance_baseline.json`) **duldet den
-  Ist-Stand**, sie bestätigt ihn nicht: 554 Einzelverluste in 82 Klassen sind
+  Ist-Stand**, sie bestätigt ihn nicht: 556 Einzelverluste in 83 Klassen sind
   eingefroren. Sie sind überwiegend legitim (ein günstigeres Modell darf ein
   Feature nicht haben), aber nicht einzeln geprüft.
 - Die fünf binären Marantz-`.xls` (2015, FY16–FY21) überspringt

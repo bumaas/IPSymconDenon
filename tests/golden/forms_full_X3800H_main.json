@@ -137,6 +137,10 @@
                     "caption": "AVR-X2800H"
                 },
                 {
+                    "value": 211,
+                    "caption": "AVR-X2900H"
+                },
+                {
                     "value": 13,
                     "caption": "AVR-X3000"
                 },
@@ -155,6 +159,10 @@
                 {
                     "value": 208,
                     "caption": "AVR-X3800H"
+                },
+                {
+                    "value": 210,
+                    "caption": "AVR-X3900H"
                 },
                 {
                     "value": 16,
@@ -235,6 +243,10 @@
                 {
                     "value": 206,
                     "caption": "AVR-S970H"
+                },
+                {
+                    "value": 212,
+                    "caption": "AVR-S980H"
                 },
                 {
                     "value": 40,

@@ -91,6 +91,10 @@
         "sha256": "bb607d9ccbcd1bac20a7f2924df4a62e152a61cb05c821d30f0832b850898771",
         "errors": []
     },
+    "AVR-X2900H": {
+        "sha256": "3a0c9cfe5cc250392944bbcfdce6073e0223365174c6a3c141d9a5c4f2bd9608",
+        "errors": []
+    },
     "AVR-X3000": {
         "sha256": "cd3f23bcb2b64d480e12bffe58f9c76c457c63d58f0b8cd1c86752c2b7940979",
         "errors": []
@@ -109,6 +113,10 @@
     },
     "AVR-X3800H": {
         "sha256": "8c19b27b7ef465fbefd96fbb9ac78f40c382b5532dcbe775c3ece1c8957ad958",
+        "errors": []
+    },
+    "AVR-X3900H": {
+        "sha256": "6bf5ca21b65a3da348c6700dc08bfeced29553debf3a2f75bc43216a0ce3b02d",
         "errors": []
     },
     "AVR-X4000": {
@@ -189,6 +197,10 @@
     },
     "AVR-S970H": {
         "sha256": "67b20d0d94117816ee98f97445b666af4f31c6172ca774391b15d4cbdc20bda8",
+        "errors": []
+    },
+    "AVR-S980H": {
+        "sha256": "46c6d1de5dd5af65bfc298836fff1b76c08c2b8d4ecbc647c08ca18639dbbb90",
         "errors": []
     },
     "DRA-N5": {
@@ -417,6 +429,14 @@
     },
     "Marantz-AV7706": {
         "sha256": "66c4f4502dd54c9054c8d4f24edc93aaa079fed09700429f9fde3681e2e81c6e",
+        "errors": []
+    },
+    "Marantz-AV20": {
+        "sha256": "5a7488ef1f0a4e7b0a6829d31910c86449605658cd95fb5aa4efd049fafda70e",
+        "errors": []
+    },
+    "Marantz-AV30": {
+        "sha256": "195fef03a63966b5756a404a034c4c2a2dca01d1210a607136bc71c08230854f",
         "errors": []
     },
     "Marantz-AV8801": {
