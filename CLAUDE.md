@@ -156,6 +156,77 @@ flankierende Test wäre ein Golden über `GetCommandResponse()` mit einem Korpus
 **echter** Telnet-Antwortzeilen — dafür braucht es einen Mitschnitt aus dem
 Splitter-Debug, keine erfundenen Daten.
 
+### Umsetzungsplan
+
+Vorabklärung (2026-08-09): Der Empfangspfad ist mit der vorhandenen
+Stub-Infrastruktur **testbar**. `DenonSplitterTelnet::ReceiveData()` ruft nur
+`GetBuffer`, `SetBuffer`, `GetValue`, `SendDataToChildren`, `SendDebug` und
+`Logger_Dbg` — alles vorhanden. Es fehlen genau zwei Dinge: `Get/SetBuffer` sind
+in `tests/symcon_stubs.php` **No-Ops** (SetBuffer verwirft, GetBuffer liefert
+immer `''`), und `IPS_SemaphoreEnter`/`IPS_SemaphoreLeave` sind gar nicht
+gestubbt.
+
+Zwei Commits, jeder für sich grün. Die Prüfroutine entsteht jeweils **vor** dem
+Fix (lokal rot) und landet im selben Commit, damit die CI an keinem Punkt der
+Historie rot ist.
+
+**Erster Commit — Telnet-Empfangspfad (Defekte 1+2):**
+- `tests/symcon_stubs.php`: `Get/SetBuffer` bekommen echten Speicher pro Instanz.
+- `tests/receivepath_check.php` (neu): Abschnitt 1, siehe unten.
+- `libs/DenonAVRCP_API_Data.php`: das `return null` wird zu `continue` — eine
+  Antwort ohne `ValueMapping` überspringt *sich selbst* statt den ganzen Stapel;
+  Rückgabetyp `?array` → `array`. Bewusst **nicht** „gib eine leere Struktur
+  zurück" (schluckt still alles) und **nicht** nur ein Guard im Splitter
+  (kuriert das Symptom).
+- `Denon Splitter Telnet/module.php`: Fragmentpuffer mit Längenobergrenze und
+  Alterung, Verwerfen mit Warnung; `protected function currentTime(): int` als
+  Test-Naht (Muster: `GetInputsAVR`-Override im Golden-Harness).
+- `.github/workflows/check.yml`, `CLAUDE.md`, `library.json`.
+
+**Zweiter Commit — HTTP-Pfad (Defekte 3+4+5):**
+- `tests/symcon_stubs.php`: zählende Semaphoren-Stubs, `IPS_SemaphoreEnter` per
+  Testschalter auf `false` zwingbar.
+- `Denon HTTP IO/module.php`: die drei `unlock()`-Aufrufe im Zweig „Lock
+  fehlgeschlagen" entfallen; `throw new Exception('… failed', 0, $exc)` samt
+  Originalmeldung im Text an allen drei Stellen.
+- `libs/DENON_StatusHTML.php`: `fetchXml()` mit Stream-Context, Timeout als
+  Klassenkonstante, gebaut in `protected function httpContext()` — die Naht, an
+  der die Prüfroutine ohne Netz ansetzt.
+
+**Nur Timeout, kein Early-Abort.** Eine ältere Notiz schlug vor, nach dem ersten
+Fehlschlag abzubrechen; der Kommentar über `fetchXml()` sagt ausdrücklich das
+Gegenteil (ein 404 einer nicht vorhandenen Zone ist normal). Der Worst Case sinkt
+damit auf 6 × Timeout — bei 2 s also 12 s und weiterhin über dem 10-s-Timer. Das
+gehört in die Commit-Message, nicht weggerundet.
+
+**Prüfroutine `tests/receivepath_check.php`** (ohne Kernel, Netz und
+Herstellerdateien; Exit 1 bei Abweichung, CI-tauglich):
+1. *Telnet-Empfangspfad* über einen `SplitterHarness` mit gebastelten
+   `{"Buffer":"<hex>"}`-Payloads: sauberer Stapel liefert die erwarteten Idents;
+   eine Antwort ohne `ValueMapping` lässt die übrigen durch; ein unvollständiges
+   Telegramm plus Reststück ergibt genau eine Antwort; ein Fragment jenseits der
+   Längengrenze wird verworfen; ein überaltertes Fragment ebenso (deterministisch
+   über `currentTime()`, nicht über die echte Uhr).
+2. *Semaphorenbilanz*: `IPS_SemaphoreEnter` liefert `false`, `GetStatus()` und
+   `SendCommand()` laufen in den Fehlzweig, `Leave`-Zähler muss `Enter`-Zähler
+   entsprechen. Braucht keine Produktivänderung, um prüfbar zu werden.
+3. *Fehlerursache*: geworfene Exception hat `getPrevious()` gesetzt und die
+   Originalmeldung im Text.
+4. *Timeout*: `httpContext()` liefert einen Context mit endlichem `timeout`
+   unterhalb der Obergrenze, geprüft per `stream_context_get_options()`.
+
+**Ausdrücklich nicht Teil davon:** das Golden über echte Telnet-Mitschnitte
+(braucht einen Mitschnitt, erfundene Zeilen frieren nur die eigene Erwartung
+ein); Logger-Trait, Attribut-Migration und additiver Capability-Mechanismus;
+alles am Sendeweg, am Profilkatalog und an Capabilities (keine neuen Kommandos
+oder Modelle); neue oder geänderte öffentliche Funktionen; Retry, Backoff oder
+ein anderer Timer im HTTP-Polling; die `FormExpertParameters()`-Lücke und die
+Aufräum-Routine für verwaiste Alt-Profile.
+
+**Nachweise bei der Umsetzung:** dass die neue Routine vor dem jeweiligen Fix
+wirklich rot ist (ein Test, der nie rot war, ist wertlos), und dass sich
+`golden_regression` **nicht** rührt — Block A fasst den Sendeweg nicht an.
+
 ## Bekannte offene Punkte (bewusst zurückgestellt)
 
 - `Denon AVR HTTP` bindet `FormExpertParameters()` nicht ein — die Property
