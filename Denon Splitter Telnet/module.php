@@ -6,6 +6,21 @@ require_once __DIR__ . '/../DenonClass.php';  // diverse Klassen
 
 class DenonSplitterTelnet extends IPSModuleStrict
 {
+    /**
+     * Obergrenze für den Fragmentpuffer.
+     *
+     * Gepuffert wird nur, solange kein Paket auf \r endet. Ein vollständiger
+     * Statusabruf des AVR bleibt unter 1 KB, die Grenze hat also reichlich
+     * Luft; sie fängt allein den Fall ab, dass ein abgerissenes Telegramm
+     * liegen bleibt und jeder folgenden Antwort vorangestellt wird.
+     */
+    private const int FRAGMENT_MAX_LENGTH = 4096;
+
+    /** Ein Reststück, das nach so vielen Sekunden nicht vervollständigt wurde, kommt nicht mehr. */
+    private const int FRAGMENT_MAX_AGE = 30;
+
+    private const string BUFFER_FRAGMENT      = 'ReceiveData'; //Name wie bisher (war __FUNCTION__)
+    private const string BUFFER_FRAGMENT_TIME = 'ReceiveDataTime';
 
     public function Create(): void
     {
@@ -197,7 +212,7 @@ class DenonSplitterTelnet extends IPSModuleStrict
         $payload = json_decode($JSONString, false, 512, JSON_THROW_ON_ERROR);
         $buffer = hex2bin($payload->Buffer);
 
-        $storedBuffer = $this->GetBuffer(__FUNCTION__);
+        $storedBuffer = $this->takeFragment();
         if ($storedBuffer !== ''){
             $buffer  = $storedBuffer . $buffer;
         }
@@ -206,13 +221,31 @@ class DenonSplitterTelnet extends IPSModuleStrict
 
         // the received data must be terminated with \r
         if (!str_ends_with($buffer, "\r")) {
+            if (strlen($buffer) > self::FRAGMENT_MAX_LENGTH) {
+                //ohne Obergrenze bliebe das Bruchstück dauerhaft liegen und würde
+                //jeder folgenden Antwort vorangestellt - die Instanz wäre bis zum
+                //Neustart taub
+                $this->Logger_Warn(
+                    sprintf(
+                        '%s: incomplete telegram discarded, %d bytes exceed the limit of %d: %s...',
+                        __FUNCTION__,
+                        strlen($buffer),
+                        self::FRAGMENT_MAX_LENGTH,
+                        substr($buffer, 0, 80)
+                    )
+                );
+                $this->clearFragment();
+
+                return '';
+            }
+
             $this->Logger_Dbg(__FUNCTION__, 'received data are buffered, because they are not terminated: ' . $buffer);
-            $this->SetBuffer(__FUNCTION__, $buffer);
+            $this->storeFragment($buffer);
 
             return '';
         }
 
-        $this->SetBuffer(__FUNCTION__, '');
+        $this->clearFragment();
 
         //Daten aufteilen und Abschlusszeichen wegschmeißen
         $data = explode("\r", $buffer);
@@ -266,6 +299,52 @@ class DenonSplitterTelnet extends IPSModuleStrict
 
         // Weiterverarbeiten und durchreichen
         return $resultat;
+    }
+
+    //################# FRAGMENTPUFFER Helper - private
+
+    /**
+     * Liefert das gespeicherte Reststück - oder '', wenn es zu alt ist.
+     *
+     * Ein Telegramm, dessen Fortsetzung ausbleibt (Verbindungsabbruch mitten im
+     * Paket), würde sonst dauerhaft liegen bleiben.
+     */
+    private function takeFragment(): string
+    {
+        $fragment = $this->GetBuffer(self::BUFFER_FRAGMENT);
+        if ($fragment === '') {
+            return '';
+        }
+
+        $age = $this->currentTime() - (int) $this->GetBuffer(self::BUFFER_FRAGMENT_TIME);
+        if ($age > self::FRAGMENT_MAX_AGE) {
+            $this->Logger_Warn(
+                sprintf('%s: incomplete telegram discarded after %d s: %s', __FUNCTION__, $age, $fragment)
+            );
+            $this->clearFragment();
+
+            return '';
+        }
+
+        return $fragment;
+    }
+
+    private function storeFragment(string $fragment): void
+    {
+        $this->SetBuffer(self::BUFFER_FRAGMENT, $fragment);
+        $this->SetBuffer(self::BUFFER_FRAGMENT_TIME, (string) $this->currentTime());
+    }
+
+    private function clearFragment(): void
+    {
+        $this->SetBuffer(self::BUFFER_FRAGMENT, '');
+        $this->SetBuffer(self::BUFFER_FRAGMENT_TIME, '');
+    }
+
+    /** Naht für tests/receivepath_check.php: macht die Alterung ohne echte Uhr prüfbar. */
+    protected function currentTime(): int
+    {
+        return time();
     }
 
     //################# SEMAPHOREN Helper  - private

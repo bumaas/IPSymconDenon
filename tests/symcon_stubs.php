@@ -319,14 +319,24 @@ class IPSModuleStrict
         return true;
     }
 
+    /**
+     * @var array<string, string> Instanzpuffer
+     *
+     * Der Kernel hält die Puffer je Instanz über den Aufruf hinaus. Ohne echten
+     * Speicher wäre jeder Test des Fragmentpuffers wirkungslos: GetBuffer lieferte
+     * immer '' und ein unvollständiges Telegramm verschwände lautlos.
+     */
+    private array $buffers = [];
+
     protected function SetBuffer(string $Name, string $Data): bool
     {
+        $this->buffers[$Name] = $Data;
         return true;
     }
 
     protected function GetBuffer(string $Name): string|false
     {
-        return '';
+        return $this->buffers[$Name] ?? ''; //unbekannte Puffer liefert auch der Kernel leer
     }
 
     public function Translate(string $Text): string

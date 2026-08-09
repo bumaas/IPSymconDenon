@@ -217,7 +217,15 @@ class DenonAVRCP_API_Data extends stdClass
         return $Display;
     }
 
-    public function GetCommandResponse($InputMapping): ?array
+    /**
+     * Wertet die empfangenen Antwortzeilen aus.
+     *
+     * Liefert immer eine Struktur - eine Antwort, die sich nicht zuordnen lässt,
+     * überspringt sich selbst und nicht den ganzen Stapel. Der Aufrufer verlässt
+     * sich darauf: DenonSplitterTelnet::ReceiveData() greift ohne Prüfung auf
+     * 'SurroundDisplay' und 'Data' zu.
+     */
+    public function GetCommandResponse($InputMapping): array
     {
         $debug = false;
         foreach ($this->Data as $response) {
@@ -404,7 +412,9 @@ class DenonAVRCP_API_Data extends stdClass
                                                                               )
                                 );
 
-                                return null;
+                                //nur diese Antwort überspringen: ein früheres 'return null' hätte den
+                                //ganzen Stapel verworfen und beim Aufrufer count(null) ausgelöst
+                                break;
                             }
 
                             if ($item['ValueMapping'] === []) {
