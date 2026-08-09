@@ -77,7 +77,9 @@ Composite-Strings sind über locale.json nicht übersetzbar.
   Informativer Report (Exit 0): Richtung A Modul→Spec (OK / laut Spec nicht
   unterstützt / keine Spec-Zeile), Richtung B Spec→Modul (fehlende Kommandos).
   Wertebereiche und die alten binären `.xls` (Marantz FY16–FY21) werden nicht
-  geprüft.
+  geprüft. Der Abgleich läuft über Kommando-Präfixe: `DIM` deckt pauschal alle
+  Untervarianten ab (`DIM BRI`, `DIM SEL`, …), einzelne fehlende Werte sieht das
+  Skript also nicht.
 
 - `tests/inheritance_check.php` — **Kettenprüfung** (ohne Kernel/Netz/Spec-Dateien,
   daher als einziges Werkzeug dieser Art auch in der CI wirksam). Die
@@ -123,6 +125,19 @@ Composite-Strings sind über locale.json nicht übersetzbar.
   Excel-COM ausgewertet (Ergebnis in der Commit-Message zu 2.29 build 87); zwei
   von ihnen nutzen ein drittes Tabellen-Layout mit der Kommandospalte
   `Command code` statt `COMMAND`, das der Leser in `spec_check.php` nicht kennt.
+- `tests/check_locale.php` hängt für die AVR-Module nur `DenonClass.php` an
+  (`$sharedPhpFiles`, `:33-36`). Seit der `libs/`-Zerlegung (Build 81) ist das ein
+  reiner Aggregator — die gemeinsamen `'caption'`-Literale aus `libs/AVRModule.php`
+  werden nicht mehr geprüft. Der Exit-Code bleibt 0, die Abdeckung ist also still
+  verloren gegangen; der Fix ist ein Einzeiler (Dateiliste erweitern), zieht aber
+  vermutlich verwaiste de-Schlüssel nach sich.
+- Die **Live-Verifikation der DIM-Direktwahl am Gerät** steht aus: ob der AVR nach
+  `DIM x` von sich aus antwortet, ist ungeprüft. Falls nicht, `DIM` in
+  `STATUS_REQUEST_AFTER_SEND` (`Denon AVR Telnet/module.php:214`) aufnehmen.
+- **`ILB`** (Marantz „Illumination", Werte AUTO/BRI/DIM/DAR/OFF/SEL) ist bewusst nicht
+  umgesetzt. Es ist — anders als `DIM` — echt modellabhängig (FY23: nur AV 10 und
+  CINEMA 40; CY2023: nur CINEMA 30) und bräuchte deshalb eine eigene Capability.
+  Ebenfalls offen gelassen: `DIM SEL` (Toggle), das nicht in eine Enumeration passt.
 
 ## Support-Kontext
 
