@@ -32,6 +32,29 @@ Variablen bekommen ihre Darstellung zentral über `AVRModule::GetVariablePresent
 modellabhängig gefiltert (`updateProfileAccordingToCaps()`) bzw. dynamisch aus der
 AVR-XML gebaut (`SetInputSources()`).
 
+## Schalten: `RequestAction` statt eigener Wrapper
+
+Symcon bietet seit 5.0 die globale Funktion `RequestAction(int $VariablenID, mixed $Wert)`;
+paresy hat sie 2018 ausdrücklich als Ersatz für hardwarespezifische Schaltfunktionen
+eingeführt. Die Voraussetzung erfüllt das Modul: `AVRModule` ruft `EnableAction()` für jede
+schaltbare Statusvariable (`libs/AVRModule.php:461`). **Für reines Zustandsschalten sind
+eigene öffentliche Wrapper damit überholt.**
+
+- **Neue** öffentliche Funktionen nur noch, wenn `RequestAction` den Fall strukturell nicht
+  abbilden kann: keine Statusvariable (z. B. Menü- und Netzwerk-Navigation), mehrere
+  Parameter oder ein Rückgabewert.
+- **Bestehende, funktionierende** Wrapper bleiben. Sie zu entfernen wäre ein Breaking Change
+  an der Skript-API und damit ein Major-Sprung — sie sind nicht deprecated.
+- **Ausnahme:** nachweislich defekte Wrapper dürfen entfernt statt repariert werden, sofern
+  die Fähigkeit über `RequestAction` erreichbar bleibt. So geschehen in **2.30 build 91**
+  (`CinemaEQ`, `StageWidth`, `StageHeight`, `RecSelect` — alle vier konnten nie erfolgreich
+  aufgerufen werden; dazu `Dimmer` aus der eintägigen Beta 2.29 #88).
+- Die Funktionsreferenz in `docs/de/README.md` und `docs/en/README.md` beginnt deshalb mit
+  `RequestAction` als empfohlenem Weg; die Wrapper stehen dahinter als das, wofür sie noch
+  gebraucht werden.
+- Abgesichert sind alle Wrapper über `tests/golden/wrappers.json` (Sende-Buffer je Funktion) —
+  ein entfallener oder umbenannter Wrapper fällt dort sofort auf.
+
 ## Texte pflegen
 
 Die Formulare werden überwiegend **dynamisch** in PHP gebaut (`GetConfigurationForm()`
