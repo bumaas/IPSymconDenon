@@ -34,7 +34,6 @@ class AVRModule extends IPSModuleStrict
 
     private const string ZERO_WIDTH_SPACE = "\u{200B}";
 
-
     protected function SetInstanceStatus(): bool
     {
         if (IPS_GetKernelRunlevel() !== KR_READY) {
@@ -508,13 +507,11 @@ class AVRModule extends IPSModuleStrict
         return "<!--suppress HtmlRequiredLangAttribute --><html><body>$rows</body></html>";
     }
 
-
     protected function GetParent()
     {
         $instance = IPS_GetInstance($this->InstanceID); //array
         return ($instance['ConnectionID'] > 0) ? $instance['ConnectionID'] : 0; //ConnectionID
     }
-
 
     protected function GetAPICommandFromIdent($Ident): string
     {
@@ -882,7 +879,7 @@ class AVRModule extends IPSModuleStrict
         if (function_exists('IPSLogger_Err') && $this->ReadPropertyBoolean('WriteLogInformationToIPSLogger')) {
             IPSLogger_Err(__CLASS__, $message);
         }
-        */
+         */
         $this->LogMessage($message, KL_ERROR);
 
     }
@@ -906,7 +903,7 @@ class AVRModule extends IPSModuleStrict
         if (function_exists('IPSLogger_Dbg') && $this->ReadPropertyBoolean('WriteDebugInformationToIPSLogger')) {
             IPSLogger_Dbg(__CLASS__ . '.' . IPS_GetObject($this->InstanceID)['ObjectName'] . '.' . $message, $data);
         }
-        */
+         */
         if ($this->ReadPropertyBoolean(self::PROPERTY_WRITE_DEBUG_INFORMATION_TO_LOGFILE)) {
             $this->LogMessage(sprintf('%s: %s', $message, $data), KL_DEBUG);
         }

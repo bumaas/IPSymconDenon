@@ -439,14 +439,14 @@ foreach ($files as $file) {
 foreach ($summary as $s) {
     echo "==== {$s['model']}  (Spec: {$s['spec']}, Datei: {$s['file']}) ====\n";
     echo 'Modul-Kommandos: OK=', count($s['ok']),
-        ', LAUT SPEC NICHT UNTERSTÜTZT=', count($s['unsupported']),
-        ', KEINE SPEC-ZEILE=', count($s['noRow']),
-        ' | Spec-Kommandos ohne Modul-Abdeckung: ', count($s['missing']), "\n";
+    ', LAUT SPEC NICHT UNTERSTÜTZT=', count($s['unsupported']),
+    ', KEINE SPEC-ZEILE=', count($s['noRow']),
+    ' | Spec-Kommandos ohne Modul-Abdeckung: ', count($s['missing']), "\n";
     if ($s['unsupported'] !== []) {
-        echo "  LAUT SPEC NICHT UNTERSTÜTZT: ", implode(', ', $s['unsupported']), "\n";
+        echo '  LAUT SPEC NICHT UNTERSTÜTZT: ', implode(', ', $s['unsupported']), "\n";
     }
     if ($s['noRow'] !== []) {
-        echo "  KEINE SPEC-ZEILE (Namensabweichung/Nicht-Wire-Ident): ", implode(', ', $s['noRow']), "\n";
+        echo '  KEINE SPEC-ZEILE (Namensabweichung/Nicht-Wire-Ident): ', implode(', ', $s['noRow']), "\n";
     }
     if ($s['missing'] !== []) {
         echo "  IM PROTOKOLL, IM MODUL FEHLEND (Kommando: Beispiel):\n";
@@ -455,11 +455,11 @@ foreach ($summary as $s) {
         }
     }
     if ($details && $s['ok'] !== []) {
-        echo "  OK: ", implode(', ', $s['ok']), "\n";
+        echo '  OK: ', implode(', ', $s['ok']), "\n";
     }
     echo "\n";
 }
 
-echo "Spec-Modelle ohne Modul-Pendant: ", ($unmatchedSpecs === [] ? '-' : implode('; ', array_unique($unmatchedSpecs))), "\n";
-echo "Nicht geprüft (binäres .xls): ", ($skippedXls === [] ? '-' : implode(', ', array_map('basename', $skippedXls))), "\n";
+echo 'Spec-Modelle ohne Modul-Pendant: ', ($unmatchedSpecs === [] ? '-' : implode('; ', array_unique($unmatchedSpecs))), "\n";
+echo 'Nicht geprüft (binäres .xls): ', ($skippedXls === [] ? '-' : implode(', ', array_map('basename', $skippedXls))), "\n";
 echo "\nHinweis: Report ist informativ (Exit 0); Wertebereiche werden nicht geprüft.\n";

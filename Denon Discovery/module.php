@@ -6,7 +6,6 @@ require_once __DIR__ . '/../DenonClass.php';  // diverse Klassen
 
 class DenonDiscovery extends IPSModuleStrict
 {
-
     /**
      * The maximum number of seconds that will be allowed for the discovery request.
      */
@@ -196,7 +195,6 @@ class DenonDiscovery extends IPSModuleStrict
         return $device_info;
     }
 
-
     private function GetDeviceInfoFromLocation(string $location): array
     {
         $manufacturer = '';
@@ -212,7 +210,6 @@ class DenonDiscovery extends IPSModuleStrict
         }
         return ['manufacturer' => $manufacturer, 'friendlyName' => $friendlyName, 'modelName' => $modelName];
     }
-
 
     private function GetXML(string $url): string
     {
@@ -253,10 +250,10 @@ class DenonDiscovery extends IPSModuleStrict
         }
         // return current form
         $Form = json_encode([
-                                'elements' => [],
-                                'actions' => $this->formActions(),
-                                'status'  => []
-                            ], JSON_THROW_ON_ERROR);
+            'elements' => [],
+            'actions' => $this->formActions(),
+            'status'  => []
+        ], JSON_THROW_ON_ERROR);
         $this->SendDebug('FORM', $Form, 0);
         $this->SendDebug('FORM', json_last_error_msg(), 0);
         return $Form;

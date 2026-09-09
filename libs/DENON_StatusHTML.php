@@ -145,9 +145,9 @@ class DENON_StatusHTML extends stdClass
 
             call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'VarMappings: ' . json_encode($VarMappings, JSON_THROW_ON_ERROR));
             call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'InputVarMapping: ' . json_encode(
-                                                $InputVarMapping,
-                                                JSON_THROW_ON_ERROR
-                                            )
+                $InputVarMapping,
+                JSON_THROW_ON_ERROR
+            )
             );
             call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'Inputs: ' . json_encode($Inputs, JSON_THROW_ON_ERROR));
         }
@@ -260,7 +260,7 @@ class DENON_StatusHTML extends stdClass
             $VarMapping = $VarMappings[DENON_API_Commands::SI];
             if ($this->debug) {
                 call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, sprintf('VarMapping: %s, SubCommand: %s',
-                                                                                           json_encode($VarMapping, JSON_THROW_ON_ERROR), $SubCommand));
+                    json_encode($VarMapping, JSON_THROW_ON_ERROR), $SubCommand));
             }
 
             $data[DENON_API_Commands::SI] = ['VarType' => $VarMapping['VarType'], 'Value' => $VarMapping['ValueMapping'][strtoupper($SubCommand)], 'Subcommand' => $SubCommand];
@@ -273,7 +273,7 @@ class DENON_StatusHTML extends stdClass
         {
             $data['NetFuncSelect'] =  array('VarType' => DENONIPSVarType::vtString, 'Value' => (string)$NetFuncSelect[0]->value, 'Subcommand' => 'NetFuncSelect');
         }
-        */
+         */
 
         //selectSurround
         /*
@@ -282,7 +282,7 @@ class DENON_StatusHTML extends stdClass
         {
             $data['MS'] =  array('VarType' => DENONIPSVarType::vtInteger, 'Value' => (string)$selectSurround[0]->value, 'Subcommand' => 'Surround Mode');
         }
-        */
+         */
 
         //VolumeDisplay z.B. relative
         /*
@@ -291,7 +291,7 @@ class DENON_StatusHTML extends stdClass
         {
             $data['VolumeDisplay'] =  array('VarType' => DENONIPSVarType::vtString, 'Value' => (string)$VolumeDisplay[0]->value, 'Subcommand' => 'VolumeDisplay');
         }
-        */
+         */
 
         //MasterVolume
         $Element = $xml->xpath('.//MasterVolume');
@@ -324,7 +324,7 @@ class DENON_StatusHTML extends stdClass
                 }
             }
         }
-        */
+         */
 
         //GameSourceDisplay
         /*
@@ -333,7 +333,7 @@ class DENON_StatusHTML extends stdClass
         {
             $data['GameSourceDisplay'] =  array('VarType' => DENONIPSVarType::vtString, 'Value' => (string)$GameSourceDisplay[0]->value, 'Subcommand' => 'GameSourceDisplay');
         }
-        */
+         */
 
         //LastfmDisplay
         /*
@@ -342,7 +342,7 @@ class DENON_StatusHTML extends stdClass
         {
             $data['LastfmDisplay'] =  array('VarType' => DENONIPSVarType::vtString, 'Value' => (string)$LastfmDisplay[0]->value, 'Subcommand' => 'LastfmDisplay');
         }
-        */
+         */
 
         //SubwooferDisplay
         /*
@@ -351,7 +351,7 @@ class DENON_StatusHTML extends stdClass
         {
             $data['SubwooferDisplay'] =  array('VarType' => DENONIPSVarType::vtString, 'Value' => (string)$SubwooferDisplay[0]->value, 'Subcommand' => 'SubwooferDisplay');
         }
-        */
+         */
 
         //Zone2VolDisp
         /*
@@ -360,7 +360,7 @@ class DENON_StatusHTML extends stdClass
         {
             $data['Zone2VolDisp'] =  array('VarType' => DENONIPSVarType::vtString, 'Value' => (string)$Zone2VolDisp[0]->value, 'Subcommand' => 'Zone2VolDisp');
         }
-        */
+         */
 
         return $data;
     }

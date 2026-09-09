@@ -937,7 +937,6 @@ class Marantz_STEREO_70s extends Marantz_CINEMA_70s
         DENON_API_Commands::BL,
     ];
 
-
     public static array  $VS_Commands    = [
         DENON_API_Commands::VSSCH,
         DENON_API_Commands::VSAUDIO,

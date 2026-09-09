@@ -1059,7 +1059,6 @@ class Denon_AVR_X2700H extends Denon_AVR_X2600H
         DENON_API_Commands::DIM,
     ];
 
-
 }
 
 class Denon_AVR_X2800H extends Denon_AVR_X2700H
@@ -1697,7 +1696,6 @@ class Denon_AVR_X3400H extends Denon_AVR_X3000
     public static array  $InfoFunctions = [];
     public static array  $AvrInfos      = [DENON_API_Commands::SYSMI, DENON_API_Commands::SYSDA, DENON_API_Commands::SSINFAISFSV];
 
-
     public static array $SystemControl_Commands = [
         DENON_API_Commands::MN,
         DENON_API_Commands::MNMEN,
@@ -1868,7 +1866,7 @@ class Denon_AVR_X3500H extends Denon_AVR_X3400H
         DENON_API_Commands::PSDELAY,
         DENON_API_Commands::PSRSTR,
     ];
- }
+}
 
 class Denon_AVR_X3700H extends Denon_AVR_X3500H
 {
@@ -1952,7 +1950,6 @@ class Denon_AVR_X3700H extends Denon_AVR_X3500H
         DENON_API_Commands::BTTX,
         DENON_API_Commands::SPPR,
     ];
-
 
 }
 

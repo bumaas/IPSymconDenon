@@ -78,10 +78,10 @@ class DenonSplitterTelnet extends IPSModuleStrict
     {
         // return current form
         return json_encode([
-                               'status' => [],
-                               'elements' => []
-                           ],
-                           JSON_THROW_ON_ERROR);
+            'status' => [],
+            'elements' => []
+        ],
+            JSON_THROW_ON_ERROR);
     }
 
     /**

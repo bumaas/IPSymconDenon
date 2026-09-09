@@ -329,20 +329,20 @@ class DENON_API_Commands extends stdClass
     public const string IS_OFF       = 'OFF'; // Select Input Source Off
 
     public static array $SIMapping        = ['CBL/SAT'      => self::IS_SAT_CBL,
-                                             'MediaPlayer'  => self::IS_MPLAY,
-                                             'Media Player' => self::IS_MPLAY,
-                                             'Media Server' => self::IS_SERVER,
-                                             'iPod/USB'     => self::IS_USB_IPOD,
-                                             'M-XPORT'      => self::IS_MXPORT,
-                                             'TVAUDIO'      => self::IS_TV,
-                                             'TV AUDIO'     => self::IS_TV,
-                                             'Bluetooth'    => self::IS_BT,
-                                             'Blu-ray'      => self::IS_BD,
-                                             'Online Music' => self::IS_NET,
-                                             'NETWORK'                                 => self::IS_NET,
-                                             'Internet Radio'                          => self::IS_IRADIO,
-                                             'Last. fm'                                => self::IS_LASTFM,
-                                             'FM'                                      => self::IS_TUNER,
+        'MediaPlayer'  => self::IS_MPLAY,
+        'Media Player' => self::IS_MPLAY,
+        'Media Server' => self::IS_SERVER,
+        'iPod/USB'     => self::IS_USB_IPOD,
+        'M-XPORT'      => self::IS_MXPORT,
+        'TVAUDIO'      => self::IS_TV,
+        'TV AUDIO'     => self::IS_TV,
+        'Bluetooth'    => self::IS_BT,
+        'Blu-ray'      => self::IS_BD,
+        'Online Music' => self::IS_NET,
+        'NETWORK'                                 => self::IS_NET,
+        'Internet Radio'                          => self::IS_IRADIO,
+        'Last. fm'                                => self::IS_LASTFM,
+        'FM'                                      => self::IS_TUNER,
     ];
 
     public static array $SI_InputSettings = [
@@ -436,7 +436,7 @@ class DENON_API_Commands extends stdClass
     public const string MSAUTO           = 'AUTO'; // Auto
     public const string MSNEURAL         = 'NEURAL'; // Neural
     public const string MSAURO3D         = 'AURO3D'; //Auro 3D
- //   public const AURO3D = 'AURO3D'; //Auro 3D
+    //   public const AURO3D = 'AURO3D'; //Auro 3D
     public const string MSAURO2DSURR = 'AURO2DSURR'; //Auro 2D
 
     public const string MSLEFT  = 'LEFT'; // Change to previous Surround Mode
@@ -629,7 +629,6 @@ class DENON_API_Commands extends stdClass
     public const string DIRAC2   = ' 2'; // Filter Slot 2
     public const string DIRAC3   = ' 3'; // Filter Slot 3
     public const string DIRACOFF = ' OFF'; // Filter Off
-
 
     //PSDYNVOL (old version)
     public const string DYNVOLNGT = ' NGT'; // Dynamic Volume = Midnight

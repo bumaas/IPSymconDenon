@@ -389,7 +389,7 @@ class DenonAVRHTTP extends AVRModule
             if ($item){
                 $form[] = $item;
             }
-       }
+        }
 
         $form = array_merge(
             $form,

@@ -514,10 +514,10 @@ class AVR extends stdClass
     public static array  $PSSP_SubCommands           = [];
 
     public static array  $PSDYNVOL_SubCommands       = [ //bei neueren Geräten
-                                                         DENON_API_Commands::DYNVOLOFF,
-                                                         DENON_API_Commands::DYNVOLLIT,
-                                                         DENON_API_Commands::DYNVOLMED,
-                                                         DENON_API_Commands::DYNVOLHEV,
+        DENON_API_Commands::DYNVOLOFF,
+        DENON_API_Commands::DYNVOLLIT,
+        DENON_API_Commands::DYNVOLMED,
+        DENON_API_Commands::DYNVOLHEV,
     ];
 
     //Quick Select: erst die CY2026-Modelle kennen die sechste Auswahl.
@@ -604,7 +604,6 @@ class AVR extends stdClass
         DENON_API_Commands::TMAN_BAND,
         DENON_API_Commands::TMAN_MODE,
     ];
-
 
     public static string $httpMainZone = DENON_HTTP_Interface::MainForm;
 

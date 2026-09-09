@@ -375,7 +375,7 @@ if ($update) {
     exit(0);
 }
 
-echo "==== Abgleich mit ", basename($baselineFile), " ====\n";
+echo '==== Abgleich mit ', basename($baselineFile), " ====\n";
 
 if (!is_file($baselineFile)) {
     fwrite(STDERR, "FEHLER: Baseline fehlt: $baselineFile\n");
@@ -398,7 +398,7 @@ foreach ($entfallen as $eintrag) {
 }
 
 if ($neu !== [] || $entfallen !== []) {
-    fwrite(STDERR, "FEHLER: Vererbungsketten weichen von " . basename($baselineFile) . " ab (siehe oben).\n");
+    fwrite(STDERR, 'FEHLER: Vererbungsketten weichen von ' . basename($baselineFile) . " ab (siehe oben).\n");
     fwrite(STDERR, "NEU bedeutet: eine Klasse lässt ein Kommando des Elternteils still weg - prüfen, ob das gewollt ist.\n");
     fwrite(STDERR, "Falls beabsichtigt: php tests/inheritance_check.php --update (Baseline-Diff im Commit reviewen).\n");
     exit(1);

@@ -5,7 +5,6 @@ require_once __DIR__ . '/../DenonClass.php';  // diverse Klassen
 
 class DenonAVRTelnet extends AVRModule
 {
-
     public function Create(): void
     {
         //Never delete this line!
@@ -61,7 +60,6 @@ class DenonAVRTelnet extends AVRModule
         if (IPS_GetKernelRunlevel() !== KR_READY) {
             return;
         }
-
 
         if ($this->SetInstanceStatus() === true) {
             $manufacturername = $this->GetManufacturerName();
@@ -653,21 +651,21 @@ class DenonAVRTelnet extends AVRModule
         if ($command === 'AUX') {
             if (in_array(
                 $AVRType, [
-                            'AVR-X7200W',
-                            'AVR-X5200W',
-                            'AVR-X4100W',
-                            'AVR-X3100W',
-                            'AVR-X2000',
-                            'AVR-X2100W',
-                            'AVR-X2200W',
-                            'AVR-X2300W',
-                            'S900W',
-                            'AVR-X7200WA',
-                            'AVR-X6200W',
-                            'AVR-X4200W',
-                            'AVR-X3200W',
-                            'AVR-X1200W'
-                        ]
+                    'AVR-X7200W',
+                    'AVR-X5200W',
+                    'AVR-X4100W',
+                    'AVR-X3100W',
+                    'AVR-X2000',
+                    'AVR-X2100W',
+                    'AVR-X2200W',
+                    'AVR-X2300W',
+                    'S900W',
+                    'AVR-X7200WA',
+                    'AVR-X6200W',
+                    'AVR-X4200W',
+                    'AVR-X3200W',
+                    'AVR-X1200W'
+                ]
             )) {
                 $command = 'AUX1';
             } else {
@@ -1218,7 +1216,6 @@ class DenonAVRTelnet extends AVRModule
         $this->SendCommand(DENON_API_Commands::Z3QUICK . $command);
     }
 
-
     /***********************************************************
      * Configuration Form
      ***********************************************************/
@@ -1234,10 +1231,10 @@ class DenonAVRTelnet extends AVRModule
     {
         // return current form
         return json_encode([
-                               'elements' => $this->FormElements(),
-                               'actions'  => $this->FormActions(),
-                               'status'   => $this->FormStatus()
-                           ], JSON_THROW_ON_ERROR);
+            'elements' => $this->FormElements(),
+            'actions'  => $this->FormActions(),
+            'status'   => $this->FormStatus()
+        ], JSON_THROW_ON_ERROR);
     }
 
     /**

@@ -160,7 +160,6 @@ class DenonAVRCP_API_Data extends stdClass
 
     private $Logger_Dbg;
 
-
     public function __construct($AVRType, array $Data, callable $Logger_Dbg)
     {
         if ($AVRType === null) {
@@ -229,7 +228,7 @@ class DenonAVRCP_API_Data extends stdClass
     {
         $debug = false;
         foreach ($this->Data as $response) {
-            if (str_starts_with($response, "SSINF") || str_starts_with($response, "SSSINF")){
+            if (str_starts_with($response, 'SSINF') || str_starts_with($response, 'SSSINF')){
                 $debug = false; //Entwickleroption
             }
         }
@@ -296,7 +295,6 @@ class DenonAVRCP_API_Data extends stdClass
 
         //Response einzeln auswerten
         $VarMapping = new DENONIPSProfiles($this->AVRType, $InputMapping)->GetVariableProfileMapping();
-
 
         if ($VarMapping === false) {
             trigger_error(__CLASS__ . '::' . __FUNCTION__ . ': VarMapping failed');
@@ -407,9 +405,9 @@ class DenonAVRCP_API_Data extends stdClass
                         default:
                             if (!isset($item['ValueMapping'])) {
                                 call_user_func($this->Logger_Dbg,__CLASS__ . '::' . __FUNCTION__, 'ValueMapping not set - Item: ' . json_encode(
-                                                                                  $item,
-                                                                                  JSON_THROW_ON_ERROR
-                                                                              )
+                                    $item,
+                                    JSON_THROW_ON_ERROR
+                                )
                                 );
 
                                 //nur diese Antwort überspringen: ein früheres 'return null' hätte den
@@ -433,12 +431,12 @@ class DenonAVRCP_API_Data extends stdClass
                             } elseif (in_array($Command, [DENON_API_Commands::SI, DENON_API_Commands::Z2INPUT, DENON_API_Commands::Z3INPUT], true) && in_array($ResponseSubCommand, [DENON_API_Commands::IS_FAVORITES, DENON_API_Commands::IS_IRADIO, DENON_API_Commands::IS_SERVER, DENON_API_Commands::IS_NAPSTER, DENON_API_Commands::IS_LASTFM, DENON_API_Commands::IS_FLICKR], true)) {
                                 call_user_func($this->Logger_Dbg,__CLASS__ . '::' . __FUNCTION__, sprintf('*Hint*: Input Source %s not configured, check your configuration. Current inputs: %s'
                                     ,                                                   $ResponseSubCommand,
-                                                                                        json_encode($item['ValueMapping'], JSON_THROW_ON_ERROR)
+                                    json_encode($item['ValueMapping'], JSON_THROW_ON_ERROR)
                                 ));
                             } else {
                                 call_user_func($this->Logger_Dbg,__CLASS__ . '::' . __FUNCTION__, sprintf('*Warning*: No value found for SubCommand \'%s\' in response \'%s\', ValueMapping: %s, Model: %s'
                                     ,                                                   $ResponseSubCommand, $response,
-                                                                                        json_encode($item['ValueMapping'], JSON_THROW_ON_ERROR), $this->AVRType));
+                                    json_encode($item['ValueMapping'], JSON_THROW_ON_ERROR), $this->AVRType));
                             }
                             break;
                     }

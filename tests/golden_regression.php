@@ -153,13 +153,13 @@ const COMBOS = [
     ['label' => 'DRA-N5_main',  'manufacturer' => 1, 'model' => 'DRA-N5',         'zone' => 0],
     // CY2026/CY2025: deckt die mit Build 93 aufgenommenen Kommandos ab
     ['label'  => 'X3900H_main', 'manufacturer' => 1, 'model' => 'AVR-X3900H', 'zone' => 0,
-     'enable' => ['BluetoothLevel', 'ChannelLevelMonitoring', 'HDMIHotPlugTest',
-                  'ChannelExpander', 'SurroundLevelCompensation', 'QuickSelect', 'SurroundMode', 'VideoSelect']],
+        'enable' => ['BluetoothLevel', 'ChannelLevelMonitoring', 'HDMIHotPlugTest',
+            'ChannelExpander', 'SurroundLevelCompensation', 'QuickSelect', 'SurroundMode', 'VideoSelect']],
     ['label'  => 'X3900H_zone2', 'manufacturer' => 1, 'model' => 'AVR-X3900H', 'zone' => 1,
-     'enable' => ['Z2Quick']],
+        'enable' => ['Z2Quick']],
     ['label'  => 'AV20_main', 'manufacturer' => 2, 'model' => 'Marantz-AV20', 'zone' => 0,
-     'enable' => ['BluetoothLevel', 'HDMIHotPlugTest', 'SurroundLevelCompensation',
-                  'DACFilter', 'QuickSelect', 'SurroundMode', 'VideoSelect']],
+        'enable' => ['BluetoothLevel', 'HDMIHotPlugTest', 'SurroundLevelCompensation',
+            'DACFilter', 'QuickSelect', 'SurroundMode', 'VideoSelect']],
 ];
 const FORMS_FULL_LABEL = 'X3800H_main';
 
@@ -314,7 +314,7 @@ function buildFiles(): array
         'string' => ['ON', 'Auto']
     ];
     $excluded = ['Create', 'Destroy', 'ApplyChanges', 'MessageSink', 'ReceiveData', 'RequestAction',
-                 'GetConfigurationForm', 'GetStateHTTP', 'setPropertyForTest', 'resetRecorded', 'Translate'];
+        'GetConfigurationForm', 'GetStateHTTP', 'setPropertyForTest', 'resetRecorded', 'Translate'];
     $wrappers = [];
     $harness  = new TelnetHarness(0);
     $harness->Create();

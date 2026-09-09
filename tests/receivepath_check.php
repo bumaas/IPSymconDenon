@@ -253,7 +253,7 @@ Pruefung::ist(
 
 // Ein Fragment, das noch frisch ist, darf nicht verfallen.
 $harness = new SplitterHarness(0);
-empfange($harness, "MV5");
+empfange($harness, 'MV5');
 $harness->jetzt += 1;
 empfange($harness, "0\r");
 Pruefung::ist(

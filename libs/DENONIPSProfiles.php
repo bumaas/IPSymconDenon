@@ -424,9 +424,9 @@ declare(strict_types=1);
             $this->debug = true;
             $this->Logger_Dbg = $Logger_Dbg;
             call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'AVRType: ' . ($AVRType ?? 'null') . ', InputMapping: ' . ($InputMapping === null ? 'null' : json_encode(
-                                                $InputMapping,
-                                                JSON_THROW_ON_ERROR
-                                            )));
+                $InputMapping,
+                JSON_THROW_ON_ERROR
+            )));
         }
 
         $assRange00to98_add05step = $this->GetAssociationOfAsciiTodB('00', '98', '80', 0.5, true, false);
@@ -675,35 +675,35 @@ declare(strict_types=1);
             //Ident, Variablenname, Profilesettings
             //Associations: Value, Label, Association
             self::ptBalance => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::BL, 'Name' => 'Balance',
-                                   'PropertyName'                        => 'Balance',
-                                   'Profilesettings'                     => ['', '', '', 0, 0, 0, 0],
-                                   'Associations'                        => [
-                                       [-12, 'L 12', 'L12'],
-                                       [-11, 'L 11', 'L11'],
-                                       [-10, 'L 10', 'L10'],
-                                       [-9, 'L 9', 'L9'],
-                                       [-8, 'L 8', 'L8'],
-                                       [-7, 'L 7', 'L7'],
-                                       [-6, 'L 6', 'L6'],
-                                       [-5, 'L 5', 'L5'],
-                                       [-4, 'L 4', 'L4'],
-                                       [-3, 'L 3', 'L3'],
-                                       [-2, 'L 2', 'L2'],
-                                       [-1, 'L 1', 'L1'],
-                                       [0, '0', '0'],
-                                       [1, 'R 1', 'R1'],
-                                       [2, 'R 2', 'R2'],
-                                       [3, 'R 3', 'R3'],
-                                       [4, 'R 4', 'R4'],
-                                       [5, 'R 5', 'R5'],
-                                       [6, 'R 6', 'R6'],
-                                       [7, 'R 7', 'R7'],
-                                       [8, 'R 8', 'R8'],
-                                       [9, 'R 9', 'R9'],
-                                       [10, 'R 10', 'R10'],
-                                       [11, 'R 11', 'R11'],
-                                       [12, 'R 12', 'R12'],
-                                   ],
+                'PropertyName'                        => 'Balance',
+                'Profilesettings'                     => ['', '', '', 0, 0, 0, 0],
+                'Associations'                        => [
+                    [-12, 'L 12', 'L12'],
+                    [-11, 'L 11', 'L11'],
+                    [-10, 'L 10', 'L10'],
+                    [-9, 'L 9', 'L9'],
+                    [-8, 'L 8', 'L8'],
+                    [-7, 'L 7', 'L7'],
+                    [-6, 'L 6', 'L6'],
+                    [-5, 'L 5', 'L5'],
+                    [-4, 'L 4', 'L4'],
+                    [-3, 'L 3', 'L3'],
+                    [-2, 'L 2', 'L2'],
+                    [-1, 'L 1', 'L1'],
+                    [0, '0', '0'],
+                    [1, 'R 1', 'R1'],
+                    [2, 'R 2', 'R2'],
+                    [3, 'R 3', 'R3'],
+                    [4, 'R 4', 'R4'],
+                    [5, 'R 5', 'R5'],
+                    [6, 'R 6', 'R6'],
+                    [7, 'R 7', 'R7'],
+                    [8, 'R 8', 'R8'],
+                    [9, 'R 9', 'R9'],
+                    [10, 'R 10', 'R10'],
+                    [11, 'R 11', 'R11'],
+                    [12, 'R 12', 'R12'],
+                ],
             ],
 
             self::ptInputSource => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::SI, 'Name' => 'Input Source',
@@ -1374,12 +1374,11 @@ declare(strict_types=1);
             ],
 
             self::ptTunerAnalogPreset => ['Type'                    => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::TPAN, 'Name' => 'Tuner Preset',
-                                          'PropertyName'            => 'TunerPreset',
-                                          'Profilesettings'         => ['Database', '', '', 0, 0, 0, 0],
-                                          'Associations'            => $assRange00to56,
-                                          'IndividualStatusRequest' => 'TPAN?',
+                'PropertyName'            => 'TunerPreset',
+                'Profilesettings'         => ['Database', '', '', 0, 0, 0, 0],
+                'Associations'            => $assRange00to56,
+                'IndividualStatusRequest' => 'TPAN?',
             ],
-
 
             //--- Attention: the order of the next two items may not be changed, becauseTM is a substring of TMAN
             self::ptTunerAnalogBand => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::TMAN_BAND, 'Name' => 'Tuner Band',
@@ -1394,13 +1393,13 @@ declare(strict_types=1);
             ],
 
             self::ptTunerAnalogMode => ['Type'             => DENONIPSVarType::vtInteger, 'Ident' => DENON_API_Commands::TMAN_MODE, 'Name' => 'Tuner Mode',
-                                        'PropertyName'                                 => 'TunerMode',
-                                        'Profilesettings'                              => ['Database', '', '', 0, 0, 0, 0],
-                                        'Associations'                                 => [
-                                            [0, 'automatisch', DENON_API_Commands::TMANAUTO],
-                                            [1, 'manuell', DENON_API_Commands::TMANMANUAL],
-                                        ],
-                                        'IndividualStatusRequest' => 'TMAN?',
+                'PropertyName'                                 => 'TunerMode',
+                'Profilesettings'                              => ['Database', '', '', 0, 0, 0, 0],
+                'Associations'                                 => [
+                    [0, 'automatisch', DENON_API_Commands::TMANAUTO],
+                    [1, 'manuell', DENON_API_Commands::TMANMANUAL],
+                ],
+                'IndividualStatusRequest' => 'TMAN?',
             ],
 
             //Type Float
@@ -1602,17 +1601,17 @@ declare(strict_types=1);
             self::ptZone3Treble => ['Type'                                => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::Z3PSTRE, 'Name' => 'Zone 3 Treble',
                 'PropertyName'                                            => 'Z3Treble', 'Profilesettings' => ['Intensity', '', ' dB', -10, 10, 1, 0], 'Associations' => $assRange40to60, ],
             self::ptSSINFAISFSV => ['Type' => DENONIPSVarType::vtFloat, 'Ident' => DENON_API_Commands::SSINFAISFSV, 'Name' => 'Audio: Abtastrate',
-                              'PropertyName'                                        => 'SSINFAISFSV', 'Profilesettings' => ['Information', '', ' kHz', 0, 0, 0, 1], 'Associations' => [], 'displayOnly' => true],
+                'PropertyName'                                        => 'SSINFAISFSV', 'Profilesettings' => ['Information', '', ' kHz', 0, 0, 0, 1], 'Associations' => [], 'displayOnly' => true],
 
             //Type String
             self::ptMainZoneName    => ['Type' => DENONIPSVarType::vtString, 'Ident' => 'MainZoneName', 'Name' => 'MainZone Name', 'PropertyName' => 'ZoneName', 'Profilesettings' => ['Information'], 'displayOnly' => true],
             self::ptModel           => ['Type' => DENONIPSVarType::vtString, 'Ident' => 'Model', 'Name' => 'Model', 'PropertyName' => 'Model', 'Profilesettings' => ['Information'], 'displayOnly' => true],
             self::ptSurroundDisplay => ['Type' => DENONIPSVarType::vtString, 'Ident' => DENON_API_Commands::SURROUNDDISPLAY, 'Name' => 'Surround Mode Display',
-                                        'PropertyName'                                        => 'SurroundDisplay', 'Profilesettings' => ['Information'], 'displayOnly' => true ],
+                'PropertyName'                                        => 'SurroundDisplay', 'Profilesettings' => ['Information'], 'displayOnly' => true ],
             self::ptSYSMI => ['Type' => DENONIPSVarType::vtString, 'Ident' => DENON_API_Commands::SYSMI, 'Name' => 'Audio: Soundmodus',
-                                        'PropertyName'                                        => 'SYSMI', 'Profilesettings' => ['Information'], 'Associations' => [], 'displayOnly' => true],
+                'PropertyName'                                        => 'SYSMI', 'Profilesettings' => ['Information'], 'Associations' => [], 'displayOnly' => true],
             self::ptSYSDA => ['Type' => DENONIPSVarType::vtString, 'Ident' => DENON_API_Commands::SYSDA, 'Name' => 'Audio: Eingangssignal',
-                                        'PropertyName'                                        => 'SYSDA', 'Profilesettings' => ['Information'], 'Associations' => [], 'displayOnly' => true],
+                'PropertyName'                                        => 'SYSDA', 'Profilesettings' => ['Information'], 'Associations' => [], 'displayOnly' => true],
             self::ptDisplay => ['Type'                                => DENONIPSVarType::vtString, 'Ident' => DENON_API_Commands::DISPLAY, 'Name' => 'OSD Info', 'ProfilName' => '~HTMLBox', 'PropertyName' => 'Display', 'Profilesettings' => ['TV'],
                 'IndividualStatusRequest'                             => 'NSA', 'displayOnly' => true],
             self::ptZone2Name => ['Type' => DENONIPSVarType::vtString, 'Ident' => 'Zone2Name', 'Name' => 'Zone 2 Name', 'PropertyName' => self::ptZone2Name, 'Profilesettings' => ['Information'], 'displayOnly' => true],
@@ -1634,7 +1633,7 @@ declare(strict_types=1);
             $this->updateProfileAccordingToCaps(self::ptZone2QuickSelect, $caps);
 
             if (in_array($AVRType, ['AVR-X4000', 'AVR_3808A', 'AVR-X3000', 'AVR-4310', 'AVR-4311', 'AVR-3310', 'AVR-3311', 'AVR-3312', 'AVR-3313',
-                                    'Marantz-SR6005', 'Marantz-SR6006', 'Marantz-NR1602', 'Marantz-SR5006', 'Marantz-SR7005', 'Marantz-AV7005'])){
+                'Marantz-SR6005', 'Marantz-SR6006', 'Marantz-NR1602', 'Marantz-SR5006', 'Marantz-SR7005', 'Marantz-AV7005'])){
                 $this->profiles[self::ptTunerAnalogPreset]['Associations'] = $assRangeA1toG8;
             }
 
@@ -1790,7 +1789,7 @@ declare(strict_types=1);
 
             default:
                 trigger_error('unknown zone: ' . $Zone);
-       }
+        }
 
     }
 
@@ -1938,11 +1937,11 @@ declare(strict_types=1);
         switch ($profile['Type']) {
             case DENONIPSVarType::vtBoolean:
                 $ret = ['Name'     => $profile['Name'],
-                        'Ident'        => $profile['Ident'],
-                        'Type'         => $profile['Type'],
-                        'PropertyName' => $profile['PropertyName'],
-                        'Position'     => $this->getpos($configId),
-                        'displayOnly'  => $profile['displayOnly'] ?? false
+                    'Ident'        => $profile['Ident'],
+                    'Type'         => $profile['Type'],
+                    'PropertyName' => $profile['PropertyName'],
+                    'Position'     => $this->getpos($configId),
+                    'displayOnly'  => $profile['displayOnly'] ?? false
                 ];
                 break;
 
@@ -2056,9 +2055,9 @@ declare(strict_types=1);
             if (count($profile_without_pos) > 0) {
                 call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'Order: ' . json_encode(static::$order, JSON_THROW_ON_ERROR));
                 trigger_error(__CLASS__ . '::' . __FUNCTION__ . ': Profiles without positions: ' . json_encode(
-                                  $profile_without_pos,
-                                  JSON_THROW_ON_ERROR
-                              )
+                    $profile_without_pos,
+                    JSON_THROW_ON_ERROR
+                )
                 );
 
                 return false;
@@ -2077,9 +2076,9 @@ declare(strict_types=1);
                 call_user_func($this->Logger_Dbg,__CLASS__ . '::' . __FUNCTION__, 'Profiles: ' . json_encode($this->profiles, JSON_THROW_ON_ERROR));
                 call_user_func($this->Logger_Dbg, __CLASS__ . '::' . __FUNCTION__, 'Keys: ' . json_encode(array_keys($this->profiles), JSON_THROW_ON_ERROR));
                 trigger_error(__CLASS__ . '::' . __FUNCTION__ . ': Order Element without definition: ' . json_encode(
-                                  $order_without_definition,
-                                  JSON_THROW_ON_ERROR
-                              )
+                    $order_without_definition,
+                    JSON_THROW_ON_ERROR
+                )
                 );
 
                 return false;
@@ -2112,14 +2111,14 @@ declare(strict_types=1);
 
         if (count($profile_not_used_in_caps) > 0) {
             trigger_error(__CLASS__ . '::' . __FUNCTION__ . ': Profiles not used in Capabilities(MAX):' . json_encode(
-                              $profile_not_used_in_caps,
-                              JSON_THROW_ON_ERROR
-                          ) . PHP_EOL . 'Capabilities: ' . json_encode($all_capabilities, JSON_THROW_ON_ERROR)
+                $profile_not_used_in_caps,
+                JSON_THROW_ON_ERROR
+            ) . PHP_EOL . 'Capabilities: ' . json_encode($all_capabilities, JSON_THROW_ON_ERROR)
             );
             call_user_func($this->Logger_Dbg,__CLASS__ . '::' . __FUNCTION__, 'Profiles not used in Capabilities(MAX):' . json_encode(
-                                                              $profile_not_used_in_caps,
-                                                              JSON_THROW_ON_ERROR
-                                                          ) . PHP_EOL . 'Capabilities: ' . json_encode($all_capabilities, JSON_THROW_ON_ERROR)
+                $profile_not_used_in_caps,
+                JSON_THROW_ON_ERROR
+            ) . PHP_EOL . 'Capabilities: ' . json_encode($all_capabilities, JSON_THROW_ON_ERROR)
             );
 
             return false;
