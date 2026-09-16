@@ -290,15 +290,14 @@ class AVRModule extends IPSModuleStrict
         }
 
         return match ($varDef['Type']) {
+            // Der Schalter kennt kein ICON (nur ICON_TRUE/ICON_FALSE), die Aufzählung kein SUFFIX.
             DENONIPSVarType::vtBoolean => [
                 'PRESENTATION' => VARIABLE_PRESENTATION_SWITCH,
-                'ICON'         => $varDef['Icon'] ?? false,
             ],
 
             DENONIPSVarType::vtInteger => array_filter([
                 'PRESENTATION' => VARIABLE_PRESENTATION_ENUMERATION,
                 'ICON'         => $varDef['Icon'] ?? false,
-                'SUFFIX'       => $suffix,
                 'OPTIONS'      => $enumOptions,
             ], static fn ($value) => $value !== null),
 
