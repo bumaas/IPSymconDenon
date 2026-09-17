@@ -34,19 +34,12 @@ AVR-XML gebaut (`SetInputSources()`).
 
 ## Schalten: `RequestAction` statt eigener Wrapper
 
-Symcon bietet seit 5.0 die globale Funktion `RequestAction(int $VariablenID, mixed $Wert)`;
-paresy hat sie 2018 ausdrücklich als Ersatz für hardwarespezifische Schaltfunktionen
-eingeführt. Die Voraussetzung erfüllt das Modul: `AVRModule` ruft `EnableAction()` für jede
-schaltbare Statusvariable (`libs/AVRModule.php:461`). **Für reines Zustandsschalten sind
-eigene öffentliche Wrapper damit überholt.**
+Die Regel (neue Wrapper nur, wo `RequestAction` nicht reicht; bestehende bleiben; defekte
+dürfen entfallen) steht in der globalen CLAUDE.md, Modul-Checkliste Punkt 8. Die
+Voraussetzung erfüllt das Modul: `AVRModule::RegisterVariables()` ruft `EnableAction()` für
+jede schaltbare Statusvariable (`libs/AVRModule.php`, Suche nach `EnableAction`).
 
-- **Neue** öffentliche Funktionen nur noch, wenn `RequestAction` den Fall strukturell nicht
-  abbilden kann: keine Statusvariable (z. B. Menü- und Netzwerk-Navigation), mehrere
-  Parameter oder ein Rückgabewert.
-- **Bestehende, funktionierende** Wrapper bleiben. Sie zu entfernen wäre ein Breaking Change
-  an der Skript-API und damit ein Major-Sprung — sie sind nicht deprecated.
-- **Ausnahme:** nachweislich defekte Wrapper dürfen entfernt statt repariert werden, sofern
-  die Fähigkeit über `RequestAction` erreichbar bleibt. So geschehen in **2.30 build 91**
+- Defekte Wrapper entfernt wurden in **2.30 build 91**
   (`CinemaEQ`, `StageWidth`, `StageHeight`, `RecSelect` — alle vier konnten nie erfolgreich
   aufgerufen werden; dazu `Dimmer` aus der eintägigen Beta 2.29 #88).
 - Die Funktionsreferenz in `docs/de/README.md` und `docs/en/README.md` beginnt deshalb mit
@@ -60,9 +53,10 @@ eigene öffentliche Wrapper damit überholt.**
 Der Code setzt eine deutlich neuere PHP-Version voraus, als man beim Lesen
 vermutet — beides ist gewollt, aber leicht zu übersehen:
 
-- **PHP 8.4** wegen `new Foo()->bar()` (new ohne Klammern) an fünf Stellen:
-  `Denon AVR Telnet/module.php:176,1364`, `libs/AVRModule.php:591,597`,
-  `libs/DenonAVRCP_API_Data.php:298`. Unter PHP 8.3 ist das ein **Parse-Fehler** —
+- **PHP 8.4** wegen `new Foo()->bar()` (new ohne Klammern) an fünf Stellen in
+  `Denon AVR Telnet/module.php`, `libs/AVRModule.php` und `libs/DenonAVRCP_API_Data.php`.
+  Aktuell finden: `grep -rn --include=*.php "new [A-Za-z]*(.*)->" .` (Treffer der Form
+  `(new Foo())->` sind 8.3-tauglich). Unter PHP 8.3 ist das ein **Parse-Fehler** —
   die Bibliothek lädt dort nicht, es gibt keine teilweise Funktion.
 - **PHP 8.3** wegen getypter Klassenkonstanten (`public const string …`), rund
   1000 Stellen, überwiegend in `libs/DENON_API_Commands.php` und
@@ -70,9 +64,9 @@ vermutet — beides ist gewollt, aber leicht zu übersehen:
 - `library.json` steht deshalb auf `compatibility.version: "8.2"`, gesetzt am
   2026-02-02 im selben Commit (`6acd5dc`, 2.20 build 58), der die 8.4-Syntax
   einführte. Eine Symcon-**8.2** gibt es in der Versionsübersicht nicht (8.0
-  Q1/2025 → 8.1 Q3/2025 → 9.0 Q1/2026); die Zahl dürfte die Beta-Nummer der
-  9.0-Linie sein. Der Effekt stimmt so oder so: unterhalb der 9.0-Linie wird das
-  Modul nicht angeboten, und 9.0 bringt PHP 8.5.
+  Q1/2025 → 8.1 Q3/2025 → 9.0 Q1/2026); 8.2 war die Entwicklungsbezeichnung für 9.0 (die Doku markiert
+  9.0-Neuerungen als „8.2"). Unterhalb von 9.0 wird das Modul also nicht angeboten,
+  und 9.0 bringt PHP 8.5.
 
 **Wer `compatibility.version` senkt, muss vorher die fünf 8.4-Stellen
 umschreiben** — sonst ist die Bibliothek bei genau den Anwendern unlesbar, die
@@ -101,6 +95,9 @@ Composite-Strings sind über locale.json nicht übersetzbar.
 ## Tests
 
 - `tests/check_locale.php` — Übersetzungs-Vollständigkeit (siehe „Texte pflegen").
+- `tests/check_presentations.php` — prüft, dass jede Darstellung im Quelltext nur
+  Parameter setzt, die es in dieser Darstellung gibt (Symcon 9.1 validiert das selbst).
+  Prüfen: `C:\php\php tests/check_presentations.php` (auch in der CI).
 - `tests/golden_regression.php` — **Golden-File-Regressionstest** (läuft ohne Kernel/
   Netz über `tests/symcon_stubs.php`): friert Capabilities aller 112 Modelle,
   Profilkatalog, Presentations, Variablen-Registrierung, alle ~150 Telnet-Wrapper-
@@ -138,7 +135,7 @@ Composite-Strings sind über locale.json nicht übersetzbar.
   (so verlor `Denon_AVR_X2700H` den Dimmer `DIM`, und Build 85 erzeugte denselben
   Bruch neu bei `Denon_AVR_X4700H`).
   - Prüfen: `C:\php\php tests/inheritance_check.php` (auch in der CI).
-  - Rund 200 Verluste sind Bestand und meist legitim; sie liegen als **Baseline**
+  - 556 Verluste in 83 Klassen sind Bestand und meist legitim; sie liegen als **Baseline**
     in `tests/inheritance_baseline.json`. Rot wird nur ein *neuer* Verlust.
   - `--update` nur nach bewusster Prüfung; den Baseline-Diff im Commit reviewen.
   - `--command DIM` zeigt die Abdeckung eines Kommandos samt Deklarationsstellen
@@ -205,65 +202,28 @@ Composite-Strings sind über locale.json nicht übersetzbar.
 
 ## Robustheit im Empfangs- und HTTP-Pfad (2.30 build 97/98)
 
-Fünf Fehler — **keine** fehlenden Features —, die genau dann wirken, wenn
-ohnehin etwas klemmt (Gerät aus, Netz weg). Sie sind mit **build 97** (Telnet)
-und **build 98** (HTTP) behoben. Beide Pfade haben seither ein Regressionsnetz,
-das vorher fehlte: die Golden-Suite deckt nur den Sendeweg ab, `ReceiveData`
-steht dort sogar auf der Ausschlussliste. Fehler dieser Art fielen also erst
-beim Anwender auf — zum Vergleich hat `Denon Splitter Telnet/module.php` 110
-Commits, rund 50 davon mit einem Fix-Betreff.
+Fünf Fehler, die nur wirken, wenn ohnehin etwas klemmt (Gerät aus, Netz weg).
+Rot/Grün-Nachweis nach der globalen Regel (receivepath vorher 2 von 11 rot,
+httppath 6 von 10).
 
-**build 97 — Telnet-Empfangspfad** (`tests/receivepath_check.php`, 11 Zusicherungen):
+**build 97 — Telnet** (`tests/receivepath_check.php`):
 
-- **Fragmentpuffer ohne Verfall.** `ReceiveData()` puffert Pakete, die nicht auf
-  `\r` enden; ein abgerissenes Telegramm blieb dauerhaft liegen und wurde jeder
-  folgenden Antwort vorangestellt — die Instanz war bis zum Neustart still taub.
-  Jetzt verfallen Bruchstücke über `FRAGMENT_MAX_LENGTH` (4096 Byte) und älter
-  als `FRAGMENT_MAX_AGE` (30 s) mit einer Warnung. 4096 Byte sind rund das
-  Fünffache eines vollständigen Statusabrufs; die Grenze greift nur im
-  Fehlerfall. `protected function currentTime(): int` ist die Naht, an der die
-  Prüfroutine die Uhr stellt.
-- **Null-Rückgabe.** `GetCommandResponse()` überspringt eine Antwort ohne
-  `ValueMapping`, statt den ganzen Stapel zu verwerfen; Rückgabetyp jetzt
-  `array` statt `?array`. **Erreichbar war das `return null` allerdings nie** —
-  `GetVariableProfileMapping()` setzt `ValueMapping` ausnahmslos, über alle 112
-  Modelle und 174 Katalogeinträge nachgemessen. Der Fix ist Absicherung, kein
-  reparierter Absturz; die Zusicherung selbst steht seither als Prüfung in der
-  Routine.
+- Fragmentpuffer verfällt jetzt (`FRAGMENT_MAX_LENGTH` 4096 Byte, `FRAGMENT_MAX_AGE`
+  30 s, Uhr-Naht `currentTime()`); vorher machte ein abgerissenes Telegramm die Instanz
+  bis zum Neustart taub.
+- `GetCommandResponse()` überspringt eine Antwort ohne `ValueMapping` statt den Stapel
+  zu verwerfen (reine Absicherung — der Fall war nie erreichbar).
 
-**build 98 — HTTP-Pfad** (`tests/httppath_check.php`, 10 Zusicherungen):
+**build 98 — HTTP** (`tests/httppath_check.php`):
 
-- **Semaphore ohne Besitz freigegeben.** `GetStatus()` und zweimal
-  `SendCommand()` riefen auch im Zweig „Lock fehlgeschlagen" `unlock()`, und
-  `unlock()` ruft bedingungslos `IPS_SemaphoreLeave` — ein Tick gab damit die
-  Sperre eines **anderen**, noch laufenden Ticks frei. Bei 10-Sekunden-Timer und
-  sechs blockierenden Abrufen war Überlappung der Regelfall. Die drei Aufrufe
-  sind entfallen. `SemaphoreStub` in `tests/symcon_stubs.php` führt dafür
-  dasselbe Konto wie der Kernel und meldet jedes `Leave` ohne `Enter`.
-- **Fehlerursache verworfen.** Die drei `throw new Exception('… failed')`
-  reichen jetzt Meldung **und** Ursache durch (`… . $exc->getMessage(), 0, $exc`).
-- **Keine Timeouts.** `fetchXml()` bekommt den Stream-Context aus
-  `protected function httpContext()` mit `HTTP_TIMEOUT = 2.0`; die Option
-  `timeout` des http-Wrappers begrenzt Verbindungsaufbau *und* Lesen. Statt bis
-  zu 6 × 60 s pro Zyklus (innerhalb der Semaphore des Aufrufers) sind es
-  höchstens 6 × 2 s. **Kein Early-Abort:** ein 404 einer nicht vorhandenen Zone
-  ist normal und darf die übrigen Endpunkte nicht abschneiden (so steht es im
-  Kommentar über `fetchXml()`); die 12 s liegen daher weiterhin über dem
-  10-Sekunden-Timer.
+- Kein `IPS_SemaphoreLeave` mehr ohne gehaltene Sperre in `GetStatus()`/`SendCommand()`
+  (`SemaphoreStub` in `tests/symcon_stubs.php` führt Buch).
+- Die drei `throw` reichen Meldung und Ursache (`$previous`) durch.
+- `fetchXml()` mit Timeout über die Naht `httpContext()` (`HTTP_TIMEOUT = 2.0`); bewusst
+  kein Early-Abort, weil ein 404 einer fehlenden Zone normal ist.
 
-**Zwei Prüfdateien statt einer.** Der ursprüngliche Plan sah eine Datei mit vier
-Abschnitten vor. Sie wäre nach dem ersten Commit rot gewesen — deshalb je eine
-Datei pro Pfad, jede zusammen mit ihrem Fix. Beide entstanden **vor** dem Fix und
-waren nachweislich rot (receivepath: 2 von 11, httppath: 6 von 10); ein Test, der
-nie rot war, ist wertlos. `golden_regression` rührte sich bei keinem der beiden
-Commits — der Sendeweg ist nicht angefasst.
-
-**Weiterhin offen:** ein Golden über `GetCommandResponse()` mit einem Korpus
-**echter** Telnet-Antwortzeilen wäre die wirksamste Ergänzung — dafür braucht es
-einen Mitschnitt aus dem Splitter-Debug, keine erfundenen Daten. Bewusst nicht
-Teil der beiden Builds waren außerdem: Logger-Trait, Attribut-Migration und
-additiver Capability-Mechanismus; Retry oder Backoff im HTTP-Polling; die
-`FormExpertParameters()`-Lücke und die Aufräum-Routine für verwaiste Alt-Profile.
+Offen: ein Golden über `GetCommandResponse()` mit **echten** Telnet-Antwortzeilen aus
+einem Splitter-Debug-Mitschnitt.
 
 ## Bekannte offene Punkte (bewusst zurückgestellt)
 
@@ -372,5 +332,4 @@ additiver Capability-Mechanismus; Retry oder Backoff im HTTP-Polling; die
 
 ## Support-Kontext
 
-Fehlerberichte kommen aus dem Symcon-Forum (community.symcon.de); Fixes als Beta
-über `master` in den Store, Forum-Antworten auf Deutsch.
+Fehlerberichte kommen aus dem Symcon-Forum; Antworten über den Skill `antwort-entwurf`.
