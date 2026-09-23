@@ -4,7 +4,7 @@
 ![Code](https://img.shields.io/badge/Code-PHP-blue.svg)
 [![StyleCI](https://github.styleci.io/repos/57190839/shield?branch=master)](https://github.styleci.io/repos/57190839)
 
-Modul für IP-Symcon ab Version 5.1. Ermöglicht die Kommunikation mit einem Denon AV Receiver oder Marantz AV Receiver.
+Modul für Symcon ab Version 5.1. Ermöglicht die Kommunikation mit einem Denon AV Receiver oder Marantz AV Receiver.
 
 ## Dokumentation
 
@@ -19,10 +19,10 @@ Modul für IP-Symcon ab Version 5.1. Ermöglicht die Kommunikation mit einem Den
 
 ## 1. Funktionsumfang
 
-Mit dem Modul lassen sich Befehle an einen Denon Receiver oder Marantz Receiver absenden und die Statusrückmeldung in IP-Symcon empfangen. Es gibt zwei unterschiedliche Module die benutzt werden können.
+Mit dem Modul lassen sich Befehle an einen Denon Receiver oder Marantz Receiver absenden und die Statusrückmeldung in Symcon empfangen. Es gibt zwei unterschiedliche Module die benutzt werden können.
 Ein Modul nutzt als Kommunikation Port 23 über das Denon AVR Control Protocol. Das zweite Modul nutzt zur Kommunikation HTTP.
 Der Denon AVR kann jeweils nur einen einzige Verbindung auf Port 23 aufbauen. Daher kann, wenn dieses Modul benutzt wird, kein weiterer Client mehr den Denon AVR auf diese Weise über Port 23 steuern.
-Der Vorteil ist jedoch, dass sämtliche dokumentierte Befehle an den Denon AVR geschickt und auch eine Rückmeldung in IP-Symcon dafür empfangen werden kann. Die zweite Möglichkeit ist das Denon HTTP Modul zu benutzen.
+Der Vorteil ist jedoch, dass sämtliche dokumentierte Befehle an den Denon AVR geschickt und auch eine Rückmeldung in Symcon dafür empfangen werden kann. Die zweite Möglichkeit ist das Denon HTTP Modul zu benutzen.
 Abhängig vom Baujahr des Receivers sind aber nicht für alle Befehle auch eine Rückmeldung verfügbar. Auch mit dem HTTP Modul können aber alle dokumentierten Befehle an den Receiver geschickt werden. Es können auch mehrere Clients über HTTP
 Befehle an den Denon Receiver verschicken und Rückmeldung erhalten.
 
@@ -51,16 +51,16 @@ Marantz-CINEMA 50, Marantz-CINEMA 40, Marantz-AV20, Marantz-AV30
 ## 2. Voraussetzungen
 
  - IPS 5.1
- - Denon AVR oder Marantz AVR mit Netzwerkanschluss. Fernsteuerung des Denon AVR oder Marantz AVR muss aktiviert sein (siehe Handbuch AVR). IP-Symcon muss im gleichen Netzwerk wie der AVR sein.
+ - Denon AVR oder Marantz AVR mit Netzwerkanschluss. Fernsteuerung des Denon AVR oder Marantz AVR muss aktiviert sein (siehe Handbuch AVR). Symcon muss im gleichen Netzwerk wie der AVR sein.
 
 ## 3. Installation
 
 ### a. Laden des Moduls
 
-Die Webconsole von IP-Symcon mit _http://{IP-Symcon IP}:3777/console/_ öffnen. 
+Die Webconsole von Symcon mit _http://{IP-Symcon IP}:3777/console/_ öffnen. 
 
 
-Anschließend oben rechts auf das Symbol für den Modulstore (IP-Symcon > 5.1) klicken
+Anschließend oben rechts auf das Symbol für den Modulstore (Symcon > 5.1) klicken
 
 ![Store](img/store_icon.png?raw=true "open store")
 
@@ -87,7 +87,7 @@ Den Objektbaum _Öffnen_.
 
 ![Objektbaum](img/objektbaum.png?raw=true "Objektbaum")	
 
-Die Instanz _'Modules'_ unterhalb von Kerninstanzen im Objektbaum von IP-Symcon (>=Ver. 5.x) mit einem Doppelklick öffnen und das  _Plus_ Zeichen drücken.
+Die Instanz _'Modules'_ unterhalb von Kerninstanzen im Objektbaum von Symcon (>=Ver. 5.x) mit einem Doppelklick öffnen und das  _Plus_ Zeichen drücken.
 
 ![Modules](img/Modules.png?raw=true "Modules")	
 
@@ -108,7 +108,7 @@ Nur der Zweig _master_ wird aktuell gehalten.
 
 ![Master](img/master.png?raw=true "master") 
 
-Sollte eine ältere Version von IP-Symcon die kleiner ist als Version 5.1 (min 4.3) eingesetzt werden, ist auf das Zahnrad rechts in der Liste zu klicken.
+Sollte eine ältere Version von Symcon die kleiner ist als Version 5.1 (min 4.3) eingesetzt werden, ist auf das Zahnrad rechts in der Liste zu klicken.
 Es öffnet sich ein weiteres Fenster,
 
 ![SelectBranch](img/select_branch.png?raw=true "select branch") 
@@ -117,18 +117,18 @@ hier kann man auf einen anderen Zweig wechseln, für ältere Versionen kleiner a
 _Old-Version_ auszuwählen. 
 
 
-### b. Einrichtung in IP-Symcon
+### b. Einrichtung in Symcon
 
-In IP-Symcon wird für jede Zone des AV Receivers die wir nutzen wollen eine separate Instanz angelegt. Der Denon IO und Denon Splitter wird
+In Symcon wird für jede Zone des AV Receivers die wir nutzen wollen eine separate Instanz angelegt. Der Denon IO und Denon Splitter wird
 automatisch mit angelegt. 	
-In IP-Symcon nun _Instanz hinzufügen_ (_Rechtsklick -> Objekt hinzufügen -> Instanz_) auswählen unter der Kategorie, unter der man die Denon/Marantz AVR Instanz hinzufügen will,
+In Symcon nun _Instanz hinzufügen_ (_Rechtsklick -> Objekt hinzufügen -> Instanz_) auswählen unter der Kategorie, unter der man die Denon/Marantz AVR Instanz hinzufügen will,
 und _Denon_ auswählen.
 
 ![Modulauswahl](img/install1.png?raw=true "Modulauswahl")
 
 Über _**Denon**_ finden wir die Instanz und mit weiter und Ok wird diese angelegt.
 
-Zur Auswahl stehen in IP-Symcon das Denon/Marantz AV Receiver HTTP Control und das Denon/Marantz AV Receiver Telnet Control. Die Denon/Marantz AV Receiver Telnet Control verfügt über den deutlich größeren Funktionsumfang und sollte nach Möglichkeit genutzt werden.
+Zur Auswahl stehen in Symcon das Denon/Marantz AV Receiver HTTP Control und das Denon/Marantz AV Receiver Telnet Control. Die Denon/Marantz AV Receiver Telnet Control verfügt über den deutlich größeren Funktionsumfang und sollte nach Möglichkeit genutzt werden.
 Es kann aber jeweils nur ein Gerät auf diese Weise mit dem AV Receiver verbunden sein. Sollte also bereits ein anderes Gerät oder Remote diese Verbindung nutzen kann auch alternativ Denon/Marantz AV Receiver HTTP Control genutzt werden. 
 Bei dem entsprechenden Denon Splitter ist die IP Adresse des Denon AVR einzutragen.
 

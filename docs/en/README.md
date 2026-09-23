@@ -4,7 +4,7 @@
 ![Code](https://img.shields.io/badge/Code-PHP-blue.svg)
 [![StyleCI](https://github.styleci.io/repos/57190839/shield?branch=master)](https://github.styleci.io/repos/57190839)
 
-Module for IP-Symcon version 5.1 or higher. Allows communication with a Denon AV Receiver or Marantz AV Receiver.
+Module for Symcon version 5.1 or higher. Allows communication with a Denon AV Receiver or Marantz AV Receiver.
 
 ## Documentation
 
@@ -19,10 +19,10 @@ Module for IP-Symcon version 5.1 or higher. Allows communication with a Denon AV
 
 ## 1. Features
 
-The module can send commands to a Denon Receiver or Marantz Receier and receive the status feedback in IP-Symcon. There are two different modules that can be used.
+The module can send commands to a Denon Receiver or Marantz Receier and receive the status feedback in Symcon. There are two different modules that can be used.
 One module uses Port 23 communication via the Denon AVR Control Protocol. The second module uses HTTP for communication.
 The Denon AVR can only establish a single connection on port 23 at a time. Therefore, if this module is used, no further client can control the Denon AVR in this way via port 23.
-The advantage, however, is that all documented commands can be sent to the Denon AVR and also receive feedback in IP-Symcon. The second option is to use the Denon HTTP module.
+The advantage, however, is that all documented commands can be sent to the Denon AVR and also receive feedback in Symcon. The second option is to use the Denon HTTP module.
 Depending on the year of manufacture of the receiver, feedback is not available for all commands. Even with the HTTP module, however, all documented commands can be sent to the receiver. It can also have multiple clients over HTTP
 Send commands to the Denon receiver and receive feedback.
 
@@ -59,7 +59,7 @@ Marantz-CINEMA 50, Marantz-CINEMA 40, Marantz-AV20, Marantz-AV30
 
 Open the IP Console's web console with _http://{IP-Symcon IP}:3777/console/_.
 
-Then click on the module store (IP-Symcon > 5.1) icon in the upper right corner.
+Then click on the module store (Symcon > 5.1) icon in the upper right corner.
 
 ![Store](img/store_icon.png?raw=true "open store")
 
@@ -83,7 +83,7 @@ _Open_ the object tree.
 
 ![Objektbaum](img/object_tree.png?raw=true "object tree")	
 
-Open the instance _'Modules'_ below core instances in the object tree of IP-Symcon (>= Ver 5.x) with a double-click and press the _Plus_ button.
+Open the instance _'Modules'_ below core instances in the object tree of Symcon (>= Ver 5.x) with a double-click and press the _Plus_ button.
 
 ![Modules](img/modules.png?raw=true "modules")	
 
@@ -107,25 +107,25 @@ Only the _master_ branch is kept current.
 
 ![Master](img/master.png?raw=true "master") 
 
-If an older version of IP-Symcon smaller than version 5.1 (min 4.3) is used, click on the gear on the right side of the list.
+If an older version of Symcon smaller than version 5.1 (min 4.3) is used, click on the gear on the right side of the list.
 It opens another window,
 
 ![SelectBranch](img/select_branch_en.png?raw=true "select branch") 
 
 here you can switch to another branch, for older versions smaller than 5.1 (min 4.3) select _Old-Version_ .
 
-### b.  Setup in IP-Symcon
+### b.  Setup in Symcon
 
-In IP-Symcon a separate instance will be created for each zone of the AV receiver we want to use. The Denon IO and Denon Splitter will
+In Symcon a separate instance will be created for each zone of the AV receiver we want to use. The Denon IO and Denon Splitter will
 automatically created.
-In IP-Symcon _add Instance_ (_rightclick -> add object -> instance_) under the category under which you want to add the Denon/Marantz AVR instance,
+In Symcon _add Instance_ (_rightclick -> add object -> instance_) under the category under which you want to add the Denon/Marantz AVR instance,
 and select _Denon_.
 
 ![Modulauswahl](img/install1_en.png?raw=true "Modulauswahl")
 
 With _**Denon**_ we find the instance and with Ok the instance is created.
 
-You can choose between the Denon / Marantz AV Receiver HTTP Control and the Denon / Marantz AV Receiver Telnet Control in IP-Symcon. The Denon / Marantz AV Receiver Telnet Control has the much larger functionality and should be used if possible.
+You can choose between the Denon / Marantz AV Receiver HTTP Control and the Denon / Marantz AV Receiver Telnet Control in Symcon. The Denon / Marantz AV Receiver Telnet Control has the much larger functionality and should be used if possible.
 However, only one device at a time can be connected to the AV receiver in this way. If another device or remote is already using this connection, Denon / Marantz AV Receiver HTTP Control can also be used as an alternative.
 For the corresponding Denon Splitter, the IP address of the Denon AVR must be entered.
 

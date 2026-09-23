@@ -62,3 +62,6 @@ jobs:
         run: php tests/httppath_check.php
       - name: Auflagen des Stable-Reviews
         run: php tests/review_rules_check.php
+
+      - name: Modultests
+        run: for t in tests/capability_diff.php tests/check-readme.php tests/dim_gate.php tests/spec_check.php; do echo "== $t"; php "$t" || exit 1; done
