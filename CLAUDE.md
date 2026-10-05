@@ -193,6 +193,18 @@ Composite-Strings sind über locale.json nicht übersetzbar.
   - Der Wortlaut des Reviews steht im Kopf der Datei — er ist sonst nirgends im
     Repo, sondern nur im Feld `remark` des Store-Datensatzes.
 
+- `tests/discovery_check.php` — **Zuordnung gemeldeter Modellnamen** (ohne Kernel
+  und Netz, in der CI). Geräte melden per UPnP den Namen vom Gehäuse, der
+  Katalog führt sie amerikanisch: gemeldet `Denon AVC-X3800H`, im Katalog
+  `AVR-X3800H`. Bis Build 103 verglich die Discovery wörtlich und ordnete
+  deshalb keinem europäischen Denon ein Modell zu (Forum t/40873 #762).
+  - Prüfen: `C:\php\php tests/discovery_check.php`.
+  - Geprüft werden der einheitlich benannte Katalog samt Eindeutigkeit der
+    Vergleichsformen, echte gemeldete Namen (Mitschnitt vom eigenen Gerät und
+    aus dem Forum), Fehlschläge bei unbekanntem Modell und falschem Hersteller,
+    der in Bestandsanlagen gespeicherte Altname und die Zusicherung, dass die
+    Discovery keine zweite Zuordnung führt.
+
 - `tests/capability_diff.php` — **Vorher-Nachher-Vergleich** im Klartext, für das
   Review von Capability-Änderungen:
   `C:\php\php tests/capability_diff.php --from <Ref|Datei> [--to <Ref|Datei>]`.
@@ -224,6 +236,26 @@ httppath 6 von 10).
 
 Offen: ein Golden über `GetCommandResponse()` mit **echten** Telnet-Antwortzeilen aus
 einem Splitter-Debug-Mitschnitt.
+
+## Modellnamen: Katalog amerikanisch, Geräte melden europäisch
+
+Der Katalog führt alle Modelle in der amerikanischen Schreibweise (`AVR-…`), auch
+die, die in Europa als `AVC-…` verkauft werden. Seit **2.31 build 104** gilt das
+ausnahmslos; bis dahin war `AVC-X8500H` der einzige Ausreißer.
+
+- Die Geräte melden per UPnP den Namen vom Gehäuse, mitsamt Hersteller:
+  `<modelName>Denon AVC-X3800H</modelName>` (am eigenen Gerät abgerufen).
+- `AVRs::canonicalModelName()` räumt die drei Unterschiede weg (Trennzeichen,
+  Herstellername, AVC gegen AVR), `AVRs::findByReportedModel()` sucht damit den
+  Katalogeintrag. **Beides ist die einzige Zuordnung** — die Discovery hat keine
+  eigene mehr, `tests/discovery_check.php` sichert das zu.
+- Ein neuer Modellname gehört deshalb amerikanisch in den Katalog. Ein zweiter
+  Eintrag für die AVC-Schreibweise wäre falsch: Die Vergleichsformen müssen über
+  den ganzen Katalog eindeutig bleiben.
+- `AVRs::getCapabilities()` nimmt zusätzlich einen Altnamen an. Grund: Der
+  Modellname steht als Text in einer Statusvariablen des Splitters
+  (`SaveInputVarmapping()`) und im HTTP-IO; nach einem Update steht dort bis zum
+  nächsten Mapping noch `AVC-X8500H`.
 
 ## Bekannte offene Punkte (bewusst zurückgestellt)
 

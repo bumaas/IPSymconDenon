@@ -154,15 +154,12 @@ class DenonDiscovery extends IPSModuleStrict
 
     private function GetAVRType(int $manufacturerID, string $model_name): int
     {
-        foreach (AVRs::getAllAVRs() as $AVRName => $Caps) {
-            $manufacturerID_caps = ($Caps['Manufacturer'] === 'Denon') ? 1 : 2;
+        //Das Gerät meldet den Namen vom Gehäuse ("Denon AVC-X3900H"), der
+        //Katalog führt ihn amerikanisch ("AVR-X3900H"). AVRs kennt beide
+        //Schreibweisen.
+        $AVRName = AVRs::findByReportedModel($manufacturerID === 1 ? 'Denon' : 'Marantz', $model_name);
 
-            if (($AVRName === $model_name) && ($manufacturerID === $manufacturerID_caps)) {
-                return $Caps['internalID'];
-            }
-        }
-
-        return -1;
+        return $AVRName === null ? -1 : AVRs::getAllAVRs()[$AVRName]['internalID'];
     }
 
     private function receiveDevicesInfo(array $devices): array

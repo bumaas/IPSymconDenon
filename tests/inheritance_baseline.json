@@ -1381,8 +1381,8 @@
             ]
         }
     },
-    "Denon_AVC_X8500H": {
-        "model": "AVC-X8500H",
+    "Denon_AVR_X8500H": {
+        "model": "AVR-X8500H",
         "parent": "Denon_AVR_X7200WA",
         "lost": {
             "InfoFunctions": [

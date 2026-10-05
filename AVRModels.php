@@ -45,7 +45,7 @@ require_once __DIR__ . '/DenonAVR.php';  // diverse Klassen
                 36 => "AVR-X3400H",
                 37 => "AVR-X1400H",
                 38 => "AVR-X4400H",
-                39 => "AVR-X8500H",
+                39 => "AVR-X8500H", //in Europa AVC-X8500H
                 40 => "DRA-N5",
                 41 => "RCD-N8",
                 42 => "AVR-X1500H",
@@ -188,7 +188,7 @@ class AVRs extends stdClass
             Denon_AVR_X6700H::$Name  => Denon_AVR_X6700H::getCapabilities(),
             Denon_AVR_X7200W::$Name  => Denon_AVR_X7200W::getCapabilities(),
             Denon_AVR_X7200WA::$Name => Denon_AVR_X7200WA::getCapabilities(),
-            Denon_AVC_X8500H::$Name  => Denon_AVC_X8500H::getCapabilities(),
+            Denon_AVR_X8500H::$Name  => Denon_AVR_X8500H::getCapabilities(),
             Denon_AVR_S750H::$Name   => Denon_AVR_S750H::getCapabilities(),
             Denon_AVR_S960H::$Name   => Denon_AVR_S960H::getCapabilities(),
             Denon_AVR_S970H::$Name   => Denon_AVR_S970H::getCapabilities(),
@@ -258,9 +258,64 @@ class AVRs extends stdClass
         ];
     }
 
+    /**
+     * Vergleichsform eines Modellnamens.
+     *
+     * Geräte melden über UPnP den Namen, der auf dem Gehäuse steht - verifiziert
+     * am eigenen Gerät (05.10.2026): <modelName>Denon AVC-X3800H</modelName>.
+     * Der Katalog führt dieselben Geräte amerikanisch (AVR-X3800H) und bei
+     * Marantz mit Bindestrich statt Leerzeichen (Marantz-SR6015). Die
+     * Vergleichsform räumt diese drei Unterschiede weg: Trennzeichen,
+     * Herstellername, AVC gegen AVR.
+     *
+     * Dass die Formen über den ganzen Katalog eindeutig bleiben, sichert
+     * tests/discovery_check.php zu.
+     */
+    public static function canonicalModelName(string $modelName): string
+    {
+        $name = preg_replace('/[^A-Z0-9]/', '', strtoupper($modelName));
+        $name = preg_replace('/^(DENON|MARANTZ)/', '', (string) $name);
+
+        return (string) preg_replace('/^AVC/', 'AVR', (string) $name);
+    }
+
+    /**
+     * Katalogname zu einem gemeldeten Modellnamen, oder null.
+     *
+     * Benutzt von der Discovery (Zuordnung des UPnP-Modellnamens) und von
+     * getCapabilities() (in Bestandsanlagen gespeicherte Altnamen).
+     */
+    public static function findByReportedModel(string $manufacturer, string $modelName): ?string
+    {
+        $gesucht = self::canonicalModelName($modelName);
+        if ($gesucht === '') {
+            return null;
+        }
+
+        foreach (self::getAllAVRs() as $name => $caps) {
+            if (($manufacturer !== '') && ($caps['Manufacturer'] !== $manufacturer)) {
+                continue;
+            }
+            if (self::canonicalModelName($name) === $gesucht) {
+                return $name;
+            }
+        }
+
+        return null;
+    }
+
     public static function getCapabilities($AVRType)
     {
-        $caps = self::getAllAVRs()[$AVRType];
+        $alleAVRs = self::getAllAVRs();
+        if (!isset($alleAVRs[$AVRType])) {
+            //Bestandsanlagen halten den Modellnamen als Text (Statusvariable
+            //AVRType im Splitter, versteckte Variable im HTTP-IO). Nach der
+            //Umbenennung von AVC-X8500H steht dort bis zum nächsten Mapping
+            //noch der alte Name.
+            $AVRType = self::findByReportedModel('', (string) $AVRType) ?? $AVRType;
+        }
+
+        $caps = $alleAVRs[$AVRType];
         //Entwickler-Wachhunde: eine Exception statt trigger_error(..., E_USER_ERROR),
         //denn E_USER_ERROR ist seit PHP 8.4 deprecated. Die Abbruchwirkung bleibt.
         //Kein ausgeliefertes Modell löst das aus - tests/golden_regression.php fährt
@@ -707,8 +762,8 @@ class AVR extends stdClass
                 return new Denon_AVR_X7200W();
             case Denon_AVR_X7200WA::$Name:
                 return new Denon_AVR_X7200WA();
-            case Denon_AVC_X8500H::$Name:
-                return new Denon_AVC_X8500H();
+            case Denon_AVR_X8500H::$Name:
+                return new Denon_AVR_X8500H();
             case Denon_AVR_S750H::$Name:
                 return new Denon_AVR_S750H();
             case Denon_AVR_S960H::$Name:

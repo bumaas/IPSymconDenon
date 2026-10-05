@@ -3404,11 +3404,11 @@ class Denon_AVR_X7200WA extends Denon_AVR_X7200W
 }
 
 /* ---------------------
- * Denon AVC-X8x00 Serie
+ * Denon AVR-X8x00 Serie (in Europa als AVC-X8500H verkauft)
    --------------------*/
-class Denon_AVC_X8500H extends Denon_AVR_X7200WA
+class Denon_AVR_X8500H extends Denon_AVR_X7200WA
 {
-    public static string $Name       = 'AVC-X8500H';
+    public static string $Name       = 'AVR-X8500H';
 
     public static int    $internalID = 39;
 

@@ -183,8 +183,8 @@
         "sha256": "6ade1b0ed39b3586ba3c3089ca89e028d0327cbd7c8d68b0ad5022a60da33a93",
         "errors": []
     },
-    "AVC-X8500H": {
-        "sha256": "dde87dee36d9cfd5b890cc09ca726c06bd23ba7ec17f27603f7aad8daf7fa830",
+    "AVR-X8500H": {
+        "sha256": "4cbcf4ad1b897e3de147a5daa47ed7de44be87a41d90d7abe1dea4783c579f47",
         "errors": []
     },
     "AVR-S750H": {
