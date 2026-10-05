@@ -257,6 +257,27 @@ ausnahmslos; bis dahin war `AVC-X8500H` der einzige Ausreißer.
   (`SaveInputVarmapping()`) und im HTTP-IO; nach einem Update steht dort bis zum
   nächsten Mapping noch `AVC-X8500H`.
 
+**AVC ist aber nicht bloß der europäische Name** (Hinweis von Heidewinkler,
+Forum t/40873 #764): Ein AVC-Gerät hat **keinen eingebauten UKW/MW-Tuner**. Das
+Handbuch des AVC-X3800H sagt es wörtlich — „Dieses Gerät hat keinen integrierten
+UKW/MW-Tuner. Schließen Sie einen externen Tuner an die TUNER-Eingänge an." Die
+Quelle `TUNER` bleibt deshalb in der Eingangsliste (der Eingang existiert), die
+Tuner-Bedienung läuft aber ins Leere: Auf dem eigenen AVC-X3800H stehen `TMAN`,
+`TPAN` und `TM` seit dem 02.04.2023 unverändert, während `SI` laufend
+aktualisiert wird.
+
+- Die Zuordnung bleibt trotzdem richtig: Die Protokoll-Spec führt
+  `AVR-X3900H/AVC-X3900H` in **einer** Spalte, und ohne Zuordnung bekäme das
+  Gerät gar kein Modell. Der Katalog gibt ohnehin **allen** 112 Modellen dasselbe
+  `Tuner_Control` (siehe offener Punkt zum Tuner weiter unten).
+- **Wer die Tuner-Variablen für AVC-Geräte weglassen will, muss die Zuordnung
+  mit umbauen.** Nötig wären eigene Katalogeinträge (`AVC-X3900H` neben
+  `AVR-X3900H`); beide fielen dann auf dieselbe Vergleichsform, was
+  `tests/discovery_check.php` zu Recht als Mehrdeutigkeit meldet.
+  `canonicalModelName()` dürfte `AVC` dann nicht mehr pauschal auf `AVR`
+  abbilden, und die Suche müsste den wörtlichen Namen bevorzugen — erst den
+  gemeldeten Namen, dann ohne Hersteller, dann mit getauschtem Präfix.
+
 ## Bekannte offene Punkte (bewusst zurückgestellt)
 
 - `Denon AVR HTTP` bindet `FormExpertParameters()` nicht ein — die Property

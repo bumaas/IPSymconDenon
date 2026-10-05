@@ -45,6 +45,10 @@ Devices sold in Europe under an AVC name are listed here under their AVR name: t
 the AVR-X3800H, the AVC-X8500H is the AVR-X8500H. Device discovery recognises both spellings and
 selects the model on its own.
 
+One difference remains: an AVC device has no built-in FM/AM tuner, only a TUNER input for an
+external one. The variables "Tuner Band", "Tuner Preset" and "Tuner Mode" therefore never
+receive a value on these devices.
+
 ### Marantz models: 
 
 Marantz-NR1504,	Marantz-NR1506,	Marantz-NR1508,	Marantz-NR1509,	Marantz-NR1602,	Marantz-NR1603,	Marantz-NR1604,	Marantz-NR1605,	Marantz-NR1606,	Marantz-NR1607,	Marantz-NR1608, Marantz-NR1609, Marantz-NR1711, Marantz-SR5006, Marantz-SR5007, Marantz-SR5008, Marantz-SR5009, Marantz-SR5010,
