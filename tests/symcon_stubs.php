@@ -399,6 +399,12 @@ class IPSModuleStrict
         return $this->buffers[$Name] ?? ''; //unbekannte Puffer liefert auch der Kernel leer
     }
 
+    protected function UpdateFormField(string $Field, string $Parameter, mixed $Value): bool
+    {
+        $this->record('UpdateFormField', $Field, $Parameter, $Value);
+        return true;
+    }
+
     public function Translate(string $Text): string
     {
         return $Text;

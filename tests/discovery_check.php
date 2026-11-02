@@ -255,6 +255,35 @@ Pruefung::ist(
     $altnameFehler !== '' ? $altnameFehler : 'Rückgabe: ' . gettype($altnameCaps)
 );
 
+// Steht dort ein Name, den auch der Rückgriff nicht zuordnen kann (leer nach
+// einem gescheiterten Mapping, oder ein aus dem Katalog entferntes Modell),
+// muss getCapabilities() das klar sagen: eine RuntimeException mit dem Namen,
+// keine Warnung "Undefined array key" und kein Weiterlaufen mit null.
+foreach (['', 'AVR-X9999H'] as $unbekannt) {
+    $warnungen = [];
+    set_error_handler(static function (int $nr, string $text) use (&$warnungen): bool {
+        $warnungen[] = $text;
+        return true;
+    });
+    $ausnahme = null;
+    try {
+        AVRs::getCapabilities($unbekannt);
+    } catch (Throwable $e) {
+        $ausnahme = $e;
+    } finally {
+        restore_error_handler();
+    }
+    Pruefung::ist(
+        sprintf('der unbekannte Name "%s" endet in einer RuntimeException ohne Warnung', $unbekannt),
+        $ausnahme instanceof RuntimeException && $warnungen === [],
+        sprintf(
+            'Ausnahme: %s, Warnungen: %s',
+            $ausnahme === null ? 'keine' : get_class($ausnahme) . ' (' . $ausnahme->getMessage() . ')',
+            $warnungen === [] ? 'keine' : implode(' | ', $warnungen)
+        )
+    );
+}
+
 // ---- Abschnitt 4: nur eine Zuordnung ---------------------------------------
 
 Pruefung::abschnitt('Nur eine Zuordnung im Code');
@@ -271,5 +300,119 @@ Pruefung::ist(
     !str_contains($discovery, '$AVRName === $model_name'),
     'der wörtliche Vergleich steht noch in Denon Discovery/module.php'
 );
+
+// ---- Abschnitt 5: Konfiguration der neuen Instanz --------------------------
+
+Pruefung::abschnitt('Konfiguration der neuen Instanz');
+
+// Die Zuordnung oben nützt nur, wenn ihr Ergebnis in der Instanz ankommt, die
+// der Konfigurator anlegt. Deshalb läuft hier loadDevices() der Discovery
+// vollständig: SSDP-Suche, Abruf der UPnP-Beschreibung, Aufbau der Liste.
+//
+// Fixtures (tests/fixtures/discovery/):
+//   ssdp_AVC-X3800H.json        Antwort von YC_SearchDevices am nuc für den
+//                               eigenen Receiver, 02.11.2026
+//   aios_device_AVC-X3800H.xml  dessen UPnP-Beschreibung, am selben Tag von
+//                               192.168.178.33:60006 abgerufen
+// Seriennummer und MAC-Anteil der UUIDs sind ausgeixt, sonst unverändert.
+//
+// Ein Marantz und ein unbekanntes Modell stehen nicht im Haus. Für diese Fälle
+// werden in der echten Beschreibung nur <manufacturer> und <modelName>
+// ersetzt; alles andere (SSDP-Antwort, Aufbau der XML) bleibt der Mitschnitt.
+
+$fixtureDir = __DIR__ . '/fixtures/discovery';
+$ssdpEcht   = json_decode((string) file_get_contents($fixtureDir . '/ssdp_AVC-X3800H.json'), true, 512, JSON_THROW_ON_ERROR);
+$xmlEcht    = (string) file_get_contents($fixtureDir . '/aios_device_AVC-X3800H.xml');
+
+/** SSDP-Antworten, die YC_SearchDevices im laufenden Fall liefert */
+$GLOBALS['ssdpAntworten'] = [];
+
+function IPS_GetInstanceListByModuleID(string $ModuleID): array
+{
+    // SSDP-Kerninstanz vorhanden, noch keine Denon-Instanz angelegt
+    return $ModuleID === '{FFFFA648-B296-E785-96ED-065F7CEE6F29}' ? [31250] : [];
+}
+
+function YC_SearchDevices(int $InstanceID, string $SearchTarget): array
+{
+    return $GLOBALS['ssdpAntworten'];
+}
+
+require_once $root . '/Denon Discovery/module.php';
+
+/**
+ * Lässt die Discovery ein Gerät finden und liefert die 'configuration' der
+ * Telnet-Geräteinstanz aus dem create-Block, oder einen Fehlertext.
+ */
+function neueKonfiguration(array $ssdp, string $xml, string $hersteller, string $modell): array|string
+{
+    $xml  = str_replace(
+        ['<manufacturer>Denon</manufacturer>', '<modelName>Denon AVC-X3800H</modelName>'],
+        ['<manufacturer>' . $hersteller . '</manufacturer>', '<modelName>' . $modell . '</modelName>'],
+        $xml
+    );
+    $datei = tempnam(sys_get_temp_dir(), 'denon_desc_');
+    file_put_contents($datei, $xml);
+    $ssdp['Location']         = 'file:///' . ltrim(str_replace('\\', '/', $datei), '/');
+    $GLOBALS['ssdpAntworten'] = [$ssdp];
+
+    try {
+        $discovery = new DenonDiscovery(4711);
+        $discovery->RequestAction('loadDevices', '');
+    } catch (Throwable $e) {
+        return get_class($e) . ': ' . $e->getMessage();
+    } finally {
+        unlink($datei);
+    }
+
+    foreach ($discovery->recorded as $aufruf) {
+        if ($aufruf[0] === 'UpdateFormField' && $aufruf[1] === 'configurator' && $aufruf[2] === 'values') {
+            $werte = json_decode($aufruf[3], true, 512, JSON_THROW_ON_ERROR);
+            if (count($werte) !== 1) {
+                return 'statt eines Geräts gefunden: ' . count($werte);
+            }
+            return $werte[0]['create'][0]['configuration'];
+        }
+    }
+    return 'die Discovery hat keine Liste geliefert';
+}
+
+/** Modell-Property einer Konfiguration; 50 ("None") ist der Vorgabewert der Instanz */
+function modellProperty(array $konfiguration, string $property): int
+{
+    return $konfiguration[$property] ?? 50;
+}
+
+$faelleKonfiguration = [
+    // [Hersteller, gemeldeter Name, manufacturer, AVRTypeDenon, AVRTypeMarantz]
+    ['Denon', 'Denon AVC-X3800H', 1, 208, 50],
+    ['Marantz', 'Marantz SR6015', 2, 50, 108],
+    // unbekannt: die Instanz muss mit "kein Typ gewählt" (50) starten, damit
+    // SetInstanceStatus() die Modellauswahl verlangt. -1 lief durch bis
+    // ApplyChanges und endete dort in einem TypeError.
+    ['Denon', 'Denon AVR-X9999H', 1, 50, 50],
+    ['Marantz', 'Marantz SR9999', 2, 50, 50],
+];
+
+foreach ($faelleKonfiguration as [$hersteller, $modell, $erwHersteller, $erwDenon, $erwMarantz]) {
+    $konf = neueKonfiguration($ssdpEcht, $xmlEcht, $hersteller, $modell);
+    if (is_string($konf)) {
+        Pruefung::ist(sprintf('"%s" ergibt eine Konfiguration', $modell), false, $konf);
+        continue;
+    }
+    $ist = sprintf(
+        'manufacturer=%s, AVRTypeDenon=%d, AVRTypeMarantz=%d',
+        var_export($konf['manufacturer'] ?? null, true),
+        modellProperty($konf, 'AVRTypeDenon'),
+        modellProperty($konf, 'AVRTypeMarantz')
+    );
+    Pruefung::ist(
+        sprintf('"%s" -> manufacturer=%d, AVRTypeDenon=%d, AVRTypeMarantz=%d', $modell, $erwHersteller, $erwDenon, $erwMarantz),
+        ($konf['manufacturer'] ?? null) === $erwHersteller
+        && modellProperty($konf, 'AVRTypeDenon') === $erwDenon
+        && modellProperty($konf, 'AVRTypeMarantz') === $erwMarantz,
+        'gefunden: ' . $ist
+    );
+}
 
 exit(Pruefung::bilanz());

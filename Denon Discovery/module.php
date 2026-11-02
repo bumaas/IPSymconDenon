@@ -121,7 +121,8 @@ class DenonDiscovery extends IPSModuleStrict
                         'moduleID'      => self::MODID_DENON_TELNET,
                         'configuration' => [
                             'manufacturer' => $manufacturerID,
-                            'AVRTypeDenon' => $AVRType,
+                            //das Modell gehört in die Property des Herstellers
+                            ($manufacturerID === 1 ? 'AVRTypeDenon' : 'AVRTypeMarantz') => $AVRType,
                             'Zone'         => 0
                         ]
                     ],
@@ -152,6 +153,9 @@ class DenonDiscovery extends IPSModuleStrict
 
     }
 
+    /** Vorgabewert der Properties AVRTypeDenon/AVRTypeMarantz: kein Modell gewählt */
+    private const AVRTYPE_NONE = 50;
+
     private function GetAVRType(int $manufacturerID, string $model_name): int
     {
         //Das Gerät meldet den Namen vom Gehäuse ("Denon AVC-X3900H"), der
@@ -159,7 +163,9 @@ class DenonDiscovery extends IPSModuleStrict
         //Schreibweisen.
         $AVRName = AVRs::findByReportedModel($manufacturerID === 1 ? 'Denon' : 'Marantz', $model_name);
 
-        return $AVRName === null ? -1 : AVRs::getAllAVRs()[$AVRName]['internalID'];
+        //Ein unbekanntes Modell bleibt "nicht gewählt"; die Instanz fordert
+        //dann im Formular zur Auswahl auf.
+        return $AVRName === null ? self::AVRTYPE_NONE : AVRs::getAllAVRs()[$AVRName]['internalID'];
     }
 
     private function receiveDevicesInfo(array $devices): array

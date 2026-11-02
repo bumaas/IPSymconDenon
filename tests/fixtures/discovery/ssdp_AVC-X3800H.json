@@ -1,0 +1,16 @@
+{
+    "CacheControl": "max-age=180",
+    "Date": "",
+    "Ext": "",
+    "Fields": [
+        "VERSIONS.UPNP.HEOS.COM: 11,-795697998,1598223468,363364703,-1387152238,-824042063,105553199,-316033077,-1036323261,-989155165,-170053632,363364703",
+        "NETWORKID.UPNP.HEOS.COM: 60b58d647890",
+        "BOOTID.UPNP.ORG: 78046354",
+        "IPCACHE.URL.UPNP.HEOS.COM: /ajax/upnp/get_device_info"
+    ],
+    "IPv4": "192.168.178.33",
+    "Location": "http://192.168.178.33:60006/upnp/desc/aios_device/aios_device.xml",
+    "ST": "urn:schemas-upnp-org:device:MediaRenderer:1",
+    "Server": "LINUX UPnP/1.0 Denon-Heos/f44fe3c89698c68d1b7bd24f654e01826d2f3d25",
+    "USN": "uuid:793700a4-f382-12e6-0080-000000000000::urn:schemas-upnp-org:device:MediaRenderer:1"
+}

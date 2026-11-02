@@ -204,6 +204,13 @@ Composite-Strings sind über locale.json nicht übersetzbar.
     aus dem Forum), Fehlschläge bei unbekanntem Modell und falschem Hersteller,
     der in Bestandsanlagen gespeicherte Altname und die Zusicherung, dass die
     Discovery keine zweite Zuordnung führt.
+  - Seit **build 107** fährt der Test zusätzlich `loadDevices()` der Discovery
+    ganz durch (echte SSDP-Antwort und UPnP-Beschreibung des eigenen Geräts
+    unter `tests/fixtures/discovery/`) und prüft die Konfiguration der neuen
+    Instanz. Bis build 106 landete das Modell eines Marantz in `AVRTypeDenon`,
+    und ein unbekanntes Modell kam als -1 statt 50 („None“) an. Die Instanz lief
+    dann ohne Modell bis in einen TypeError in `ApplyChanges`, statt im
+    Formular die Auswahl zu verlangen.
 
 - `tests/capability_diff.php` — **Vorher-Nachher-Vergleich** im Klartext, für das
   Review von Capability-Änderungen:
@@ -247,7 +254,7 @@ ausnahmslos; bis dahin war `AVC-X8500H` der einzige Ausreißer.
   `<modelName>Denon AVC-X3800H</modelName>` (am eigenen Gerät abgerufen).
 - `AVRs::canonicalModelName()` räumt die drei Unterschiede weg (Trennzeichen,
   Herstellername, AVC gegen AVR), `AVRs::findByReportedModel()` sucht damit den
-  Katalogeintrag. **Beides ist die einzige Zuordnung** — die Discovery hat keine
+  Katalogeintrag. **Beides ist die einzige Zuordnung.** Die Discovery hat keine
   eigene mehr, `tests/discovery_check.php` sichert das zu.
 - Ein neuer Modellname gehört deshalb amerikanisch in den Katalog. Ein zweiter
   Eintrag für die AVC-Schreibweise wäre falsch: Die Vergleichsformen müssen über
@@ -255,11 +262,13 @@ ausnahmslos; bis dahin war `AVC-X8500H` der einzige Ausreißer.
 - `AVRs::getCapabilities()` nimmt zusätzlich einen Altnamen an. Grund: Der
   Modellname steht als Text in einer Statusvariablen des Splitters
   (`SaveInputVarmapping()`) und im HTTP-IO; nach einem Update steht dort bis zum
-  nächsten Mapping noch `AVC-X8500H`.
+  nächsten Mapping noch `AVC-X8500H`. Trifft auch der Rückgriff nichts, wirft
+  die Funktion seit build 107 eine `RuntimeException` mit dem Namen; vorher lief
+  sie mit `null` weiter bis in einen TypeError.
 
 **AVC ist aber nicht bloß der europäische Name** (Hinweis von Heidewinkler,
 Forum t/40873 #764): Ein AVC-Gerät hat **keinen eingebauten UKW/MW-Tuner**. Das
-Handbuch des AVC-X3800H sagt es wörtlich — „Dieses Gerät hat keinen integrierten
+Handbuch des AVC-X3800H sagt es wörtlich: „Dieses Gerät hat keinen integrierten
 UKW/MW-Tuner. Schließen Sie einen externen Tuner an die TUNER-Eingänge an." Die
 Quelle `TUNER` bleibt deshalb in der Eingangsliste (der Eingang existiert), die
 Tuner-Bedienung läuft aber ins Leere: Auf dem eigenen AVC-X3800H stehen `TMAN`,
@@ -275,8 +284,8 @@ aktualisiert wird.
   `AVR-X3900H`); beide fielen dann auf dieselbe Vergleichsform, was
   `tests/discovery_check.php` zu Recht als Mehrdeutigkeit meldet.
   `canonicalModelName()` dürfte `AVC` dann nicht mehr pauschal auf `AVR`
-  abbilden, und die Suche müsste den wörtlichen Namen bevorzugen — erst den
-  gemeldeten Namen, dann ohne Hersteller, dann mit getauschtem Präfix.
+  abbilden, und die Suche müsste den wörtlichen Namen bevorzugen (erst den
+  gemeldeten Namen, dann ohne Hersteller, dann mit getauschtem Präfix).
 
 ## Bekannte offene Punkte (bewusst zurückgestellt)
 
