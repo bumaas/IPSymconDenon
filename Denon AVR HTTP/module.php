@@ -283,7 +283,6 @@ class DenonAVRHTTP extends AVRModule
             }
         }
         $this->SendDebug('form_http_gen.json', json_encode($form), 0);
-        // file_put_contents(IPS_GetLogDir() . 'form_http_gen.json', json_encode($form));
         return $form;
     }
 

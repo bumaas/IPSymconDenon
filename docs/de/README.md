@@ -1,10 +1,10 @@
 # IPSymconDenonAVR
 [![Version](https://img.shields.io/badge/Symcon-PHPModul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
-[![Version](https://img.shields.io/badge/Symcon%20Version-%3E%205.1-green.svg)](https://www.symcon.de/service/dokumentation/installation/)
+[![Version](https://img.shields.io/badge/Symcon%20Version-%3E%3D%209.0-green.svg)](https://www.symcon.de/service/dokumentation/installation/)
 ![Code](https://img.shields.io/badge/Code-PHP-blue.svg)
 [![StyleCI](https://github.styleci.io/repos/57190839/shield?branch=master)](https://github.styleci.io/repos/57190839)
 
-Modul für Symcon ab Version 5.1. Ermöglicht die Kommunikation mit einem Denon AV Receiver oder Marantz AV Receiver.
+Modul für Symcon ab Version 9.0. Ermöglicht die Kommunikation mit einem Denon AV Receiver oder Marantz AV Receiver.
 
 ## Dokumentation
 
@@ -58,17 +58,17 @@ Marantz-CINEMA 50, Marantz-CINEMA 40, Marantz-AV20, Marantz-AV30
 	  
 ## 2. Voraussetzungen
 
- - IPS 5.1
+ - Symcon 9.0 oder neuer
  - Denon AVR oder Marantz AVR mit Netzwerkanschluss. Fernsteuerung des Denon AVR oder Marantz AVR muss aktiviert sein (siehe Handbuch AVR). Symcon muss im gleichen Netzwerk wie der AVR sein.
 
 ## 3. Installation
 
 ### a. Laden des Moduls
 
-Die Webconsole von Symcon mit _http://{IP-Symcon IP}:3777/console/_ öffnen. 
+Die Verwaltungskonsole von Symcon mit _http://{IP des Symcon-Servers}:3777/console/_ öffnen.
 
 
-Anschließend oben rechts auf das Symbol für den Modulstore (Symcon > 5.1) klicken
+Anschließend oben rechts auf das Symbol für den Modulstore klicken
 
 ![Store](img/store_icon.png?raw=true "open store")
 
@@ -95,7 +95,7 @@ Den Objektbaum _Öffnen_.
 
 ![Objektbaum](img/objektbaum.png?raw=true "Objektbaum")	
 
-Die Instanz _'Modules'_ unterhalb von Kerninstanzen im Objektbaum von Symcon (>=Ver. 5.x) mit einem Doppelklick öffnen und das  _Plus_ Zeichen drücken.
+Die Instanz _'Modules'_ unterhalb von Kerninstanzen im Objektbaum mit einem Doppelklick öffnen und das  _Plus_ Zeichen drücken.
 
 ![Modules](img/Modules.png?raw=true "Modules")	
 
@@ -115,15 +115,6 @@ Es wird im Standard der Zweig (Branch) _master_ geladen, dieser enthält aktuell
 Nur der Zweig _master_ wird aktuell gehalten.
 
 ![Master](img/master.png?raw=true "master") 
-
-Sollte eine ältere Version von Symcon die kleiner ist als Version 5.1 (min 4.3) eingesetzt werden, ist auf das Zahnrad rechts in der Liste zu klicken.
-Es öffnet sich ein weiteres Fenster,
-
-![SelectBranch](img/select_branch.png?raw=true "select branch") 
-
-hier kann man auf einen anderen Zweig wechseln, für ältere Versionen kleiner als 5.1 (min 4.3) ist hier
-_Old-Version_ auszuwählen. 
-
 
 ### b. Einrichtung in Symcon
 

@@ -2,7 +2,7 @@
 	"translations": {
 		"de": { 
 			"AV Receiver Control Telnet":"AV Receiver Ansteuerung Telnet",
-			"Telnet control is working with a only a single client connection (IP-Symcon), more remote commands available compared to HTTP.":"Telnet Steuerung funktoniert nur von einem einzigen Client aus, mehr Funktionsumfang als HTTP.",
+			"Telnet control is working with a only a single client connection (Symcon), more remote commands available compared to HTTP.":"Telnet Steuerung funktoniert nur von einem einzigen Client aus, mehr Funktionsumfang als HTTP.",
 			"Please select a manufacturer and push the \"Apply Changes\" button":"Bitte einen Hersteller auswählen und mit \"Übernehmen\" bestätigen",
 			"manufacturer":"Hersteller",
 			"Denon AV Receiver":"Denon AV Receiver",
@@ -17,6 +17,7 @@
 			"AV Receiver Zone:":"AV Receiver Zone:",
 			"AVR Zone":"AVR Zone",
 			"select zone":"Zone wählen",
+			"Main Zone":"Hauptzone",
 			"Power Settings": "Power Einstellungen",
 			"Input Settings": "Input Einstellungen",
 			"Surround Mode": "Surround-Modus",

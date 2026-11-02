@@ -1259,7 +1259,7 @@ class DenonAVRTelnet extends AVRModule
             ],
             [
                 'type'    => 'Label',
-                'caption' => 'Telnet control is working with a only a single client connection (IP-Symcon), more remote commands available compared to HTTP.'
+                'caption' => 'Telnet control is working with a only a single client connection (Symcon), more remote commands available compared to HTTP.'
             ],
             [
                 'type'    => 'Label',

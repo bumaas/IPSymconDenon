@@ -1,10 +1,10 @@
-# IPSymconNanoleaf
+# IPSymconDenonAVR
 [![Version](https://img.shields.io/badge/Symcon-PHPModule-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
-[![Version](https://img.shields.io/badge/Symcon%20Version-%3E%205.1-green.svg)](https://www.symcon.de/en/service/documentation/installation/)
+[![Version](https://img.shields.io/badge/Symcon%20Version-%3E%3D%209.0-green.svg)](https://www.symcon.de/en/service/documentation/installation/)
 ![Code](https://img.shields.io/badge/Code-PHP-blue.svg)
 [![StyleCI](https://github.styleci.io/repos/57190839/shield?branch=master)](https://github.styleci.io/repos/57190839)
 
-Module for Symcon version 5.1 or higher. Allows communication with a Denon AV Receiver or Marantz AV Receiver.
+Module for Symcon version 9.0 or higher. Allows communication with a Denon AV Receiver or Marantz AV Receiver.
 
 ## Documentation
 
@@ -58,16 +58,16 @@ Marantz-CINEMA 50, Marantz-CINEMA 40, Marantz-AV20, Marantz-AV30
 
 ## 2. Requirements
 
- - IPS 5.1
- - Denon AVR or Marantz AVR with network connection. Remote control of the Denon AVR or Marantz AVR must be activated (see AVR manual). IP Symcon must be in the same network as the AVR.
+ - Symcon 9.0 or newer
+ - Denon AVR or Marantz AVR with network connection. Remote control of the Denon AVR or Marantz AVR must be activated (see AVR manual). Symcon must be in the same network as the AVR.
 
 ## 3. Installation
 
 ### a. Loading the module
 
-Open the IP Console's web console with _http://{IP-Symcon IP}:3777/console/_.
+Open the Symcon management console with _http://{Symcon server IP}:3777/console/_.
 
-Then click on the module store (Symcon > 5.1) icon in the upper right corner.
+Then click on the module store icon in the upper right corner.
 
 ![Store](img/store_icon.png?raw=true "open store")
 
@@ -91,7 +91,7 @@ _Open_ the object tree.
 
 ![Objektbaum](img/object_tree.png?raw=true "object tree")	
 
-Open the instance _'Modules'_ below core instances in the object tree of Symcon (>= Ver 5.x) with a double-click and press the _Plus_ button.
+Open the instance _'Modules'_ below core instances in the object tree with a double-click and press the _Plus_ button.
 
 ![Modules](img/modules.png?raw=true "modules")	
 
@@ -114,13 +114,6 @@ By default, the branch _master_ is loaded, which contains current changes and ad
 Only the _master_ branch is kept current.
 
 ![Master](img/master.png?raw=true "master") 
-
-If an older version of Symcon smaller than version 5.1 (min 4.3) is used, click on the gear on the right side of the list.
-It opens another window,
-
-![SelectBranch](img/select_branch_en.png?raw=true "select branch") 
-
-here you can switch to another branch, for older versions smaller than 5.1 (min 4.3) select _Old-Version_ .
 
 ### b.  Setup in Symcon
 
