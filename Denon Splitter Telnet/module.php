@@ -29,6 +29,9 @@ class DenonSplitterTelnet extends IPSModuleStrict
         //Never delete this line!
         parent::Create();
 
+        //Hop-by-Hop: nicht aktiv, bis der Parent es ist
+        $this->SetStatus(IS_INACTIVE);
+
         //we will set the instance status when the parent or its status changes
         $this->RegisterParentMessages();
     }
@@ -55,7 +58,7 @@ class DenonSplitterTelnet extends IPSModuleStrict
     {
         $this->Logger_Dbg(__FUNCTION__, 'SenderID: ' . $SenderID . ', Message: ' . $Message . ', Data:' . json_encode($Data, JSON_THROW_ON_ERROR));
 
-        if (in_array($Message, [IM_CHANGESTATUS, FM_CONNECT, FM_DISCONNECT], true)) {
+        if ($this->IsParentMessage($Message)) {
             $this->ApplyChanges();
         } else {
             $this->Logger_Err('Unexpected Message: ' . $Message);
@@ -123,15 +126,6 @@ class DenonSplitterTelnet extends IPSModuleStrict
         }
 
         return $Varmapping;
-    }
-
-    //################# DUMMYS / WOARKAROUNDS - protected
-
-    protected function GetParent()
-    {
-        $instance = IPS_GetInstance($this->InstanceID);
-
-        return ($instance['ConnectionID'] > 0) ? $instance['ConnectionID'] : 0;
     }
 
     public function GetStatusHTTP(): false|array

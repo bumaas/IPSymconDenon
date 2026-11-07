@@ -98,7 +98,7 @@ Composite-Strings sind über locale.json nicht übersetzbar.
 - `tests/check_presentations.php` — prüft, dass jede Darstellung im Quelltext nur
   Parameter setzt, die es in dieser Darstellung gibt (Symcon 9.1 validiert das selbst).
   Prüfen: `C:\php\php tests/check_presentations.php` (auch in der CI).
-- `tests/golden_regression.php` — **Golden-File-Regressionstest** (läuft ohne Kernel/
+- `tests/golden_regression.php`: **Golden-File-Regressionstest** (läuft ohne Kernel/
   Netz über `tests/symcon_stubs.php`): friert Capabilities aller 112 Modelle,
   Profilkatalog, Presentations, Variablen-Registrierung, alle ~150 Telnet-Wrapper-
   Buffer und die Konfigurationsformulare als `tests/golden/*.json` ein.
@@ -117,7 +117,7 @@ Composite-Strings sind über locale.json nicht übersetzbar.
     seither per `registration_http.json` mit abgesichert). Die Goldens spiegeln
     das korrigierte Verhalten.
 
-- `tests/spec_check.php` — **Spec-Konformitäts-Check** gegen die Hersteller-
+- `tests/spec_check.php`: **Spec-Konformitäts-Check** gegen die Hersteller-
   Protokoll-Excels (lokal unter `X:\Denon_Marantz` bzw. Env `DENON_SPEC_DIR`,
   nicht committet; ohne Pfad sauberer Skip). Aufruf:
   `C:\php\php -d extension=zip tests/spec_check.php [--model <Name>] [--details]`.
@@ -128,7 +128,7 @@ Composite-Strings sind über locale.json nicht übersetzbar.
   Untervarianten ab (`DIM BRI`, `DIM SEL`, …), einzelne fehlende Werte sieht das
   Skript also nicht.
 
-- `tests/inheritance_check.php` — **Kettenprüfung** (ohne Kernel/Netz/Spec-Dateien,
+- `tests/inheritance_check.php`: **Kettenprüfung** (ohne Kernel/Netz/Spec-Dateien,
   daher als einziges Werkzeug dieser Art auch in der CI wirksam). Die
   Capability-Arrays der Modellklassen kennen **keinen Merge**: eine Neudeklaration
   ersetzt die Elternliste vollständig, wodurch still ein Kommando wegfallen kann
@@ -142,7 +142,7 @@ Composite-Strings sind über locale.json nicht übersetzbar.
     und Erbengemeinschaften — die Sicht, die man zum Ergänzen von Capabilities
     braucht. `--model` / `--area` filtern die Anzeige.
 
-- `tests/association_check.php` — **Assoziations-Vollständigkeit** (ohne Kernel/
+- `tests/association_check.php`: **Assoziations-Vollständigkeit** (ohne Kernel/
   Netz, daher in der CI wirksam). Einige Profile lassen ihre Assoziationen von
   `updateProfileAccordingToCaps()` modellabhängig filtern; der Filter kann nur
   wegnehmen. Was ein Modell in `<Ident>_SubCommands` deklariert, der Katalog aber
@@ -154,7 +154,7 @@ Composite-Strings sind über locale.json nicht übersetzbar.
   - Beim Ergänzen einer Assoziation **nur anhängen, nie umnummerieren** — der
     Wert steht so in den Variablen der Bestandsinstallationen.
 
-- `tests/receivepath_check.php` — **Verhaltensprüfung des Telnet-Empfangspfads**
+- `tests/receivepath_check.php`: **Verhaltensprüfung des Telnet-Empfangspfads**
   (ohne Kernel, Netz und Herstellerdateien, daher in der CI wirksam). Die
   Golden-Suite deckt den Sendeweg ab; `ReceiveData` steht dort sogar auf der
   Ausschlussliste. Geprüft wird `DenonSplitterTelnet::ReceiveData()` samt
@@ -169,7 +169,7 @@ Composite-Strings sind über locale.json nicht übersetzbar.
   - Keine Golden Files: jede Zusicherung steht für sich und sagt, was richtig
     wäre. Ein Snapshot hätte hier nur das Ist-Verhalten eingefroren.
 
-- `tests/httppath_check.php` — **Verhaltensprüfung des HTTP-Pfads** (`Denon HTTP
+- `tests/httppath_check.php`: **Verhaltensprüfung des HTTP-Pfads** (`Denon HTTP
   IO`, `DENON_StatusHTML`; ohne Kernel und Netz, in der CI). Drei Abschnitte:
   Semaphorenbilanz (kein `IPS_SemaphoreLeave` ohne gehaltene Sperre — der Stub
   führt dafür Buch wie der Kernel), Fehlerursache (`getPrevious()` gesetzt,
@@ -179,7 +179,7 @@ Composite-Strings sind über locale.json nicht übersetzbar.
   - Kein Abschnitt löst einen echten HTTP-Abruf aus: der Fehlerpfad wird über
     einen Harnisch erreicht, dessen `GetInputVarMapping()` wirft.
 
-- `tests/review_rules_check.php` — **Auflagen des abgelehnten Stable-Reviews**
+- `tests/review_rules_check.php`: **Auflagen des abgelehnten Stable-Reviews**
   (ohne Kernel und Netz, in der CI). Eine frühere Stable-Einreichung
   (`fd951c2653`) wurde abgelehnt wegen `IPS_LogMessage` im Modulcode und einem
   `IPS_SetHidden` in `ApplyChanges`. Beides ist seit Build 89/90 behoben; die
@@ -193,7 +193,7 @@ Composite-Strings sind über locale.json nicht übersetzbar.
   - Der Wortlaut des Reviews steht im Kopf der Datei — er ist sonst nirgends im
     Repo, sondern nur im Feld `remark` des Store-Datensatzes.
 
-- `tests/discovery_check.php` — **Zuordnung gemeldeter Modellnamen** (ohne Kernel
+- `tests/discovery_check.php`: **Zuordnung gemeldeter Modellnamen** (ohne Kernel
   und Netz, in der CI). Geräte melden per UPnP den Namen vom Gehäuse, der
   Katalog führt sie amerikanisch: gemeldet `Denon AVC-X3800H`, im Katalog
   `AVR-X3800H`. Bis Build 103 verglich die Discovery wörtlich und ordnete
@@ -212,7 +212,7 @@ Composite-Strings sind über locale.json nicht übersetzbar.
     dann ohne Modell bis in einen TypeError in `ApplyChanges`, statt im
     Formular die Auswahl zu verlangen.
 
-- `tests/connect_check.php` — **Status beim Verbinden der Kette** (ohne Kernel und
+- `tests/connect_check.php`: **Status beim Verbinden der Kette** (ohne Kernel und
   Netz, in der CI). Der Konfigurator legt Gerät, Splitter und IO an und verbindet
   sie erst danach; ein ApplyChanges löst das Verbinden nicht aus. Bis build 107
   blieb deshalb nach der Discovery der Splitter „nicht aktiv“ und das Gerät auf
@@ -233,6 +233,13 @@ Composite-Strings sind über locale.json nicht übersetzbar.
     `IPS_KERNELMESSAGE`. Vorher lief nach einem Kernel-Neustart sein
     `ValidateConfiguration()` nie: `ApplyChanges` bei `KR_INIT` endet vorzeitig,
     und nur das Telnet-Gerät holte das bei `KR_READY` nach.
+  - Seit **build 110** setzen Gerät und Splitter schon in `Create()` den Status
+    104, nicht erst im ersten `ApplyChanges`. Der Test sichert außerdem zu, dass
+    ein inaktiver IO und das Trennen den Receiver nicht abfragen (ohne aktiven
+    Parent endet `SetInstanceStatus()` vorher) und das Wiederaktivieren genau
+    einen Lauf auslöst, und dass in der ganzen Suite keine Warnung anfällt.
+  - `GetParent()` (0 ohne Verbindung), die Liste der Verbindungsnachrichten
+    (`IsParentMessage()`) und der Puffername stehen nur noch im Trait.
   - Am nuc gemessen (07.11.2026, Wegwerf-Kette Server Socket und zwei
     Telnet-Splitter, build 108): Beim Zustellen von `FM_DISCONNECT` ist
     `ConnectionID` schon 0, `HasActiveParent()` liefert false, der Splitter geht
@@ -250,7 +257,7 @@ Composite-Strings sind über locale.json nicht übersetzbar.
     Telnet-Gerät `GetStateHTTP()`), sonst fragt das Gerät bei gültiger IP den
     Receiver per HTTP ab.
 
-- `tests/capability_diff.php` — **Vorher-Nachher-Vergleich** im Klartext, für das
+- `tests/capability_diff.php`: **Vorher-Nachher-Vergleich** im Klartext, für das
   Review von Capability-Änderungen:
   `C:\php\php tests/capability_diff.php --from <Ref|Datei> [--to <Ref|Datei>]`.
   Holt den Vorher-Stand aus `tests/golden/capabilities.json` des Refs; kennt der

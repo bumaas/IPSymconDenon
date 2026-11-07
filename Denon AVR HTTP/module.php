@@ -16,6 +16,9 @@ class DenonAVRHTTP extends AVRModule
         //we will wait until the kernel is ready
         $this->RegisterMessage(0, IPS_KERNELMESSAGE);
 
+        //Hop-by-Hop: nicht aktiv, bis der Parent es ist
+        $this->SetStatus(IS_INACTIVE);
+
         //we will set the instance status when the parent or its status changes
         $this->RegisterParentMessages();
     }
@@ -39,7 +42,7 @@ class DenonAVRHTTP extends AVRModule
             return;
         }
 
-        if (in_array($Message, [IM_CHANGESTATUS, FM_CONNECT, FM_DISCONNECT], true)) {
+        if ($this->IsParentMessage($Message)) {
             $this->ApplyChanges();
         }
     }

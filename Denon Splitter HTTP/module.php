@@ -13,6 +13,9 @@ class DenonSplitterHTTP extends IPSModuleStrict
         //Never delete this line!
         parent::Create();
 
+        //Hop-by-Hop: nicht aktiv, bis der Parent es ist
+        $this->SetStatus(IS_INACTIVE);
+
         //we will set the instance status when the parent or its status changes
         $this->RegisterParentMessages();
     }
@@ -24,19 +27,12 @@ class DenonSplitterHTTP extends IPSModuleStrict
 
         $this->RegisterParentMessages();
 
-        $ParentOpen = $this->HasActiveParent();
-        if (!$ParentOpen) {
-            $this->SetStatus(IS_INACTIVE);
-        }
-        if ($this->HasActiveParent()) {
-            //Instanz aktiv
-            $this->SetStatus(IS_ACTIVE);
-        }
+        $this->SetStatus($this->HasActiveParent() ? IS_ACTIVE : IS_INACTIVE);
     }
 
     public function MessageSink(int $TimeStamp, int $SenderID, int $Message, array $Data): void
     {
-        if (in_array($Message, [IM_CHANGESTATUS, FM_CONNECT, FM_DISCONNECT], true)) {
+        if ($this->IsParentMessage($Message)) {
             $this->ApplyChanges();
         }
     }
@@ -55,15 +51,6 @@ class DenonSplitterHTTP extends IPSModuleStrict
     public function GetInputVarMapping()
     {
         return DAVRIO_GetInputVarMapping($this->GetParent());
-    }
-
-    //################# DUMMYS / WOARKAROUNDS - protected
-
-    protected function GetParent()
-    {
-        $instance = IPS_GetInstance($this->InstanceID);
-
-        return ($instance['ConnectionID'] > 0) ? $instance['ConnectionID'] : false;
     }
 
     // Daten an Child weitergeben

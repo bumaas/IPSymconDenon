@@ -93,15 +93,23 @@ final class Pruefung
 // ---- Harnisch --------------------------------------------------------------
 
 /** Telnet-Gerät ohne HTTP-Abrufe am Receiver (kein Netz im Test). */
+/** Zählt, wie oft ein Gerät den Receiver abgefragt hätte. */
+final class Abrufe
+{
+    public static int $anzahl = 0;
+}
+
 final class TelnetGeraet extends DenonAVRTelnet
 {
     protected function GetInputsAVR(DENONIPSProfiles $DenonAVRVar): array
     {
+        Abrufe::$anzahl++;
         return [];
     }
 
     public function GetStateHTTP(): ?array
     {
+        Abrufe::$anzahl++;
         return [];
     }
 
@@ -116,6 +124,7 @@ final class HttpGeraet extends DenonAVRHTTP
 {
     protected function GetInputsAVR(DENONIPSProfiles $DenonAVRVar): array
     {
+        Abrufe::$anzahl++;
         return [];
     }
 }
@@ -172,6 +181,19 @@ function kette(string $geraetKlasse, string $splitterKlasse, bool $vonUnten, int
     }
 
     return [$geraet, $splitter, $io];
+}
+
+// ---- 0 Status nach Create ---------------------------------------------------
+
+// Hop-by-Hop: Jede Instanz meldet sich schon in Create() „nicht aktiv“ und wird
+// erst aktiv, wenn ihr Parent es ist. Sonst steht bis zum ersten ApplyChanges
+// der Kernel-Standardstatus da.
+Pruefung::abschnitt('0 Status direkt nach Create()');
+foreach ([TelnetGeraet::class, HttpGeraet::class, DenonSplitterTelnet::class, DenonSplitterHTTP::class] as $klasse) {
+    KernelStub::reset();
+    KernelStub::add(10, $modul = new $klasse(10));
+    $modul->Create();
+    Pruefung::ist("$klasse: nicht aktiv (104)", KernelStub::status(10) === IS_INACTIVE, statusText(10));
 }
 
 // ---- 1 Discovery-Reihenfolge ----------------------------------------------
@@ -258,5 +280,38 @@ foreach (['Telnet' => [TelnetGeraet::class, DenonSplitterTelnet::class], 'HTTP' 
     Pruefung::ist('Splitter ist nach dem Neustart aktiv', KernelStub::status($splitter) === IS_ACTIVE, statusText($splitter));
     Pruefung::ist('Gerät ist nach dem Neustart aktiv', KernelStub::status($geraet) === IS_ACTIVE, statusText($geraet));
 }
+
+// ---- 7 Abrufe am Receiver ------------------------------------------------------
+
+// Jede Verbindungsnachricht führt zu ApplyChanges. Teuer (Variablen, Abruf am
+// Receiver) ist das nur mit aktivem Parent; Trennen und ein inaktiver IO
+// dürfen den Receiver nicht abfragen (Code-Review zu build 108, Befund 10).
+foreach (['Telnet' => [TelnetGeraet::class, DenonSplitterTelnet::class, 2], 'HTTP' => [HttpGeraet::class, DenonSplitterHTTP::class, 1]] as $weg => [$g, $s, $jeLauf]) {
+    Pruefung::abschnitt("7 $weg: Abrufe am Receiver");
+    [$geraet, $splitter, $io] = kette($g, $s, true);
+
+    Abrufe::$anzahl = 0;
+    KernelStub::setStatus($io, IS_INACTIVE);
+    Pruefung::ist('IO wird inaktiv: kein Abruf', Abrufe::$anzahl === 0, Abrufe::$anzahl . ' Abrufe');
+
+    Abrufe::$anzahl = 0;
+    KernelStub::setStatus($io, IS_ACTIVE);
+    Pruefung::ist('IO wird wieder aktiv: genau ein Lauf', Abrufe::$anzahl === $jeLauf, Abrufe::$anzahl . ' Abrufe');
+
+    Abrufe::$anzahl = 0;
+    KernelStub::disconnect($geraet);
+    Pruefung::ist('Gerät getrennt: kein Abruf', Abrufe::$anzahl === 0, Abrufe::$anzahl . ' Abrufe');
+}
+
+// ---- 8 Keine Warnungen ---------------------------------------------------------
+
+// Der Error-Handler oben fängt Warnungen und trigger_error ab, damit sie die
+// Ausgabe nicht zerreißen. Durchgehen lassen darf die Prüfung sie nicht.
+Pruefung::abschnitt('8 Keine Warnungen oder Notices in allen Abschnitten');
+Pruefung::ist(
+    'keine Meldung aufgelaufen',
+    $GLOBALS['meldungen'] === [],
+    implode(' | ', array_unique($GLOBALS['meldungen']))
+);
 
 exit(Pruefung::bilanz());

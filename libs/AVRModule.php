@@ -512,12 +512,6 @@ class AVRModule extends IPSModuleStrict
         return "<!--suppress HtmlRequiredLangAttribute --><html><body>$rows</body></html>";
     }
 
-    protected function GetParent()
-    {
-        $instance = IPS_GetInstance($this->InstanceID); //array
-        return ($instance['ConnectionID'] > 0) ? $instance['ConnectionID'] : 0; //ConnectionID
-    }
-
     protected function GetAPICommandFromIdent($Ident): string
     {
         if (in_array($Ident, [DENON_API_Commands::Z2POWER, DENON_API_Commands::Z2INPUT, DENON_API_Commands::Z2VOL], true)) {
