@@ -13,6 +13,9 @@ class DenonAVRHTTP extends AVRModule
 
         $this->RegisterProperties();
 
+        //we will wait until the kernel is ready
+        $this->RegisterMessage(0, IPS_KERNELMESSAGE);
+
         //we will set the instance status when the parent or its status changes
         $this->RegisterParentMessages();
     }
@@ -29,6 +32,13 @@ class DenonAVRHTTP extends AVRModule
 
     public function MessageSink(int $TimeStamp, int $SenderID, int $Message, array $Data): void
     {
+        if ($Message === IPS_KERNELMESSAGE) {
+            if ($Data[0] === KR_READY) {
+                $this->ApplyChanges();
+            }
+            return;
+        }
+
         if (in_array($Message, [IM_CHANGESTATUS, FM_CONNECT, FM_DISCONNECT], true)) {
             $this->ApplyChanges();
         }

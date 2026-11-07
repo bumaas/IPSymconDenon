@@ -14,6 +14,7 @@ declare(strict_types=1);
  */
 
 const IPS_KERNELMESSAGE = 10100;
+const KR_INIT           = 10102;
 const KR_READY          = 10103;
 const KL_MESSAGE        = 10201;
 const KL_NOTIFY         = 10203;
@@ -35,7 +36,7 @@ const VARIABLE_PRESENTATION_ENUMERATION        = '{52D9E126-D7D2-2CBB-5E62-4CF7B
 
 function IPS_GetKernelRunlevel(): int
 {
-    return KR_READY;
+    return KernelStub::$runlevel;
 }
 
 function IPS_LogMessage(string $Sender, string $Message): bool
@@ -137,10 +138,45 @@ final class KernelStub
     /** @var array<string, list<int>> "<Sender>:<Message>" => Empfänger */
     public static array $messages = [];
 
+    public static int $runlevel = KR_READY;
+
     public static function reset(): void
     {
         self::$instances = [];
         self::$messages  = [];
+        self::$runlevel  = KR_READY;
+    }
+
+    /**
+     * Kernel-Neustart: Jede Modulinstanz entsteht neu (Create, gespeicherte
+     * Konfiguration, leere Puffer, keine Registrierungen), ApplyChanges läuft
+     * bei KR_INIT, danach geht IPS_KERNELMESSAGE mit KR_READY an alle, die sich
+     * darauf registriert haben. Instanzen ohne Modul (IO) behalten ihren Status.
+     */
+    public static function neustart(): void
+    {
+        self::$messages = [];
+        self::$runlevel = KR_INIT;
+
+        foreach (self::$instances as $id => $instance) {
+            $alt = $instance['Module'];
+            if ($alt === null) {
+                continue;
+            }
+            $neu = new ($alt::class)($id);
+            self::$instances[$id]['Module']         = $neu;
+            self::$instances[$id]['InstanceStatus'] = IS_CREATING;
+            $neu->Create();
+            foreach ($alt->getPropertiesForTest() as $name => $wert) {
+                $neu->setPropertyForTest($name, $wert);
+            }
+        }
+        foreach (self::$instances as $instance) {
+            $instance['Module']?->ApplyChanges();
+        }
+
+        self::$runlevel = KR_READY;
+        self::send(0, IPS_KERNELMESSAGE, [KR_READY]);
     }
 
     public static function add(int $InstanceID, ?object $Module, array $Properties = [], int $Status = IS_CREATING): void
@@ -278,6 +314,12 @@ class IPSModuleStrict
     public function setPropertyForTest(string $Name, mixed $Value): void
     {
         $this->properties[$Name] = $Value;
+    }
+
+    /** @return array<string, mixed> */
+    public function getPropertiesForTest(): array
+    {
+        return $this->properties;
     }
 
     public function resetRecorded(): void

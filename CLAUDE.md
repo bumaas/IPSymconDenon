@@ -222,11 +222,30 @@ Composite-Strings sind über locale.json nicht übersetzbar.
   immer am aktuellen Parent; beim Umhängen geben sie den alten frei.
   - Prüfen: `C:\php\php tests/connect_check.php`.
   - Geprüft werden beide Wege (Telnet, HTTP) in beiden Verbindungsreihenfolgen,
-    ein erst später aktiver IO, das Umhängen auf einen anderen Splitter und das
-    Trennen.
+    ein erst später aktiver IO, das Umhängen auf einen anderen Splitter, das
+    Trennen, ein Gerät ohne Splitter und der Kernel-Neustart.
+  - Seit **build 109** ist das Gerät ohne aktiven Splitter „nicht aktiv“ (104).
+    Bis dahin prüfte `SetInstanceStatus()` zuerst die Property `Host` des IO zwei
+    Ebenen höher und zeigte 204 schon dann, wenn nur der Splitter fehlte oder
+    getrennt war. Die Adresse meldet der IO selbst (Hop-by-Hop); 204 am Gerät
+    bleibt nur für einen aktiven Splitter mit unbrauchbarer Adresse dahinter.
+  - Ebenfalls seit **build 109** registriert auch das HTTP-Gerät
+    `IPS_KERNELMESSAGE`. Vorher lief nach einem Kernel-Neustart sein
+    `ValidateConfiguration()` nie: `ApplyChanges` bei `KR_INIT` endet vorzeitig,
+    und nur das Telnet-Gerät holte das bei `KR_READY` nach.
+  - Am nuc gemessen (07.11.2026, Wegwerf-Kette Server Socket und zwei
+    Telnet-Splitter, build 108): Beim Zustellen von `FM_DISCONNECT` ist
+    `ConnectionID` schon 0, `HasActiveParent()` liefert false, der Splitter geht
+    auf 104. Wird der Parent gelöscht, geht der Splitter ebenfalls auf 104, und
+    das Abmelden beim gelöschten Parent hinterlässt keine Warnung im Log. Dass
+    `RegisterParentMessages()` den Parent aus `ConnectionID` liest und den alten
+    ohne Existenzprüfung abmeldet, ist damit belegt richtig (Code-Review zu
+    build 108, Befunde 2 und 3). Nall-chans `ParentIOHelper` macht es genauso.
   - Grundlage ist `KernelStub` in `tests/symcon_stubs.php`: Instanzbaum, Status
     mit `IM_CHANGESTATUS` bei Änderung, `connect()`/`disconnect()` mit
-    `FM_CONNECT`/`FM_DISCONNECT`. Ohne eingetragene Instanzen verhält sich der
+    `FM_CONNECT`/`FM_DISCONNECT`, `neustart()` (jede Modulinstanz neu mit
+    `Create()` und gespeicherter Konfiguration, `ApplyChanges` bei `KR_INIT`,
+    danach `IPS_KERNELMESSAGE` mit `KR_READY`). Ohne eingetragene Instanzen verhält sich der
     Stub wie vorher. Der Harnisch überschreibt `GetInputsAVR()` (und beim
     Telnet-Gerät `GetStateHTTP()`), sonst fragt das Gerät bei gültiger IP den
     Receiver per HTTP ab.

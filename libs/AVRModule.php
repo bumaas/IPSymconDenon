@@ -68,17 +68,21 @@ class AVRModule extends IPSModuleStrict
             return false;
         }
 
-        // 2. Verbindung prüfen
+        // 2. Verbindung prüfen. Das Gerät spiegelt nur den Splitter (Hop-by-Hop);
+        // eine ungültige Adresse meldet der IO selbst. Ohne aktiven Splitter
+        // ist das Gerät deshalb „nicht aktiv“, auch wenn noch kein IO dahinter hängt.
+        if (!$this->HasActiveParent()) {
+            $this->SetStatus(IS_INACTIVE);
+            return false;
+        }
+
         if ($this->GetIPParent() === false) {
             $this->SetStatus(self::STATUS_INST_IP_IS_INVALID);
             return false;
         }
 
-        // 3. Finaler Status
-        $status = $this->HasActiveParent() ? IS_ACTIVE : IS_INACTIVE;
-        $this->SetStatus($status);
-
-        return $status === IS_ACTIVE;
+        $this->SetStatus(IS_ACTIVE);
+        return true;
     }
 
     // Daten vom Splitter Instanz

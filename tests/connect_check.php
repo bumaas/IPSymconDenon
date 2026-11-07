@@ -230,7 +230,33 @@ foreach (['Telnet' => [TelnetGeraet::class, DenonSplitterTelnet::class], 'HTTP' 
     KernelStub::disconnect($splitter);
     Pruefung::ist('Splitter ist nicht mehr aktiv', KernelStub::status($splitter) === IS_INACTIVE, statusText($splitter));
     Pruefung::ist('Splitter hört nicht mehr auf den IO', !KernelStub::isRegistered($splitter, $io, IM_CHANGESTATUS));
-    Pruefung::ist('Gerät ist nicht mehr aktiv', KernelStub::status($geraet) !== IS_ACTIVE, statusText($geraet));
+    // Hop-by-Hop: Das Gerät spiegelt den Splitter. Die Adresse prüft der IO,
+    // ein 204 „IP-Adresse ist ungültig“ am Gerät wäre hier irreführend.
+    Pruefung::ist('Gerät ist nicht aktiv (104), nicht 204', KernelStub::status($geraet) === IS_INACTIVE, statusText($geraet));
+}
+
+// ---- 5 Gerät ohne Splitter ----------------------------------------------------
+
+foreach (['Telnet' => [TelnetGeraet::class, DenonSplitterTelnet::class], 'HTTP' => [HttpGeraet::class, DenonSplitterHTTP::class]] as $weg => [$g, $s]) {
+    Pruefung::abschnitt("5 $weg: Gerät ohne Splitter");
+    KernelStub::reset();
+    anlegen(10, new $g(10), GERAET_X2300W);
+    Pruefung::ist('frisch angelegt ohne Splitter: nicht aktiv (104), nicht 204', KernelStub::status(10) === IS_INACTIVE, statusText(10));
+
+    [$geraet] = kette($g, $s, true);
+    KernelStub::disconnect($geraet);
+    Pruefung::ist('vom Splitter getrennt: nicht aktiv (104), nicht 204', KernelStub::status($geraet) === IS_INACTIVE, statusText($geraet));
+}
+
+// ---- 6 Kernel-Neustart --------------------------------------------------------
+
+foreach (['Telnet' => [TelnetGeraet::class, DenonSplitterTelnet::class], 'HTTP' => [HttpGeraet::class, DenonSplitterHTTP::class]] as $weg => [$g, $s]) {
+    Pruefung::abschnitt("6 $weg: Kernel-Neustart");
+    [$geraet, $splitter] = kette($g, $s, true);
+
+    KernelStub::neustart();
+    Pruefung::ist('Splitter ist nach dem Neustart aktiv', KernelStub::status($splitter) === IS_ACTIVE, statusText($splitter));
+    Pruefung::ist('Gerät ist nach dem Neustart aktiv', KernelStub::status($geraet) === IS_ACTIVE, statusText($geraet));
 }
 
 exit(Pruefung::bilanz());
