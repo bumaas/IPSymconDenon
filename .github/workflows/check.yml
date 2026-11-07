@@ -42,6 +42,7 @@ jobs:
           php -l tests/httppath_check.php
           php -l tests/review_rules_check.php
           php -l tests/discovery_check.php
+          php -l tests/connect_check.php
           php -l tests/check_presentations.php
       - name: JSON-Validität
         run: |
@@ -65,6 +66,8 @@ jobs:
         run: php tests/review_rules_check.php
       - name: Zuordnung gemeldeter Modellnamen
         run: php tests/discovery_check.php
+      - name: Status beim Verbinden der Kette
+        run: php tests/connect_check.php
 
       - name: MCP-Tauglichkeit (statische Regeln, bumaas/symcon-mcp-check)
         uses: bumaas/symcon-mcp-check@v1

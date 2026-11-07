@@ -6,10 +6,23 @@ require_once __DIR__ . '/../DenonClass.php';  // diverse Klassen
 
 class DenonSplitterHTTP extends IPSModuleStrict
 {
+    use ParentStatus;
+
+    public function Create(): void
+    {
+        //Never delete this line!
+        parent::Create();
+
+        //we will set the instance status when the parent or its status changes
+        $this->RegisterParentMessages();
+    }
+
     public function ApplyChanges(): void
     {
         //Never delete this line!
         parent::ApplyChanges();
+
+        $this->RegisterParentMessages();
 
         $ParentOpen = $this->HasActiveParent();
         if (!$ParentOpen) {
@@ -18,6 +31,13 @@ class DenonSplitterHTTP extends IPSModuleStrict
         if ($this->HasActiveParent()) {
             //Instanz aktiv
             $this->SetStatus(IS_ACTIVE);
+        }
+    }
+
+    public function MessageSink(int $TimeStamp, int $SenderID, int $Message, array $Data): void
+    {
+        if (in_array($Message, [IM_CHANGESTATUS, FM_CONNECT, FM_DISCONNECT], true)) {
+            $this->ApplyChanges();
         }
     }
 

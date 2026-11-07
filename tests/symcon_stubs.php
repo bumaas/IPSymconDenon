@@ -21,6 +21,9 @@ const KL_WARNING        = 10204;
 const KL_ERROR          = 10205;
 const KL_DEBUG          = 10206;
 const IM_CHANGESTATUS   = 10505;
+const FM_CONNECT        = 11101;
+const FM_DISCONNECT     = 11102;
+const IS_CREATING       = 101;
 const IS_ACTIVE         = 102;
 const IS_INACTIVE       = 104;
 
@@ -110,19 +113,120 @@ function IPS_GetName(int $ID): string
     return 'Objekt#' . $ID;
 }
 
+/**
+ * Nachbildung des Instanzbaums für Tests, die Verbindungen und Statusmeldungen
+ * prüfen (tests/connect_check.php).
+ *
+ * Ohne eingetragene Instanzen bleibt alles beim alten Verhalten der Stubs
+ * (keine Instanz existiert, kein Parent, kein aktiver Parent); die übrigen
+ * Tests merken davon nichts.
+ *
+ * Nachgebildet wird, was der Kernel dabei tut:
+ * - SetStatus ändert den Status und meldet IM_CHANGESTATUS an alle, die sich
+ *   auf diese Instanz registriert haben, aber nur bei einer echten Änderung.
+ * - connect()/disconnect() entsprechen IPS_ConnectInstance/IPS_DisconnectInstance
+ *   und melden FM_CONNECT/FM_DISCONNECT an die Instanz selbst, sofern sie sich
+ *   darauf registriert hat. Ein ApplyChanges löst der Kernel dabei nicht aus.
+ * - HasActiveParent prüft den direkten Parent auf IS_ACTIVE.
+ */
+final class KernelStub
+{
+    /** @var array<int, array{ConnectionID: int, InstanceStatus: int, Properties: array<string, mixed>, Module: ?object}> */
+    public static array $instances = [];
+
+    /** @var array<string, list<int>> "<Sender>:<Message>" => Empfänger */
+    public static array $messages = [];
+
+    public static function reset(): void
+    {
+        self::$instances = [];
+        self::$messages  = [];
+    }
+
+    public static function add(int $InstanceID, ?object $Module, array $Properties = [], int $Status = IS_CREATING): void
+    {
+        self::$instances[$InstanceID] = [
+            'ConnectionID'   => 0,
+            'InstanceStatus' => $Status,
+            'Properties'     => $Properties,
+            'Module'         => $Module
+        ];
+    }
+
+    public static function setStatus(int $InstanceID, int $Status): void
+    {
+        if (self::$instances[$InstanceID]['InstanceStatus'] === $Status) {
+            return;
+        }
+        self::$instances[$InstanceID]['InstanceStatus'] = $Status;
+        self::send($InstanceID, IM_CHANGESTATUS, [$Status]);
+    }
+
+    public static function connect(int $ChildID, int $ParentID): void
+    {
+        self::$instances[$ChildID]['ConnectionID'] = $ParentID;
+        self::send($ChildID, FM_CONNECT, [$ParentID]);
+    }
+
+    public static function disconnect(int $ChildID): void
+    {
+        $ParentID = self::$instances[$ChildID]['ConnectionID'];
+        self::$instances[$ChildID]['ConnectionID'] = 0;
+        self::send($ChildID, FM_DISCONNECT, [$ParentID]);
+    }
+
+    public static function register(int $ReceiverID, int $SenderID, int $Message): void
+    {
+        $key = $SenderID . ':' . $Message;
+        if (!in_array($ReceiverID, self::$messages[$key] ?? [], true)) {
+            self::$messages[$key][] = $ReceiverID;
+        }
+    }
+
+    public static function unregister(int $ReceiverID, int $SenderID, int $Message): void
+    {
+        $key = $SenderID . ':' . $Message;
+        self::$messages[$key] = array_values(array_diff(self::$messages[$key] ?? [], [$ReceiverID]));
+    }
+
+    public static function isRegistered(int $ReceiverID, int $SenderID, int $Message): bool
+    {
+        return in_array($ReceiverID, self::$messages[$SenderID . ':' . $Message] ?? [], true);
+    }
+
+    public static function status(int $InstanceID): int
+    {
+        return self::$instances[$InstanceID]['InstanceStatus'];
+    }
+
+    private static function send(int $SenderID, int $Message, array $Data): void
+    {
+        foreach (self::$messages[$SenderID . ':' . $Message] ?? [] as $ReceiverID) {
+            self::$instances[$ReceiverID]['Module']?->MessageSink(time(), $SenderID, $Message, $Data);
+        }
+    }
+}
+
 function IPS_InstanceExists(int $InstanceID): bool
 {
-    return false;
+    return isset(KernelStub::$instances[$InstanceID]);
 }
 
 function IPS_GetInstance(int $InstanceID): array
 {
+    if (isset(KernelStub::$instances[$InstanceID])) {
+        return [
+            'InstanceID'     => $InstanceID,
+            'ConnectionID'   => KernelStub::$instances[$InstanceID]['ConnectionID'],
+            'InstanceStatus' => KernelStub::$instances[$InstanceID]['InstanceStatus']
+        ];
+    }
     return ['ConnectionID' => 0];
 }
 
 function IPS_GetProperty(int $InstanceID, string $Name): string
 {
-    return '';
+    return (string) (KernelStub::$instances[$InstanceID]['Properties'][$Name] ?? '');
 }
 
 function IPS_GetChildrenIDs(int $ID): array
@@ -336,6 +440,9 @@ class IPSModuleStrict
     protected function SetStatus(int $Status): bool
     {
         $this->record('SetStatus', $Status);
+        if (isset(KernelStub::$instances[$this->InstanceID])) {
+            KernelStub::setStatus($this->InstanceID, $Status);
+        }
         return true;
     }
 
@@ -351,16 +458,19 @@ class IPSModuleStrict
 
     protected function HasActiveParent(): bool
     {
-        return false;
+        $parentID = KernelStub::$instances[$this->InstanceID]['ConnectionID'] ?? 0;
+        return $parentID > 0 && (KernelStub::$instances[$parentID]['InstanceStatus'] ?? 0) === IS_ACTIVE;
     }
 
     protected function RegisterMessage(int $SenderID, int $Message): bool
     {
+        KernelStub::register($this->InstanceID, $SenderID, $Message);
         return true;
     }
 
     protected function UnregisterMessage(int $SenderID, int $Message): bool
     {
+        KernelStub::unregister($this->InstanceID, $SenderID, $Message);
         return true;
     }
 

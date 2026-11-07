@@ -212,6 +212,25 @@ Composite-Strings sind über locale.json nicht übersetzbar.
     dann ohne Modell bis in einen TypeError in `ApplyChanges`, statt im
     Formular die Auswahl zu verlangen.
 
+- `tests/connect_check.php` — **Status beim Verbinden der Kette** (ohne Kernel und
+  Netz, in der CI). Der Konfigurator legt Gerät, Splitter und IO an und verbindet
+  sie erst danach; ein ApplyChanges löst das Verbinden nicht aus. Bis build 107
+  blieb deshalb nach der Discovery der Splitter „nicht aktiv“ und das Gerät auf
+  204 „IP-Adresse ist ungültig“ (Forum t/40873 #766). Seit **build 108** hören
+  Gerät und Splitter über den Trait `ParentStatus` (`libs/ParentStatus.php`) auf
+  ihr eigenes `FM_CONNECT`/`FM_DISCONNECT` und registrieren `IM_CHANGESTATUS`
+  immer am aktuellen Parent; beim Umhängen geben sie den alten frei.
+  - Prüfen: `C:\php\php tests/connect_check.php`.
+  - Geprüft werden beide Wege (Telnet, HTTP) in beiden Verbindungsreihenfolgen,
+    ein erst später aktiver IO, das Umhängen auf einen anderen Splitter und das
+    Trennen.
+  - Grundlage ist `KernelStub` in `tests/symcon_stubs.php`: Instanzbaum, Status
+    mit `IM_CHANGESTATUS` bei Änderung, `connect()`/`disconnect()` mit
+    `FM_CONNECT`/`FM_DISCONNECT`. Ohne eingetragene Instanzen verhält sich der
+    Stub wie vorher. Der Harnisch überschreibt `GetInputsAVR()` (und beim
+    Telnet-Gerät `GetStateHTTP()`), sonst fragt das Gerät bei gültiger IP den
+    Receiver per HTTP ab.
+
 - `tests/capability_diff.php` — **Vorher-Nachher-Vergleich** im Klartext, für das
   Review von Capability-Änderungen:
   `C:\php\php tests/capability_diff.php --from <Ref|Datei> [--to <Ref|Datei>]`.

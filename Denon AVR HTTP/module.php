@@ -12,6 +12,9 @@ class DenonAVRHTTP extends AVRModule
         parent::Create();
 
         $this->RegisterProperties();
+
+        //we will set the instance status when the parent or its status changes
+        $this->RegisterParentMessages();
     }
 
     public function ApplyChanges(): void
@@ -19,7 +22,16 @@ class DenonAVRHTTP extends AVRModule
         //Never delete this line!
         parent::ApplyChanges();
 
+        $this->RegisterParentMessages();
+
         $this->ValidateConfiguration();
+    }
+
+    public function MessageSink(int $TimeStamp, int $SenderID, int $Message, array $Data): void
+    {
+        if (in_array($Message, [IM_CHANGESTATUS, FM_CONNECT, FM_DISCONNECT], true)) {
+            $this->ApplyChanges();
+        }
     }
 
     private function ValidateConfiguration()

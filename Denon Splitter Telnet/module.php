@@ -6,6 +6,8 @@ require_once __DIR__ . '/../DenonClass.php';  // diverse Klassen
 
 class DenonSplitterTelnet extends IPSModuleStrict
 {
+    use ParentStatus;
+
     /**
      * Obergrenze für den Fragmentpuffer.
      *
@@ -27,6 +29,8 @@ class DenonSplitterTelnet extends IPSModuleStrict
         //Never delete this line!
         parent::Create();
 
+        //we will set the instance status when the parent or its status changes
+        $this->RegisterParentMessages();
     }
 
     public function ApplyChanges(): void
@@ -34,11 +38,8 @@ class DenonSplitterTelnet extends IPSModuleStrict
         //Never delete this line!
         parent::ApplyChanges();
 
-        //we will set the instance status when the parent status changes
-        if($this->GetParent() > 0)
-        {
-            $this->RegisterMessage($this->GetParent(), IM_CHANGESTATUS);
-        }
+        //we will set the instance status when the parent or its status changes
+        $this->RegisterParentMessages();
 
         $this->RegisterVariableString('InputMapping', 'Input Mapping', '', 1);
         $this->RegisterVariableString('AVRType', 'AVRType', '', 2);
@@ -54,7 +55,7 @@ class DenonSplitterTelnet extends IPSModuleStrict
     {
         $this->Logger_Dbg(__FUNCTION__, 'SenderID: ' . $SenderID . ', Message: ' . $Message . ', Data:' . json_encode($Data, JSON_THROW_ON_ERROR));
 
-        if ($Message === IM_CHANGESTATUS) {
+        if (in_array($Message, [IM_CHANGESTATUS, FM_CONNECT, FM_DISCONNECT], true)) {
             $this->ApplyChanges();
         } else {
             $this->Logger_Err('Unexpected Message: ' . $Message);

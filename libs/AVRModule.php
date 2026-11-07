@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 class AVRModule extends IPSModuleStrict
 {
+    use ParentStatus;
+
     private const string PROPERTY_WRITE_DEBUG_INFORMATION_TO_LOGFILE = 'WriteDebugInformationToLogfile';
 
     // Konstante für die Übersichtlichkeit und einfache Wartung

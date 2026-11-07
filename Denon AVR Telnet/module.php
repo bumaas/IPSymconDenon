@@ -15,10 +15,8 @@ class DenonAVRTelnet extends AVRModule
         //we will wait until the kernel is ready
         $this->RegisterMessage(0, IPS_KERNELMESSAGE);
 
-        //we will set the instance status when the parent status changes
-        if ($this->GetParent() > 0) {
-            $this->RegisterMessage($this->GetParent(), IM_CHANGESTATUS);
-        }
+        //we will set the instance status when the parent or its status changes
+        $this->RegisterParentMessages();
     }
 
     public function MessageSink($TimeStamp, $SenderID, $Message, $Data): void
@@ -33,6 +31,8 @@ class DenonAVRTelnet extends AVRModule
                 break;
 
             case IM_CHANGESTATUS:
+            case FM_CONNECT:
+            case FM_DISCONNECT:
                 $this->ApplyChanges();
                 break;
         }
@@ -56,6 +56,8 @@ class DenonAVRTelnet extends AVRModule
     {
         //Never delete this line!
         parent::ApplyChanges();
+
+        $this->RegisterParentMessages();
 
         if (IPS_GetKernelRunlevel() !== KR_READY) {
             return;

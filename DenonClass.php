@@ -13,6 +13,7 @@ declare(strict_types=1);
  */
 
 require_once __DIR__ . '/AVRModels.php';
+require_once __DIR__ . '/libs/ParentStatus.php';
 require_once __DIR__ . '/libs/AVRModule.php';
 require_once __DIR__ . '/libs/DENONIPSVarType.php';
 require_once __DIR__ . '/libs/DENONIPSProfiles.php';
